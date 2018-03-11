@@ -2,7 +2,7 @@
 #include <string.h>
 #include "poly.h"
 
-static inline unsigned int numterms(unsigned int degree, unsigned int num_variables)
+inline unsigned int numterms(unsigned int degree, unsigned int num_variables)
 {
   float facn = 1, facd = 1, facnd = 1;
   for(int i = 2; i < degree + num_variables + 1; i++)

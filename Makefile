@@ -1,6 +1,6 @@
-CC=gcc
-CXX=g++
-CFLAGS=-std=c11 -Wall -g -Iext/ -D_GNU_SOURCE -fopenmp
+CC=clang
+CXX=clang++
+CFLAGS= -I/usr/local/include/cairo/ -L/usr/local/lib -std=c11 -Wall -g -Iext/ -D_GNU_SOURCE -fopenmp
 CXXFLAGS=-Wall -g -Iext/ -D_GNU_SOURCE -fopenmp
 # OPTFLAGS=-I. -ggdb3 -Isrc/
 OPTFLAGS=-O3 -ffast-math -mfpmath=sse -march=native -fexpensive-optimizations -DNDEBUG -fno-finite-math-only -I. -Isrc/

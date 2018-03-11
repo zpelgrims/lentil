@@ -1,0 +1,14 @@
+*.dSYM
+*.pdf
+*.DS_STORE
+
+fit
+view
+parsepoly
+gencode
+fresnel
+genpoly
+printpoly
+sample-plot
+polynomial-optics
+

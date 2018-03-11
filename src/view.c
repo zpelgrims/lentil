@@ -12,6 +12,7 @@
 #include <string.h>
 #include <sys/time.h>
 #include <fenv.h>
+
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
@@ -19,7 +20,7 @@
 static float zoom = 0.0f; // zoom, if the lens supports it.
 static const int degree = 4;  // degree of the polynomial. 1 is thin lens
 static const float coverage = .5f; // coverage of incoming rays at scene facing pupil (those you point with the mouse)
-static const int num_rays = 30;//13;
+static const int num_rays = 20;//13;
 static const int dim_up = 0; // plot yz or xz of the lens in 2d?
 static char lensfilename[512] = "lenses/canon-anamorphic-converter.fx";
 static char lens_name[512];
@@ -30,12 +31,12 @@ static int lenses_cnt = 0;
 static float lens_pupil_dist = 0.0f, lens_pupil_rad = 0.0f;
 static float lens_length = 0, aperture_pos = 0;
 static float mouse_x = 0.0f, mouse_y = 0.0f;
-static int screenshot = 0;
+static int screenshot = 1;
 static int draw_solve_omega = 0;
 static int draw_raytraced = 1;
 static int draw_polynomials = 1;
-static int width = 1600;
-static int height = 800;
+static int width = 1000;
+static int height = 1000;
 
 static int draw_aspheric = 1;
 
@@ -149,17 +150,23 @@ expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_data)
   {
     cst = cairo_pdf_surface_create("screenshot.pdf", width, height);//cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
     cr = cairo_create(cst);
+    /*
     cairo_set_source_rgb(cr, 1, 1, 1);
     cairo_paint(cr);
     cairo_set_line_width(cr, 1.);
     cairo_set_source_rgba(cr, 0, 0, 0, .5);
+    */
+    cairo_set_source_rgb(cr, 0.04, 0.11, 0.15); //71 109 132
+    cairo_paint(cr);
+    cairo_set_line_width(cr, 1.);
+    cairo_set_source_rgba(cr, 1, 1, 1, .3);
   }
   else
   {
     width = widget->allocation.width;
     height = widget->allocation.height;
     cr = gdk_cairo_create(gtk_widget_get_window(widget));
-    cairo_set_source_rgb(cr, 0, 0, 0);
+    cairo_set_source_rgb(cr, 0.15, 0.15, 0.15);
     cairo_paint(cr);
     cairo_set_line_width(cr, 1.);
     cairo_set_source_rgba(cr, 1, 1, 1, .5);
@@ -175,20 +182,22 @@ expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_data)
   cairo_set_line_width(cr, 40.0/width);
 
   // black box lens system:
-  cairo_rectangle(cr, 10, -5, 20, 10);
-  cairo_stroke(cr);
+  // cairo_rectangle(cr, 10, -5, 20, 10);
+  // cairo_stroke(cr);
 
+  /*
   cairo_move_to(cr, 10, -6);
   cairo_set_font_size(cr, 1);
   cairo_show_text(cr, lens_name);
   cairo_new_path(cr);
+  */
 
   // draw lens
   // cairo_save(cr);
   // cairo_rectangle(cr, 10, -5, 20, 10);
   // cairo_clip(cr);
-  const float scale = 20.0/lens_length;
-  cairo_translate(cr, 10.0, 0.0);
+  const float scale = 25.0/lens_length;
+  cairo_translate(cr, 2.0, 0.0);
   cairo_scale(cr, scale, scale);
   // cairo_set_line_width(cr, 1.0f);
   float pos = lens_length;
@@ -239,14 +248,16 @@ expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_data)
       }
       cairo_close_path(cr);
       if(screenshot)
-        cairo_set_source_rgba(cr, 0.2f, 0.2f, 0.3f, .5f);
+        cairo_set_source_rgba(cr, 0.74f, 0.17f, 0.24f, .5f); // 190 44 61
       else
         cairo_set_source_rgba(cr, 0.8f, 0.8f, 1.0f, .5f);
+
       cairo_fill_preserve(cr);
       if(screenshot)
-        cairo_set_source_rgba(cr, 0.0f, 0.0f, 0.0f, 1.0f);
+        cairo_set_source_rgba(cr, 1.0f, 1.0f, 1.0f, 1.0f);
       else
         cairo_set_source_rgba(cr, 1.0f, 1.0f, 1.0f, 1.0f);
+
       stroke_with_pencil(cr, scale, 40./width);
       cairo_restore(cr);
     }
@@ -288,8 +299,10 @@ expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_data)
   // cairo_restore(cr);
 
   const float len = lens_length/10.0f;
-  const float m_x = (mouse_x - width/4.0f)/(width/2.0f) * lens_length;
-  const float m_y = (mouse_y - height/2.0f)/(height) * lens_length;
+  mouse_x = 10000.0;
+  mouse_y = 400.0;
+  const float m_x = (mouse_x - width/4.0f)/(width/2.0f) * lens_length * 10;
+  const float m_y = (mouse_y - height/2.0f)/(height) * lens_length * 10;
   float variation[2] = {0.0f, 0.0f};
   for(int k=0;k<num_rays;k++)
   {
@@ -320,23 +333,33 @@ expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_data)
 
     const float lambda = 0.5f;
 #endif
+
+
     float in[5] = {0.0f};
-    float out[5] = {0.0f}, ap[5] = {0.0f};
-    float inrt[5] = {0.0f}, outrt[5] = {0.0f};
+    float out[5] = {0.0f};
+    float ap[5] = {0.0f};
+    float inrt[5] = {0.0f};
+    float outrt[5] = {0.0f};
     inrt[4] = outrt[4] = in[4] = out[4] = ap[4] = lambda;
 
     float t, n[3] = {0.0f};
     spherical(cam_pos, cam_dir, &t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n);
+
     for(int i=0;i<3;i++) cam_dir[i] = - cam_dir[i]; // need to point away from surface (dot(n,dir) > 0)
+
     csToSphere(cam_pos, cam_dir, in, in+2, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
     sphereToCs(in, in + 2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
+
     for(int i=0;i<5;i++) inrt[i] = in[i];
 
     int error = 0;
+
     if(draw_raytraced)
       error = evaluate_reverse_draw(lenses, lenses_cnt, zoom, inrt, outrt, cr, scale, dim_up, draw_aspheric);
     else
       error = evaluate_reverse(lenses, lenses_cnt, zoom, inrt, outrt, draw_aspheric);
+
+    
 
     // ray color:
     hsl[0] = k/(num_rays+1.);
@@ -361,6 +384,8 @@ expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_data)
       variation[0] += (out[0] - outrt[0])*px_ratio;
       variation[1] += (out[1] - outrt[1])*px_ratio;
     }
+
+
 
     if(!error && draw_polynomials)
     {
@@ -389,12 +414,17 @@ expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_data)
         stroke_with_pencil(cr, scale, aperture_death ? 40./width : 60./width);
       }
     }
+
+    
+
     if(0)//!error)
     {
       outrt[2] = -outrt[2];
       outrt[3] = -outrt[3];
       outrt[4] = lambda;
       error = evaluate_draw(lenses, lenses_cnt, zoom, outrt, inrt, cr, scale, dim_up, draw_aspheric);
+
+
     }
   }
   // fprintf(stderr, "total variation of errors: (%f %f)\n", variation[0], variation[1]);

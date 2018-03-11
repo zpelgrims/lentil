@@ -1,0 +1,3 @@
+# in order to compile need to set this environment variable on my osx machine
+
+export PKG_CONFIG_PATH=/usr/local/Cellar/gtk+/2.24.31_1/lib/pkgconfig/:/usr/local/Cellar/pango/1.40.14/lib/pkgconfig/:/usr/local/Cellar/glib/2.54.2/lib/pkgconfig:/usr/local/Cellar/pcre/8.41/lib/pkgconfig/:/usr/local/Cellar/:/usr/local/Cellar/cairo/1.14.10/lib/pkgconfig/:/usr/local/Cellar/pixman/0.34.0_1/lib/pkgconfig/:/usr/local/lib/pkgconfig:/usr/local/Cellar/:/opt/X11/lib/pkgconfig/

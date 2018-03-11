@@ -83,6 +83,26 @@ static inline float lens_evaluate_aperture(const float *in, float *out)
   return MAX(0.0f, out_transmittance);
 }
 
+
+/*
+in the 2016 code, in render/lens.h i think you want to call
+
+lens_pt_sample_aperture(float *in, float *out, float dist)
+
+with a pixel value in {in[0], in[1]}, as well as the wavelength in in[4] and an aperture position in {out[0], out[1]}. it will solve the remaining dimensions for you: it returns the direction on the sensor as in[2], in[3] and the direction on the aperture point as out[2], out[3].
+
+with this complete in[.], you can call:
+
+float lens_evaluate(const float *in, float *out)
+
+to generate an outgoing ray out[.] on the exit pupil which you can use to read your deep data.
+
+the advantage of this indirection with the aperture is that you are sure your ray actually makes it through the lens system and isn't clipped at the aperture, so you'll need less samples overall.
+
+you may still want to clip the rays at the inner and outer pupil (think long petzval lens and heavy vignetting due to this).
+*/
+
+
 // solves for the two directions [dx,dy], keeps the two positions [x,y] and the
 // wavelength, such that the path through the lens system will be valid, i.e.
 // lens_evaluate_aperture(in, out) will yield the same out given the solved for in.
@@ -96,6 +116,8 @@ static inline void lens_pt_sample_aperture(float *in, float *out, float dist)
   out[0] = out_x; out[1] = out_y; out[2] = out_dx; out[3] = out_dy;
   in[0] = x; in[1] = y; in[2] = dx; in[3] = dy;
 }
+
+
 
 // solves for a sensor position give a scene point and an aperture point
 // returns transmittance from sensor to outer pupil
