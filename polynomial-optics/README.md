@@ -1,3 +1,6 @@
+Fork of "Sparse high-degree polynomials for wide-angle lenses (2016)" paper
+------------------------
+
 Overview
 ------------------------
 The provided code can be used to find sparse polynomials transferring rays
