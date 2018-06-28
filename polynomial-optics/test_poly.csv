@@ -1,0 +1,17 @@
+# format: coefficient,a,b,c,d,e
+# with term = coefficient*x^a*y^b*dx^c*dy^d*lambda^e
+# x' =
+1.0,1,0,0,0,0
+
+# y' =
+1.0,0,1,0,0,0
+
+# dx' =
+1.1,0,0,2,0,0
+
+# dy' =
+1.1,0,0,0,2,0
+
+# transmittance =
+0.35,0,0,0,0,0
+1e-3,0,0,0,0,1
