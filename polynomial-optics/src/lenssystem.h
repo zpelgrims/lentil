@@ -6,6 +6,13 @@
 #include <string.h>
 #include <strings.h>
 
+/*
+//json parsing
+#include "../ext/json.hpp"
+#include <fstream>
+using json = nlohmann::json;
+*/
+
 typedef struct lens_element_t
 {
   float lens_radius, thickness_short, thickness_mid, thickness_long, ior, vno, housing_radius;
@@ -44,6 +51,7 @@ float lens_get_aperture_pos(lens_element_t *l, int num, float zoom)
   return pos;
 }
 
+// reading .fx files
 int lens_configuration(lens_element_t *l, const char *filename, int max)
 {
   FILE *f = fopen(filename, "rb");
@@ -146,108 +154,87 @@ int lens_configuration(lens_element_t *l, const char *filename, int max)
   return cnt;
 }
 
-
-int lens_configuration_json(lens_element_t *l, const char *filename, int max)
+/*
+// reading json database, but i'm mixing c and c++... ugh
+int lens_configuration(lens_element_t *l, const char *filename, int max)
 {
-  FILE *f = fopen(filename, "rb");
-  if(!f) return 0;
+  // read database
+  std::ifstream in_json("/Users/zeno/lentil/database/lenses.json");
+  json lens_database = json::parse(in_json);
+
+  ////// write some kind of return false if no file mechanism
+
   int cnt = 0;
 
   float last_ior = 1.0f;
   float last_vno = 0.0f;
   float scale = 1.0f;
-  while(1)
-  {
-    lens_element_t lens;
-    memset(&lens, 0, sizeof(lens_element_t));
-    char line[2048];
-    if(fscanf(f, "%[^\n]", line) == EOF) break;
-    if(fgetc(f) == EOF) break; // new line
 
-    char *in = line;
+  // do something with the scale value, figure out
 
-    if(!strncmp(line, "#!scale", 7))
-    {
-      scale = atof(line + 8);
-      continue;
-    }
-    // munch comment
-    if(!strncmp(line, "//", 2) || !strncmp(line, "#", 1)) continue;
-    while(in[0] == '\t' || in[0] == ' ') in++;
-    lens.lens_radius = scale * strtof(in, &in);
-    if(lens.lens_radius == 0.0f) break;
-    while(in[0] == '\t' || in[0] == ' ') in++;
-    lens.thickness_short = scale * strtof(in, &in);
-    while(in[0] == '\t' || in[0] == ' ') in++;
-    if(in[0] == '/')
-      lens.thickness_mid = scale * strtof(in+1, &in);
-    else
-      lens.thickness_mid = lens.thickness_short;
-    while(in[0] == '\t' || in[0] == ' ') in++;
-    if(in[0] == '/')
-      lens.thickness_long = scale * strtof(in+1, &in);
-    else
-      lens.thickness_long = lens.thickness_short;
-    if(lens.thickness_short == 0.0f) break;
-    if(lens.thickness_mid   == 0.0f) break;
-    if(lens.thickness_long  == 0.0f) break;
+  bool prime = lens_database["01"]["prime"];
 
-    while(in[0] == '\t' || in[0] == ' ') in++;
-    if(!strncmp(in, "cx_", 3))
-    {
-      lens.anamorphic = 1;
-      in += 3;
-    }
-    int i=0;
-    while(in[0] != '\t' && in[0] != ' ' && in[0] != '\0') lens.material[i++] = in++[0];
-    lens.material[i] = '\0';
-    if(!strcasecmp(lens.material, "air"))
-    {
-      lens.ior = 1.0f;
-      lens.vno = 0.0f;
-    }
-    else if(!strcasecmp(lens.material, "iris"))
-    {
-      lens.ior = last_ior;
-      lens.vno = last_vno;
-    }
-    else
-    {
-      while(in[0] == '\t' || in[0] == ' ') in++;
-      lens.ior = strtof(in, &in);
-      while(in[0] == '\t' || in[0] == ' ') in++;
-      lens.vno = strtof(in, &in);
-    }
-    last_ior = lens.ior;
-    last_vno = lens.vno;
-    if(lens.ior == 0.0f) break;
 
-    while(in[0] == '\t' || in[0] == ' ') in++;
-    lens.housing_radius = scale * strtof(in, &in);
-    if(lens.housing_radius == 0.0f) break;
-    
-    lens.aspheric = 0;
-    for(int i = 0; i < 4; i++)
-      lens.aspheric_correction_coefficients[i] = 0;
-    
-    while(in[0] == '\t' || in[0] == ' ') in++;
-    if(!strncmp(in, "#!aspheric=", 11))
-    {
-      in += 11;
-      lens.aspheric = strtol(in, &in, 10);
-      // munch comma
-      in++;
-      for(int i = 0; i < 4; i++, in++)
-        lens.aspheric_correction_coefficients[i] = strtof(in, &in);
-    }
+  for (const auto& json_lens_element : lens_database["01"]["optical-elements-patent"]) {
+      lens_element_t lens;
+      memset(&lens, 0, sizeof(lens_element_t));
 
-    l[cnt++] = lens;
+      // do something with radius-y too
+      lens.lens_radius = scale * json_lens_element["radius-x"];
+      lens.thickness_short = scale * json_lens_element["thickness"];
 
-    if(cnt >= max) break;
+//--> fix zoom lenses here
+      // what to do with thickness_mid and thickness_long? Currently not in lens database.
+      // pretty sure this is for zoom lenses, which could be interesting in the long run
+      // they are denoted by thickness_short/thickness_mid/thickness_long in the .fx files
+      if (!prime){
+        lens.thickness_mid = lens.thickness_short;
+        lens.thickness_long = lens.thickness_short;
+      } else {
+        lens.thickness_mid = lens.thickness_short;
+        lens.thickness_long = lens.thickness_short;
+      }
+
+      // how is the squeeze factor determined?
+      if (json_lens_element["lens_geometry"] == "anamorphic"){
+        lens.anamorphic = 1;
+      }
+
+      lens.material = json_lens_element["material"];
+      if (lens.material == "air"){
+        lens.ior = 1.0f;
+        lens.vno = 0.0f;
+      } else if (lens.material == "iris"){
+        lens.ior = last_ior;
+        lens.vno = last_vno;
+      } else {
+        lens.ior = json_lens_element["ior"];
+        lens.vno = json_lens_element["abbe"];
+      }
+
+      last_ior = lens.ior;
+      last_vno = lens.vno;
+
+      lens.housing_radius = scale * json_lens_element["housing_radius"];
+
+      lens.aspheric = 0;
+      for(int i = 0; i < 4; i++){
+        lens.aspheric_correction_coefficients[i] = 0;
+      }
+
+      // set lens.aspheric to first of 5 written terms (1 bool + list of 4 numbers)
+      for(int i = 0; i < 4; i++, in++){
+        lens.aspheric_correction_coefficients[i] = json_lens_element["aspherical-equation"][i];
+      }
+
+      // add lens to lens struct
+      l[cnt++] = lens;
+
   }
-  fclose(f);
+
   return cnt;
 }
+*/
 
 
 
