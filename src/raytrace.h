@@ -140,6 +140,7 @@ static inline int aspherical(float *pos, float *dir, float *dist, const float R,
   return error;
 }
 
+// zeno: create intersections with both x and y axis cylinders
 static inline int cylindrical(float *pos, float *dir, float *dist, float R, float center, float housing_rad, float *normal)
 {
   const float scv[3] = {pos[0], 0, pos[2] - center};
@@ -286,6 +287,7 @@ static inline int evaluate(const lens_element_t *lenses, const int lenses_cnt, c
     //normal at intersection
     float n[3] = {0.0f};
 
+    //zeno: add anamorphic_x, anamorphic_y, orientation argument in cylindrical function call
     if(lenses[k].anamorphic)
       error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n);
     else if(aspheric)

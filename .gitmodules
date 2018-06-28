@@ -1,0 +1,3 @@
+[submodule "pota"]
+	path = pota
+	url = https://github.com/zpelgrims/pota

@@ -35,8 +35,8 @@ static int screenshot = 1;
 static int draw_solve_omega = 0;
 static int draw_raytraced = 1;
 static int draw_polynomials = 1;
-static int width = 1000;
-static int height = 1000;
+static int width = 1600;
+static int height = 800;
 
 static int draw_aspheric = 1;
 
@@ -148,7 +148,7 @@ expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_data)
   cairo_surface_t *cst = 0;
   if(screenshot)
   {
-    cst = cairo_pdf_surface_create("screenshot.pdf", width, height);//cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
+    cst = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
     cr = cairo_create(cst);
     /*
     cairo_set_source_rgb(cr, 1, 1, 1);
@@ -156,10 +156,10 @@ expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_data)
     cairo_set_line_width(cr, 1.);
     cairo_set_source_rgba(cr, 0, 0, 0, .5);
     */
-    cairo_set_source_rgb(cr, 0.04, 0.11, 0.15); //71 109 132
+    cairo_set_source_rgb(cr, 0.15, 0.15, 0.15);
     cairo_paint(cr);
     cairo_set_line_width(cr, 1.);
-    cairo_set_source_rgba(cr, 1, 1, 1, .3);
+    cairo_set_source_rgba(cr, 1, 1, 1, .5);
   }
   else
   {
@@ -181,10 +181,40 @@ expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_data)
   cairo_translate(cr, 0, 10);
   cairo_set_line_width(cr, 40.0/width);
 
-  // black box lens system:
-  // cairo_rectangle(cr, 10, -5, 20, 10);
-  // cairo_stroke(cr);
+  
+  // grid
+  cairo_set_line_width(cr, 20.0/width);
+  cairo_set_source_rgb(cr, 0.05, 0.05, 0.05);
+  int gridsize = 1;
+  for (int i = 0; i<width; i += gridsize){
+    cairo_move_to(cr, i, -height);
+    cairo_line_to(cr, i, height);
+    cairo_stroke(cr);
+  }
 
+  for (int i = -height/2; i<height; i += gridsize){
+    cairo_move_to(cr, -width, i);
+    cairo_line_to(cr, width, i);
+    cairo_stroke(cr);
+  }
+
+
+  // rulers
+  cairo_set_line_width(cr, 20.0/width);
+  cairo_set_source_rgb(cr, 0.7, 0.7, 0.7);
+
+  cairo_move_to(cr, 0, 0);
+  cairo_line_to(cr, width, 0);
+  cairo_stroke(cr);
+
+  for (int i = 0; i<lens_length; i += gridsize){
+    cairo_move_to(cr, i, lens_length/2);
+    cairo_line_to(cr, i, (lens_length/2)+0.25);
+    cairo_stroke(cr);
+  }
+
+  cairo_set_line_width(cr, 40.0/width);
+  
   /*
   cairo_move_to(cr, 10, -6);
   cairo_set_font_size(cr, 1);
@@ -247,16 +277,11 @@ expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_data)
           cairo_arc(cr, pos-t-rad2, 0.0f, fabsf(rad2), off2-alpha2, off2+alpha2);
       }
       cairo_close_path(cr);
-      if(screenshot)
-        cairo_set_source_rgba(cr, 0.74f, 0.17f, 0.24f, .5f); // 190 44 61
-      else
-        cairo_set_source_rgba(cr, 0.8f, 0.8f, 1.0f, .5f);
+      
+      cairo_set_source_rgba(cr, 0.8f, 0.8f, 1.0f, .5f);
 
       cairo_fill_preserve(cr);
-      if(screenshot)
-        cairo_set_source_rgba(cr, 1.0f, 1.0f, 1.0f, 1.0f);
-      else
-        cairo_set_source_rgba(cr, 1.0f, 1.0f, 1.0f, 1.0f);
+      cairo_set_source_rgba(cr, 1.0f, 1.0f, 1.0f, 1.0f);
 
       stroke_with_pencil(cr, scale, 40./width);
       cairo_restore(cr);
@@ -432,14 +457,14 @@ expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_data)
   cairo_destroy(cr);
   if(screenshot)
   {
+    cairo_surface_write_to_png(cst, "lens-drawing.png" );
     cairo_surface_destroy(cst);
     screenshot = 0;
   }
   return TRUE;
 }
 
-int
-main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
   // feenableexcept(FE_INVALID|FE_DIVBYZERO|FE_OVERFLOW);
   if(argc > 1) strncpy(lensfilename, argv[1], 512);
