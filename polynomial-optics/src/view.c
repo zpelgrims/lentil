@@ -55,7 +55,6 @@ motion_notify(GtkWidget *widget, GdkEventMotion *event, gpointer user_data)
     mouse_x = event->x;
     mouse_y = event->y;
     gtk_widget_queue_draw(widget);
-    // fprintf(stderr, "mouse %g %g\n", mouse_x, mouse_y);
     return TRUE;
   }
   return FALSE;
@@ -189,13 +188,7 @@ expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_data)
 
 
   cairo_set_line_width(cr, 40.0/width);
-  
-  /*
-  cairo_move_to(cr, 10, -6);
-  cairo_set_font_size(cr, 1);
-  cairo_show_text(cr, lens_name);
-  cairo_new_path(cr);
-  */
+
 
   // draw lens
   // scale by arbitrary factor
@@ -219,6 +212,69 @@ expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_data)
     cairo_stroke(cr);
   }
 
+  // rulers
+
+  // find max housing radius
+  float max_housing_radius = 0.0;
+  for (int i=0; i < lenses_cnt; i++){
+    if (lenses[i].housing_radius > max_housing_radius){
+      max_housing_radius = lenses[i].housing_radius;
+    }
+  }
+
+  float ruler_height = 2.5;
+  float ruler_padding = gridsize;
+  cairo_set_source_rgb(cr, 0.5, 0.5, 0.5);
+  cairo_set_line_width(cr, 200.0/width);
+
+  // x axis
+  cairo_move_to(cr, -ruler_padding, max_housing_radius + ruler_padding);
+  cairo_line_to(cr, lens_length, max_housing_radius + ruler_padding);
+  cairo_stroke(cr);
+  for (int i = 0; i<lens_length + ruler_padding; i += gridsize){
+    cairo_move_to(cr, i, max_housing_radius + ruler_padding);
+    cairo_line_to(cr, i, max_housing_radius + ruler_padding - ruler_height);
+    cairo_stroke(cr);
+
+    cairo_move_to(cr, i, max_housing_radius + ruler_padding*1.5);
+    std::string number = std::to_string(i);
+    char const *pchar = number.c_str();
+    cairo_set_font_size(cr, 2.5);
+    cairo_show_text(cr, pchar);
+    cairo_new_path(cr);
+    
+  }
+
+  // y axis down
+  cairo_move_to(cr, 0.0 - ruler_padding, max_housing_radius + ruler_padding);
+  cairo_line_to(cr, 0.0 - ruler_padding, -max_housing_radius);
+  cairo_stroke(cr);
+  for (int i = 0; i < max_housing_radius + ruler_padding; i += gridsize){
+    cairo_move_to(cr, -ruler_padding, i);
+    cairo_line_to(cr, -ruler_padding + ruler_height, i);
+    cairo_stroke(cr);
+
+    cairo_move_to(cr, -ruler_padding*1.5, i);
+    std::string number = std::to_string(-i);
+    char const *pchar = number.c_str();
+    cairo_set_font_size(cr, 2.5);
+    cairo_show_text(cr, pchar);
+    cairo_new_path(cr);
+  }
+  for (int i = gridsize; i < max_housing_radius + ruler_padding; i += gridsize){
+    cairo_move_to(cr, -ruler_padding, -i);
+    cairo_line_to(cr, -ruler_padding + ruler_height, -i);
+    cairo_stroke(cr);
+
+    cairo_move_to(cr, -ruler_padding*1.5, -i);
+    std::string number = std::to_string(i);
+    char const *pchar = number.c_str();
+    cairo_set_font_size(cr, 2.5);
+    cairo_show_text(cr, pchar);
+    cairo_new_path(cr);
+  }
+
+  cairo_set_line_width(cr, 40.0/width);
   cairo_set_source_rgb(cr, 0.7, 0.7, 0.7);
 
   float pos = lens_length;
@@ -319,6 +375,8 @@ expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_data)
   cairo_close_path(cr);
   cairo_set_source_rgb(cr, .5, .5, .5);
   cairo_fill(cr);
+
+
 
   // pos is now about 0 and points to the left end of the blackbox
   // cairo_restore(cr);

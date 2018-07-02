@@ -21,14 +21,19 @@ typedef struct lens_element_t
   int aspheric;
   int anamorphic;
   char material[32];
-}
-lens_element_t;
+} lens_element_t;
+
 
 static inline float lens_get_thickness(const lens_element_t *lens, float zoom)
 {
-  if(zoom < .5f) return lens->thickness_short*(1.0f-2.0f*zoom) + lens->thickness_mid*2.0f*zoom;
-  else           return lens->thickness_mid*(1.0f-2.0f*(zoom-.5f)) + lens->thickness_long*(zoom-.5f)*2.0f;
+  if(zoom < .5f){
+    return lens->thickness_short * (1.0f - 2.0f*zoom) + lens->thickness_mid * 2.0f * zoom;
+  }
+  else {
+    return lens->thickness_mid * (1.0f - 2.0f*(zoom - 0.5f)) + lens->thickness_long * (zoom - 0.5f) * 2.0f;
+  }
 }
+
 
 float lens_get_aperture_radius(lens_element_t *l, int num)
 {
@@ -39,6 +44,7 @@ float lens_get_aperture_radius(lens_element_t *l, int num)
   }
   return 0.0f;
 }
+
 
 float lens_get_aperture_pos(lens_element_t *l, int num, float zoom)
 {
@@ -160,58 +166,45 @@ int lens_configuration_fx(lens_element_t *l, const char *filename, int max)
 int lens_configuration(lens_element_t *l, const char *filename, int max)
 {
   // read database
+//--> write some kind of return false if no file mechanism
   std::ifstream in_json(filename);
   json lens_database = json::parse(in_json);
-
-  ////// write some kind of return false if no file mechanism
 
   int cnt = 0;
   float last_ior = 1.0f;
   float last_vno = 0.0f;
+  
+  // calculate lens scale
   float scale = 1.0f;
-
-//--> do something with the scale value, figure out
-
-  bool prime = lens_database["01"]["prime"].get<bool>();
+//--> do something with focallength here
+  float target_focallength = 100.0;
+  if (lens_database["01"]["focal-length-mm-raytraced"].empty()){
+    scale = target_focallength / lens_database["01"]["focal-length-mm-patent"].get<float>();
+  } else {
+    scale = target_focallength / lens_database["01"]["focal-length-mm-raytraced"].get<float>();
+  }
+  printf("scale: %f \n", scale);
+  
 
   for (const auto& json_lens_element : lens_database["01"]["optical-elements-patent"]) {
 
       lens_element_t lens;
       memset(&lens, 0, sizeof(lens_element_t));
 
-//--> do something with radius-y too
-      lens.lens_radius = scale * json_lens_element["radius-x"].get<float>();
-      lens.thickness_short = scale * json_lens_element["thickness"].get<float>();
-      std::cout << "lens.lens_radius: " << lens.lens_radius << std::endl;
-      std::cout << "lens.thickness_short: " << lens.thickness_short << std::endl;
+      lens.lens_radius = scale * json_lens_element["radius"].get<float>();      
+      lens.housing_radius = scale * json_lens_element["housing-radius"].get<float>();
 
-//--> fix zoom lenses here
-      // what to do with thickness_mid and thickness_long? Currently not in lens database.
-      // pretty sure this is for zoom lenses, which could be interesting in the long run
-      // they are denoted by thickness_short/thickness_mid/thickness_long in the .fx files
-      if (!prime){
-        lens.thickness_mid = lens.thickness_short;
-        lens.thickness_long = lens.thickness_short;
+      
+      if (json_lens_element["thickness"].is_array()){
+        lens.thickness_short = scale * json_lens_element["thickness"][0].get<float>();
+        lens.thickness_mid = scale * json_lens_element["thickness"][1].get<float>();
+        lens.thickness_long = scale * json_lens_element["thickness"][2].get<float>();
       } else {
-        lens.thickness_mid = lens.thickness_short;
-        lens.thickness_long = lens.thickness_short;
+        lens.thickness_short = scale * json_lens_element["thickness"].get<float>();
       }
-      std::cout << "lens.thickness_mid: " << lens.thickness_mid << std::endl;
-      std::cout << "lens.thickness_long: " << lens.thickness_long << std::endl;
 
-//--> how is the squeeze factor determined?
-      auto lens_geometry = json_lens_element["lens-geometry"];
-      std::cout << "lens_geometry: " << lens_geometry << std::endl;
-
-      if (lens_geometry == "anamorphic"){
-        lens.anamorphic = 1;
-      } else {
-        lens.anamorphic = 0;
-      }
-      std::cout << "lens.anamorphic: " << lens.anamorphic << std::endl;
 
       strcpy(lens.material, json_lens_element["material"].get<std::string>().c_str());
-      std::cout << "lens.material: " << lens.material << std::endl;
       if (strcmp(lens.material, "air") == 0){
         lens.ior = 1.0f;
         lens.vno = 0.0f;
@@ -222,25 +215,30 @@ int lens_configuration(lens_element_t *l, const char *filename, int max)
         lens.ior = json_lens_element["ior"].get<float>();
         lens.vno = json_lens_element["abbe"].get<float>();
       }
-      std::cout << "lens.ior: " << lens.ior << std::endl;
-      std::cout << "lens.vno: " << lens.vno << std::endl;
-
       last_ior = lens.ior;
       last_vno = lens.vno;
 
-      lens.housing_radius = scale * json_lens_element["housing-radius"].get<float>();
-      std::cout << "lens.housing-radius: " << lens.housing_radius << std::endl;
 
-      lens.aspheric = 0;
-      for(int i = 0; i < 4; i++){
-        lens.aspheric_correction_coefficients[i] = 0;
+      // anamorphic
+      auto lens_geometry = json_lens_element["lens-geometry"];
+      if (lens_geometry == "anamorphic"){
+        lens.anamorphic = 1;
+      } else {
+        lens.anamorphic = 0;
       }
-      /*
-      // set lens.aspheric to first of 5 written terms (1 bool + list of 4 numbers)
-      for(int i = 0; i < 4; i++, i++){
-        lens.aspheric_correction_coefficients[i] = json_lens_element["aspherical-equation"][i].get<float>();
+
+      // aspherical
+      if (json_lens_element["aspherical-equation"].is_array()){
+        lens.aspheric = 1;
+        for(int i = 0; i < 4; i++, i++){
+          lens.aspheric_correction_coefficients[i] = json_lens_element["aspherical-equation"][i].get<float>();
+        }
+      } else {
+        lens.aspheric = 0;
+        for(int i = 0; i < 4; i++){
+          lens.aspheric_correction_coefficients[i] = 0;
+        }
       }
-      */
 
       // add lens to lens struct
       l[cnt++] = lens;

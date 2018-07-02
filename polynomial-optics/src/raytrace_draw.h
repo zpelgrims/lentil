@@ -163,7 +163,10 @@ static inline int evaluate_reverse_draw(const lens_element_t *lenses, const int 
 
   cairo_line_to(cr, pos[2], pos[dim_up]);
   cairo_line_to(cr, 0.0f, pos[dim_up] - pos[2]*dir[dim_up]/dir[2]);
+  
+  // print y=0 intersection
   printf("pos[dim_up] - pos[2]*dir[dim_up]/dir[2]: %f\n", pos[dim_up] - pos[2]*dir[dim_up]/dir[2]);
+  
   cairo_save(cr);
   cairo_scale(cr, 1/scale, 1/scale);
 
