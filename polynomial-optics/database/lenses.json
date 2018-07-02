@@ -11,6 +11,8 @@
     "focal-length-mm-patent": 100.00,
     "focal-length-mm-raytraced": null,
     "fstop": null,
+    "polynomial-optics": "lenses/1953-angenieux-doublegauss/100/polynomial-optics.fit",
+    "polynomial-optics-aperture": "lenses/1953-angenieux-doublegauss/100/polynomial-optics-aperture.fit",
     "optical-elements-patent": 
       [
         {

@@ -30,7 +30,7 @@ int main(int argc, char *arg[])
   //this is essentially the degree-bit representation of a number with
   //poly_num_vars digits (with base degree)
   int numTerms = numterms(degree, poly_num_vars);
-  poly_term_t *expMatrix = malloc((numTerms+1)*poly_num_vars*sizeof(poly_term_t));
+  poly_term_t *expMatrix = static_cast<poly_term_t *>(malloc((numTerms+1)*poly_num_vars*sizeof(poly_term_t)));
 
   int validterms = 0;
   for(int i = 0; validterms <= numTerms; i++)

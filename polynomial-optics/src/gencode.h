@@ -34,7 +34,7 @@ void print_pt_sample_aperture(FILE *f, const poly_system_t *system,
   // input to this is [x,y,dx,dy] and `dist', which is the distance to the start of the polynomial.
 
   char *begin_var[poly_num_vars];
-  for(int k=0;k<poly_num_vars;k++) begin_var[k] = malloc(50);
+  for(int k=0;k<poly_num_vars;k++) begin_var[k] = static_cast<char *>(malloc(50));
   for(int k=0;k<poly_num_vars;k++) snprintf(begin_var[k], 50, "begin_%s", vnamei[k]);
 
   // solve the first two rows of the system x1 = P(x0, omega0, ..) for given x1 and x0.
@@ -137,7 +137,7 @@ void print_lt_sample_aperture(FILE *f, const poly_system_t *system, const poly_s
   fprintf(f, "#ifndef DEBUG_LOG\n#define DEBUG_LOG\n#endif\n");
 
   char *begin_var[poly_num_vars];
-  for(int k=0;k<poly_num_vars;k++) begin_var[k] = malloc(50);
+  for(int k=0;k<poly_num_vars;k++) begin_var[k] = static_cast<char *>(malloc(50));
   for(int k=0;k<poly_num_vars;k++) snprintf(begin_var[k], 50, "begin_%s", vnamei[k]);
   //early out if worldspace point is definitely outside field of view:
   fprintf(f, "float view[3] =\n{\n");

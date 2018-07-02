@@ -3,15 +3,16 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <strings.h>
 
-/*
+#include <iostream>
+#include <string>
+
+
 //json parsing
 #include "../ext/json.hpp"
 #include <fstream>
 using json = nlohmann::json;
-*/
+
 
 typedef struct lens_element_t
 {
@@ -51,8 +52,8 @@ float lens_get_aperture_pos(lens_element_t *l, int num, float zoom)
   return pos;
 }
 
-// reading .fx files
-int lens_configuration(lens_element_t *l, const char *filename, int max)
+// reading .fx lens description files
+int lens_configuration_fx(lens_element_t *l, const char *filename, int max)
 {
   FILE *f = fopen(filename, "rb");
   if(!f) return 0;
@@ -154,34 +155,35 @@ int lens_configuration(lens_element_t *l, const char *filename, int max)
   return cnt;
 }
 
-/*
-// reading json database, but i'm mixing c and c++... ugh
+
+// read json database
 int lens_configuration(lens_element_t *l, const char *filename, int max)
 {
   // read database
-  std::ifstream in_json("/Users/zeno/lentil/database/lenses.json");
+  std::ifstream in_json(filename);
   json lens_database = json::parse(in_json);
 
   ////// write some kind of return false if no file mechanism
 
   int cnt = 0;
-
   float last_ior = 1.0f;
   float last_vno = 0.0f;
   float scale = 1.0f;
 
-  // do something with the scale value, figure out
+//--> do something with the scale value, figure out
 
-  bool prime = lens_database["01"]["prime"];
-
+  bool prime = lens_database["01"]["prime"].get<bool>();
 
   for (const auto& json_lens_element : lens_database["01"]["optical-elements-patent"]) {
+
       lens_element_t lens;
       memset(&lens, 0, sizeof(lens_element_t));
 
-      // do something with radius-y too
-      lens.lens_radius = scale * json_lens_element["radius-x"];
-      lens.thickness_short = scale * json_lens_element["thickness"];
+//--> do something with radius-y too
+      lens.lens_radius = scale * json_lens_element["radius-x"].get<float>();
+      lens.thickness_short = scale * json_lens_element["thickness"].get<float>();
+      std::cout << "lens.lens_radius: " << lens.lens_radius << std::endl;
+      std::cout << "lens.thickness_short: " << lens.thickness_short << std::endl;
 
 //--> fix zoom lenses here
       // what to do with thickness_mid and thickness_long? Currently not in lens database.
@@ -194,38 +196,51 @@ int lens_configuration(lens_element_t *l, const char *filename, int max)
         lens.thickness_mid = lens.thickness_short;
         lens.thickness_long = lens.thickness_short;
       }
+      std::cout << "lens.thickness_mid: " << lens.thickness_mid << std::endl;
+      std::cout << "lens.thickness_long: " << lens.thickness_long << std::endl;
 
-      // how is the squeeze factor determined?
-      if (json_lens_element["lens_geometry"] == "anamorphic"){
+//--> how is the squeeze factor determined?
+      auto lens_geometry = json_lens_element["lens-geometry"];
+      std::cout << "lens_geometry: " << lens_geometry << std::endl;
+
+      if (lens_geometry == "anamorphic"){
         lens.anamorphic = 1;
+      } else {
+        lens.anamorphic = 0;
       }
+      std::cout << "lens.anamorphic: " << lens.anamorphic << std::endl;
 
-      lens.material = json_lens_element["material"];
-      if (lens.material == "air"){
+      strcpy(lens.material, json_lens_element["material"].get<std::string>().c_str());
+      std::cout << "lens.material: " << lens.material << std::endl;
+      if (strcmp(lens.material, "air") == 0){
         lens.ior = 1.0f;
         lens.vno = 0.0f;
-      } else if (lens.material == "iris"){
+      } else if (strcmp(lens.material, "iris") == 0){
         lens.ior = last_ior;
         lens.vno = last_vno;
       } else {
-        lens.ior = json_lens_element["ior"];
-        lens.vno = json_lens_element["abbe"];
+        lens.ior = json_lens_element["ior"].get<float>();
+        lens.vno = json_lens_element["abbe"].get<float>();
       }
+      std::cout << "lens.ior: " << lens.ior << std::endl;
+      std::cout << "lens.vno: " << lens.vno << std::endl;
 
       last_ior = lens.ior;
       last_vno = lens.vno;
 
-      lens.housing_radius = scale * json_lens_element["housing_radius"];
+      lens.housing_radius = scale * json_lens_element["housing-radius"].get<float>();
+      std::cout << "lens.housing-radius: " << lens.housing_radius << std::endl;
 
       lens.aspheric = 0;
       for(int i = 0; i < 4; i++){
         lens.aspheric_correction_coefficients[i] = 0;
       }
-
+      /*
       // set lens.aspheric to first of 5 written terms (1 bool + list of 4 numbers)
-      for(int i = 0; i < 4; i++, in++){
-        lens.aspheric_correction_coefficients[i] = json_lens_element["aspherical-equation"][i];
+      for(int i = 0; i < 4; i++, i++){
+        lens.aspheric_correction_coefficients[i] = json_lens_element["aspherical-equation"][i].get<float>();
       }
+      */
 
       // add lens to lens struct
       l[cnt++] = lens;
@@ -234,7 +249,7 @@ int lens_configuration(lens_element_t *l, const char *filename, int max)
 
   return cnt;
 }
-*/
+
 
 
 

@@ -6,12 +6,18 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 #include <cairo.h>
-#include <cairo-pdf.h>
+#include <cairo-svg.h>
 #include <math.h>
 #include <strings.h>
 #include <string.h>
 #include <sys/time.h>
 #include <fenv.h>
+
+//json parsing
+#include "../ext/json.hpp"
+#include <string>
+#include <fstream>
+using json = nlohmann::json;
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
@@ -20,7 +26,7 @@
 static float zoom = 0.0f; // zoom, if the lens supports it.
 static const int degree = 4;  // degree of the polynomial. 1 is thin lens
 static const float coverage = .5f; // coverage of incoming rays at scene facing pupil (those you point with the mouse)
-static const int num_rays = 20;
+static const int num_rays = 50;
 static const int dim_up = 0; // plot yz or xz of the lens in 2d?
 static char lensfilename[512] = "lenses/canon-anamorphic-converter.fx";
 static char lens_name[512];
@@ -35,8 +41,9 @@ static int screenshot = 1;
 static int draw_solve_omega = 0;
 static int draw_raytraced = 1;
 static int draw_polynomials = 1;
-static int width = 900;
-static int height = 900;
+static int width = 1000;
+static int height = 1000;
+static int gridsize = 10; //10 mm
 
 static int draw_aspheric = 1;
 
@@ -73,6 +80,12 @@ key_press(GtkWidget *widget, GdkEventKey *event, gpointer user_data)
   {
     draw_aspheric = !draw_aspheric;
     fprintf(stderr, "using %sspherical lenses\n", draw_aspheric?"a":"");
+    gtk_widget_queue_draw(widget);
+    return TRUE;
+  }
+  else if(event->keyval == GDK_KEY_i)
+  {
+    // adjust lens position to focus perfectly at infinity
     gtk_widget_queue_draw(widget);
     return TRUE;
   }
@@ -148,7 +161,8 @@ expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_data)
   cairo_surface_t *cst = 0;
   if(screenshot)
   {
-    cst = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
+    //cst = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
+    cst = cairo_svg_surface_create("lens-drawing.svg", width, height);
     cr = cairo_create(cst);
   }
   else
@@ -158,6 +172,8 @@ expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_data)
     cr = gdk_cairo_create(gtk_widget_get_window(widget));
   }
 
+  cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
+  cairo_set_line_join(cr, CAIRO_LINE_JOIN_BEVEL);
   cairo_set_source_rgb(cr, 0.15, 0.15, 0.15);
   cairo_paint(cr);
   cairo_set_line_width(cr, 1.);
@@ -170,28 +186,7 @@ expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_data)
 
   cairo_translate(cr, 0, height/2.0);
   cairo_scale(cr, width/40.0, height/40.0);
-  //old positioning:
-  //cairo_scale(cr, width/20.0, height/20.0);
-  //cairo_translate(cr, 0, 10);
 
-  
-
-
-  /*
-  // rulers
-  cairo_set_line_width(cr, 20.0/width);
-  cairo_set_source_rgb(cr, 0.7, 0.7, 0.7);
-
-  cairo_move_to(cr, 0, 0);
-  cairo_line_to(cr, width, 0);
-  cairo_stroke(cr);
-
-  for (int i = 0; i<lens_length; i += gridsize){
-    cairo_move_to(cr, i, lens_length/2);
-    cairo_line_to(cr, i, (lens_length/2)+0.25);
-    cairo_stroke(cr);
-  }
-  */
 
   cairo_set_line_width(cr, 40.0/width);
   
@@ -210,16 +205,35 @@ expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_data)
   // move 20mm away
   cairo_translate(cr, 20.0, 0.0);
 
+  // grid
+  cairo_set_source_rgb(cr, 0.05, 0.05, 0.05);
+  for (int i = -width; i<width; i += gridsize){
+    cairo_move_to(cr, i, -height);
+    cairo_line_to(cr, i, height);
+    cairo_stroke(cr);
+  }
+
+  for (int i = -height/2; i<height; i += gridsize){
+    cairo_move_to(cr, -width, i);
+    cairo_line_to(cr, width, i);
+    cairo_stroke(cr);
+  }
+
+  cairo_set_source_rgb(cr, 0.7, 0.7, 0.7);
+
   float pos = lens_length;
   aperture_pos = lens_length/2.0f;
   float hsl[3], rgb[3];
+
   for(int i=0;i<lenses_cnt;i++)
   {
     float rad = (dim_up && lenses[i].anamorphic) ? 900000.0 : lenses[i].lens_radius;
     float hrad = lenses[i].housing_radius;
     float t = lens_get_thickness(lenses+i, zoom);
+
     if(!strcasecmp(lenses[i].material, "iris"))
       aperture_pos = pos;
+
     if(lenses[i].ior != 1.0f && i < lenses_cnt-1)
     {
       cairo_save(cr);
@@ -230,9 +244,11 @@ expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_data)
       float off2 = rad2 > 0.0f ? 0.0f : M_PI;
       float alpha  = asinf(fminf(1.0f, fmaxf(-1.0f, fabsf(hrad/rad))));
       float alpha2 = asinf(fminf(1.0f, fmaxf(-1.0f, fabsf(hrad2/rad2))));
+
       if(draw_aspheric)
       {
         const int num_steps = 50;
+
         for(int j = 0; j <= num_steps; j++)
         {
           float y[] = {hrad*(2 * j / (float)num_steps - 1), 0};
@@ -240,6 +256,7 @@ expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_data)
           float x = pos-evaluate_aspherical(y, rad, lenses[i].aspheric, coeff);
           cairo_line_to(cr, x, y[0]);
         }
+
         for(int j = num_steps; j >= 0; j--)
         {
           float y[] = {hrad2*(2 * j / (float)num_steps - 1), 0};
@@ -258,12 +275,12 @@ expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_data)
       }
       cairo_close_path(cr);
       
-      cairo_set_source_rgba(cr, 0.8f, 0.8f, 1.0f, .5f);
-
+      cairo_set_source_rgba(cr, 0.4f, 0.4f, 0.4f, 1.0f);
       cairo_fill_preserve(cr);
-      cairo_set_source_rgba(cr, 1.0f, 1.0f, 1.0f, 1.0f);
 
-      stroke_with_pencil(cr, scale, 40./width);
+      cairo_set_source_rgba(cr, 0.8f, 0.8f, 0.8f, 1.0f);
+      stroke_with_pencil(cr, scale, 40.0/width);
+
       cairo_restore(cr);
     }
     else
@@ -302,37 +319,22 @@ expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_data)
   cairo_close_path(cr);
   cairo_set_source_rgb(cr, .5, .5, .5);
   cairo_fill(cr);
+
   // pos is now about 0 and points to the left end of the blackbox
   // cairo_restore(cr);
 
-  // grid
-  //cairo_set_line_width(cr, 20.0/width);
-  cairo_set_source_rgb(cr, 0.05, 0.05, 0.05);
-  int gridsize = 10;
-  for (int i = -width; i<width; i += gridsize){
-    cairo_move_to(cr, i, -height);
-    cairo_line_to(cr, i, height);
-    cairo_stroke(cr);
-  }
 
-  for (int i = -height/2; i<height; i += gridsize){
-    cairo_move_to(cr, -width, i);
-    cairo_line_to(cr, width, i);
-    cairo_stroke(cr);
-  }
+  cairo_set_source_rgb(cr, .7, .7, .7);
 
 
   const float len = lens_length/10.0f;
-  mouse_x = 10000.0;
-  mouse_y = 400.0;
-  const float m_x = (mouse_x - width/4.0f)/(width/2.0f) * lens_length * 10;
-  const float m_y = (mouse_y - height/2.0f)/(height) * lens_length * 10;
   float variation[2] = {0.0f, 0.0f};
+
   for(int k=0;k<num_rays;k++)
   {
-  
+
     // y wedge
-    const float y = 2.0f*(num_rays/2-k)/(float)num_rays * lenses[0].housing_radius;
+    const float y = 2.0f * (num_rays/2-k)/(float)num_rays * lenses[0].housing_radius;
 
     float cam_pos[3] = {0.0f};
     cam_pos[dim_up] = y;
@@ -344,9 +346,10 @@ expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_data)
     cam_pos[dim_up] *= s;
     cam_pos[2] += lens_length - r;
 
+
     float cam_dir[3] = {0.0f};   // cam direction pointing from mouse pointer towards lens
-    cam_dir[2] = cam_pos[2] - m_x;
-    cam_dir[dim_up] = cam_pos[dim_up] - m_y;
+    cam_dir[2] = cam_pos[2] - 99999999;
+    cam_dir[dim_up] = cam_pos[dim_up];
     raytrace_normalise(cam_dir);
 
     for(int i=0;i<3;i++) cam_pos[i] -= 0.1f * cam_dir[i];
@@ -378,7 +381,8 @@ expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_data)
     else
       error = evaluate_reverse(lenses, lenses_cnt, zoom, inrt, outrt, draw_aspheric);
 
-    
+
+
 
     // ray color:
     hsl[0] = k/(num_rays+1.);
@@ -451,7 +455,8 @@ expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_data)
   cairo_destroy(cr);
   if(screenshot)
   {
-    cairo_surface_write_to_png(cst, "lens-drawing.png" );
+    //cairo_surface_write_to_png(cst, "lens-drawing.png" );
+
     cairo_surface_destroy(cst);
     screenshot = 0;
   }
@@ -460,23 +465,29 @@ expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_data)
 
 int main(int argc, char *argv[])
 {
-  // feenableexcept(FE_INVALID|FE_DIVBYZERO|FE_OVERFLOW);
+
   if(argc > 1) strncpy(lensfilename, argv[1], 512);
   lens_canonicalize_name(lensfilename, lens_name);
+
+  // read lens database
+  std::ifstream in_json(lensfilename);
+  json lens_database = json::parse(in_json);
+
   char fname[1024];
-  snprintf(fname, 1024, "%s.fit", lensfilename);
+//--> do something else with "[01]" here
+  strcpy(fname, lens_database["01"]["polynomial-optics"].get<std::string>().c_str());
   if(poly_system_read(&poly, fname))
   {
     fprintf(stderr, "[view] could not read poly system `%s'\n", fname);
-    // exit(0);
   }
-  snprintf(fname, 1024, "%s_ap.fit", lensfilename);
+  
+  strcpy(fname, lens_database["01"]["polynomial-optics-aperture"].get<std::string>().c_str());
   if(poly_system_read(&poly_aperture, fname))
   {
     fprintf(stderr, "[view] could not read poly system `%s'\n", fname);
-    // exit(0);
   }
 
+  // calculate lens length
   lenses_cnt = lens_configuration(lenses, lensfilename, sizeof(lenses));
   lens_length = 0;
   for(int i=0;i<lenses_cnt;i++) lens_length += lens_get_thickness(lenses+i, zoom);

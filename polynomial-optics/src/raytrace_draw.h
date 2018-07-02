@@ -5,28 +5,23 @@
 #include <cairo.h>
 
 
-
+/*
 // line plane intersection with fixed intersection at y = 0, for finding the focal length and sensor shift
 inline float line_plane_y0_intersection(float ray_origin_x, float ray_origin_y, float ray_origin_z, float ray_direction_x, float ray_direction_y, float ray_direction_z){
     float ray_origin[3] = {ray_origin_x, ray_origin_y, ray_origin_z};
     float ray_direction[3] = {ray_direction_x, ray_direction_y, ray_direction_z};
 
-    //AtVector coord(100.0, 0.0, 100.0);
     float coord[3] = {100.0, 0.0, 100.0};
-    //AtVector planeNormal(0.0, 1.0, 0.0);
     float plane_normal[3] = {0.0, 1.0, 0.0};
-    //rayDirection = AiV3Normalize(rayDirection);
     raytrace_normalise(ray_direction);
-    //coord = AiV3Normalize(coord);
     raytrace_normalise(coord);
 
-    //return rayOrigin + (rayDirection * (AiV3Dot(coord, planeNormal) - AiV3Dot(planeNormal, rayOrigin)) / AiV3Dot(planeNormal, rayDirection));
     float dot_coord_plane_normal = raytrace_dot(coord, plane_normal);
     float dot_plane_normal_ray_origin = raytrace_dot(plane_normal, ray_origin);
     float dot_plane_normal_ray_direction = raytrace_dot(plane_normal, ray_direction);
     return ray_origin[2] + (ray_direction[2] * (dot_coord_plane_normal - dot_plane_normal_ray_origin) / dot_plane_normal_ray_direction);
 }
-
+*/
 
 
 // evalute sensor to outer pupil:
@@ -75,7 +70,7 @@ static inline int evaluate_draw(const lens_element_t *lenses, const int lenses_c
       cairo_save(cr);
       cairo_scale(cr, 1/scale, 1/scale);
       cairo_set_line_width(cr, 1.0f/20.0f);
-      // cairo_stroke(cr);
+
       cairo_new_path(cr);
       cairo_restore(cr);
       return error;
@@ -95,12 +90,6 @@ static inline int evaluate_draw(const lens_element_t *lenses, const int lenses_c
   cairo_set_line_width(cr, 1.0f/20.0f);
   cairo_stroke(cr);
   cairo_restore(cr);
-
-  // here would be a good time to calculate 
-  //    the focal length of lens
-  //    intersection of rays with y=0 to check infinity focus sensor shift
-
-
 
   return error;
 }
@@ -177,7 +166,7 @@ static inline int evaluate_reverse_draw(const lens_element_t *lenses, const int 
   printf("pos[dim_up] - pos[2]*dir[dim_up]/dir[2]: %f\n", pos[dim_up] - pos[2]*dir[dim_up]/dir[2]);
   cairo_save(cr);
   cairo_scale(cr, 1/scale, 1/scale);
-  //cairo_set_line_width(cr, 1.0f/20.0f);
+
   if(error) cairo_set_source_rgba(cr, 0.5, 0.5, 0.5, 0.05);
   else      cairo_set_source_rgba(cr, 0.5, 0.5, 0.5, 3.0f * intensity);
   cairo_stroke(cr);
@@ -188,19 +177,5 @@ static inline int evaluate_reverse_draw(const lens_element_t *lenses, const int 
 
   out[4] = intensity;
   
-
-  //printf("pos: %f, %f, %f ... dir: %f, %f, %f  ... out: %f, %f, %f, %f, %f \n", pos[0], pos[1], pos[2], dir[0], dir[1], dir[2], out[0], out[1], out[2], out[3], out[4]);  
-  //printf("intersection with y=0: %f\n", line_plane_y0_intersection(pos[1], pos[0], pos[2], dir[1], dir[0], dir[2]));
-
-  // here would be a good time to calculate 
-  //    the focal length of lens
-
-
-  //    intersection of rays with y=0 to check infinity focus sensor shift
-
-
-
-
-
   return error;
 }

@@ -36,11 +36,11 @@ int main(int argc, char *arg[])
   {
     const float u = drand48(), v = drand48(), w = drand48(), x = drand48(), y = drand48();
     float ray_in[] = {
-      (x-0.5)*36.0f,
-      (y-0.5)*24.0f,
+      static_cast<float>((x-0.5)*36.0f),
+      static_cast<float>((y-0.5)*24.0f),
       p_rad/p_dist * cosf(2.0f*M_PI*u)*sqrtf(v),
       p_rad/p_dist * sinf(2.0f*M_PI*u)*sqrtf(v),
-      0.4 + 0.3*w};
+      static_cast<float>(0.4 + 0.3*w)};
     ray_in[2] -= ray_in[0] / p_dist;
     ray_in[3] -= ray_in[1] / p_dist;
     float out[5] = {0.0f, 0.0f, 0.0f, 0.0f, ray_in[4]};
