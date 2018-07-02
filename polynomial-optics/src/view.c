@@ -45,6 +45,8 @@ static int width = 1000;
 static int height = 1000;
 static int gridsize = 10; //10 mm
 
+static float extra_space = 0.0f;
+
 static int draw_aspheric = 1;
 
 static gboolean
@@ -70,7 +72,7 @@ key_press(GtkWidget *widget, GdkEventKey *event, gpointer user_data)
   }
   else if(event->keyval == GDK_KEY_p)
   {
-    fprintf(stderr, "saving screenshot.pdf\n");
+    fprintf(stderr, "saving lens drawing\n");
     screenshot = 1;
     gtk_widget_queue_draw(widget);
     return TRUE;
@@ -85,14 +87,15 @@ key_press(GtkWidget *widget, GdkEventKey *event, gpointer user_data)
   else if(event->keyval == GDK_KEY_i)
   {
     // adjust lens position to focus perfectly at infinity
+    extra_space += 0.1;
+    printf("extra_space: %f\n", extra_space);
     gtk_widget_queue_draw(widget);
     return TRUE;
   }
   return FALSE;
 }
 
-static gboolean
-button_press(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
+static gboolean button_press(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
 {
   if (!GTK_WIDGET_HAS_FOCUS(widget))
     gtk_widget_grab_focus(widget);
@@ -106,8 +109,7 @@ button_press(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
   return FALSE;
 }
 
-static inline float
-hue_2_rgb(float v1, float v2, float vH)
+static inline float hue_2_rgb(float v1, float v2, float vH)
 {
   if (vH < 0.0f) vH += 1.0f;
   if (vH > 1.0f) vH -= 1.0f;
@@ -117,8 +119,7 @@ hue_2_rgb(float v1, float v2, float vH)
   return (v1);
 }
 
-static inline void
-hsl_2_rgb(const float *HSL, float *RGB)
+static inline void hsl_2_rgb(const float *HSL, float *RGB)
 {
   float H = HSL[0];
   float S = HSL[1];
@@ -143,8 +144,7 @@ hsl_2_rgb(const float *HSL, float *RGB)
   }
 }
 
-static void
-stroke_with_pencil(cairo_t *cr, float scale, float line_width)
+static void stroke_with_pencil(cairo_t *cr, float scale, float line_width)
 {
   cairo_save(cr);
   cairo_scale(cr, 1./scale, 1./scale);
@@ -153,19 +153,15 @@ stroke_with_pencil(cairo_t *cr, float scale, float line_width)
   cairo_restore(cr);
 }
 
-static gboolean
-expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_data)
+static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_data)
 {
   cairo_t *cr = 0;
   cairo_surface_t *cst = 0;
   if(screenshot)
   {
-    //cst = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
     cst = cairo_svg_surface_create("lens-drawing.svg", width, height);
     cr = cairo_create(cst);
-  }
-  else
-  {
+  } else {
     width = widget->allocation.width;
     height = widget->allocation.height;
     cr = gdk_cairo_create(gtk_widget_get_window(widget));
@@ -192,7 +188,7 @@ expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_data)
 
   // draw lens
   // scale by arbitrary factor
-  const float scale = 25.0/lens_length;
+  const float scale = 32.5/lens_length;
   cairo_scale(cr, scale, scale);
 
   // move 20mm away
@@ -286,6 +282,10 @@ expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_data)
     float rad = (dim_up && lenses[i].anamorphic) ? 900000.0 : lenses[i].lens_radius;
     float hrad = lenses[i].housing_radius;
     float t = lens_get_thickness(lenses+i, zoom);
+    
+    if (i == lenses_cnt-1){
+      t += extra_space;
+    }
 
     if(!strcasecmp(lenses[i].material, "iris"))
       aperture_pos = pos;
@@ -376,20 +376,12 @@ expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_data)
   cairo_set_source_rgb(cr, .5, .5, .5);
   cairo_fill(cr);
 
-
-
-  // pos is now about 0 and points to the left end of the blackbox
-  // cairo_restore(cr);
-
-
   cairo_set_source_rgb(cr, .7, .7, .7);
-
 
   const float len = lens_length/10.0f;
   float variation[2] = {0.0f, 0.0f};
 
-  for(int k=0;k<num_rays;k++)
-  {
+  for(int k=0; k<num_rays; k++){
 
     // y wedge
     const float y = 2.0f * (num_rays/2-k)/(float)num_rays * lenses[0].housing_radius;
@@ -413,7 +405,6 @@ expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_data)
     for(int i=0;i<3;i++) cam_pos[i] -= 0.1f * cam_dir[i];
 
     const float lambda = 0.5f;
-
 
     float in[5] = {0.0f};
     float out[5] = {0.0f};
@@ -589,16 +580,7 @@ int main(int argc, char *argv[])
   else
   {
     screenshot = 1;
-    if(!strncmp(lens_name, "fisheye", 7))
-    {
-      mouse_x = 556;
-      mouse_y = -3;
-    }
-    else
-    {
-      mouse_x = 100000;
-      mouse_y = -5000;
-    }
+
     draw_solve_omega = 0;
     draw_raytraced = 1;
     draw_polynomials = 1;

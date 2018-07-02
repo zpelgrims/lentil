@@ -320,5 +320,88 @@
           "aspherical-equation": null
         }
       ]
+  },
+  "02" : {
+    "company": "Jacobsen",
+    "product-name": "Anamorphotic",
+    "year": 1958,
+    "patent-number": "US3041935",
+    "patent-location": "https://patentimages.storage.googleapis.com/91/06/dd/dac839b2d53145/US3041935.pdf",
+    "implementation-version": null,
+    "notes": "Anamorphotic lens attachment",
+    "prime": true,
+    "focal-length-mm-patent": null,
+    "focal-length-mm-raytraced": null,
+    "focal-lengths-fitted": [],
+    "fstop": null,
+    "polynomial-optics": null,
+    "polynomial-optics-aperture": null,
+    "optical-elements-patent": 
+      [
+        {
+          "radius" : 554.0,
+          "thickness": 4.0, 
+          "material": null, 
+          "ior" : 1.5225, 
+          "abbe": 59.64, 
+          "housing-radius": 50, 
+          "lens-geometry": "spherical",
+          "aspherical-equation": null
+        },
+        {
+          "radius" : 67.5,
+          "thickness": 11.8, 
+          "material": "air", 
+          "ior" : null, 
+          "abbe": null, 
+          "housing-radius": 50, 
+          "lens-geometry": "cyl-x",
+          "aspherical-equation": null
+        },
+        {
+          "radius" : 173.0,
+          "thickness": 6.0, 
+          "material": null, 
+          "ior" : 1.5225, 
+          "abbe": 59.64, 
+          "housing-radius": 50, 
+          "lens-geometry": "cyl-x",
+          "aspherical-equation": null
+        },
+        {
+          "radius" : -1280.0,
+          "thickness": 9.1, 
+          "material": "air", 
+          "ior" : null, 
+          "abbe": null, 
+          "housing-radius": 50, 
+          "lens-geometry": "spherical",
+          "aspherical-equation": null
+        },
+        {
+          "radius" : 332.0,
+          "thickness": 5, 
+          "material": null, 
+          "ior" : 1.5225, 
+          "abbe": 59.64, 
+          "housing-radius": 50, 
+          "lens-geometry": "spherical",
+          "aspherical-equation": null
+        },
+        {
+          "radius" : 87.5,
+          "thickness": 13.7, 
+          "material": null, 
+          "ior" : 1.62, 
+          "abbe": 36.34, 
+          "housing-radius": 50, 
+          "lens-geometry": "cyl-y",
+          "aspherical-equation": null
+        }
+      ],
+      "optical-elements-adjusted": 
+      [
+        
+      ]
   }
 }

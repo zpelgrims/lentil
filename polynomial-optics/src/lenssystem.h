@@ -3,7 +3,6 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-
 #include <iostream>
 #include <string>
 
@@ -221,7 +220,7 @@ int lens_configuration(lens_element_t *l, const char *filename, int max)
 
       // anamorphic
       auto lens_geometry = json_lens_element["lens-geometry"];
-      if (lens_geometry == "anamorphic"){
+      if (lens_geometry == "cyl-x" || lens_geometry == "cyl-y"){
         lens.anamorphic = 1;
       } else {
         lens.anamorphic = 0;
