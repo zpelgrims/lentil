@@ -5,7 +5,7 @@
 #include <cairo.h>
 
 
-/*
+/* might be useful at some point?
 // line plane intersection with fixed intersection at y = 0, for finding the focal length and sensor shift
 inline float line_plane_y0_intersection(float ray_origin_x, float ray_origin_y, float ray_origin_z, float ray_direction_x, float ray_direction_y, float ray_direction_z){
     float ray_origin[3] = {ray_origin_x, ray_origin_y, ray_origin_z};
@@ -50,11 +50,14 @@ static inline int evaluate_draw(const lens_element_t *lenses, const int lenses_c
     //normal at intersection
     float n[3];
 
-    if(lenses[k].anamorphic_x && !lenses[k].anamorphic_y){
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true, false);
-    } else if (!lenses[k].anamorphic_x && lenses[k].anamorphic_y){
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false, true);
-    }/*
+    if(lenses[k].anamorphic){
+      if(lenses[k].cylinder_axis_y){ // cylinder is in y-axis
+        error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
+      } else { // cylinder is in x-axis
+        error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
+      }
+    }
+    /*
     if(lenses[k].anamorphic)
       error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n);
     */
@@ -131,11 +134,14 @@ static inline int evaluate_reverse_draw(const lens_element_t *lenses, const int 
     //normal at intersection
     float n[3] = {0.0f};
 
-    if(lenses[k].anamorphic_x && !lenses[k].anamorphic_y){
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true, false);
-    } else if (!lenses[k].anamorphic_x && lenses[k].anamorphic_y){
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false, true);
-    }/*
+    if(lenses[k].anamorphic){
+      if(lenses[k].cylinder_axis_y){ // cylinder is in y-axis
+        error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
+      } else { // cylinder is in x-axis
+        error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
+      }
+    }
+    /*
     if(lenses[k].anamorphic)
       error |= cylindrical(pos, dir, &t, R, distsum - R, lenses[k].housing_radius, n);
     */

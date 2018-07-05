@@ -140,8 +140,8 @@ static inline int aspherical(float *pos, float *dir, float *dist, const float R,
   return error;
 }
 
-// todo: implement x and y axis intersections (currently only y)
-static inline int cylindrical(float *pos, float *dir, float *dist, float R, float center, float housing_rad, float *normal, bool cyl_x, bool cyl_y)
+
+static inline int cylindrical(float *pos, float *dir, float *dist, float R, float center, float housing_rad, float *normal, bool cyl_y)
 {
   const float scv[3] = {pos[0], 0, pos[2] - center};
   const float a = raytrace_dot(dir, dir);
@@ -168,8 +168,9 @@ static inline int cylindrical(float *pos, float *dir, float *dist, float R, floa
   return error;
 }
 
+
 // cylinder intersections with options for both x and y axis cylinders
-// instead of x^2 + z^2 = r^2, need to do y^2 + z^2 = r^2
+// switch between x^2 + z^2 = r^2 (y-axis) and y^2 + z^2 = r^2 (x-axis)
 static inline int cylindrical_xy(float *pos, float *dir, float *dist, float R, float center, float housing_rad, float *normal, bool cyl_y)
 {
     // translate the ray origin
@@ -204,8 +205,7 @@ static inline int cylindrical_xy(float *pos, float *dir, float *dist, float R, f
     if(R > 0.0f)       t = (-b - sqrt (discr))/a;
     else if (R < 0.0f) t = (-b + sqrt (discr))/a;
 
-    // t<0 means the intersection is behind the ray origin
-    // which we don't want
+    // t<0 means the intersection is behind the ray origin, which we don't want
     if (t<=epsilon)
       return 4;
 

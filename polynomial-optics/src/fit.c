@@ -1,3 +1,5 @@
+//todo: better .fit paths/names
+
 #include <Eigen/Dense>
 #include "raytrace.h"
 #include "poly.h"
@@ -54,7 +56,7 @@ int main(int argc, char *arg[])
 
   // load generic 1233-coefficient degree 9 polynomial template with all zero coeffs:
   poly_system_t poly, poly_ap;
-  if(poly_system_read(&poly, "sorted.poly") || poly_system_read(&poly_ap, "sorted.poly"))
+  if(poly_system_read(&poly, "../data/sorted.poly") || poly_system_read(&poly_ap, "../data/sorted.poly"))
   {
     fprintf(stderr, "[fit] could not read `sorted.poly' template!\n");
     exit(1);
@@ -64,7 +66,7 @@ int main(int argc, char *arg[])
   // poly_system_sort(&poly_ap);
 
   const int coeff_size = max(poly_system_get_coeffs(&poly, max_degree, 0),
-    poly_system_get_coeffs(&poly_ap, max_degree, 0));
+                             poly_system_get_coeffs(&poly_ap, max_degree, 0));
   float *coeff = (float *)malloc(sizeof(float)*coeff_size);
 
   const int sample_cnt = 15000;
@@ -76,6 +78,8 @@ int main(int argc, char *arg[])
   while(1)
   {
     const float u = drand48(), v = drand48(), w = drand48(), x = drand48(), y = drand48();
+
+    // zeno: what are all these arbitrary values..?
     float ray_in[] = {
       // p_rad * 4.0f * (x-0.5f),
       // p_rad * 4.0f * (y-0.5f),

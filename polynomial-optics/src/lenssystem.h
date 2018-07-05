@@ -15,12 +15,17 @@ using json = nlohmann::json;
 
 typedef struct lens_element_t
 {
-  float lens_radius, thickness_short, thickness_mid, thickness_long, ior, vno, housing_radius;
+  float lens_radius;
+  float thickness_short;
+  float thickness_mid;
+  float thickness_long;
+  float ior;
+  float vno;
+  float housing_radius;
   float aspheric_correction_coefficients[4];
   int aspheric;
   int anamorphic;
-  int anamorphic_x;
-  int anamorphic_y;
+  bool cylinder_axis_y;
   char material[32];
 } lens_element_t;
 
@@ -222,8 +227,12 @@ int lens_configuration(lens_element_t *l, const char *filename, int max)
 
       // anamorphic
       auto lens_geometry = json_lens_element["lens-geometry"];
-      if (lens_geometry == "cyl-x" || lens_geometry == "cyl-y"){
+      if (lens_geometry == "cyl-y"){
         lens.anamorphic = 1;
+        lens.cylinder_axis_y = true;
+      } else if (lens_geometry == "cyl-x"){
+        lens.anamorphic = 1;
+        lens.cylinder_axis_y = false;
       } else {
         lens.anamorphic = 0;
       }
