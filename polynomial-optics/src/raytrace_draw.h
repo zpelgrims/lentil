@@ -50,8 +50,14 @@ static inline int evaluate_draw(const lens_element_t *lenses, const int lenses_c
     //normal at intersection
     float n[3];
 
+    if(lenses[k].anamorphic_x && !lenses[k].anamorphic_y){
+      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true, false);
+    } else if (!lenses[k].anamorphic_x && lenses[k].anamorphic_y){
+      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false, true);
+    }/*
     if(lenses[k].anamorphic)
       error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n);
+    */
     else if(draw_aspherical)
       error |= aspherical(pos, dir, &t, R, distsum + R, lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
     else
@@ -125,8 +131,14 @@ static inline int evaluate_reverse_draw(const lens_element_t *lenses, const int 
     //normal at intersection
     float n[3] = {0.0f};
 
+    if(lenses[k].anamorphic_x && !lenses[k].anamorphic_y){
+      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true, false);
+    } else if (!lenses[k].anamorphic_x && lenses[k].anamorphic_y){
+      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false, true);
+    }/*
     if(lenses[k].anamorphic)
       error |= cylindrical(pos, dir, &t, R, distsum - R, lenses[k].housing_radius, n);
+    */
     else if(draw_aspherical)
       error |= aspherical(pos, dir, &t, R, distsum - R, lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
     else

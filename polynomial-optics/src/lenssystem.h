@@ -19,6 +19,8 @@ typedef struct lens_element_t
   float aspheric_correction_coefficients[4];
   int aspheric;
   int anamorphic;
+  int anamorphic_x;
+  int anamorphic_y;
   char material[32];
 } lens_element_t;
 
