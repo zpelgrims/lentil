@@ -5,6 +5,8 @@ Improvements:
 - Support for anamorphic lens elements in both axes
 - Read lens descriptions from JSON database
 
+![lens-drawing](./lens-drawing.svg)
+
 ------------------------
 
 Overview
