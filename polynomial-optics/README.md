@@ -1,12 +1,14 @@
 Fork of "Sparse high-degree polynomials for wide-angle lenses (2016)" paper
+------------------------
 
-Improvements:
+Added features:
 
 - Support for anamorphic lens elements in both axes
 - Read lens descriptions from JSON database
 
 ![lens-drawing](./lens-drawing.svg)
 
+------------------------
 ------------------------
 
 Overview
