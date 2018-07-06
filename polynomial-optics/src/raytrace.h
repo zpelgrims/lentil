@@ -200,7 +200,9 @@ static inline int cylindrical_xy(float *pos, float *dir, float *dist, float R, f
     // discr < 0 means no intersections
     if (discr < epsilon) return 4;
 
-	  // solve quadratic to find intersection points
+    int error = 0;
+	  
+    // solve quadratic to find intersection points
     float t = 0.0;
     if(R > 0.0f)       t = (-b - sqrt (discr))/a;
     else if (R < 0.0f) t = (-b + sqrt (discr))/a;
@@ -225,7 +227,7 @@ static inline int cylindrical_xy(float *pos, float *dir, float *dist, float R, f
         normal[2] = (pos[2] - center)/R;
     }
 
-    dist = t;
+    *dist = t;
 
     //printf("normal: %f %f %f\n", normal[0], normal[1], normal[2]);
     //printf("distance: %f\n", dist);
@@ -267,6 +269,8 @@ static inline int cylindrical_xy(std::vector<float> &pos, std::vector<float> &di
       return 4;
     }
 
+    int error = 0;
+
 	  // solve quadratic to find intersection points
     float t = 0.0;
     if(R > 0.0f){
@@ -296,7 +300,7 @@ static inline int cylindrical_xy(std::vector<float> &pos, std::vector<float> &di
         normal[2] = (pos[2] - center)/R;
     }
 
-    dist = t;
+    *dist = t;
 
     //printf("normal: %f %f %f\n", normal[0], normal[1], normal[2]);
     //printf("distance: %f\n", dist);
@@ -425,11 +429,12 @@ static inline int evaluate(const lens_element_t *lenses, const int lenses_cnt, c
     //normal at intersection
     float n[3] = {0.0f};
 
-    //zeno: add anamorphic_x, anamorphic_y, orientation argument in cylindrical function call
-    if(lenses[k].anamorphic_x && !lenses[k].anamorphic_y){
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true, false);
-    } else if (!lenses[k].anamorphic_x && lenses[k].anamorphic_y){
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false, true);
+    if(lenses[k].anamorphic){
+      if(lenses[k].cylinder_axis_y){ // cylinder is in y-axis
+        error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
+      } else { // cylinder is in x-axis
+        error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
+      }
     }/*
     if(lenses[k].anamorphic)
       error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n);
@@ -479,10 +484,12 @@ static inline int evaluate_reverse(const lens_element_t *lenses, const int lense
     //normal at intersection
     float n[3] = {0.0};
 
-    if(lenses[k].anamorphic_x && !lenses[k].anamorphic_y){
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true, false);
-    } else if (!lenses[k].anamorphic_x && lenses[k].anamorphic_y){
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false, true);
+    if(lenses[k].anamorphic){
+      if(lenses[k].cylinder_axis_y){ // cylinder is in y-axis
+        error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
+      } else { // cylinder is in x-axis
+        error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
+      }
     }/*
     if(lenses[k].anamorphic)
       error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n);
@@ -537,10 +544,12 @@ static inline int evaluate_aperture(const lens_element_t *lenses, const int lens
     //normal at intersection
     float n[3] = {0.0f};
 
-    if(lenses[k].anamorphic_x && !lenses[k].anamorphic_y){
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true, false);
-    } else if (!lenses[k].anamorphic_x && lenses[k].anamorphic_y){
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false, true);
+    if(lenses[k].anamorphic){
+      if(lenses[k].cylinder_axis_y){ // cylinder is in y-axis
+        error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
+      } else { // cylinder is in x-axis
+        error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
+      }
     }/*
     if(lenses[k].anamorphic)
       error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n);
@@ -591,10 +600,12 @@ static inline int evaluate_aperture_reverse(const lens_element_t *lenses, const 
     //normal at intersection
     float n[3];
 
-    if(lenses[k].anamorphic_x && !lenses[k].anamorphic_y){
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true, false);
-    } else if (!lenses[k].anamorphic_x && lenses[k].anamorphic_y){
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false, true);
+    if(lenses[k].anamorphic){
+      if(lenses[k].cylinder_axis_y){ // cylinder is in y-axis
+        error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
+      } else { // cylinder is in x-axis
+        error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
+      }
     }/*
     if(lenses[k].anamorphic)
       error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n);
