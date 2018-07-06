@@ -1,5 +1,5 @@
 {
-  "01" : {
+  "1" : {
     "company": "Angenieux",
     "product-name": "Double Gauss",
     "year": 1953,
@@ -321,7 +321,7 @@
         }
       ]
   },
-  "02" : {
+  "2" : {
     "company": "Jacobsen",
     "product-name": "Anamorphotic",
     "year": 1958,
@@ -330,7 +330,7 @@
     "implementation-version": null,
     "notes": "Anamorphotic lens attachment",
     "prime": true,
-    "focal-length-mm-patent": null,
+    "focal-length-mm-patent": 40.0,
     "focal-length-mm-raytraced": null,
     "focal-lengths-fitted": [],
     "fstop": null,
