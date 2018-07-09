@@ -169,7 +169,7 @@ int lens_configuration_fx(lens_element_t *l, const char *filename, int max)
 
 
 // read json database
-int lens_configuration(lens_element_t *l, const char *filename, int max)
+int lens_configuration(lens_element_t *l, const char *filename, int max, const int id)
 {
   // read database
 //--> write some kind of return false if no file mechanism
@@ -184,15 +184,15 @@ int lens_configuration(lens_element_t *l, const char *filename, int max)
   float scale = 1.0f;
 //--> do something with focallength here
   float target_focallength = 100.0;
-  if (lens_database["01"]["focal-length-mm-raytraced"].empty()){
-    scale = target_focallength / lens_database["01"]["focal-length-mm-patent"].get<float>();
+  if (lens_database[id]["focal-length-mm-raytraced"].empty()){
+    scale = target_focallength / lens_database[id]["focal-length-mm-patent"].get<float>();
   } else {
-    scale = target_focallength / lens_database["01"]["focal-length-mm-raytraced"].get<float>();
+    scale = target_focallength / lens_database[id]["focal-length-mm-raytraced"].get<float>();
   }
   printf("scale: %f \n", scale);
   
 
-  for (const auto& json_lens_element : lens_database["01"]["optical-elements-patent"]) {
+  for (const auto& json_lens_element : lens_database[id]["optical-elements-patent"]) {
 
       lens_element_t lens;
       memset(&lens, 0, sizeof(lens_element_t));

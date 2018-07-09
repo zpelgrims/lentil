@@ -40,7 +40,8 @@ int main(int argc, char *arg[])
     exit(1);
   }
   char *lensfilename = arg[1];
-  lenses_cnt = lens_configuration(lenses, lensfilename, sizeof(lenses));
+  const int id = atol(arg[2]);
+  lenses_cnt = lens_configuration(lenses, lensfilename, sizeof(lenses), id);
   const float p_dist = lens_get_thickness(lenses + lenses_cnt-1, zoom);
   const float p_rad = lenses[lenses_cnt-1].housing_radius;
 

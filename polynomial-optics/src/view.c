@@ -431,8 +431,6 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
       error = evaluate_reverse(lenses, lenses_cnt, zoom, inrt, outrt, draw_aspheric);
 
 
-
-
     // ray color:
     hsl[0] = k/(num_rays+1.);
     hsl[1] = .7f;
@@ -456,7 +454,6 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
       variation[0] += (out[0] - outrt[0])*px_ratio;
       variation[1] += (out[1] - outrt[1])*px_ratio;
     }
-
 
 
     if(!error && draw_polynomials)
@@ -488,15 +485,12 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
     }
 
     
-
     if(0)//!error)
     {
       outrt[2] = -outrt[2];
       outrt[3] = -outrt[3];
       outrt[4] = lambda;
       error = evaluate_draw(lenses, lenses_cnt, zoom, outrt, inrt, cr, scale, dim_up, draw_aspheric);
-
-
     }
   }
   // fprintf(stderr, "total variation of errors: (%f %f)\n", variation[0], variation[1]);
@@ -505,7 +499,6 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
   if(screenshot)
   {
     //cairo_surface_write_to_png(cst, "lens-drawing.png" );
-
     cairo_surface_destroy(cst);
     screenshot = 0;
   }
@@ -515,29 +508,33 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
 int main(int argc, char *argv[])
 {
 
-  if(argc > 1) strncpy(lensfilename, argv[1], 512);
+  if(argc > 1){
+    strncpy(lensfilename, argv[1], 512);
+  }
   lens_canonicalize_name(lensfilename, lens_name);
+
+  const int id = atol(argv[2]);
 
   // read lens database
   std::ifstream in_json(lensfilename);
   json lens_database = json::parse(in_json);
 
   char fname[1024];
-//--> do something else with "[01]" here
-  strcpy(fname, lens_database["01"]["polynomial-optics"].get<std::string>().c_str());
+
+  strcpy(fname, lens_database[id]["polynomial-optics"].get<std::string>().c_str());
   if(poly_system_read(&poly, fname))
   {
     fprintf(stderr, "[view] could not read poly system `%s'\n", fname);
   }
   
-  strcpy(fname, lens_database["01"]["polynomial-optics-aperture"].get<std::string>().c_str());
+  strcpy(fname, lens_database[id]["polynomial-optics-aperture"].get<std::string>().c_str());
   if(poly_system_read(&poly_aperture, fname))
   {
     fprintf(stderr, "[view] could not read poly system `%s'\n", fname);
   }
 
   // calculate lens length
-  lenses_cnt = lens_configuration(lenses, lensfilename, sizeof(lenses));
+  lenses_cnt = lens_configuration(lenses, lensfilename, sizeof(lenses), id);
   lens_length = 0;
   for(int i=0;i<lenses_cnt;i++) lens_length += lens_get_thickness(lenses+i, zoom);
 
@@ -580,7 +577,6 @@ int main(int argc, char *argv[])
   else
   {
     screenshot = 1;
-
     draw_solve_omega = 0;
     draw_raytraced = 1;
     draw_polynomials = 1;

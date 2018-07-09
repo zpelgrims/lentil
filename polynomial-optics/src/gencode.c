@@ -14,8 +14,10 @@ int main(int argc, char **argv)
 
   //const char *lensfilename = "lenses/ItohZoom.fx";
   const char *lensfilename = "";
+  const int id;
   if(argc > 1)
     lensfilename = argv[1];
+    id = atol(argv[2]);
 
   poly_system_t poly, poly_ap;
   char fitf[1024], afitf[1024];
@@ -58,7 +60,7 @@ int main(int argc, char **argv)
 
   char name[512];
   lens_canonicalize_name(lensfilename, name);
-  lenses_cnt = lens_configuration(lenses, lensfilename, sizeof(lenses));
+  lenses_cnt = lens_configuration(lenses, lensfilename, sizeof(lenses), id);
   float lens_length = 0;
   for(int i = 0; i < lenses_cnt; i++) lens_length += lens_get_thickness(lenses + i, zoom);
   const float aperture_housing_radius = lens_get_aperture_radius(lenses, lenses_cnt);

@@ -431,9 +431,9 @@ static inline int evaluate(const lens_element_t *lenses, const int lenses_cnt, c
 
     if(lenses[k].anamorphic){
       if(lenses[k].cylinder_axis_y){ // cylinder is in y-axis
-        error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
+        error |= cylindrical_xy(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
       } else { // cylinder is in x-axis
-        error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
+        error |= cylindrical_xy(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
       }
     }/*
     if(lenses[k].anamorphic)
@@ -486,9 +486,9 @@ static inline int evaluate_reverse(const lens_element_t *lenses, const int lense
 
     if(lenses[k].anamorphic){
       if(lenses[k].cylinder_axis_y){ // cylinder is in y-axis
-        error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
+        error |= cylindrical_xy(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
       } else { // cylinder is in x-axis
-        error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
+        error |= cylindrical_xy(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
       }
     }/*
     if(lenses[k].anamorphic)
@@ -546,9 +546,9 @@ static inline int evaluate_aperture(const lens_element_t *lenses, const int lens
 
     if(lenses[k].anamorphic){
       if(lenses[k].cylinder_axis_y){ // cylinder is in y-axis
-        error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
+        error |= cylindrical_xy(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
       } else { // cylinder is in x-axis
-        error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
+        error |= cylindrical_xy(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
       }
     }/*
     if(lenses[k].anamorphic)
@@ -602,9 +602,9 @@ static inline int evaluate_aperture_reverse(const lens_element_t *lenses, const 
 
     if(lenses[k].anamorphic){
       if(lenses[k].cylinder_axis_y){ // cylinder is in y-axis
-        error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
+        error |= cylindrical_xy(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
       } else { // cylinder is in x-axis
-        error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
+        error |= cylindrical_xy(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
       }
     }/*
     if(lenses[k].anamorphic)

@@ -15,11 +15,12 @@ int main(int argc, char *arg[])
     exit(1);
   }
   char *lensfilename = arg[1];
+  const int id = atol(arg[2]);
   char fname[1024];
   snprintf(fname, 1024, "%s.fit", lensfilename);
   poly_system_t poly;
   if(poly_system_read(&poly, fname)) fprintf(stderr, "[fresnel] couldn't open poly `%s'\n", fname);
-  lenses_cnt = lens_configuration(lenses, lensfilename, sizeof(lenses));
+  lenses_cnt = lens_configuration(lenses, lensfilename, sizeof(lenses), id);
   const float p_dist = lens_get_thickness(lenses + lenses_cnt-1, zoom);
   const float p_rad = lenses[lenses_cnt-1].housing_radius;
   const int sample_cnt = 50000;

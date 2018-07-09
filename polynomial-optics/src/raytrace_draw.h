@@ -52,9 +52,9 @@ static inline int evaluate_draw(const lens_element_t *lenses, const int lenses_c
 
     if(lenses[k].anamorphic){
       if(lenses[k].cylinder_axis_y){ // cylinder is in y-axis
-        error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
+        error |= cylindrical_xy(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
       } else { // cylinder is in x-axis
-        error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
+        error |= cylindrical_xy(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
       }
     }
     /*
@@ -136,9 +136,9 @@ static inline int evaluate_reverse_draw(const lens_element_t *lenses, const int 
 
     if(lenses[k].anamorphic){
       if(lenses[k].cylinder_axis_y){ // cylinder is in y-axis
-        error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
+        error |= cylindrical_xy(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
       } else { // cylinder is in x-axis
-        error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
+        error |= cylindrical_xy(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
       }
     }
     /*
