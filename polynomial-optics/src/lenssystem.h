@@ -438,6 +438,7 @@ bool lenstable_to_json(lens_element_t *l, const char *filename, const int id)
   }
 
   /* add user input:
+  some of these need to be defaulted to nullptr, or read from previous state?
     company
     product-name
     year
