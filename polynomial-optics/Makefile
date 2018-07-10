@@ -34,10 +34,13 @@ src/spectrum.h
 
 .PHONY=all clean
 
-all: view fit gencode genpoly printpoly
+all: view fit gencode genpoly printpoly lenstable-to-json
 
 view: Makefile src/view.c ${HEADERS}
 	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/view.c $(shell pkg-config --cflags --libs gtk+-2.0) ${LDFLAGS} -o bin/view ${LDFLAGS}
+
+lenstable-to-json: Makefile src/lenstable-to-json.cpp ${HEADERS}
+	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/lenstable-to-json.cpp -o bin/lenstable-to-json ${LDFLAGS}
 
 fit: Makefile src/fit.c ${HEADERS}
 	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/fit.c -o bin/fit ${LDFLAGS}
@@ -61,4 +64,4 @@ glRender: Makefile src/render_gl.c
 	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/render_gl.c ${LDFLAGS} -o bin/glRender -lGLEW -lGL -lGLU -lglfw
 
 clean:
-	rm -f view fit gencode genpoly printpoly lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
+	rm -f view fit gencode genpoly printpoly lenstable_to_json lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling

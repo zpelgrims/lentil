@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include <string>
+#include <vector>
 
 
 //json parsing
@@ -256,6 +257,209 @@ int lens_configuration(lens_element_t *l, const char *filename, int max, const i
   }
 
   return cnt;
+}
+
+
+bool prompt_for_char( const char* prompt, char& readch )
+{
+    std::string tmp;
+    std::cout << prompt << std::endl;
+    if (std::getline(std::cin, tmp))
+    {
+        // Only accept single character input
+        if (tmp.length() == 1)
+        {
+            readch = tmp[0];
+        }
+        else
+        {
+            // For most input, char zero is an appropriate sentinel
+            readch = '\0';
+        }
+        return true;
+    }
+    return false;
+}
+
+
+// convert .fx files to .json
+bool lenstable_to_json(lens_element_t *l, const char *filename, const int id)
+{
+  std::ifstream in_json("/Users/zeno/lentil/polynomial-optics/database/lenses.json");
+  json lens_database = json::parse(in_json);
+
+  // check if something already exists on provided lens id
+  if (lens_database[std::to_string(id)].empty() == false){
+    printf("WATCH OUT: a lens with id %d already exists: \n", id);
+    std::cout << std::setw(2) << lens_database[std::to_string(id)] << std::endl;
+    char type = '\0';
+    while(prompt_for_char("Do you want to overwrite this lens? [y/n]", type))
+    {
+        if(type != 'y'){
+            printf("Conversion cancelled by user \n");
+            return false;
+        }
+    }
+  }
+
+  // read .fx file and store data in struct
+  FILE *f = fopen(filename, "rb");
+  if(!f) return false;
+  int cnt = 0;
+  float last_ior = 1.0f;
+  float last_vno = 0.0f;
+  float scale = 1.0f;
+  while(1)
+  {
+    lens_element_t lens;
+    memset(&lens, 0, sizeof(lens_element_t));
+    char line[2048];
+    if(fscanf(f, "%[^\n]", line) == EOF) break;
+    if(fgetc(f) == EOF) break; // new line
+
+    char *in = line;
+
+    if(!strncmp(line, "#!scale", 7))
+    {
+      scale = atof(line + 8);
+      continue;
+    }
+    // munch comment
+    if(!strncmp(line, "//", 2) || !strncmp(line, "#", 1)) continue;
+    while(in[0] == '\t' || in[0] == ' ') in++;
+    lens.lens_radius = strtof(in, &in);
+    if(lens.lens_radius == 0.0f) break;
+    while(in[0] == '\t' || in[0] == ' ') in++;
+    lens.thickness_short = strtof(in, &in);
+    while(in[0] == '\t' || in[0] == ' ') in++;
+    if(in[0] == '/')
+      lens.thickness_mid = strtof(in+1, &in);
+    else
+      lens.thickness_mid = lens.thickness_short;
+    while(in[0] == '\t' || in[0] == ' ') in++;
+    if(in[0] == '/')
+      lens.thickness_long = strtof(in+1, &in);
+    else
+      lens.thickness_long = lens.thickness_short;
+    if(lens.thickness_short == 0.0f) break;
+    if(lens.thickness_mid   == 0.0f) break;
+    if(lens.thickness_long  == 0.0f) break;
+
+    while(in[0] == '\t' || in[0] == ' ') in++;
+    if(!strncmp(in, "cx_", 3))
+    {
+      lens.anamorphic = 1;
+      in += 3;
+    }
+    int i=0;
+    while(in[0] != '\t' && in[0] != ' ' && in[0] != '\0') lens.material[i++] = in++[0];
+    lens.material[i] = '\0';
+    if(!strcasecmp(lens.material, "air"))
+    {
+      lens.ior = 1.0f;
+      lens.vno = 0.0f;
+    }
+    else if(!strcasecmp(lens.material, "iris"))
+    {
+      lens.ior = last_ior;
+      lens.vno = last_vno;
+    }
+    else
+    {
+      while(in[0] == '\t' || in[0] == ' ') in++;
+      lens.ior = strtof(in, &in);
+      while(in[0] == '\t' || in[0] == ' ') in++;
+      lens.vno = strtof(in, &in);
+    }
+    last_ior = lens.ior;
+    last_vno = lens.vno;
+    if(lens.ior == 0.0f) break;
+
+    while(in[0] == '\t' || in[0] == ' ') in++;
+    lens.housing_radius = strtof(in, &in);
+    if(lens.housing_radius == 0.0f) break;
+    
+    lens.aspheric = 0;
+    for(int i = 0; i < 4; i++)
+      lens.aspheric_correction_coefficients[i] = 0;
+    
+    while(in[0] == '\t' || in[0] == ' ') in++;
+    if(!strncmp(in, "#!aspheric=", 11))
+    {
+      in += 11;
+      lens.aspheric = strtol(in, &in, 10);
+      // munch comma
+      in++;
+      for(int i = 0; i < 4; i++, in++)
+        lens.aspheric_correction_coefficients[i] = strtof(in, &in);
+    }
+
+    l[cnt++] = lens;
+  }
+  fclose(f);
+  
+
+  // delete all old data in lens database
+  lens_database[std::to_string(id)].clear();
+
+  // fill database with new data
+  json lens_data;
+  for (int i=0; i<cnt;i++){
+    lens_data[id]["optical-elements-patent"][i]["radius"] = l[i].lens_radius;
+    if(l[i].thickness_short == l[i].thickness_mid && l[i].thickness_mid == l[i].thickness_long){
+      lens_data[id]["optical-elements-patent"][i]["thickness"] = l[i].thickness_short;
+    } else {
+      std::vector<float> thickness_zoom = {l[i].thickness_short, l[i].thickness_mid, l[i].thickness_long};
+      lens_data[id]["optical-elements-patent"][i]["thickness"] = thickness_zoom;
+    }
+    lens_data[id]["optical-elements-patent"][i]["material"] = l[i].material;
+    lens_data[id]["optical-elements-patent"][i]["ior"] = l[i].ior;
+    lens_data[id]["optical-elements-patent"][i]["abbe"] = l[i].vno;
+    lens_data[id]["optical-elements-patent"][i]["housing_radius"] = l[i].housing_radius;
+    
+    if(l[i].aspheric == 1){
+      lens_data[id]["optical-elements-patent"][i]["lens-geometry"] = "aspherical";
+      std::vector<float> aspherical_equation = {};
+      for(int j=0;j<4;j++){
+        aspherical_equation.push_back(l[i].aspheric_correction_coefficients[j]);
+      }
+      lens_data[id]["optical-elements-patent"][i]["aspherical-equation"] = aspherical_equation;
+    } else if (l[i].anamorphic == 1){
+      if (l[i].cylinder_axis_y == true){
+        lens_data[id]["optical-elements-patent"][i]["lens-geometry"] = "cyl-y";
+      } else {
+        lens_data[id]["optical-elements-patent"][i]["lens-geometry"] = "cyl-x";
+      }
+      lens_data[id]["optical-elements-patent"][i]["aspherical-equation"] = nullptr;
+    } else {
+      lens_data[id]["optical-elements-patent"][i]["lens-geometry"] = "spherical";
+      lens_data[id]["optical-elements-patent"][i]["aspherical-equation"] = nullptr;
+    }
+  }
+
+  /* add user input:
+    company
+    product-name
+    year
+    patent-number
+    patent-location
+    implementation-version
+    notes
+    prime
+    focal-lenth-mm-patent
+    focal-length-mm-raytraced
+    focal-lengths-fitted
+    fstop
+    polynomial-optics
+    polynomial-optics-aperture
+  */
+    
+  lens_database[std::to_string(id)] = lens_data;
+  std::ofstream out_json("/Users/zeno/lentil/polynomial-optics/database/lenses.json");
+  out_json << std::setw(2) << lens_database << std::endl;
+
+  printf("Lens added to id %d \n", id);
+  return true;
 }
 
 
