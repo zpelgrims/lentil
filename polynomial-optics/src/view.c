@@ -24,19 +24,25 @@ using json = nlohmann::json;
 #endif
 
 static float zoom = 0.0f; // zoom, if the lens supports it.
-static const int degree = 4;  // degree of the polynomial. 1 is thin lens
-static const float coverage = .5f; // coverage of incoming rays at scene facing pupil (those you point with the mouse)
+//static const int degree = 4;  // degree of the polynomial. 1 is thin lens
+//static const float coverage = .5f; // coverage of incoming rays at scene facing pupil (those you point with the mouse)
 static const int num_rays = 50;
-static const int dim_up = 0; // plot yz or xz of the lens in 2d?
-static char lensfilename[512] = "lenses/canon-anamorphic-converter.fx";
+static const int dim_up = 0; // plot yz (side) or xz (top) of the lens in 2d?
+static char lensfilename[512] = "";
 static char lens_name[512];
 static poly_system_t poly, poly_aperture;
 static float aperture_rad;
 static lens_element_t lenses[50];
 static int lenses_cnt = 0;
-static float lens_pupil_dist = 0.0f, lens_pupil_rad = 0.0f;
-static float lens_length = 0, aperture_pos = 0;
-static float mouse_x = 0.0f, mouse_y = 0.0f;
+static float lens_pupil_dist = 0.0f;
+static float lens_pupil_rad = 0.0f;
+static float lens_length = 0;
+static float aperture_pos = 0;
+
+//remove these mouse events
+static float mouse_x = 0.0f;
+static float mouse_y = 0.0f;
+
 static int screenshot = 1;
 static int draw_solve_omega = 0;
 static int draw_raytraced = 1;
@@ -172,9 +178,9 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
   cairo_set_source_rgb(cr, 0.15, 0.15, 0.15);
   cairo_paint(cr);
   cairo_set_line_width(cr, 1.);
-  cairo_set_source_rgba(cr, 1, 1, 1, .5);
 
   // optical axis:
+  cairo_set_source_rgba(cr, 1, 1, 1, .5);
   cairo_move_to(cr, 0, height/2.0);
   cairo_line_to(cr, width, height/2.0);
   cairo_stroke(cr);
@@ -279,7 +285,22 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
 
   for(int i=0;i<lenses_cnt;i++)
   {
-    float rad = (dim_up && lenses[i].anamorphic) ? 900000.0 : lenses[i].lens_radius;
+    // untested
+    float rad = lenses[i].lens_radius;
+    if (lenses[i].anamorphic){
+      if (!dim_up){ // sideview
+        if(lenses[i].cylinder_axis_y){
+          rad = 999999.0;
+        }
+      } else { // topview
+        if(!lenses[i].cylinder_axis_y){
+          rad = 999999.0;
+        }
+      }
+    } 
+    //float rad = (dim_up && lenses[i].anamorphic) ? 900000.0 : lenses[i].lens_radius;
+    
+    
     float hrad = lenses[i].housing_radius;
     float t = lens_get_thickness(lenses+i, zoom);
     
@@ -294,7 +315,22 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
     {
       cairo_save(cr);
 
-      float rad2 = (dim_up && lenses[i+1].anamorphic) ? 900000.0 : lenses[i+1].lens_radius;
+      // untested
+      float rad2 = lenses[i+1].lens_radius;
+      if (lenses[i+1].anamorphic){
+        if (!dim_up){ // sideview
+          if(lenses[i+1].cylinder_axis_y){
+            rad = 999999.0;
+          }
+        } else { // topview
+          if(!lenses[i+1].cylinder_axis_y){
+            rad = 999999.0;
+          }
+        }
+      }
+      //float rad2 = (dim_up && lenses[i+1].anamorphic) ? 900000.0 : lenses[i+1].lens_radius;
+
+
       float hrad2 = lenses[i+1].housing_radius;
       float off  = rad  > 0.0f ? 0.0f : M_PI;
       float off2 = rad2 > 0.0f ? 0.0f : M_PI;
