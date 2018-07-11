@@ -47,13 +47,21 @@ static int screenshot = 1;
 static int draw_solve_omega = 0;
 static int draw_raytraced = 1;
 static int draw_polynomials = 1;
+static int draw_aspheric = 1;
+
 static int width = 1000;
 static int height = 1000;
 static int gridsize = 10; //10 mm
 
 static float extra_space = 0.0f;
 
-static int draw_aspheric = 1;
+float black = {0.05, 0.05, 0.05, 1.0};
+float darkgrey = {0.15, 0.15, 0.15, 1.0};
+float grey = {0.5, 0.5, 0.5, 1.0};
+float lightgrey[4] = {0.7, 0.7, 0.7, 1.0};
+float yellow[4] = {0.949, 0.882, 0.749, 1.0};
+float green[4] = {0.749, 0.949, 0.874, 1.0};
+float white50[4] = {1.0, 1.0, 1.0, 0.5};
 
 static gboolean
 motion_notify(GtkWidget *widget, GdkEventMotion *event, gpointer user_data)
@@ -175,12 +183,12 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
 
   cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
   cairo_set_line_join(cr, CAIRO_LINE_JOIN_BEVEL);
-  cairo_set_source_rgb(cr, 0.15, 0.15, 0.15);
+  cairo_set_source_rgb(cr, darkgrey[0], darkgrey[1], darkgrey[2]);
   cairo_paint(cr);
-  cairo_set_line_width(cr, 1.);
+  cairo_set_line_width(cr, 1.0f);
 
   // optical axis:
-  cairo_set_source_rgba(cr, 1, 1, 1, .5);
+  cairo_set_source_rgba(cr, white50[0], white50[1], white50[2], white50[3]);
   cairo_move_to(cr, 0, height/2.0);
   cairo_line_to(cr, width, height/2.0);
   cairo_stroke(cr);
@@ -201,7 +209,7 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
   cairo_translate(cr, 20.0, 0.0);
 
   // grid
-  cairo_set_source_rgb(cr, 0.05, 0.05, 0.05);
+  cairo_set_source_rgb(cr, black[0], black[1], black[2]);
   for (int i = -width; i<width; i += gridsize){
     cairo_move_to(cr, i, -height);
     cairo_line_to(cr, i, height);
@@ -226,7 +234,7 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
 
   float ruler_height = 2.5;
   float ruler_padding = gridsize;
-  cairo_set_source_rgb(cr, 0.5, 0.5, 0.5);
+  cairo_set_source_rgb(cr, grey[0], grey[1], grey[2]);
   cairo_set_line_width(cr, 200.0/width);
 
   // x axis
@@ -277,7 +285,7 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
   }
 
   cairo_set_line_width(cr, 40.0/width);
-  cairo_set_source_rgb(cr, 0.7, 0.7, 0.7);
+  cairo_set_source_rgb(cr, lightgrey[0], lightgrey[1], lightgrey[2]);
 
   float pos = lens_length;
   aperture_pos = lens_length/2.0f;
@@ -297,7 +305,8 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
           rad = 999999.0;
         }
       }
-    } 
+      cairo_set_source_rgb(cr, yellow[0], yellow[1], yellow[2]);
+    }
     //float rad = (dim_up && lenses[i].anamorphic) ? 900000.0 : lenses[i].lens_radius;
     
     
@@ -327,6 +336,7 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
             rad = 999999.0;
           }
         }
+        cairo_set_source_rgb(cr, yellow[0], yellow[1], yellow[2]);
       }
       //float rad2 = (dim_up && lenses[i+1].anamorphic) ? 900000.0 : lenses[i+1].lens_radius;
 
@@ -367,10 +377,10 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
       }
       cairo_close_path(cr);
       
-      cairo_set_source_rgba(cr, 0.4f, 0.4f, 0.4f, 1.0f);
+      cairo_set_source_rgb(cr, grey[0], grey[1], grey[2]);
       cairo_fill_preserve(cr);
 
-      cairo_set_source_rgba(cr, 0.8f, 0.8f, 0.8f, 1.0f);
+      cairo_set_source_rgb(cr, lightgrey[0] + 0.1f, lightgrey[1] + 0.1f, lightgrey[2] + 0.1f);
       stroke_with_pencil(cr, scale, 40.0/width);
 
       cairo_restore(cr);
@@ -409,10 +419,10 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
   cairo_line_to(cr,  0.0,  35.0/2.0);
   cairo_line_to(cr,  0.0, -35.0/2.0);
   cairo_close_path(cr);
-  cairo_set_source_rgb(cr, .5, .5, .5);
+  cairo_set_source_rgb(cr, grey[0], grey[1], grey[2]);
   cairo_fill(cr);
 
-  cairo_set_source_rgb(cr, .7, .7, .7);
+  cairo_set_source_rgb(cr, lightgrey[0], lightgrey[1], lightgrey[2]);
 
   const float len = lens_length/10.0f;
   float variation[2] = {0.0f, 0.0f};
