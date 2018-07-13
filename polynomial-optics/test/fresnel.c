@@ -15,7 +15,7 @@ int main(int argc, char *arg[])
     exit(1);
   }
   char *lensfilename = arg[1];
-  const int id = atol(arg[2]);
+  char *id = arg[2];
   char fname[1024];
   snprintf(fname, 1024, "%s.fit", lensfilename);
   poly_system_t poly;

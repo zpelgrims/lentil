@@ -16,7 +16,7 @@ int main(int argc, char *arg[])
     fprintf(stderr, "usage: %s lensfile\n", arg[0]);
     exit(1);
   }
-  const int id = atol(arg[2]);
+  char *id = arg[2];
   char *lensfilename = arg[1];
   char fname[1024];
   #ifndef AP

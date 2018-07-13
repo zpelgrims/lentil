@@ -409,7 +409,7 @@
     "implementation-version": null,
     "notes": "Rear anamorph. To be placed behind a primary spherical lens. Squeeze factor 1.34. Index of refraction and Abbe numbers not in patent, instead glass type is given. IOR and abbe taken from OHARA glass catalogue.",
     "prime": true,
-    "focal-length-mm-patent": null,
+    "focal-length-mm-patent": 100.0,
     "focal-length-mm-raytraced": null,
     "focal-lengths-fitted": [],
     "fstop": null,

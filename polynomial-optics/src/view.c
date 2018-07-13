@@ -26,8 +26,8 @@ using json = nlohmann::json;
 static float zoom = 0.0f; // zoom, if the lens supports it.
 //static const int degree = 4;  // degree of the polynomial. 1 is thin lens
 //static const float coverage = .5f; // coverage of incoming rays at scene facing pupil (those you point with the mouse)
-static const int num_rays = 50;
-static const int dim_up = 0; // plot yz (side) or xz (top) of the lens in 2d?
+static int num_rays = 50;
+static int dim_up = 0; // plot yz (side) or xz (top) of the lens in 2d?
 static char lensfilename[512] = "";
 static char lens_name[512];
 static poly_system_t poly, poly_aperture;
@@ -49,17 +49,19 @@ static int draw_raytraced = 1;
 static int draw_polynomials = 1;
 static int draw_aspheric = 1;
 
-static int width = 1000;
-static int height = 1000;
+static int width = 900;
+static int height = 550;
 static int gridsize = 10; //10 mm
 
 static float extra_space = 0.0f;
+static float global_scale = 20.0f;
+static float window_aspect_ratio = (float)width/(float)height;
 
-float black = {0.05, 0.05, 0.05, 1.0};
-float darkgrey = {0.15, 0.15, 0.15, 1.0};
-float grey = {0.5, 0.5, 0.5, 1.0};
+float black[4] = {0.05, 0.05, 0.05, 1.0};
+float darkgrey[4] = {0.15, 0.15, 0.15, 1.0};
+float grey[4] = {0.5, 0.5, 0.5, 1.0};
 float lightgrey[4] = {0.7, 0.7, 0.7, 1.0};
-float yellow[4] = {0.949, 0.882, 0.749, 1.0};
+float yellow[4] = {0.949, 0.882, 0.749, 0.65};
 float green[4] = {0.749, 0.949, 0.874, 1.0};
 float white50[4] = {1.0, 1.0, 1.0, 0.5};
 
@@ -103,6 +105,37 @@ key_press(GtkWidget *widget, GdkEventKey *event, gpointer user_data)
     // adjust lens position to focus perfectly at infinity
     extra_space += 0.1;
     printf("extra_space: %f\n", extra_space);
+    gtk_widget_queue_draw(widget);
+    return TRUE;
+  }
+  else if(event->keyval == GDK_KEY_plus)
+  {
+    global_scale += 1;
+    gtk_widget_queue_draw(widget);
+    return TRUE;
+  }
+  else if(event->keyval == GDK_KEY_minus)
+  {
+    global_scale -= 1;
+    gtk_widget_queue_draw(widget);
+    return TRUE;
+  }
+  else if(event->keyval == GDK_KEY_m)
+  {
+    num_rays += 10;
+    gtk_widget_queue_draw(widget);
+    return TRUE;
+  }
+  else if(event->keyval == GDK_KEY_l)
+  {
+    num_rays -= 10;
+    gtk_widget_queue_draw(widget);
+    return TRUE;
+  }
+  else if(event->keyval == GDK_KEY_s)
+  {
+    if (dim_up) dim_up = 0;
+    else dim_up = 1;
     gtk_widget_queue_draw(widget);
     return TRUE;
   }
@@ -188,21 +221,19 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
   cairo_set_line_width(cr, 1.0f);
 
   // optical axis:
-  cairo_set_source_rgba(cr, white50[0], white50[1], white50[2], white50[3]);
+  cairo_set_source_rgb(cr, white50[0], white50[1], white50[2]);
   cairo_move_to(cr, 0, height/2.0);
   cairo_line_to(cr, width, height/2.0);
   cairo_stroke(cr);
 
   cairo_translate(cr, 0, height/2.0);
-  cairo_scale(cr, width/40.0, height/40.0);
-
-
+  cairo_scale(cr, ((float)width/window_aspect_ratio)/20.0, (float)height/20.0);
   cairo_set_line_width(cr, 40.0/width);
 
 
   // draw lens
   // scale by arbitrary factor
-  const float scale = 32.5/lens_length;
+  const float scale = global_scale/lens_length;
   cairo_scale(cr, scale, scale);
 
   // move 20mm away
@@ -294,6 +325,7 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
   for(int i=0;i<lenses_cnt;i++)
   {
     // untested
+    // something wrong with glass->air interfaces, they dont change when changing axis
     float rad = lenses[i].lens_radius;
     if (lenses[i].anamorphic){
       if (!dim_up){ // sideview
@@ -305,7 +337,6 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
           rad = 999999.0;
         }
       }
-      cairo_set_source_rgb(cr, yellow[0], yellow[1], yellow[2]);
     }
     //float rad = (dim_up && lenses[i].anamorphic) ? 900000.0 : lenses[i].lens_radius;
     
@@ -313,9 +344,11 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
     float hrad = lenses[i].housing_radius;
     float t = lens_get_thickness(lenses+i, zoom);
     
+    /*
     if (i == lenses_cnt-1){
       t += extra_space;
     }
+    */
 
     if(!strcasecmp(lenses[i].material, "iris"))
       aperture_pos = pos;
@@ -336,7 +369,6 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
             rad = 999999.0;
           }
         }
-        cairo_set_source_rgb(cr, yellow[0], yellow[1], yellow[2]);
       }
       //float rad2 = (dim_up && lenses[i+1].anamorphic) ? 900000.0 : lenses[i+1].lens_radius;
 
@@ -377,7 +409,8 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
       }
       cairo_close_path(cr);
       
-      cairo_set_source_rgb(cr, grey[0], grey[1], grey[2]);
+      if (lenses[i+1].anamorphic) cairo_set_source_rgba(cr, yellow[0], yellow[1], yellow[2], yellow[3]);
+      else cairo_set_source_rgb(cr, grey[0], grey[1], grey[2]);
       cairo_fill_preserve(cr);
 
       cairo_set_source_rgb(cr, lightgrey[0] + 0.1f, lightgrey[1] + 0.1f, lightgrey[2] + 0.1f);
@@ -407,6 +440,12 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
         cairo_arc(cr, pos-rad, 0.0f, fabsf(rad), .0f, 2.0f*M_PI);
       }
       stroke_with_pencil(cr, scale, 40./width);
+
+      cairo_close_path(cr);
+      if (lenses[i].anamorphic) cairo_set_source_rgba(cr, yellow[0], yellow[1], yellow[2], yellow[3]);
+      else cairo_set_source_rgb(cr, grey[0], grey[1], grey[2]);
+      cairo_fill(cr);
+
       cairo_restore(cr);
     }
     pos -= t;
@@ -554,12 +593,9 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
 int main(int argc, char *argv[])
 {
 
-  if(argc > 1){
-    strncpy(lensfilename, argv[1], 512);
-  }
+  strncpy(lensfilename, argv[1], 512);
   lens_canonicalize_name(lensfilename, lens_name);
-
-  const int id = atol(argv[2]);
+  char *id = argv[2];
 
   // read lens database
   std::ifstream in_json(lensfilename);
@@ -567,18 +603,21 @@ int main(int argc, char *argv[])
 
   char fname[1024];
 
-  strcpy(fname, lens_database[id]["polynomial-optics"].get<std::string>().c_str());
-  if(poly_system_read(&poly, fname))
-  {
-    fprintf(stderr, "[view] could not read poly system `%s'\n", fname);
+  if (!lens_database[id]["polynomial-optics"].empty()){
+    strcpy(fname, lens_database[id]["polynomial-optics"].get<std::string>().c_str());
+    if(poly_system_read(&poly, fname))
+    {
+      fprintf(stderr, "[view] could not read poly system `%s'\n", fname);
+    }
+  }
+  if (!lens_database[id]["polynomial-optics-aperture"].empty()){
+    strcpy(fname, lens_database[id]["polynomial-optics-aperture"].get<std::string>().c_str());
+    if(poly_system_read(&poly_aperture, fname))
+    {
+      fprintf(stderr, "[view] could not read poly system `%s'\n", fname);
+    }
   }
   
-  strcpy(fname, lens_database[id]["polynomial-optics-aperture"].get<std::string>().c_str());
-  if(poly_system_read(&poly_aperture, fname))
-  {
-    fprintf(stderr, "[view] could not read poly system `%s'\n", fname);
-  }
-
   // calculate lens length
   lenses_cnt = lens_configuration(lenses, lensfilename, sizeof(lenses), id);
   lens_length = 0;

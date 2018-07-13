@@ -13,11 +13,8 @@ int main(int argc, char **argv)
   FILE *f = 0;
 
   //const char *lensfilename = "lenses/ItohZoom.fx";
-  const char *lensfilename = "";
-  int id = 0;
-  if(argc > 1)
-    lensfilename = argv[1];
-    id = atol(argv[2]);
+  const char *lensfilename = argv[1];
+  const char *id = argv[2];
 
   poly_system_t poly, poly_ap;
   char fitf[1024], afitf[1024];

@@ -83,8 +83,8 @@ gencode: Makefile src/gencode.c ${HEADERS}
 #	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/render_gl.c ${LDFLAGS} -o bin/glRender -lGLEW -lGL -lGLU -lglfw
 
 ifeq ($(OS), Darwin)
-	clean: rm -f view fit gencode genpoly printpoly lenstable_to_json #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
+clean: rm -f view fit gencode genpoly printpoly lenstable_to_json #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
 endif
 ifeq ($(OS), Linux)
-	clean: rm -f fit gencode genpoly printpoly lenstable_to_json #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
+clean: rm -f fit gencode genpoly printpoly lenstable_to_json #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
 endif

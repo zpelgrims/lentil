@@ -170,7 +170,7 @@ int lens_configuration_fx(lens_element_t *l, const char *filename, int max)
 
 
 // read json database
-int lens_configuration(lens_element_t *l, const char *filename, int max, const int id)
+int lens_configuration(lens_element_t *l, const char *filename, int max, const char *id)
 {
   // read database
 //--> write some kind of return false if no file mechanism
@@ -185,6 +185,7 @@ int lens_configuration(lens_element_t *l, const char *filename, int max, const i
   float scale = 1.0f;
 //--> do something with focallength here
   float target_focallength = 100.0;
+//--> will fail if patent focallength is empty
   if (lens_database[id]["focal-length-mm-raytraced"].empty()){
     scale = target_focallength / lens_database[id]["focal-length-mm-patent"].get<float>();
   } else {

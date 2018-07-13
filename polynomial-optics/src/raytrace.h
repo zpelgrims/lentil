@@ -145,7 +145,6 @@ static inline int cylindrical(float *pos, float *dir, float *dist, float R, floa
 {
   const float scv[3] = {pos[0], 0, pos[2] - center};
   const float a = raytrace_dot(dir, dir);
-
   const float b = 2 * raytrace_dot(dir, scv);
   const float c = raytrace_dot(scv, scv) - R*R;
   const float discr = b*b-4*a*c;
@@ -193,28 +192,15 @@ static inline int cylindrical_xy(float *pos, float *dir, float *dist, float R, f
     }
 
     const double discr = b*b - a*c;
-
-    //use epsilon because of computation errors between doubles
-    const double epsilon = 0.00000001;
-
-    // discr < 0 means no intersections
-    if (discr < epsilon) return 4;
-
+    if (discr < 0.0f) return 4; // discr < 0 means no intersections
     int error = 0;
 	  
     // solve quadratic to find intersection points
     float t = 0.0;
-    if(R > 0.0f)       t = (-b - sqrt (discr))/a;
-    else if (R < 0.0f) t = (-b + sqrt (discr))/a;
+    if(R > 0.0f)       t = (-b - sqrt(discr))/a;
+    else if (R < 0.0f) t = (-b + sqrt(discr))/a;
 
-    // t<0 means the intersection is behind the ray origin, which we don't want
-    if (t<=epsilon)
-      return 4;
-
-    //printf("old position: %f %f %f\n", pos[0], pos[1], pos[2]);
     propagate(pos, dir, t);
-    //printf("new position: %f %f %f\n", pos[0], pos[1], pos[2]);
-    
     error |= (int)(pos[0]*pos[0] + pos[1]*pos[1] > housing_rad*housing_rad)<<4;
 
     if (cyl_y){
@@ -229,8 +215,10 @@ static inline int cylindrical_xy(float *pos, float *dir, float *dist, float R, f
 
     *dist = t;
 
-    //printf("normal: %f %f %f\n", normal[0], normal[1], normal[2]);
-    //printf("distance: %f\n", dist);
+    printf("cylxy intersection: %f %f %f \n", pos[0], pos[1], pos[2]);
+    printf("cylxy direction: %f %f %f \n", dir[0], dir[1], dir[2]);
+    printf("cylxy direction: %f %f %f \n", normal[0], normal[1], normal[2]);
+    printf("cylxy t: %f \n", t);
 
     return error;
 }
