@@ -362,11 +362,11 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
       if (lenses[i+1].anamorphic){
         if (!dim_up){ // sideview
           if(lenses[i+1].cylinder_axis_y){
-            rad = 999999.0;
+            rad2 = 999999.0;
           }
         } else { // topview
           if(!lenses[i+1].cylinder_axis_y){
-            rad = 999999.0;
+            rad2 = 999999.0;
           }
         }
       }
@@ -596,6 +596,7 @@ int main(int argc, char *argv[])
   strncpy(lensfilename, argv[1], 512);
   lens_canonicalize_name(lensfilename, lens_name);
   char *id = argv[2];
+
 
   // read lens database
   std::ifstream in_json(lensfilename);

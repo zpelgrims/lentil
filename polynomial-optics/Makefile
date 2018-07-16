@@ -32,6 +32,10 @@ OPTFLAGS=\
 -I.\
 -Isrc/
 
+ifeq ($(OS), Linux)
+	OPTFLAGS += -Wno-ignored-attributes -Wno-misleading-indentation
+endif
+
 LDFLAGS=-lm
 
 HEADERS=\
@@ -43,6 +47,7 @@ src/gencode.h\
 src/spectrum.h
 
 .PHONY=all clean
+
 
 
 ifeq ($(OS), Darwin)
@@ -65,7 +70,7 @@ fit: Makefile src/fit.c ${HEADERS}
 	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/fit.c -o bin/fit ${LDFLAGS}
 
 genpoly: Makefile src/genpoly.c ${HEADERS}
-	${CXX} ${OPTFLAGS} ${CXXLAGS} src/genpoly.c -o bin/genpoly ${LDFLAGS}
+	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/genpoly.c -o bin/genpoly ${LDFLAGS}
 
 parsepoly: Makefile src/parsepoly.c ${HEADERS}
 	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/parsepoly.c -o bin/parsepoly ${LDFLAGS}
