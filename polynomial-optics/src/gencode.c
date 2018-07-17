@@ -12,7 +12,6 @@ int main(int argc, char **argv)
 {
   FILE *f = 0;
 
-  //const char *lensfilename = "lenses/ItohZoom.fx";
   const char *lensfilename = argv[1];
   const char *id = argv[2];
 

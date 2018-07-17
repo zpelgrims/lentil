@@ -40,11 +40,11 @@ int main(int argc, char *arg[])
   const float p_dist = lens_get_thickness(lenses + lenses_cnt-1, zoom);
   const float p_rad = lenses[lenses_cnt-1].housing_radius;
 
-  if(argc > 2) max_degree = atol(arg[2]);
+  max_degree = atol(arg[3]);
   if(max_degree < 1) max_degree = 1;
 
   int max_coeffs = 10000;
-  if(argc > 3) max_coeffs = atol(arg[3]);
+  max_coeffs = atol(arg[4]);
 
   char fitfile[2048], apfitfile[2048];
   snprintf(fitfile, 2048, "%s.fit", lensfilename);

@@ -81,14 +81,14 @@ motion_notify(GtkWidget *widget, GdkEventMotion *event, gpointer user_data)
 static gboolean
 key_press(GtkWidget *widget, GdkEventKey *event, gpointer user_data)
 {
-  if(event->keyval == GDK_KEY_q || event->keyval == GDK_KEY_Escape)
+  if(event->keyval == GDK_KEY_Escape)
   {
     gtk_main_quit();
     return TRUE;
   }
   else if(event->keyval == GDK_KEY_p)
   {
-    fprintf(stderr, "saving lens drawing\n");
+    fprintf(stderr, "Saving lens drawing\n");
     screenshot = 1;
     gtk_widget_queue_draw(widget);
     return TRUE;
@@ -100,6 +100,7 @@ key_press(GtkWidget *widget, GdkEventKey *event, gpointer user_data)
     gtk_widget_queue_draw(widget);
     return TRUE;
   }
+  /*
   else if(event->keyval == GDK_KEY_i)
   {
     // adjust lens position to focus perfectly at infinity
@@ -108,6 +109,7 @@ key_press(GtkWidget *widget, GdkEventKey *event, gpointer user_data)
     gtk_widget_queue_draw(widget);
     return TRUE;
   }
+  */
   else if(event->keyval == GDK_KEY_plus)
   {
     global_scale += 1;
