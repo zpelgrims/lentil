@@ -6,6 +6,8 @@ Added features:
 - Support for anamorphic lens elements in both axes
 - Read lens descriptions from JSON database
 
+Build the code by running ```. ./build.sh```.
+
 ![lens-drawing](./lens-drawing.svg)
 
 ------------------------

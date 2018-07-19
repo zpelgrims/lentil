@@ -8,33 +8,18 @@ endif
 
 
 
-CXXFLAGS=\
--Wall\
--Iext/\
--D_GNU_SOURCE\
--fopenmp\
--std=c++11\
-
+CXXFLAGS=-Wall -Iext/ -D_GNU_SOURCE -fopenmp -std=c++11
 ifeq ($(OS), Darwin)
 	CXXFLAGS += -I/usr/local/include/cairo/ -L/usr/local/lib
 endif
 
 # OPTFLAGS=-I. -ggdb3 -Isrc/
 
-OPTFLAGS=\
--O3\
--ffast-math\
--mfpmath=sse\
--march=native\
--fexpensive-optimizations\
--DNDEBUG\
--fno-finite-math-only\
--I.\
--Isrc/
-
+OPTFLAGS= -O3 -DNDEBUG -ffast-math -mfpmath=sse -march=native -fexpensive-optimizations -fno-finite-math-only -I. -Isrc/
 ifeq ($(OS), Linux)
 	OPTFLAGS += -Wno-ignored-attributes -Wno-misleading-indentation
 endif
+
 
 LDFLAGS=-lm
 
@@ -57,11 +42,12 @@ ifeq ($(OS), Linux)
     all: fit gencode genpoly printpoly lenstable-to-json
 endif
 
+
+
 ifeq ($(OS), Darwin)
 view: Makefile src/view.c ${HEADERS}
 	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/view.c $(shell pkg-config --cflags --libs gtk+-2.0) ${LDFLAGS} -o bin/view ${LDFLAGS}
 endif
-
 
 lenstable-to-json: Makefile src/lenstable-to-json.cpp ${HEADERS}
 	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/lenstable-to-json.cpp -o bin/lenstable-to-json ${LDFLAGS}
@@ -86,6 +72,7 @@ gencode: Makefile src/gencode.c ${HEADERS}
 	
 #glRender: Makefile src/render_gl.c
 #	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/render_gl.c ${LDFLAGS} -o bin/glRender -lGLEW -lGL -lGLU -lglfw
+
 
 ifeq ($(OS), Darwin)
 clean: rm -f view fit gencode genpoly printpoly lenstable_to_json #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
