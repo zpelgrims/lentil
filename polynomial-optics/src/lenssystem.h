@@ -268,15 +268,8 @@ bool prompt_for_char( const char* prompt, char& readch )
     if (std::getline(std::cin, tmp))
     {
         // Only accept single character input
-        if (tmp.length() == 1)
-        {
-            readch = tmp[0];
-        }
-        else
-        {
-            // For most input, char zero is an appropriate sentinel
-            readch = '\0';
-        }
+        if (tmp.length() == 1) readch = tmp[0];
+        else readch = '\0'; // For most input, char zero is an appropriate sentinel
         return true;
     }
     return false;
@@ -284,6 +277,8 @@ bool prompt_for_char( const char* prompt, char& readch )
 
 
 // convert .fx files to .json
+// WATCH OUT: DO NOT UPDATE LENSES WITH THIS, AS ALL DATA GETS DELETED AND RE-WRITTEN CURRENTLY
+// need to implement reading previous attributes, this is just meant for initial lens conversion now
 bool lenstable_to_json(lens_element_t *l, const char *filename, const int id)
 {
   std::ifstream in_json("/Users/zeno/lentil/polynomial-optics/database/lenses.json");
@@ -438,23 +433,63 @@ bool lenstable_to_json(lens_element_t *l, const char *filename, const int id)
     }
   }
 
-  /* add user input:
-  some of these need to be defaulted to nullptr, or read from previous state?
-    company
-    product-name
-    year
-    patent-number
-    patent-location
-    implementation-version
-    notes
-    prime
-    focal-lenth-mm-patent
-    focal-length-mm-raytraced
-    focal-lengths-fitted
-    fstop
-    polynomial-optics
-    polynomial-optics-aperture
-  */
+
+
+  // various other required user-input
+  std::setprecision(5);
+  printf("Company name?\n");
+  std::cin >> lens_data[id]["company"];
+  if (lens_data[id]["company"] == 0) lens_data[id]["company"] = nullptr;
+
+  printf("Product name?\n");
+  std::cin >> lens_data[id]["product-name"];
+  if (lens_data[id]["product-name"] == 0) lens_data[id]["product-name"] = nullptr;
+
+  printf("Patent year?\n");
+  std::cin >> lens_data[id]["year"];
+  if (lens_data[id]["year"] == 0) lens_data[id]["year"] = nullptr;
+
+  printf("Patent number?\n");
+  std::cin >> lens_data[id]["patent-number"];
+  if (lens_data[id]["patent-number"] == 0) lens_data[id]["patent-number"] = nullptr;
+
+  printf("Patent location?\n");
+  std::cin >> lens_data[id]["patent-location"];
+  if (lens_data[id]["patent-location"] == 0) lens_data[id]["patent-location"] = nullptr;
+
+  printf("Notes?\n");
+  std::cin >> lens_data[id]["notes"];
+  if (lens_data[id]["notes"] == 0) lens_data[id]["notes"] = nullptr;
+
+  printf("Prime?\n");
+  std::cin >> lens_data[id]["prime"];
+  if (lens_data[id]["prime"] == "") lens_data[id]["prime"] = nullptr;
+  else if (lens_data[id]["prime"] == "1") lens_data[id]["prime"] = true;
+  else if (lens_data[id]["prime"] == "0") lens_data[id]["prime"] = false;
+  else if (lens_data[id]["prime"] == "y") lens_data[id]["prime"] = true;
+  else if (lens_data[id]["prime"] == "n") lens_data[id]["prime"] = false;
+
+  printf("Focal length from patent in mm?\n");
+  std::cin >> lens_data[id]["focal-length-mm-patent"];
+  if (lens_data[id]["focal-length-mm-patent"] == 0) lens_data[id]["focal-length-mm-patent"] = nullptr;
+  
+  printf("Fitted polynomial optics .fit file location?\n");
+  std::cin >> lens_data[id]["polynomial-optics"];
+  if (lens_data[id]["polynomial-optics"] == 0) lens_data[id]["polynomial-optics"] = nullptr;
+
+  printf("Fitted polynomial optics _ap.fit file location?\n");
+  std::cin >> lens_data[id]["polynomial-optics-aperture"];
+  if (lens_data[id]["polynomial-optics-aperture"] == 0) lens_data[id]["polynomial-optics-aperture"] = nullptr;
+
+  // implementation version NULL
+  lens_data[id]["implementation-version"] = nullptr;
+  // raytraced focal length NULL
+  lens_data[id]["focal-length-mm-raytraced"] = nullptr;
+  // focal lengths fitted NULL
+  lens_data[id]["focal-lengths-fitted"] = nullptr;
+  // fstop NULL
+  lens_data[id]["fstop"] = nullptr;
+
     
   lens_database[std::to_string(id)] = lens_data;
   std::ofstream out_json("/Users/zeno/lentil/polynomial-optics/database/lenses.json");
