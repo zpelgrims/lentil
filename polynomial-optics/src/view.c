@@ -345,12 +345,6 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
     
     float hrad = lenses[i].housing_radius;
     float t = lens_get_thickness(lenses+i, zoom);
-    
-    /*
-    if (i == lenses_cnt-1){
-      t += extra_space;
-    }
-    */
 
     if(!strcasecmp(lenses[i].material, "iris"))
       aperture_pos = pos;
@@ -475,16 +469,15 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
 
     float cam_pos[3] = {0.0f};
     cam_pos[dim_up] = y;
-    const float r = lenses[0].lens_radius;
-    const float R = lenses[0].housing_radius;
-    cam_pos[2] = sqrtf(r*r - R*R);
-    const float s = r/sqrtf(cam_pos[2]*cam_pos[2] + y*y);
+    // zeno: what are these calculations doing? figure out
+    cam_pos[2] = sqrtf(lenses[0].lens_radius*lenses[0].lens_radius - lenses[0].housing_radius*lenses[0].housing_radius);
+    const float s = lenses[0].lens_radius / sqrtf(cam_pos[2]*cam_pos[2] + y*y);
     cam_pos[2] *= s;
     cam_pos[dim_up] *= s;
-    cam_pos[2] += lens_length - r;
+    cam_pos[2] += lens_length - lenses[0].lens_radius;
 
 
-    float cam_dir[3] = {0.0f};   // cam direction pointing from mouse pointer towards lens
+    float cam_dir[3] = {0.0f};
     cam_dir[2] = cam_pos[2] - 99999999;
     cam_dir[dim_up] = cam_pos[dim_up];
     raytrace_normalise(cam_dir);
