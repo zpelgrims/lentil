@@ -12,16 +12,20 @@ int main(int argc, char **argv)
 {
   FILE *f = 0;
 
-  const char *lensfilename = argv[1];
-  const char *id = argv[2];
+  //const char *lensfilename = argv[1];
+  const char *id = argv[1];
+  int lens_focal_length = atol(argv[2]);
+// look up lens location, need focallength and lens id
+
+
+
 
   poly_system_t poly, poly_ap;
-  char fitf[1024], afitf[1024];
-  snprintf(fitf,  sizeof(fitf),  "%s.fit", lensfilename);
-  snprintf(afitf, sizeof(afitf), "%s_ap.fit", lensfilename);
+  const char fitf[1024] = "exitpupil.fit";
+  const char afitf[1024] = "aperture.fit";
   if(poly_system_read(&poly, fitf) || poly_system_read(&poly_ap, afitf))
   {
-    fprintf(stderr, "[gencode] could not read poly fits for `%s'!\n", lensfilename);
+    fprintf(stderr, "[gencode] could not read poly fits for lens ID `%s'!\n", id);
     exit(1);
   }
 
@@ -55,8 +59,8 @@ int main(int argc, char **argv)
   fclose(f);
 
   char name[512];
-  lens_canonicalize_name(lensfilename, name);
-  lenses_cnt = lens_configuration(lenses, lensfilename, sizeof(lenses), id);
+  //lens_canonicalize_name(lensfilename, name);
+  lenses_cnt = lens_configuration(lenses, id);
   float lens_length = 0;
   for(int i = 0; i < lenses_cnt; i++) lens_length += lens_get_thickness(lenses + i, zoom);
   const float aperture_housing_radius = lens_get_aperture_radius(lenses, lenses_cnt);

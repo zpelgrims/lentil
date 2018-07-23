@@ -34,21 +34,21 @@ static const float eps[] = {0, 0, 0, 0, 0};
 
 int main(int argc, char *arg[])
 {
-  char *lensfilename = arg[1];
-  const char *id = arg[2];
-  lenses_cnt = lens_configuration(lenses, lensfilename, sizeof(lenses), id);
+  const char *id = arg[1];
+  lenses_cnt = lens_configuration(lenses, id);
   const float p_dist = lens_get_thickness(lenses + lenses_cnt-1, zoom);
   const float p_rad = lenses[lenses_cnt-1].housing_radius;
 
-  max_degree = atol(arg[3]);
+  max_degree = atol(arg[2]);
   if(max_degree < 1) max_degree = 1;
 
   int max_coeffs = 10000;
-  max_coeffs = atol(arg[4]);
+  max_coeffs = atol(arg[3]);
 
-  char fitfile[2048], apfitfile[2048];
-  snprintf(fitfile, 2048, "%s.fit", lensfilename);
-  snprintf(apfitfile, 2048, "%s_ap.fit", lensfilename);
+// do a lookup to where these files should be saved
+// needed: focallength, lens id
+  const char fitfile[2048] = "exitpupil.fit";
+  const char apfitfile[2048] = "aperture.fit";
 
   // load generic 1233-coefficient degree 9 polynomial template with all zero coeffs:
   poly_system_t poly, poly_ap;

@@ -587,35 +587,42 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
 
 int main(int argc, char *argv[])
 {
-
-  strncpy(lensfilename, argv[1], 512);
-  lens_canonicalize_name(lensfilename, lens_name);
-  char *id = argv[2];
-
+  const char *id = argv[1];
+  int lens_focal_length = atol(argv[2]);
 
   // read lens database
-  std::ifstream in_json(lensfilename);
+  std::string lens_database_path = std::getenv("LENTIL_PATH");
+  lens_database_path += "/database/lenses.json";
+
+  std::ifstream in_json(lens_database_path.c_str());
   json lens_database = json::parse(in_json);
 
-  char fname[1024];
+  for (const auto& i : lens_database[id]["polynomial-optics"]){
+    if (i == lens_focal_length){
+      std::string fit_location_exitpupil = find_lens_id_location(id, lens_focal_length);
+      fit_location_exitpupil += "fitted/exitpupil.fit";
+      if(poly_system_read(&poly, fit_location_exitpupil.c_str())){
+        fprintf(stderr, "[view] could not read poly system `%s'\n", fit_location_exitpupil.c_str());
+      }
+    } else {
+      fprintf(stderr, "[view] no exitpupil poly system focal length %d\n", lens_focal_length);
+    }
+  }
+  for (const auto& i : lens_database[id]["polynomial-optics-aperture"]){
+    if (i == lens_focal_length){
+      std::string fit_location_aperture = find_lens_id_location(id, lens_focal_length);
+      fit_location_aperture += "fitted/aperture.fit";
+      if(poly_system_read(&poly_aperture, fit_location_aperture.c_str())){
+        fprintf(stderr, "[view] could not read poly system `%s'\n", fit_location_aperture.c_str());
+      }
+    } else {
+      fprintf(stderr, "[view] no aperture poly system focal length %d\n", lens_focal_length);
+    }
+  }
 
-  if (!lens_database[id]["polynomial-optics"].empty()){
-    strcpy(fname, lens_database[id]["polynomial-optics"].get<std::string>().c_str());
-    if(poly_system_read(&poly, fname))
-    {
-      fprintf(stderr, "[view] could not read poly system `%s'\n", fname);
-    }
-  }
-  if (!lens_database[id]["polynomial-optics-aperture"].empty()){
-    strcpy(fname, lens_database[id]["polynomial-optics-aperture"].get<std::string>().c_str());
-    if(poly_system_read(&poly_aperture, fname))
-    {
-      fprintf(stderr, "[view] could not read poly system `%s'\n", fname);
-    }
-  }
   
   // calculate lens length
-  lenses_cnt = lens_configuration(lenses, lensfilename, sizeof(lenses), id);
+  lenses_cnt = lens_configuration(lenses, id);
   lens_length = 0;
   for(int i=0;i<lenses_cnt;i++) lens_length += lens_get_thickness(lenses+i, zoom);
 

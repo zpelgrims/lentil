@@ -170,11 +170,11 @@ int lens_configuration_fx(lens_element_t *l, const char *filename, int max)
 
 
 // read json database
-int lens_configuration(lens_element_t *l, const char *filename, int max, const char *id)
+int lens_configuration(lens_element_t *l, const char *id)
 {
-  // read database
-//--> write some kind of return false if no file mechanism
-  std::ifstream in_json(filename);
+  std::string lens_database_path = std::getenv("LENTIL_PATH");
+  lens_database_path += "/database/lenses.json";
+  std::ifstream in_json(lens_database_path);
   json lens_database = json::parse(in_json);
 
   int cnt = 0;
@@ -254,7 +254,6 @@ int lens_configuration(lens_element_t *l, const char *filename, int max, const c
 
       // add lens to lens struct
       l[cnt++] = lens;
-
   }
 
   return cnt;
@@ -281,7 +280,9 @@ bool prompt_for_char( const char* prompt, char& readch )
 // need to implement reading previous attributes, this is just meant for initial lens conversion now
 bool lenstable_to_json(lens_element_t *l, const char *filename, const char *id)
 {
-  std::ifstream in_json(std::getenv("LENTIL_DATABASE_PATH"));
+  std::string lens_database_path = std::getenv("LENTIL_PATH");
+  lens_database_path += "/database/lenses.json";
+  std::ifstream in_json(lens_database_path);
   json lens_database = json::parse(in_json);
 
   // check if something already exists on provided lens id
@@ -464,35 +465,28 @@ bool lenstable_to_json(lens_element_t *l, const char *filename, const char *id)
   printf("Prime?\n");
   std::cin >> lens_data["prime"];
   if (lens_data["prime"] == "") lens_data["prime"] = nullptr;
-  else if (lens_data["prime"] == 1) lens_data["prime"] = true;
-  else if (lens_data["prime"] == 0) lens_data["prime"] = false;
-  else if (lens_data["prime"] == "y") lens_data["prime"] = true;
-  else if (lens_data["prime"] == "n") lens_data["prime"] = false;
+  else if (lens_data["prime"] == 1 || lens_data["prime"] == "y") lens_data["prime"] = true;
+  else if (lens_data["prime"] == 0 || lens_data["prime"] == "n") lens_data["prime"] = false;
 
   printf("Focal length from patent in mm?\n");
   std::cin >> lens_data["focal-length-mm-patent"];
   if (lens_data["focal-length-mm-patent"] == 0) lens_data["focal-length-mm-patent"] = nullptr;
   
-  printf("Fitted polynomial optics .fit file location?\n");
-  std::cin >> lens_data["polynomial-optics"];
-  if (lens_data["polynomial-optics"] == 0) lens_data["polynomial-optics"] = nullptr;
 
-  printf("Fitted polynomial optics _ap.fit file location?\n");
-  std::cin >> lens_data["polynomial-optics-aperture"];
-  if (lens_data["polynomial-optics-aperture"] == 0) lens_data["polynomial-optics-aperture"] = nullptr;
+// TODO: THESE NEED TO CHANGE TO A LIST OF FITTED FOCAL LENGTHS
+  lens_data["polynomial-optics"] = {};
+  lens_data["polynomial-optics-aperture"] = {};
 
   // implementation version NULL
   lens_data["implementation-version"] = nullptr;
   // raytraced focal length NULL
   lens_data["focal-length-mm-raytraced"] = nullptr;
-  // focal lengths fitted NULL
-  lens_data["focal-lengths-fitted"] = nullptr;
   // fstop NULL
   lens_data["fstop"] = nullptr;
 
     
   lens_database[id] = lens_data;
-  std::ofstream out_json(std::getenv("LENTIL_DATABASE_PATH"));
+  std::ofstream out_json(lens_database_path);
   out_json << std::setw(2) << lens_database << std::endl;
 
   printf("Lens added to id %s \n", id);
@@ -526,4 +520,29 @@ static inline void lens_canonicalize_name(const char *filename, char *out)
       out[i++] = *start;
   }
   out[i++] = 0;
+}
+
+
+// return path to e.g: LENTIL_PATH/database/lenses/1927-zeiss-biotar/58/
+std::string find_lens_id_location(const char *id, const int lens_focal_length){
+  std::string json_database_location = "";
+  json_database_location += std::getenv("LENTIL_PATH");
+  json_database_location += "/database/lenses.json";
+  std::ifstream in_json(json_database_location);
+  json lens_database = json::parse(in_json);
+
+  std::string lens_id_path = "";
+  lens_id_path += std::getenv("LENTIL_PATH");
+  lens_id_path += "/database/lenses/";
+  lens_id_path += std::to_string(lens_database[id]["year"].get<int>());
+  lens_id_path += "-";
+  if (lens_database[id]["company"] == nullptr) lens_id_path += "unknown";
+  else lens_id_path += lens_database[id]["company"].get<std::string>();
+  lens_id_path += "-";
+  lens_id_path += lens_database[id]["product-name"].get<std::string>();
+  lens_id_path += "/";
+  lens_id_path += std::to_string(lens_focal_length);
+  lens_id_path += "/";
+
+  return lens_id_path;
 }

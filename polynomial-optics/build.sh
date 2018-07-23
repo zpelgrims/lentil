@@ -14,8 +14,8 @@ echo ""
 echo "Setting environment variables: "
     # green text color
     tput setaf 2;
-    export LENTIL_DATABASE_PATH=$CURRENT_DIR/database/lenses.json
-    echo -e "\t LENTIL_DATABASE_PATH: " $LENTIL_DATABASE_PATH
+    export LENTIL_PATH=$CURRENT_DIR
+    echo -e "\t LENTIL_PATH: " $LENTIL_PATH
 
     # add dependency packages environment variables
     # export PKG_CONFIG_PATH=/usr/local/Cellar/:$PKG_CONFIG_PATH
