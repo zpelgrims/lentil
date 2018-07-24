@@ -10,6 +10,8 @@
 #include <float.h>
 #include <assert.h>
 
+#include <cstdlib>
+
 #define M_PI 3.14159265358979323846  /* pi */
 
 #define MATCHING_PURSUIT
@@ -32,27 +34,30 @@ static int aspheric_elements = 1;
 //static const float eps[] = {1e-6, 1e-6, 1e-8, 1e-8, 1e-9};
 static const float eps[] = {0, 0, 0, 0, 0};
 
-int main(int argc, char *arg[])
+int main(int argc, char *argv[])
 {
-  const char *id = arg[1];
+  const char *id = argv[1];
+  int lens_focal_length = atol(argv[2]);
+  max_degree = atol(argv[3]);
+  if(max_degree < 1) max_degree = 1;
+  int max_coeffs = 10000;
+  max_coeffs = atol(argv[4]);
+  const char *sorted_poly_path = argv[5];
+
   lenses_cnt = lens_configuration(lenses, id);
   const float p_dist = lens_get_thickness(lenses + lenses_cnt-1, zoom);
   const float p_rad = lenses[lenses_cnt-1].housing_radius;
 
-  max_degree = atol(arg[2]);
-  if(max_degree < 1) max_degree = 1;
-
-  int max_coeffs = 10000;
-  max_coeffs = atol(arg[3]);
-
-// do a lookup to where these files should be saved
-// needed: focallength, lens id
-  const char fitfile[2048] = "exitpupil.fit";
-  const char apfitfile[2048] = "aperture.fit";
+  std::string lens_id_path = find_lens_id_location(id, lens_focal_length);
+  std::string fitfile_path = lens_id_path + "fitted/exitpupil.fit";
+  std::string ap_fitfile_path = lens_id_path + "fitted/aperture.fit";
+  printf("Starting fitting: \n");
+  printf("\t exitpupil.fit location: %s\n", fitfile_path.c_str());
+  printf("\t aperture.fit location: %s\n", ap_fitfile_path.c_str());
 
   // load generic 1233-coefficient degree 9 polynomial template with all zero coeffs:
   poly_system_t poly, poly_ap;
-  if(poly_system_read(&poly, "../data/sorted.poly") || poly_system_read(&poly_ap, "../data/sorted.poly"))
+  if(poly_system_read(&poly, sorted_poly_path) || poly_system_read(&poly_ap, sorted_poly_path))
   {
     fprintf(stderr, "[fit] could not read `sorted.poly' template!\n");
     exit(1);
@@ -267,7 +272,7 @@ int main(int argc, char *arg[])
 
   // write optimised poly
   fprintf(stderr, "output poly has %d coeffs.\n", poly_system_get_coeffs(&poly, max_degree, 0));
-  poly_system_write(&poly, fitfile);
+  poly_system_write(&poly, fitfile_path.c_str());
 
   // ===================================================================================================
   // evaluate_aperture poly sensor -> aperture
@@ -450,6 +455,6 @@ int main(int argc, char *arg[])
   }
 
   fprintf(stderr, "output aperture poly has %d coeffs.\n", poly_system_get_coeffs(&poly_ap, max_degree, 0));
-  poly_system_write(&poly_ap, apfitfile);
+  poly_system_write(&poly_ap, ap_fitfile_path.c_str());
   exit(0);
 }

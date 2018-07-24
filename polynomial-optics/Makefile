@@ -36,10 +36,10 @@ src/spectrum.h
 
 
 ifeq ($(OS), Darwin)
-    all: view fit gencode genpoly printpoly lenstable-to-json
+    all: view fit gencode genpoly printpoly lenstable-to-json print-lens-path
 endif
 ifeq ($(OS), Linux)
-    all: fit gencode genpoly printpoly lenstable-to-json
+    all: fit gencode genpoly printpoly lenstable-to-json print-lens-path
 endif
 
 
@@ -67,6 +67,9 @@ printpoly: Makefile src/printpoly.c ${HEADERS}
 gencode: Makefile src/gencode.c ${HEADERS}
 	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/gencode.c -o bin/gencode ${LDFLAGS}
 
+print-lens-path: Makefile src/print-lens-path.cpp ${HEADERS}
+	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/print-lens-path.cpp -o bin/print-lens-path ${LDFLAGS}
+
 #lt-aperture-sampling: Makefile src/sample_ap_lt.c init.h lt_sample_aperture.h ${HEADERS}
 #	${CXX} ${OPTFLAGS} ${CXXFLAGS} -Irender/${lensname} src/sample_ap_lt.c -o bin/lt-aperture-sampling ${LDFLAGS}
 	
@@ -75,8 +78,8 @@ gencode: Makefile src/gencode.c ${HEADERS}
 
 
 ifeq ($(OS), Darwin)
-clean: rm -f view fit gencode genpoly printpoly lenstable_to_json #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
+clean: rm -f view fit gencode genpoly printpoly lenstable_to_json print-lens-path #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
 endif
 ifeq ($(OS), Linux)
-clean: rm -f fit gencode genpoly printpoly lenstable_to_json #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
+clean: rm -f fit gencode genpoly printpoly lenstable_to_json print-lens-path #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
 endif

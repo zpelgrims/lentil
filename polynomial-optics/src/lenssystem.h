@@ -293,7 +293,7 @@ bool lenstable_to_json(lens_element_t *l, const char *filename, const char *id)
     while(prompt_for_char("Do you want to overwrite this lens? [y/n]", type))
     {
         if(type != 'y'){
-            printf("Conversion cancelled by user \n");
+            printf("Conversion cancelled.\n");
             return false;
         }
     }
@@ -494,6 +494,29 @@ bool lenstable_to_json(lens_element_t *l, const char *filename, const char *id)
 }
 
 
+// return path to e.g: $LENTIL_PATH/database/lenses/1927-zeiss-biotar/58/
+std::string find_lens_id_location(const char *id, const int lens_focal_length){
+  std::string json_database_location = "";
+  json_database_location += std::getenv("LENTIL_PATH");
+  json_database_location += "/database/lenses.json";
+  std::ifstream in_json(json_database_location);
+  json lens_database = json::parse(in_json);
+
+  std::string lens_id_path = "";
+  lens_id_path += std::getenv("LENTIL_PATH");
+  lens_id_path += "/database/lenses/";
+  lens_id_path += std::to_string(lens_database[id]["year"].get<int>());
+  lens_id_path += "-";
+  if (lens_database[id]["company"] == nullptr) lens_id_path += "unknown";
+  else lens_id_path += lens_database[id]["company"].get<std::string>();
+  lens_id_path += "-";
+  lens_id_path += lens_database[id]["product-name"].get<std::string>();
+  lens_id_path += "/";
+  lens_id_path += std::to_string(lens_focal_length);
+  lens_id_path += "/";
+
+  return lens_id_path;
+}
 
 
 static inline void lens_canonicalize_name(const char *filename, char *out)
@@ -520,29 +543,4 @@ static inline void lens_canonicalize_name(const char *filename, char *out)
       out[i++] = *start;
   }
   out[i++] = 0;
-}
-
-
-// return path to e.g: LENTIL_PATH/database/lenses/1927-zeiss-biotar/58/
-std::string find_lens_id_location(const char *id, const int lens_focal_length){
-  std::string json_database_location = "";
-  json_database_location += std::getenv("LENTIL_PATH");
-  json_database_location += "/database/lenses.json";
-  std::ifstream in_json(json_database_location);
-  json lens_database = json::parse(in_json);
-
-  std::string lens_id_path = "";
-  lens_id_path += std::getenv("LENTIL_PATH");
-  lens_id_path += "/database/lenses/";
-  lens_id_path += std::to_string(lens_database[id]["year"].get<int>());
-  lens_id_path += "-";
-  if (lens_database[id]["company"] == nullptr) lens_id_path += "unknown";
-  else lens_id_path += lens_database[id]["company"].get<std::string>();
-  lens_id_path += "-";
-  lens_id_path += lens_database[id]["product-name"].get<std::string>();
-  lens_id_path += "/";
-  lens_id_path += std::to_string(lens_focal_length);
-  lens_id_path += "/";
-
-  return lens_id_path;
 }

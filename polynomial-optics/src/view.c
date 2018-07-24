@@ -602,10 +602,10 @@ int main(int argc, char *argv[])
       std::string fit_location_exitpupil = find_lens_id_location(id, lens_focal_length);
       fit_location_exitpupil += "fitted/exitpupil.fit";
       if(poly_system_read(&poly, fit_location_exitpupil.c_str())){
-        fprintf(stderr, "[view] could not read poly system `%s'\n", fit_location_exitpupil.c_str());
+        printf("[view] could not read poly system `%s'\n", fit_location_exitpupil.c_str());
       }
     } else {
-      fprintf(stderr, "[view] no exitpupil poly system focal length %d\n", lens_focal_length);
+      printf("[view] no exitpupil poly system focal length %d\n", lens_focal_length);
     }
   }
   for (const auto& i : lens_database[id]["polynomial-optics-aperture"]){
@@ -613,10 +613,10 @@ int main(int argc, char *argv[])
       std::string fit_location_aperture = find_lens_id_location(id, lens_focal_length);
       fit_location_aperture += "fitted/aperture.fit";
       if(poly_system_read(&poly_aperture, fit_location_aperture.c_str())){
-        fprintf(stderr, "[view] could not read poly system `%s'\n", fit_location_aperture.c_str());
+        printf("[view] could not read poly system `%s'\n", fit_location_aperture.c_str());
       }
     } else {
-      fprintf(stderr, "[view] no aperture poly system focal length %d\n", lens_focal_length);
+      printf("[view] no aperture poly system focal length %d\n", lens_focal_length);
     }
   }
 
@@ -630,17 +630,19 @@ int main(int argc, char *argv[])
   lens_pupil_rad  = lenses[lenses_cnt-1].housing_radius;
   aperture_rad = lens_get_aperture_radius(lenses, lenses_cnt);
 
+/*
   int dump = 0;
   if(argc > 2 && !strcmp(argv[2], "-o")) dump = 1;
-
+*/
   GtkWidget *window;
-
+/*
   if(!dump)
   {
+*/
     gtk_init (&argc, &argv);
 
     window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(window), "lens simulation");
+    gtk_window_set_title(GTK_WINDOW(window), "Lens Validation");
     gtk_window_resize(GTK_WINDOW(window), width, height);
     gtk_window_set_resizable(GTK_WINDOW(window), FALSE);
 
@@ -661,6 +663,7 @@ int main(int argc, char *argv[])
     gtk_widget_show_all (window);
 
     gtk_main ();
+  /*
   }
   else
   {
@@ -669,7 +672,7 @@ int main(int argc, char *argv[])
     draw_raytraced = 1;
     draw_polynomials = 1;
     expose(0, 0, 0);
-  }
+  }*/
 
   poly_system_destroy(&poly);
   poly_system_destroy(&poly_aperture);
