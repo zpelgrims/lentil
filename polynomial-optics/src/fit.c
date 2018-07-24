@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
   max_coeffs = atol(argv[4]);
   const char *sorted_poly_path = argv[5];
 
-  lenses_cnt = lens_configuration(lenses, id);
+  lenses_cnt = lens_configuration(lenses, id, lens_focal_length);
   const float p_dist = lens_get_thickness(lenses + lenses_cnt-1, zoom);
   const float p_rad = lenses[lenses_cnt-1].housing_radius;
 

@@ -170,7 +170,7 @@ int lens_configuration_fx(lens_element_t *l, const char *filename, int max)
 
 
 // read json database
-int lens_configuration(lens_element_t *l, const char *id)
+int lens_configuration(lens_element_t *l, const char *id, int target_focal_length)
 {
   std::string lens_database_path = std::getenv("LENTIL_PATH");
   lens_database_path += "/database/lenses.json";
@@ -183,13 +183,12 @@ int lens_configuration(lens_element_t *l, const char *id)
   
   // calculate lens scale
   float scale = 1.0f;
-//--> do something with focallength here
-  float target_focallength = 100.0;
+  
 //--> will fail if patent focallength is empty
   if (lens_database[id]["focal-length-mm-raytraced"].empty()){
-    scale = target_focallength / lens_database[id]["focal-length-mm-patent"].get<float>();
+    scale = target_focal_length / lens_database[id]["focal-length-mm-patent"].get<float>();
   } else {
-    scale = target_focallength / lens_database[id]["focal-length-mm-raytraced"].get<float>();
+    scale = target_focal_length / lens_database[id]["focal-length-mm-raytraced"].get<float>();
   }
   printf("scale: %f \n", scale);
   

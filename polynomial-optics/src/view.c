@@ -622,7 +622,7 @@ int main(int argc, char *argv[])
 
   
   // calculate lens length
-  lenses_cnt = lens_configuration(lenses, id);
+  lenses_cnt = lens_configuration(lenses, id, lens_focal_length);
   lens_length = 0;
   for(int i=0;i<lenses_cnt;i++) lens_length += lens_get_thickness(lenses+i, zoom);
 
