@@ -109,7 +109,7 @@ int main(int argc, char *argv[])
 
 
   // pota.h commercial lenses
-  for (auto it : free_lens_ids) {
+  for (auto it : commercial_lens_ids) {
     std::map<std::string, std::vector<int>> &internal_map = it.second;
     for (auto iterator_map: internal_map) {
       fprintf(pota_h_lenses_h, "#ifdef LENS_ID_%s\n", iterator_map.first.c_str());
@@ -155,7 +155,7 @@ int main(int argc, char *argv[])
 
 
   // pota.cpp commercial lenses
-  for (auto it : free_lens_ids) {
+  for (auto it : commercial_lens_ids) {
     std::map<std::string, std::vector<int>> &internal_map = it.second;
     for (auto iterator_map: internal_map) {
       fprintf(pota_cpp_lenses_h, "#ifdef LENS_ID_%s\n", iterator_map.first.c_str());
@@ -218,7 +218,7 @@ int main(int argc, char *argv[])
 
 
     // gencode outputs - commercial lenses
-    for (auto it : free_lens_ids) {
+    for (auto it : commercial_lens_ids) {
       std::map<std::string, std::vector<int>> &internal_map = it.second;
       for (auto iterator_map: internal_map) {
         fprintf(gencode_output_file, "#ifdef LENS_ID_%s\n", iterator_map.first.c_str());
