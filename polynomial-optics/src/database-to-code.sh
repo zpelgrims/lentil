@@ -32,11 +32,8 @@ $LENTIL_PATH/bin/gencode $LENS_ID $LENS_FOCAL_LENGTH
 $LENTIL_PATH/bin/add-fitted-focal-length $LENS_ID $LENS_FOCAL_LENGTH
 echo "Added " $LENS_FOCAL_LENGTH " to list of fitted focal lengths."
 
-# inject include code into:
-#
-# pota/src/evaluate.h
-# pota/src/pota.cpp
-# pota/src/pota.h
+# auto-generate lens defines
+$LENTIL_PATH/bin/generate-lens-defines
 
 # cleanup
 rm -rf -v $LENTIL_PATH/data/tmp/$LENS_ID/$LENS_FOCAL_LENGTH

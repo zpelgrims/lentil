@@ -36,10 +36,10 @@ src/spectrum.h
 
 
 ifeq ($(OS), Darwin)
-    all: view fit gencode genpoly printpoly lenstable-to-json print-lens-path add-fitted-focal-length
+    all: view fit gencode genpoly printpoly lenstable-to-json print-lens-path add-fitted-focal-length generate-lens-defines
 endif
 ifeq ($(OS), Linux)
-    all: fit gencode genpoly printpoly lenstable-to-json print-lens-path add-fitted-focal-length
+    all: generate-lens-defines fit gencode genpoly printpoly lenstable-to-json print-lens-path add-fitted-focal-length
 endif
 
 
@@ -57,6 +57,9 @@ print-lens-path: Makefile src/print-lens-path.cpp ${HEADERS}
 
 add-fitted-focal-length: Makefile src/add-fitted-focal-length.cpp ${HEADERS}
 	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/add-fitted-focal-length.cpp -o bin/add-fitted-focal-length ${LDFLAGS}
+
+generate-lens-defines: Makefile src/generate-lens-defines.cpp ${HEADERS}
+	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/generate-lens-defines.cpp -o bin/generate-lens-defines ${LDFLAGS}
 
 fit: Makefile src/fit.c ${HEADERS}
 	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/fit.c -o bin/fit ${LDFLAGS}
@@ -82,8 +85,8 @@ gencode: Makefile src/gencode.c ${HEADERS}
 
 
 ifeq ($(OS), Darwin)
-clean: rm -f view fit gencode genpoly printpoly lenstable_to_json print-lens-path add-fitted-focal-length #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
+clean: rm -f view fit gencode genpoly printpoly lenstable_to_json print-lens-path add-fitted-focal-length generate-lens-defines #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
 endif
 ifeq ($(OS), Linux)
-clean: rm -f fit gencode genpoly printpoly lenstable_to_json print-lens-path add-fitted-focal-length #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
+clean: rm -f fit gencode genpoly printpoly lenstable_to_json print-lens-path add-fitted-focal-length generate-lens-defines #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
 endif
