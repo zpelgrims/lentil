@@ -183,16 +183,14 @@ int lens_configuration(lens_element_t *l, const char *id, int target_focal_lengt
   
   // calculate lens scale
   float scale = 1.0f;
-  
 //--> will fail if patent focallength is empty
   if (lens_database[id]["focal-length-mm-raytraced"].empty()){
     scale = target_focal_length / lens_database[id]["focal-length-mm-patent"].get<float>();
   } else {
     scale = target_focal_length / lens_database[id]["focal-length-mm-raytraced"].get<float>();
   }
-  printf("scale: %f \n", scale);
   
-
+  
   for (const auto& json_lens_element : lens_database[id]["optical-elements-patent"]) {
 
       lens_element_t lens;
@@ -432,8 +430,6 @@ bool lenstable_to_json(lens_element_t *l, const char *filename, const char *id)
       lens_data["optical-elements-patent"][i]["aspherical-equation"] = nullptr;
     }
   }
-
-
 
   // various other required user-input
   std::setprecision(5);

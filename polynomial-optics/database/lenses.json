@@ -1395,7 +1395,7 @@
         "lens-geometry": "spherical",
         "material": "air",
         "radius": -203.55,
-        "thickness": 55.742
+        "thickness": 10.742
       },
       {
         "abbe": 46.62,
@@ -1672,6 +1672,64 @@
     "prime": true,
     "product-name": "biotar",
     "year": 1927
+  },
+  "91": {
+    "commercial": false,
+    "production-ready": true,
+    "company": "Panavision",
+    "focal-length-mm-patent": 100.0,
+    "focal-length-mm-raytraced": null,
+    "fstop": null,
+    "implementation-version": null,
+    "notes": "Rear anamorph. To be placed behind a primary spherical lens. Squeeze factor 1.34. Index of refraction and Abbe numbers not in patent, instead glass type is given. IOR and abbe taken from OHARA glass catalogue.",
+    "optical-elements-patent": [
+      {
+        "abbe": 46.62,
+        "aspherical-equation": null,
+        "housing-radius": 14.12,
+        "ior": 1.816,
+        "lens-geometry": "cyl-y",
+        "material": "SLAH59",
+        "radius": 136.373,
+        "thickness": 2.444
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 14.01,
+        "ior": null,
+        "lens-geometry": "cyl-y",
+        "material": "air",
+        "radius": -176.528,
+        "thickness": 8
+      },
+      {
+        "abbe": 46.62,
+        "aspherical-equation": null,
+        "housing-radius": 13.48,
+        "ior": 1.816,
+        "lens-geometry": "cyl-y",
+        "material": "SLAH59",
+        "radius": 19.172,
+        "thickness": 4.09
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 13.22,
+        "ior": null,
+        "lens-geometry": "cyl-y",
+        "material": "air",
+        "radius": 18.137,
+        "thickness": 20.765
+      }
+    ],
+    "patent-location": null,
+    "patent-number": "US 2006/0050403",
+    "polynomial-optics": [],
+    "prime": true,
+    "product-name": null,
+    "year": 2006
   },
   "6": {
     "commercial": false,

@@ -86,18 +86,10 @@ static inline int evaluate_draw(const lens_element_t *lenses, const int lenses_c
 
     //normal at intersection
     float n[3];
-
-    if(lenses[k].anamorphic){
-      if(lenses[k].cylinder_axis_y){ // cylinder is in y-axis
-        error |= cylindrical_xy(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
-      } else { // cylinder is in x-axis
-        error |= cylindrical_xy(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
-      }
-    }
-    /*
+    
     if(lenses[k].anamorphic)
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n);
-    */
+      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, lenses[k].cylinder_axis_y);
+    
     else if(draw_aspherical)
       error |= aspherical(pos, dir, &t, R, distsum + R, lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
     else
@@ -170,18 +162,10 @@ static inline int evaluate_reverse_draw(const lens_element_t *lenses, const int 
 
     //normal at intersection
     float n[3] = {0.0f};
-
-    if(lenses[k].anamorphic){
-      if(lenses[k].cylinder_axis_y){ // cylinder is in y-axis
-        error |= cylindrical_xy(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
-      } else { // cylinder is in x-axis
-        error |= cylindrical_xy(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
-      }
-    }
-    /*
+    
     if(lenses[k].anamorphic)
-      error |= cylindrical(pos, dir, &t, R, distsum - R, lenses[k].housing_radius, n);
-    */
+      error |= cylindrical(pos, dir, &t, R, distsum - R, lenses[k].housing_radius, n, lenses[k].cylinder_axis_y);
+    
     else if(draw_aspherical)
       error |= aspherical(pos, dir, &t, R, distsum - R, lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
     else

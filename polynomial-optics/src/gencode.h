@@ -8,12 +8,17 @@ void print_poly_system_code(FILE *f, const poly_system_t *system,
     const char *case_lens_name)
 {
   fprintf(f, "case %s:\n{\n", case_lens_name);
-  for(int i = 0; i < poly_num_vars; i++)
+
+  for(int i = 0; i < poly_num_vars - 1; i++)
   {
-    fprintf(f, "const float out_%s = ", vnameo[i]);
+    fprintf(f, "out[%d] = ", i);
     poly_print(&system->poly[i], vnamei, f);
     fprintf(f, ";\n");
   }
+  fprintf(f, "out_transmittance = ");
+  poly_print(&system->poly[4], vnamei, f);
+  fprintf(f, ";\n");
+
   fprintf(f, "} break;\n");
 }
 

@@ -326,11 +326,9 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
 
   for(int i=0;i<lenses_cnt;i++)
   {
-    // untested
-    // something wrong with glass->air interfaces, they dont change when changing axis
     float rad = lenses[i].lens_radius;
     if (lenses[i].anamorphic){
-      if (!dim_up){ // sideview
+      if (dim_up){ // sideview
         if(lenses[i].cylinder_axis_y){
           rad = 999999.0;
         }
@@ -353,10 +351,9 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
     {
       cairo_save(cr);
 
-      // untested
       float rad2 = lenses[i+1].lens_radius;
       if (lenses[i+1].anamorphic){
-        if (!dim_up){ // sideview
+        if (dim_up){ // sideview
           if(lenses[i+1].cylinder_axis_y){
             rad2 = 999999.0;
           }
