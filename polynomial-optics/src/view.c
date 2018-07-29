@@ -403,6 +403,7 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
       cairo_close_path(cr);
       
       if (lenses[i+1].anamorphic) cairo_set_source_rgba(cr, yellow[0], yellow[1], yellow[2], yellow[3]);
+      else if (lenses[i+1].aspheric) cairo_set_source_rgba(cr, green[0], green[1], green[2], green[3]);
       else cairo_set_source_rgb(cr, grey[0], grey[1], grey[2]);
       cairo_fill_preserve(cr);
 
@@ -436,6 +437,7 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
 
       cairo_close_path(cr);
       if (lenses[i].anamorphic) cairo_set_source_rgba(cr, yellow[0], yellow[1], yellow[2], yellow[3]);
+      else if (lenses[i].aspheric) cairo_set_source_rgba(cr, green[0], green[1], green[2], green[3]);
       else cairo_set_source_rgb(cr, grey[0], grey[1], grey[2]);
       cairo_fill(cr);
 
