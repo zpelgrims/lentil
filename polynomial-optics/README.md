@@ -6,6 +6,11 @@ Added features:
 - Support for anamorphic lens elements in both axes
 - Read lens descriptions from JSON database
 
+1. Build the code by running ```. ./build.sh```.
+2. View a lens description
+3. Generate the polynomial code using ```src/database-to-code.sh int_lens_id int_focal_length```
+
+
 ![lens-drawing](./lens-drawing.svg)
 
 ------------------------
@@ -61,14 +66,14 @@ Description of the tools
 - __genpoly__: generates a generic polynomial with terms up to a defined _degree_
     and stores the polynomial to a binary file at a given _path_
     (_fit_ loads polynomials from _sorted.poly_)  
-    _example: ```./genpoly 11 sorted.poly```_
+    _example: ```./genpoly 11 tmp/sorted.poly```_
 - __parsepoly__: reads a csv file containing terms of a polynomial system and
     stores them in binary format (as _genpoly_ does)  
-    _example: ```./parsepoly poly.csv sorted.poly```_
+    _example: ```./parsepoly poly.csv tmp/sorted.poly```_
 - __printpoly__: reads a _binary_ polynomial file (e.g. the output from _genpoly_
     or _parsepoly_) and outputs the terms to console in a csv format (that could
     be read by _parsepoly_ again)  
-    _example: ```./printpoly sorted.poly```_
+    _example: ```./printpoly tmp/sorted.poly```_
 - __fit__: loads a generic polynomial from file _sorted.poly_ and fits the
     coefficients to a specified lens.  
     Additionally to the path to the _lensfile_ arguments can be set to limit
@@ -80,15 +85,17 @@ Description of the tools
     fitted polynomials for the outer pupil and sensor respectively. (These files
     have the same format as _.poly_-files and can hence, be inspected using
     _printpoly_)  
-    _example: ```./fit lenses/fisheye-aspherical.fx 11 28```_
+    _example: ```./fit int_lens_id int_max_degree int_max_coefficients path/to_output/sorted.poly```
+    
+    _example: ```./fit 1 11 28 tmp/sorted.poly```
 - __view__: reads and draws a specified lens. If fitted polynomials were calculated,
     i.e. if _.fit_-files exist, both the aperture polynomial and the outer polynomial
     are evaluated as well such that their output can be compared to the ray-traced
-    reference.  
-    _example: ```./view lenses/fisheye-aspherical.fx```_
+    reference.
+    _example: ```./view int_lens_id int_focal_length```
 - __gencode__: generate code from a fitted polynomial. Creates header files for
     evaluating the polynomials transferring rays to the sensor / aperture, and
     for aperture sampling.  
-    _example: ```./gencode lenses/fisheye-aspherical.fx```_  
+    _example: ```./gencode int_lens_id int_focal_length```  
     For examples how to use the generated code see _render/lens.h_
 

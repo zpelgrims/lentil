@@ -1,3 +1,6 @@
 [submodule "pota"]
 	path = pota
 	url = https://github.com/zpelgrims/pota
+[submodule "Eigen"]
+	path = Eigen
+	url = https://github.com/eigenteam/eigen-git-mirror.git

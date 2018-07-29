@@ -22,6 +22,8 @@
 // ...
 // -----------------------------------------------
 // writes polynomial in binary format to file (path defined in second argument)
+
+
 int main(int argc, char *arg[])
 {
   if(argc < 3)

@@ -1,26 +1,26 @@
-CXX=clang++
+OS := $(shell uname)
+ifeq ($(OS), Darwin)
+	CXX=clang++
+endif
+ifeq ($(OS), Linux)
+	CXX=g++
+endif
 
-CXXFLAGS=\
--I/usr/local/include/cairo/\
--L/usr/local/lib\
--Wall\
--Iext/\
--D_GNU_SOURCE\
--fopenmp\
--std=c++11
+
+
+CXXFLAGS=-Wall -Iext/ -D_GNU_SOURCE -fopenmp -std=c++11
+ifeq ($(OS), Darwin)
+	CXXFLAGS += -I/usr/local/include/cairo/ -L/usr/local/lib
+endif
 
 # OPTFLAGS=-I. -ggdb3 -Isrc/
 
-OPTFLAGS=\
--O3\
--ffast-math\
--mfpmath=sse\
--march=native\
--fexpensive-optimizations\
--DNDEBUG\
--fno-finite-math-only\
--I.\
--Isrc/
+OPTFLAGS= -ffast-math -mfpmath=sse -march=native -fexpensive-optimizations -fno-finite-math-only -I. -Isrc/
+#OPTFLAGS= -O3 -DNDEBUG -ffast-math -mfpmath=sse -march=native -fexpensive-optimizations -fno-finite-math-only -I. -Isrc/
+ifeq ($(OS), Linux)
+	OPTFLAGS += -Wno-ignored-attributes -Wno-misleading-indentation
+endif
+
 
 LDFLAGS=-lm
 
@@ -34,16 +34,39 @@ src/spectrum.h
 
 .PHONY=all clean
 
-all: view fit gencode genpoly printpoly
 
+
+ifeq ($(OS), Darwin)
+    all: view fit gencode genpoly printpoly lenstable-to-json print-lens-path add-fitted-focal-length generate-lens-defines
+endif
+ifeq ($(OS), Linux)
+    all: generate-lens-defines fit gencode genpoly printpoly lenstable-to-json print-lens-path add-fitted-focal-length
+endif
+
+
+
+ifeq ($(OS), Darwin)
 view: Makefile src/view.c ${HEADERS}
 	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/view.c $(shell pkg-config --cflags --libs gtk+-2.0) ${LDFLAGS} -o bin/view ${LDFLAGS}
+endif
+
+lenstable-to-json: Makefile src/lenstable-to-json.cpp ${HEADERS}
+	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/lenstable-to-json.cpp -o bin/lenstable-to-json ${LDFLAGS}
+
+print-lens-path: Makefile src/print-lens-path.cpp ${HEADERS}
+	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/print-lens-path.cpp -o bin/print-lens-path ${LDFLAGS}
+
+add-fitted-focal-length: Makefile src/add-fitted-focal-length.cpp ${HEADERS}
+	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/add-fitted-focal-length.cpp -o bin/add-fitted-focal-length ${LDFLAGS}
+
+generate-lens-defines: Makefile src/generate-lens-defines.cpp ${HEADERS}
+	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/generate-lens-defines.cpp -o bin/generate-lens-defines ${LDFLAGS}
 
 fit: Makefile src/fit.c ${HEADERS}
 	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/fit.c -o bin/fit ${LDFLAGS}
 
 genpoly: Makefile src/genpoly.c ${HEADERS}
-	${CXX} ${OPTFLAGS} ${CXXLAGS} src/genpoly.c -o bin/genpoly ${LDFLAGS}
+	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/genpoly.c -o bin/genpoly ${LDFLAGS}
 
 parsepoly: Makefile src/parsepoly.c ${HEADERS}
 	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/parsepoly.c -o bin/parsepoly ${LDFLAGS}
@@ -54,11 +77,17 @@ printpoly: Makefile src/printpoly.c ${HEADERS}
 gencode: Makefile src/gencode.c ${HEADERS}
 	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/gencode.c -o bin/gencode ${LDFLAGS}
 
-lt-aperture-sampling: Makefile src/sample_ap_lt.c init.h lt_sample_aperture.h ${HEADERS}
-	${CXX} ${OPTFLAGS} ${CXXFLAGS} -Irender/${lensname} src/sample_ap_lt.c -o bin/lt-aperture-sampling ${LDFLAGS}
-	
-glRender: Makefile src/render_gl.c
-	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/render_gl.c ${LDFLAGS} -o bin/glRender -lGLEW -lGL -lGLU -lglfw
 
-clean:
-	rm -f view fit gencode genpoly printpoly lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
+#lt-aperture-sampling: Makefile src/sample_ap_lt.c init.h lt_sample_aperture.h ${HEADERS}
+#	${CXX} ${OPTFLAGS} ${CXXFLAGS} -Irender/${lensname} src/sample_ap_lt.c -o bin/lt-aperture-sampling ${LDFLAGS}
+	
+#glRender: Makefile src/render_gl.c
+#	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/render_gl.c ${LDFLAGS} -o bin/glRender -lGLEW -lGL -lGLU -lglfw
+
+
+ifeq ($(OS), Darwin)
+clean: rm -f view fit gencode genpoly printpoly lenstable_to_json print-lens-path add-fitted-focal-length generate-lens-defines #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
+endif
+ifeq ($(OS), Linux)
+clean: rm -f fit gencode genpoly printpoly lenstable_to_json print-lens-path add-fitted-focal-length generate-lens-defines #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
+endif

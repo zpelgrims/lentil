@@ -23,6 +23,43 @@ inline float line_plane_y0_intersection(float ray_origin_x, float ray_origin_y, 
 }
 */
 
+/*
+// line line intersection for finding the principle plane
+// in 2d yz space, because ray is shot from x=0 into x=0 direction
+Eigen::Vector2d lineLineIntersection(Eigen::Vector3d line1_origin, Eigen::Vector3d line1_direction, Eigen::Vector3d line2_origin, Eigen::Vector3d line2_direction){
+    float A1 = line1_direction(1) - line1_origin(1);
+    float B1 = line1_origin(2) - line1_direction(2);
+    float C1 = A1 * line1_origin(2) + B1 * line1_origin(1);
+    float A2 = line2_direction(1) - line2_origin(1);
+    float B2 = line2_origin(2) - line2_direction(2);
+    float C2 = A2 * line2_origin(2) + B2 * line2_origin(1);
+    float delta = A1 * B2 - A2 * B1;
+    Eigen::Vector2d rv((B2 * C1 - B1 * C2) / delta, (A1 * C2 - A2 * C1) / delta);
+    return rv;
+}
+
+// line plane intersection with fixed intersection at y = 0
+Eigen::Vector3d linePlaneIntersection(Eigen::Vector3d rayOrigin, Eigen::Vector3d rayDirection) {
+    Eigen::Vector3d coord(100.0, 0.0, 100.0);
+    Eigen::Vector3d planeNormal(0.0, 1.0, 0.0);
+    rayDirection.normalize();
+    coord.normalize();
+    return rayOrigin + (rayDirection * (coord.dot(planeNormal) - planeNormal.dot(rayOrigin)) / planeNormal.dot(rayDirection));
+}
+
+// after last lens element:
+Eigen::Vector3d pp_line1start(0.0, rayOriginHeight, 0.0);
+Eigen::Vector3d pp_line1end(0.0, rayOriginHeight, 999999.0);
+Eigen::Vector3d pp_line2end(0.0, ray_origin.y + (ray_direction.y * 10000.0), ray_origin.z + (ray_direction.z * 10000.0));
+
+float principlePlaneDistance = lineLineIntersection(pp_line1start, pp_line1end, ray_origin, pp_line2end).x;
+float focalPointDistance = linePlaneIntersection(ray_origin, ray_direction).z;
+float tracedFocalLength = focalPointDistance - principlePlaneDistance;
+
+*/
+
+// need to put the focal length testing code into evaluate_draw? need to do it outside of the loop where all rays are calculated
+
 
 // evalute sensor to outer pupil:
 static inline int evaluate_draw(const lens_element_t *lenses, const int lenses_cnt, const float zoom, const float *in, float *out, cairo_t *cr, float scale, int dim_up, int draw_aspherical)
@@ -49,18 +86,10 @@ static inline int evaluate_draw(const lens_element_t *lenses, const int lenses_c
 
     //normal at intersection
     float n[3];
-
-    if(lenses[k].anamorphic){
-      if(lenses[k].cylinder_axis_y){ // cylinder is in y-axis
-        error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
-      } else { // cylinder is in x-axis
-        error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
-      }
-    }
-    /*
+    
     if(lenses[k].anamorphic)
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n);
-    */
+      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, lenses[k].cylinder_axis_y);
+    
     else if(draw_aspherical)
       error |= aspherical(pos, dir, &t, R, distsum + R, lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
     else
@@ -133,18 +162,10 @@ static inline int evaluate_reverse_draw(const lens_element_t *lenses, const int 
 
     //normal at intersection
     float n[3] = {0.0f};
-
-    if(lenses[k].anamorphic){
-      if(lenses[k].cylinder_axis_y){ // cylinder is in y-axis
-        error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
-      } else { // cylinder is in x-axis
-        error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
-      }
-    }
-    /*
+    
     if(lenses[k].anamorphic)
-      error |= cylindrical(pos, dir, &t, R, distsum - R, lenses[k].housing_radius, n);
-    */
+      error |= cylindrical(pos, dir, &t, R, distsum - R, lenses[k].housing_radius, n, lenses[k].cylinder_axis_y);
+    
     else if(draw_aspherical)
       error |= aspherical(pos, dir, &t, R, distsum - R, lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
     else
@@ -183,7 +204,7 @@ static inline int evaluate_reverse_draw(const lens_element_t *lenses, const int 
   cairo_line_to(cr, 0.0f, pos[dim_up] - pos[2]*dir[dim_up]/dir[2]);
   
   // print y=0 intersection
-  printf("pos[dim_up] - pos[2]*dir[dim_up]/dir[2]: %f\n", pos[dim_up] - pos[2]*dir[dim_up]/dir[2]);
+  // printf("pos[dim_up] - pos[2]*dir[dim_up]/dir[2]: %f\n", pos[dim_up] - pos[2]*dir[dim_up]/dir[2]);
   
   cairo_save(cr);
   cairo_scale(cr, 1/scale, 1/scale);

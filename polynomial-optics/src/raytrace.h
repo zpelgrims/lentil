@@ -1,4 +1,3 @@
-// for raytrace_dot etc
 #include "spectrum.h"
 #include "lenssystem.h"
 #include <stdio.h>
@@ -143,19 +142,29 @@ static inline int aspherical(float *pos, float *dir, float *dist, const float R,
 
 static inline int cylindrical(float *pos, float *dir, float *dist, float R, float center, float housing_rad, float *normal, bool cyl_y)
 {
-  const float scv[3] = {pos[0], 0, pos[2] - center};
-  const float a = raytrace_dot(dir, dir);
+  float scv[3] = {0.0, 0.0, 0.0};
 
+  if (cyl_y != 0){
+    scv[0] = pos[0];
+    scv[1] = 0;
+    scv[2] = pos[2] - center;
+  } else {
+    scv[0] = 0;
+    scv[1] = pos[0];
+    scv[2] = pos[2] - center;
+  }
+
+  const float a = raytrace_dot(dir, dir);
   const float b = 2 * raytrace_dot(dir, scv);
   const float c = raytrace_dot(scv, scv) - R*R;
+  
   const float discr = b*b-4*a*c;
   if(discr < 0.0f) return 4;
   int error = 0;
+
   float t = 0.0f;
-  if(R > 0.0f)
-    t   = (-b-sqrtf(discr))/(2*a);
-  else if(R < 0.0f)
-    t = (-b+sqrtf(discr))/(2*a);
+  if(R > 0.0f)      t = (-b-sqrtf(discr))/(2*a);
+  else if(R < 0.0f) t = (-b+sqrtf(discr))/(2*a);
 
   propagate(pos, dir, t);
   error |= (int)(pos[0]*pos[0] + pos[1]*pos[1] > housing_rad*housing_rad)<<4;
@@ -168,146 +177,6 @@ static inline int cylindrical(float *pos, float *dir, float *dist, float R, floa
   return error;
 }
 
-
-// cylinder intersections with options for both x and y axis cylinders
-// switch between x^2 + z^2 = r^2 (y-axis) and y^2 + z^2 = r^2 (x-axis)
-static inline int cylindrical_xy(float *pos, float *dir, float *dist, float R, float center, float housing_rad, float *normal, bool cyl_y)
-{
-    // translate the ray origin
-    const float p0[3] = {pos[0], pos[1], pos[2] - center};
-
-    // coefficients for the intersection equation
-    // got them mathematically intersecting the line equation with the cylinder equation
-    float a = 0.0;
-    float b = 0.0;
-    float c = 0.0;
-
-    if (cyl_y){
-        a = dir[0]*dir[0] + dir[2]*dir[2];
-        b = dir[0]*p0[0] + dir[2]*p0[2];
-        c = p0[0]*p0[0] + p0[2]*p0[2] - R*R;
-    } else {
-        a = dir[1]*dir[1] + dir[2]*dir[2];
-        b = dir[1]*p0[1] + dir[2]*p0[2];
-        c = p0[1]*p0[1] + p0[2]*p0[2] - R*R;
-    }
-
-    const double discr = b*b - a*c;
-
-    //use epsilon because of computation errors between doubles
-    const double epsilon = 0.00000001;
-
-    // discr < 0 means no intersections
-    if (discr < epsilon) return 4;
-
-    int error = 0;
-	  
-    // solve quadratic to find intersection points
-    float t = 0.0;
-    if(R > 0.0f)       t = (-b - sqrt (discr))/a;
-    else if (R < 0.0f) t = (-b + sqrt (discr))/a;
-
-    // t<0 means the intersection is behind the ray origin, which we don't want
-    if (t<=epsilon)
-      return 4;
-
-    //printf("old position: %f %f %f\n", pos[0], pos[1], pos[2]);
-    propagate(pos, dir, t);
-    //printf("new position: %f %f %f\n", pos[0], pos[1], pos[2]);
-    
-    error |= (int)(pos[0]*pos[0] + pos[1]*pos[1] > housing_rad*housing_rad)<<4;
-
-    if (cyl_y){
-        normal[0] = pos[0]/R;
-        normal[1] = 0.0f;
-        normal[2] = (pos[2] - center)/R;
-    } else {
-        normal[0] = 0.0f;
-        normal[1] = pos[1]/R;
-        normal[2] = (pos[2] - center)/R;
-    }
-
-    *dist = t;
-
-    //printf("normal: %f %f %f\n", normal[0], normal[1], normal[2]);
-    //printf("distance: %f\n", dist);
-
-    return error;
-}
-
-/* std::vector format
-// cylinder intersections with options for both x and y axis cylinders
-// instead of x^2 + z^2 = r^2, need to do y^2 + z^2 = r^2
-static inline int cylindrical_xy(std::vector<float> &pos, std::vector<float> &dir, float &dist, float R, float center, float housing_rad, std::vector<float> &normal, bool cyl_y)
-{
-    // translate the ray origin
-    std::vector<float> p0 = {pos[0], pos[1], pos[2] - center};
-
-    // coefficients for the intersection equation
-    // got them mathematically intersecting the line equation with the cylinder equation
-    float a = 0.0;
-    float b = 0.0;
-    float c = 0.0;
-
-    if (cyl_y){
-        a = dir[0]*dir[0] + dir[2]*dir[2];
-        b = dir[0]*p0[0] + dir[2]*p0[2];
-        c = p0[0]*p0[0] + p0[2]*p0[2] - R*R;
-    } else {
-        a = dir[1]*dir[1] + dir[2]*dir[2];
-        b = dir[1]*p0[1] + dir[2]*p0[2];
-        c = p0[1]*p0[1] + p0[2]*p0[2] - R*R;
-    }
-
-    double discr = b*b - a*c;
-
-    //use epsilon because of computation errors between doubles
-    double epsilon = 0.00000001;
-
-    // discr < 0 means no intersections
-    if (discr < epsilon){
-      return 4;
-    }
-
-    int error = 0;
-
-	  // solve quadratic to find intersection points
-    float t = 0.0;
-    if(R > 0.0f){
-        t = (-b - sqrt (discr))/a;
-    } else if (R < 0.0f){
-        t = (-b + sqrt (discr))/a;
-    }
-
-    // t<0 means the intersection is behind the ray origin
-    // which we don't want
-    if (t<=epsilon)
-      return 4;
-
-    //printf("old position: %f %f %f\n", pos[0], pos[1], pos[2]);
-    propagate(pos, dir, t);
-    //printf("new position: %f %f %f\n", pos[0], pos[1], pos[2]);
-    
-    error |= (int)(pos[0]*pos[0] + pos[1]*pos[1] > housing_rad*housing_rad)<<4;
-
-    if (cyl_y){
-        normal[0] = pos[0]/R;
-        normal[1] = 0.0f;
-        normal[2] = (pos[2] - center)/R;
-    } else {
-        normal[0] = 0.0f;
-        normal[1] = pos[1]/R;
-        normal[2] = (pos[2] - center)/R;
-    }
-
-    *dist = t;
-
-    //printf("normal: %f %f %f\n", normal[0], normal[1], normal[2]);
-    //printf("distance: %f\n", dist);
-
-    return error;
-}
-*/
 
 static inline float fresnel(const float n1, const float n2, const float cosr, const float cost)
 {
@@ -429,16 +298,8 @@ static inline int evaluate(const lens_element_t *lenses, const int lenses_cnt, c
     //normal at intersection
     float n[3] = {0.0f};
 
-    if(lenses[k].anamorphic){
-      if(lenses[k].cylinder_axis_y){ // cylinder is in y-axis
-        error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
-      } else { // cylinder is in x-axis
-        error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
-      }
-    }/*
     if(lenses[k].anamorphic)
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n);
-    */
+      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, lenses[k].cylinder_axis_y);
     else if(aspheric)
       error |= aspherical(pos, dir, &t, R, distsum + R, lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
     else
@@ -484,16 +345,8 @@ static inline int evaluate_reverse(const lens_element_t *lenses, const int lense
     //normal at intersection
     float n[3] = {0.0};
 
-    if(lenses[k].anamorphic){
-      if(lenses[k].cylinder_axis_y){ // cylinder is in y-axis
-        error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
-      } else { // cylinder is in x-axis
-        error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
-      }
-    }/*
     if(lenses[k].anamorphic)
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n);
-    */
+      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, lenses[k].cylinder_axis_y);
     else if(aspheric)
       error |= aspherical(pos, dir, &t, R, distsum + R, lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
     else
@@ -544,16 +397,8 @@ static inline int evaluate_aperture(const lens_element_t *lenses, const int lens
     //normal at intersection
     float n[3] = {0.0f};
 
-    if(lenses[k].anamorphic){
-      if(lenses[k].cylinder_axis_y){ // cylinder is in y-axis
-        error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
-      } else { // cylinder is in x-axis
-        error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
-      }
-    }/*
     if(lenses[k].anamorphic)
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n);
-    */
+      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, lenses[k].cylinder_axis_y);
     else if(aspheric)
       error |= aspherical(pos, dir, &t, R, distsum + R, lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
     else
@@ -600,16 +445,8 @@ static inline int evaluate_aperture_reverse(const lens_element_t *lenses, const 
     //normal at intersection
     float n[3];
 
-    if(lenses[k].anamorphic){
-      if(lenses[k].cylinder_axis_y){ // cylinder is in y-axis
-        error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
-      } else { // cylinder is in x-axis
-        error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
-      }
-    }/*
     if(lenses[k].anamorphic)
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n);
-      */
+      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, lenses[k].cylinder_axis_y);
     else if(aspheric)
       error |= aspherical(pos, dir, &t, R, distsum + R, lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
     else
