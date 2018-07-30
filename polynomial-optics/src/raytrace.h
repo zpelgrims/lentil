@@ -144,12 +144,12 @@ static inline int cylindrical(float *pos, float *dir, float *dist, float R, floa
 {
   float scv[3] = {0.0, 0.0, 0.0};
 
-  if (cyl_y != 0){
+  if (cyl_y){
     scv[0] = pos[0];
-    scv[1] = 0;
+    scv[1] = 0.0f;
     scv[2] = pos[2] - center;
   } else {
-    scv[0] = 0;
+    scv[0] = 0.0f;
     scv[1] = pos[0];
     scv[2] = pos[2] - center;
   }
@@ -169,9 +169,15 @@ static inline int cylindrical(float *pos, float *dir, float *dist, float R, floa
   propagate(pos, dir, t);
   error |= (int)(pos[0]*pos[0] + pos[1]*pos[1] > housing_rad*housing_rad)<<4;
 
-  normal[0] = pos[0]/R;
-  normal[1] = 0.0f;
-  normal[2] = (pos[2] - center)/R;
+  if (cyl_y){
+    normal[0] = pos[0]/R;
+    normal[1] = 0.0f;
+    normal[2] = (pos[2] - center)/R;
+  } else {
+    normal[0] = 0.0f;
+    normal[1] = pos[0]/R;
+    normal[2] = (pos[2] - center)/R;
+  }
 
   *dist = t;
   return error;

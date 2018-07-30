@@ -17,6 +17,7 @@ using json = nlohmann::json;
 typedef struct lens_element_t
 {
   float lens_radius;
+  float lens_radius_original;
   float thickness_short;
   float thickness_mid;
   float thickness_long;
@@ -196,7 +197,8 @@ int lens_configuration(lens_element_t *l, const char *id, int target_focal_lengt
       lens_element_t lens;
       memset(&lens, 0, sizeof(lens_element_t));
 
-      lens.lens_radius = scale * json_lens_element["radius"].get<float>();      
+      lens.lens_radius = scale * json_lens_element["radius"].get<float>();
+      lens.lens_radius_original = scale * json_lens_element["radius"].get<float>();     
       lens.housing_radius = scale * json_lens_element["housing-radius"].get<float>();
 
       

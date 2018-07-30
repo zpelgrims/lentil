@@ -89,7 +89,6 @@ static inline int evaluate_draw(const lens_element_t *lenses, const int lenses_c
     
     if(lenses[k].anamorphic)
       error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, lenses[k].cylinder_axis_y);
-    
     else if(draw_aspherical)
       error |= aspherical(pos, dir, &t, R, distsum + R, lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
     else
@@ -163,9 +162,14 @@ static inline int evaluate_reverse_draw(const lens_element_t *lenses, const int 
     //normal at intersection
     float n[3] = {0.0f};
     
-    if(lenses[k].anamorphic)
-      error |= cylindrical(pos, dir, &t, R, distsum - R, lenses[k].housing_radius, n, lenses[k].cylinder_axis_y);
-    
+    if(lenses[k].anamorphic){
+      //if (dim_up == true){
+        error |= cylindrical(pos, dir, &t, R, distsum - R, lenses[k].housing_radius, n, lenses[k].cylinder_axis_y);
+      //}
+      //else {
+      //  error |= cylindrical(pos, dir, &t, R, distsum - R, lenses[k].housing_radius, n, !lenses[k].cylinder_axis_y);
+      //}
+    }
     else if(draw_aspherical)
       error |= aspherical(pos, dir, &t, R, distsum - R, lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
     else
@@ -174,6 +178,7 @@ static inline int evaluate_reverse_draw(const lens_element_t *lenses, const int 
     if(n[2] < 0.0) error |= 16;
 
     cairo_line_to(cr, pos[2], pos[dim_up]);
+    
 
     // index of refraction and ratio current/next:
     const float n2 = spectrum_eta_from_abbe_um(lenses[k].ior, lenses[k].vno, in[4]);
@@ -191,6 +196,14 @@ static inline int evaluate_reverse_draw(const lens_element_t *lenses, const int 
       cairo_restore(cr);
       return error;
     }
+
+
+    // trying to draw dots on intersection points
+    cairo_set_source_rgba(cr, 1.0, 0.2, 0.2, 1.0);
+    cairo_arc(cr, pos[2], pos[dim_up], 0.25, 0, 2 * M_PI);
+	  cairo_fill(cr);
+    cairo_set_source_rgba(cr, 0.5, 0.5, 0.5, 1.0);
+
 
     // and renormalise:
     raytrace_normalise(dir);
