@@ -26,7 +26,7 @@ using json = nlohmann::json;
 static float zoom = 0.0f; // zoom, if the lens supports it.
 //static const int degree = 4;  // degree of the polynomial. 1 is thin lens
 //static const float coverage = .5f; // coverage of incoming rays at scene facing pupil (those you point with the mouse)
-static int num_rays = 50;//50;
+static int num_rays = 100;
 static int dim_up = 0; // plot yz (side) or xz (top) of the lens in 2d?
 static char lensfilename[512] = "";
 static char lens_name[512];
@@ -64,6 +64,7 @@ float lightgrey[4] = {0.7, 0.7, 0.7, 1.0};
 float yellow[4] = {0.949, 0.882, 0.749, 0.65};
 float green[4] = {0.749, 0.949, 0.874, 1.0};
 float white50[4] = {1.0, 1.0, 1.0, 0.5};
+float mint[4] = {0.631, 1.0, 0.78, 0.5};
 
 static gboolean
 motion_notify(GtkWidget *widget, GdkEventMotion *event, gpointer user_data)
@@ -223,7 +224,7 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
   cairo_set_line_width(cr, 1.0f);
 
   // optical axis:
-  cairo_set_source_rgb(cr, white50[0], white50[1], white50[2]);
+  cairo_set_source_rgb(cr, 0.6, 0.6, 0.6);
   cairo_move_to(cr, 0, height/2.0);
   cairo_line_to(cr, width, height/2.0);
   cairo_stroke(cr);
@@ -328,12 +329,9 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
   {
     float rad = lenses[i].lens_radius;
     if (lenses[i].anamorphic){
-      if (dim_up && lenses[i].cylinder_axis_y) rad = 99999.0;
-      else if (!dim_up == 1 && !lenses[i].cylinder_axis_y) rad = 99999.0;
+      if (dim_up == 1 && lenses[i].cylinder_axis_y) rad = 99999.0;
+      else if (dim_up == 0 && !lenses[i].cylinder_axis_y) rad = 99999.0;
     }
-    //lenses[i].lens_radius = rad;
-    //float rad = (dim_up && lenses[i].anamorphic) ? 900000.0 : lenses[i].lens_radius;
-    
     
     float hrad = lenses[i].housing_radius;
     float t = lens_get_thickness(lenses+i, zoom);
@@ -347,12 +345,9 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
 
       float rad2 = lenses[i+1].lens_radius;
       if (lenses[i+1].anamorphic){
-        if (dim_up && lenses[i+1].cylinder_axis_y) rad2 = 99999.0;
-        else if (!dim_up == 1 && !lenses[i+1].cylinder_axis_y) rad2 = 99999.0;
+        if (dim_up == 1 && lenses[i+1].cylinder_axis_y) rad2 = 99999.0;
+        else if (dim_up == 0 && !lenses[i+1].cylinder_axis_y) rad2 = 99999.0;
       }
-      //test lenses[i+1].lens_radius = rad2;
-      //float rad2 = (dim_up && lenses[i+1].anamorphic) ? 900000.0 : lenses[i+1].lens_radius;
-
 
       float hrad2 = lenses[i+1].housing_radius;
       float off  = rad  > 0.0f ? 0.0f : M_PI;
@@ -390,12 +385,12 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
       }
       cairo_close_path(cr);
       
-      if (lenses[i+1].anamorphic) cairo_set_source_rgba(cr, yellow[0], yellow[1], yellow[2], yellow[3]);
+      if (lenses[i+1].anamorphic) cairo_set_source_rgba(cr, mint[0], mint[1], mint[2], mint[3]);
       else if (lenses[i+1].aspheric) cairo_set_source_rgba(cr, green[0], green[1], green[2], green[3]);
       else cairo_set_source_rgb(cr, grey[0], grey[1], grey[2]);
       cairo_fill_preserve(cr);
 
-      cairo_set_source_rgb(cr, lightgrey[0] + 0.1f, lightgrey[1] + 0.1f, lightgrey[2] + 0.1f);
+      cairo_set_source_rgb(cr, lightgrey[0], lightgrey[1], lightgrey[2]);
       stroke_with_pencil(cr, scale, 40.0/width);
 
       cairo_restore(cr);
@@ -424,7 +419,7 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
       stroke_with_pencil(cr, scale, 40./width);
 
       cairo_close_path(cr);
-      if (lenses[i].anamorphic) cairo_set_source_rgba(cr, yellow[0], yellow[1], yellow[2], yellow[3]);
+      if (lenses[i].anamorphic) cairo_set_source_rgba(cr, mint[0], mint[1], mint[2], mint[3]);
       else if (lenses[i].aspheric) cairo_set_source_rgba(cr, green[0], green[1], green[2], green[3]);
       else cairo_set_source_rgb(cr, grey[0], grey[1], grey[2]);
       cairo_fill(cr);
@@ -444,7 +439,6 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
   cairo_set_source_rgb(cr, grey[0], grey[1], grey[2]);
   cairo_fill(cr);
 
-  cairo_set_source_rgb(cr, lightgrey[0], lightgrey[1], lightgrey[2]);
 
   const float len = lens_length/10.0f;
 
