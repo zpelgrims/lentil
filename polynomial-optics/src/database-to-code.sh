@@ -13,28 +13,28 @@ echo "LENS ID: " $LENS_ID
 echo "FOCAL LENGTH: " $LENS_FOCAL_LENGTH
 
 # generate lens name from database id
-read LENS_NAME <<< $($LENTIL_PATH/bin/print-lens-path $LENS_ID $LENS_FOCAL_LENGTH $i)
-echo "LENS_NAME: " $LENS_NAME
+read LENS_NAME <<< $($LENTIL_PATH/bin/print-lens-path $LENS_ID $LENS_FOCAL_LENGTH $i) &&
+echo "LENS_NAME: " $LENS_NAME &&
 
 # generate empty polynomial
-mkdir -p -v $LENTIL_PATH/data/tmp/$LENS_ID/$LENS_FOCAL_LENGTH/
-$LENTIL_PATH/bin/genpoly 11 $LENTIL_PATH/data/tmp/$LENS_ID/$LENS_FOCAL_LENGTH/sorted.poly
+mkdir -p -v $LENTIL_PATH/data/tmp/$LENS_ID/$LENS_FOCAL_LENGTH/ &&
+$LENTIL_PATH/bin/genpoly 11 $LENTIL_PATH/data/tmp/$LENS_ID/$LENS_FOCAL_LENGTH/sorted.poly &&
 
 # compute polynomials
-mkdir -p -v $LENTIL_PATH/database/lenses/$LENS_NAME/$LENS_FOCAL_LENGTH/fitted/
-$LENTIL_PATH/bin/fit $LENS_ID $LENS_FOCAL_LENGTH 11 28 $LENTIL_PATH/data/tmp/$LENS_ID/$LENS_FOCAL_LENGTH/sorted.poly
+mkdir -p -v $LENTIL_PATH/database/lenses/$LENS_NAME/$LENS_FOCAL_LENGTH/fitted/ &&
+$LENTIL_PATH/bin/fit $LENS_ID $LENS_FOCAL_LENGTH 11 28 $LENTIL_PATH/data/tmp/$LENS_ID/$LENS_FOCAL_LENGTH/sorted.poly &&
 
 # generate code from .fit files
-mkdir -p -v $LENTIL_PATH/database/lenses/$LENS_NAME/$LENS_FOCAL_LENGTH/code/
-$LENTIL_PATH/bin/gencode $LENS_ID $LENS_FOCAL_LENGTH
+mkdir -p -v $LENTIL_PATH/database/lenses/$LENS_NAME/$LENS_FOCAL_LENGTH/code/ &&
+$LENTIL_PATH/bin/gencode $LENS_ID $LENS_FOCAL_LENGTH &&
 
 # add fitted focal length to json database
-$LENTIL_PATH/bin/add-fitted-focal-length $LENS_ID $LENS_FOCAL_LENGTH
-echo "Added " $LENS_FOCAL_LENGTH " to list of fitted focal lengths."
+$LENTIL_PATH/bin/add-fitted-focal-length $LENS_ID $LENS_FOCAL_LENGTH &&
+echo "Added " $LENS_FOCAL_LENGTH " to list of fitted focal lengths." &&
 
 # auto-generate lens defines
-$LENTIL_PATH/bin/generate-lens-defines
+$LENTIL_PATH/bin/generate-lens-defines &&
 
 # cleanup
-rm -rf -v $LENTIL_PATH/data/tmp/$LENS_ID/$LENS_FOCAL_LENGTH
+rm -rf -v $LENTIL_PATH/data/tmp/$LENS_ID/$LENS_FOCAL_LENGTH &&
 rm -d -v $LENTIL_PATH/data/tmp/$LENS_ID

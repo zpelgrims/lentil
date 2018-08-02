@@ -1172,7 +1172,7 @@
       {
         "abbe": 46.62,
         "aspherical-equation": null,
-        "housing-radius": 13.48,
+        "housing-radius": 11.10,
         "ior": 1.816,
         "lens-geometry": "cyl-y",
         "material": "SLAH59",
@@ -1182,7 +1182,7 @@
       {
         "abbe": null,
         "aspherical-equation": null,
-        "housing-radius": 13.22,
+        "housing-radius": 9.6,
         "ior": null,
         "lens-geometry": "cyl-y",
         "material": "air",
@@ -1192,7 +1192,7 @@
       {
         "abbe": 47.23,
         "aspherical-equation": null,
-        "housing-radius": 12.84,
+        "housing-radius": 9.3,
         "ior": 1.67003,
         "lens-geometry": "cyl-y",
         "material": "SBAH10",
@@ -1202,7 +1202,7 @@
       {
         "abbe": null,
         "aspherical-equation": null,
-        "housing-radius": 12.77,
+        "housing-radius": 8.8,
         "ior": null,
         "lens-geometry": "cyl-y",
         "material": "air",
@@ -1300,7 +1300,7 @@
   "4": {
     "commercial": false,
     "production-ready": true,
-    "company": "Panavision & Angenieux",
+    "company": "Panavision-Angenieux",
     "focal-length-mm-patent": 100.0,
     "focal-length-mm-raytraced": null,
     "fstop": null,
@@ -1455,7 +1455,7 @@
         "lens-geometry": "spherical",
         "material": "air",
         "radius": -203.55,
-        "thickness": 10.742
+        "thickness": 1.0
       },
       {
         "abbe": 46.62,
@@ -1480,7 +1480,7 @@
       {
         "abbe": 46.62,
         "aspherical-equation": null,
-        "housing-radius": 13.48,
+        "housing-radius": 13.4,
         "ior": 1.816,
         "lens-geometry": "cyl-y",
         "material": "SLAH59",
@@ -1595,14 +1595,14 @@
         "lens-geometry": "cyl-x",
         "material": "air",
         "radius": 261.747,
-        "thickness": 15.231
+        "thickness": 39.25
       }
     ],
     "patent-location": null,
     "patent-number": null,
     "polynomial-optics": [],
     "prime": true,
-    "product-name": null,
+    "product-name": "rear-anamorph-double-gauss",
     "year": 2006
   },
   "5": {
