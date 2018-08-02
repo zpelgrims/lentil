@@ -326,15 +326,12 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
 
   for(int i=0;i<lenses_cnt;i++)
   {
-    float rad = lenses[i].lens_radius_original;
+    float rad = lenses[i].lens_radius;
     if (lenses[i].anamorphic){
-      if (!dim_up){ // sideview
-        if(lenses[i].cylinder_axis_y)   rad = 99999.0;
-      } else { // topview
-        if(!lenses[i].cylinder_axis_y)  rad = 99999.0;
-      }
+      if (dim_up && lenses[i].cylinder_axis_y) rad = 99999.0;
+      else if (!dim_up == 1 && !lenses[i].cylinder_axis_y) rad = 99999.0;
     }
-    lenses[i].lens_radius = rad;
+    //lenses[i].lens_radius = rad;
     //float rad = (dim_up && lenses[i].anamorphic) ? 900000.0 : lenses[i].lens_radius;
     
     
@@ -348,13 +345,10 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
     {
       cairo_save(cr);
 
-      float rad2 = lenses[i+1].lens_radius_original;
+      float rad2 = lenses[i+1].lens_radius;
       if (lenses[i+1].anamorphic){
-        if (!dim_up){ // sideview
-          if(lenses[i+1].cylinder_axis_y)   rad2 = 99999.0;
-        } else { // topview
-          if(!lenses[i+1].cylinder_axis_y)  rad2 = 99999.0;
-        }
+        if (dim_up && lenses[i+1].cylinder_axis_y) rad2 = 99999.0;
+        else if (!dim_up == 1 && !lenses[i+1].cylinder_axis_y) rad2 = 99999.0;
       }
       //test lenses[i+1].lens_radius = rad2;
       //float rad2 = (dim_up && lenses[i+1].anamorphic) ? 900000.0 : lenses[i+1].lens_radius;

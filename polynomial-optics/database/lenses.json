@@ -319,6 +319,66 @@
     "product-name": "double-gauss",
     "year": 1953
   },
+  "998": {
+    "commercial": false,
+    "production-ready": true,
+    "company": "angenieux",
+    "focal-length-mm-patent": 100.0,
+    "focal-length-mm-raytraced": null,
+    "fstop": null,
+    "implementation-version": null,
+    "notes": "large aperture six element objective, nice swirly bokeh",
+    "optical-elements-adjusted": [
+      {
+        "abbe": 32.3,
+        "aspherical-equation": null,
+        "housing-radius": 54,
+        "ior": 1.6751,
+        "lens-geometry": "spherical",
+        "material": "SF5",
+        "radius": 164.13,
+        "thickness": 10.99
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 54,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 559.2,
+        "thickness": 0.23
+      }
+    ],
+    "optical-elements-patent": [
+      {
+        "abbe": 32.3,
+        "aspherical-equation": null,
+        "housing-radius": 54,
+        "ior": 1.6751,
+        "lens-geometry": "spherical",
+        "material": "SF5",
+        "radius": 164.13,
+        "thickness": 10.99
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 54,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 559.2,
+        "thickness": 0.23
+      }
+    ],
+    "patent-location": "https://patentimages.storage.googleapis.com/2f/75/dd/b76ccb73bc0f44/US2701982.pdf",
+    "patent-number": "US2701982",
+    "polynomial-optics": [100],
+    "prime": true,
+    "product-name": "double-gauss",
+    "year": 1953
+  },
   "10": {
     "commercial": false,
     "production-ready": true,

@@ -163,12 +163,7 @@ static inline int evaluate_reverse_draw(const lens_element_t *lenses, const int 
     float n[3] = {0.0f};
     
     if(lenses[k].anamorphic){
-      //if (dim_up == true){
         error |= cylindrical(pos, dir, &t, R, distsum - R, lenses[k].housing_radius, n, lenses[k].cylinder_axis_y);
-      //}
-      //else {
-      //  error |= cylindrical(pos, dir, &t, R, distsum - R, lenses[k].housing_radius, n, !lenses[k].cylinder_axis_y);
-      //}
     }
     else if(draw_aspherical)
       error |= aspherical(pos, dir, &t, R, distsum - R, lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
@@ -197,13 +192,13 @@ static inline int evaluate_reverse_draw(const lens_element_t *lenses, const int 
       return error;
     }
 
-
-    // trying to draw dots on intersection points
+    /*
+    // trying to draw dots on intersection points, needs work
     cairo_set_source_rgba(cr, 1.0, 0.2, 0.2, 1.0);
     cairo_arc(cr, pos[2], pos[dim_up], 0.25, 0, 2 * M_PI);
 	  cairo_fill(cr);
     cairo_set_source_rgba(cr, 0.5, 0.5, 0.5, 1.0);
-
+    */
 
     // and renormalise:
     raytrace_normalise(dir);

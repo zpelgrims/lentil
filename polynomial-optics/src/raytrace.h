@@ -150,7 +150,7 @@ static inline int cylindrical(float *pos, float *dir, float *dist, float R, floa
     scv[2] = pos[2] - center;
   } else {
     scv[0] = 0.0f;
-    scv[1] = pos[0];
+    scv[1] = pos[1];
     scv[2] = pos[2] - center;
   }
 
@@ -175,7 +175,7 @@ static inline int cylindrical(float *pos, float *dir, float *dist, float R, floa
     normal[2] = (pos[2] - center)/R;
   } else {
     normal[0] = 0.0f;
-    normal[1] = pos[0]/R;
+    normal[1] = pos[1]/R;
     normal[2] = (pos[2] - center)/R;
   }
 
