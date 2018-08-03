@@ -1,7 +1,6 @@
 {
   "1": {
     "commercial": false,
-    "production-ready": true,
     "company": "angenieux",
     "focal-length-mm-patent": 100.0,
     "focal-length-mm-raytraced": null,
@@ -314,74 +313,16 @@
     ],
     "patent-location": "https://patentimages.storage.googleapis.com/2f/75/dd/b76ccb73bc0f44/US2701982.pdf",
     "patent-number": "US2701982",
-    "polynomial-optics": [100],
+    "polynomial-optics": [
+      100
+    ],
     "prime": true,
     "product-name": "double-gauss",
-    "year": 1953
-  },
-  "998": {
-    "commercial": false,
     "production-ready": true,
-    "company": "angenieux",
-    "focal-length-mm-patent": 100.0,
-    "focal-length-mm-raytraced": null,
-    "fstop": null,
-    "implementation-version": null,
-    "notes": "large aperture six element objective, nice swirly bokeh",
-    "optical-elements-adjusted": [
-      {
-        "abbe": 32.3,
-        "aspherical-equation": null,
-        "housing-radius": 54,
-        "ior": 1.6751,
-        "lens-geometry": "spherical",
-        "material": "SF5",
-        "radius": 164.13,
-        "thickness": 10.99
-      },
-      {
-        "abbe": null,
-        "aspherical-equation": null,
-        "housing-radius": 54,
-        "ior": null,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": 559.2,
-        "thickness": 0.23
-      }
-    ],
-    "optical-elements-patent": [
-      {
-        "abbe": 32.3,
-        "aspherical-equation": null,
-        "housing-radius": 54,
-        "ior": 1.6751,
-        "lens-geometry": "spherical",
-        "material": "SF5",
-        "radius": 164.13,
-        "thickness": 10.99
-      },
-      {
-        "abbe": null,
-        "aspherical-equation": null,
-        "housing-radius": 54,
-        "ior": null,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": 559.2,
-        "thickness": 0.23
-      }
-    ],
-    "patent-location": "https://patentimages.storage.googleapis.com/2f/75/dd/b76ccb73bc0f44/US2701982.pdf",
-    "patent-number": "US2701982",
-    "polynomial-optics": [100],
-    "prime": true,
-    "product-name": "double-gauss",
     "year": 1953
   },
   "10": {
     "commercial": false,
-    "production-ready": true,
     "company": "meyer-optik-goerlitz",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": null,
@@ -495,11 +436,11 @@
     "polynomial-optics": [],
     "prime": true,
     "product-name": "primoplan",
+    "production-ready": true,
     "year": 1936
   },
   "11": {
     "commercial": false,
-    "production-ready": true,
     "company": null,
     "focal-length-mm-patent": 150,
     "focal-length-mm-raytraced": null,
@@ -593,11 +534,11 @@
     "polynomial-optics": [],
     "prime": true,
     "product-name": "petzval",
+    "production-ready": true,
     "year": 1900
   },
   "12": {
     "commercial": false,
-    "production-ready": true,
     "company": "nikon",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": null,
@@ -761,11 +702,11 @@
     "polynomial-optics": [],
     "prime": true,
     "product-name": "retrofocus-wideangle",
+    "production-ready": true,
     "year": 1971
   },
   "13": {
     "commercial": false,
-    "production-ready": true,
     "company": "canon",
     "focal-length-mm-patent": 14.2,
     "focal-length-mm-raytraced": null,
@@ -1039,11 +980,11 @@
     "polynomial-optics": [],
     "prime": true,
     "product-name": "retrofocus-wideangle",
+    "production-ready": true,
     "year": 1982
   },
   "14": {
     "commercial": false,
-    "production-ready": true,
     "company": "kodak",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": null,
@@ -1137,11 +1078,11 @@
     "polynomial-optics": [],
     "prime": true,
     "product-name": "petzval",
+    "production-ready": true,
     "year": 1948
   },
   "3": {
     "commercial": false,
-    "production-ready": true,
     "company": "Panavision",
     "focal-length-mm-patent": 100.0,
     "focal-length-mm-raytraced": null,
@@ -1172,7 +1113,7 @@
       {
         "abbe": 46.62,
         "aspherical-equation": null,
-        "housing-radius": 11.10,
+        "housing-radius": 11.1,
         "ior": 1.816,
         "lens-geometry": "cyl-y",
         "material": "SLAH59",
@@ -1295,11 +1236,11 @@
     "polynomial-optics": [],
     "prime": true,
     "product-name": null,
+    "production-ready": true,
     "year": 2006
   },
   "4": {
     "commercial": false,
-    "production-ready": true,
     "company": "Panavision-Angenieux",
     "focal-length-mm-patent": 100.0,
     "focal-length-mm-raytraced": null,
@@ -1600,14 +1541,16 @@
     ],
     "patent-location": null,
     "patent-number": null,
-    "polynomial-optics": [],
+    "polynomial-optics": [
+      100
+    ],
     "prime": true,
     "product-name": "rear-anamorph-double-gauss",
+    "production-ready": true,
     "year": 2006
   },
   "5": {
     "commercial": false,
-    "production-ready": true,
     "company": "zeiss",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": null,
@@ -1731,69 +1674,11 @@
     "polynomial-optics": [],
     "prime": true,
     "product-name": "biotar",
-    "year": 1927
-  },
-  "91": {
-    "commercial": false,
     "production-ready": true,
-    "company": "Panavision",
-    "focal-length-mm-patent": 100.0,
-    "focal-length-mm-raytraced": null,
-    "fstop": null,
-    "implementation-version": null,
-    "notes": "Rear anamorph. To be placed behind a primary spherical lens. Squeeze factor 1.34. Index of refraction and Abbe numbers not in patent, instead glass type is given. IOR and abbe taken from OHARA glass catalogue.",
-    "optical-elements-patent": [
-      {
-        "abbe": 46.62,
-        "aspherical-equation": null,
-        "housing-radius": 14.12,
-        "ior": 1.816,
-        "lens-geometry": "cyl-y",
-        "material": "SLAH59",
-        "radius": 136.373,
-        "thickness": 2.444
-      },
-      {
-        "abbe": null,
-        "aspherical-equation": null,
-        "housing-radius": 14.01,
-        "ior": null,
-        "lens-geometry": "cyl-y",
-        "material": "air",
-        "radius": -176.528,
-        "thickness": 8
-      },
-      {
-        "abbe": 46.62,
-        "aspherical-equation": null,
-        "housing-radius": 13.48,
-        "ior": 1.816,
-        "lens-geometry": "cyl-y",
-        "material": "SLAH59",
-        "radius": 19.172,
-        "thickness": 4.09
-      },
-      {
-        "abbe": null,
-        "aspherical-equation": null,
-        "housing-radius": 13.22,
-        "ior": null,
-        "lens-geometry": "cyl-y",
-        "material": "air",
-        "radius": 18.137,
-        "thickness": 20.765
-      }
-    ],
-    "patent-location": null,
-    "patent-number": "US 2006/0050403",
-    "polynomial-optics": [],
-    "prime": true,
-    "product-name": null,
-    "year": 2006
+    "year": 1927
   },
   "6": {
     "commercial": false,
-    "production-ready": true,
     "company": "asahi",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": null,
@@ -1947,11 +1832,11 @@
     "polynomial-optics": [],
     "prime": true,
     "product-name": "takumar",
+    "production-ready": true,
     "year": 1969
   },
   "7": {
     "commercial": false,
-    "production-ready": true,
     "company": "asahi",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": null,
@@ -2125,11 +2010,11 @@
     "polynomial-optics": [],
     "prime": true,
     "product-name": "takumar",
+    "production-ready": true,
     "year": 1970
   },
   "8": {
     "commercial": false,
-    "production-ready": true,
     "company": "asahi",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": null,
@@ -2353,11 +2238,11 @@
     "polynomial-optics": [],
     "prime": true,
     "product-name": "takumar",
+    "production-ready": true,
     "year": 1974
   },
   "9": {
     "commercial": false,
-    "production-ready": true,
     "company": "zeiss",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": null,
@@ -2501,6 +2386,65 @@
     "polynomial-optics": [],
     "prime": true,
     "product-name": "flektagon",
+    "production-ready": true,
     "year": 1954
+  },
+  "91": {
+    "commercial": false,
+    "company": "Panavision",
+    "focal-length-mm-patent": 100.0,
+    "focal-length-mm-raytraced": null,
+    "fstop": null,
+    "implementation-version": null,
+    "notes": "Rear anamorph. To be placed behind a primary spherical lens. Squeeze factor 1.34. Index of refraction and Abbe numbers not in patent, instead glass type is given. IOR and abbe taken from OHARA glass catalogue.",
+    "optical-elements-patent": [
+      {
+        "abbe": 46.62,
+        "aspherical-equation": null,
+        "housing-radius": 14.12,
+        "ior": 1.816,
+        "lens-geometry": "cyl-y",
+        "material": "SLAH59",
+        "radius": 136.373,
+        "thickness": 2.444
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 14.01,
+        "ior": null,
+        "lens-geometry": "cyl-y",
+        "material": "air",
+        "radius": -176.528,
+        "thickness": 8
+      },
+      {
+        "abbe": 46.62,
+        "aspherical-equation": null,
+        "housing-radius": 13.48,
+        "ior": 1.816,
+        "lens-geometry": "cyl-y",
+        "material": "SLAH59",
+        "radius": 19.172,
+        "thickness": 4.09
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 13.22,
+        "ior": null,
+        "lens-geometry": "cyl-y",
+        "material": "air",
+        "radius": 18.137,
+        "thickness": 20.765
+      }
+    ],
+    "patent-location": null,
+    "patent-number": "US 2006/0050403",
+    "polynomial-optics": [],
+    "prime": true,
+    "product-name": null,
+    "production-ready": true,
+    "year": 2006
   }
 }

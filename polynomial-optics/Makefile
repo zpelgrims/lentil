@@ -15,8 +15,8 @@ endif
 
 # OPTFLAGS=-I. -ggdb3 -Isrc/
 
-OPTFLAGS= -ffast-math -mfpmath=sse -march=native -fexpensive-optimizations -fno-finite-math-only -I. -Isrc/
-#OPTFLAGS= -O3 -DNDEBUG -ffast-math -mfpmath=sse -march=native -fexpensive-optimizations -fno-finite-math-only -I. -Isrc/
+#OPTFLAGS= -ffast-math -mfpmath=sse -march=native -fexpensive-optimizations -fno-finite-math-only -I. -Isrc/
+OPTFLAGS= -O3 -DNDEBUG -ffast-math -mfpmath=sse -march=native -fexpensive-optimizations -fno-finite-math-only -I. -Isrc/
 ifeq ($(OS), Linux)
 	OPTFLAGS += -Wno-ignored-attributes -Wno-misleading-indentation
 endif

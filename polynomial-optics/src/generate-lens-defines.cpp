@@ -63,8 +63,9 @@ int main(int argc, char *argv[])
 
 
   // print lenses
+  printf("\nList of implemented free lenses: \n");
   for (auto it : free_lens_ids) {
-    std::cout << it.first << " : ";
+    std::cout << "\t" << it.first << " : #";
     std::map<std::string, std::vector<int>> &internal_map = it.second;
     for (auto iterator_map: internal_map) {
         std::vector<int> &internal_vector = iterator_map.second;
@@ -77,6 +78,7 @@ int main(int argc, char *argv[])
         }
     }
   }
+  printf("\n");
 
 
 // =================================================================
