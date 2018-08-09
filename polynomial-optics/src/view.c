@@ -318,6 +318,18 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
     cairo_new_path(cr);
   }
 
+
+  // top/side text
+  cairo_move_to(cr, 0.0 - ruler_padding, max_housing_radius + ruler_padding*2);
+  std::string dim_up_text;
+  if (dim_up) dim_up_text = "dim_up = 1 [top]";
+  else        dim_up_text = "dim_up = 0 [side]";
+  char const *pchar = dim_up_text.c_str();
+  cairo_set_font_size(cr, 2.5);
+  cairo_show_text(cr, pchar);
+  cairo_new_path(cr);
+
+
   cairo_set_line_width(cr, 40.0/width);
   cairo_set_source_rgb(cr, lightgrey[0], lightgrey[1], lightgrey[2]);
 
@@ -601,49 +613,32 @@ int main(int argc, char *argv[])
   lens_pupil_rad  = lenses[lenses_cnt-1].housing_radius;
   aperture_rad = lens_get_aperture_radius(lenses, lenses_cnt);
 
-/*
-  int dump = 0;
-  if(argc > 2 && !strcmp(argv[2], "-o")) dump = 1;
-*/
   GtkWidget *window;
-/*
-  if(!dump)
-  {
-*/
-    gtk_init (&argc, &argv);
+  gtk_init (&argc, &argv);
 
-    window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(window), "Lens Validation");
-    gtk_window_resize(GTK_WINDOW(window), width, height);
-    gtk_window_set_resizable(GTK_WINDOW(window), FALSE);
+  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_window_set_title(GTK_WINDOW(window), "Lens Validation");
+  gtk_window_resize(GTK_WINDOW(window), width, height);
+  gtk_window_set_resizable(GTK_WINDOW(window), FALSE);
 
-    GtkWidget *area = gtk_drawing_area_new();
-    gtk_container_add(GTK_CONTAINER(window), area);
-    gtk_drawing_area_size(GTK_DRAWING_AREA(area), width, height);
-    gtk_widget_add_events(GTK_WIDGET(area), GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_LEAVE_NOTIFY_MASK);
+  GtkWidget *area = gtk_drawing_area_new();
+  gtk_container_add(GTK_CONTAINER(window), area);
+  gtk_drawing_area_size(GTK_DRAWING_AREA(area), width, height);
+  gtk_widget_add_events(GTK_WIDGET(area), GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_LEAVE_NOTIFY_MASK);
 
-    g_signal_connect(area, "expose-event", G_CALLBACK(expose), NULL);
-    g_signal_connect(area, "button-press-event", G_CALLBACK (button_press), NULL);
-    g_signal_connect(area, "key-press-event", G_CALLBACK (key_press), NULL);
-    g_signal_connect(area, "motion-notify-event", G_CALLBACK (motion_notify), NULL);
-    g_signal_connect(window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
+  g_signal_connect(area, "expose-event", G_CALLBACK(expose), NULL);
+  g_signal_connect(area, "button-press-event", G_CALLBACK (button_press), NULL);
+  g_signal_connect(area, "key-press-event", G_CALLBACK (key_press), NULL);
+  g_signal_connect(area, "motion-notify-event", G_CALLBACK (motion_notify), NULL);
+  g_signal_connect(window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
 
-    GTK_WIDGET_SET_FLAGS(area, GTK_CAN_FOCUS);
+  GTK_WIDGET_SET_FLAGS(area, GTK_CAN_FOCUS);
 
-    gtk_widget_show (window);
-    gtk_widget_show_all (window);
+  gtk_widget_show (window);
+  gtk_widget_show_all (window);
 
-    gtk_main ();
-  /*
-  }
-  else
-  {
-    screenshot = 1;
-    draw_solve_omega = 0;
-    draw_raytraced = 1;
-    draw_polynomials = 1;
-    expose(0, 0, 0);
-  }*/
+  gtk_main ();
+
 
   poly_system_destroy(&poly);
   poly_system_destroy(&poly_aperture);
