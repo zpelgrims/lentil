@@ -24,7 +24,7 @@ using json = nlohmann::json;
 #endif
 
 #ifndef FOCAL_LENGTH_CHECK
-#define FOCAL_LENGTH_CHECK
+//#define FOCAL_LENGTH_CHECK
 #endif
 
 static float zoom = 0.0f; // zoom, if the lens supports it.
@@ -52,6 +52,7 @@ static int draw_solve_omega = 0;
 static int draw_raytraced = 1;
 static int draw_polynomials = 1;
 static int draw_aspheric = 1;
+static int draw_focallength = 0;
 
 static int width = 900;
 static int height = 550;
@@ -106,16 +107,16 @@ key_press(GtkWidget *widget, GdkEventKey *event, gpointer user_data)
     gtk_widget_queue_draw(widget);
     return TRUE;
   }
-  /*
-  else if(event->keyval == GDK_KEY_i)
+  
+  else if(event->keyval == GDK_KEY_f)
   {
     // adjust lens position to focus perfectly at infinity
-    extra_space += 0.1;
-    printf("extra_space: %f\n", extra_space);
+    if (draw_focallength) draw_focallength = 0;
+    else draw_focallength = 1;
     gtk_widget_queue_draw(widget);
     return TRUE;
   }
-  */
+  
   else if(event->keyval == GDK_KEY_plus)
   {
     global_scale += 1;
@@ -457,8 +458,8 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
   cairo_fill(cr);
 
 
-
-  #ifdef FOCAL_LENGTH_CHECK
+  if(draw_focallength)
+  {
     // FORWARD TRACING/DRAWING, calculate focal length
     float cam_pos[3] = {0.0f};
     float cam_dir[3] = {0.0f};
@@ -482,111 +483,113 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
     int error = 0;
     if(draw_raytraced)
       error = evaluate_draw(lenses, lenses_cnt, zoom, inrt, outrt, cr, scale, dim_up, draw_aspheric, true, true);
-  #endif
+
+  } 
+  else 
+  {
+    //REVERSE DRAWING
+    const float len = lens_length/10.0f;
+    for(int k=0; k<num_rays; k++){
+
+      float cam_pos[3] = {0.0f};
+      float cam_dir[3] = {0.0f};
+
+      // y wedge
+      const float y = 2.0f * (num_rays/2-k)/(float)num_rays * lenses[0].housing_radius;
+      cam_pos[dim_up] = y;
 
 
-#ifndef FOCAL_LENGTH_CHECK
-  //REVERSE DRAWING
-  const float len = lens_length/10.0f;
-  for(int k=0; k<num_rays; k++){
-
-    float cam_pos[3] = {0.0f};
-    float cam_dir[3] = {0.0f};
-
-    // y wedge
-    const float y = 2.0f * (num_rays/2-k)/(float)num_rays * lenses[0].housing_radius;
-    cam_pos[dim_up] = y;
+      cam_dir[2] = cam_pos[2] - 99999;
+      cam_dir[dim_up] = cam_pos[dim_up];
+      raytrace_normalise(cam_dir);
+      for(int i=0;i<3;i++) cam_pos[i] -= 0.1f * cam_dir[i];
 
 
-    cam_dir[2] = cam_pos[2] - 99999;
-    cam_dir[dim_up] = cam_pos[dim_up];
-    raytrace_normalise(cam_dir);
-    for(int i=0;i<3;i++) cam_pos[i] -= 0.1f * cam_dir[i];
+      const float lambda = 0.5f;
+      float in[5] = {0.0f};
+      float out[5] = {0.0f};
+      float ap[5] = {0.0f};
+      float inrt[5] = {0.0f};
+      float outrt[5] = {0.0f};
+      inrt[4] = outrt[4] = in[4] = out[4] = ap[4] = lambda;
+      float t, n[3] = {0.0f};
+
+      // intersection with first lens element, but seems like a duplicate purpose of the algebra method above..
+      spherical(cam_pos, cam_dir, &t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n);
+      for(int i=0;i<3;i++) cam_dir[i] = - cam_dir[i]; // need to point away from surface (dot(n,dir) > 0)
+
+      csToSphere(cam_pos, cam_dir, in, in+2, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
+      sphereToCs(in, in + 2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
 
 
-    const float lambda = 0.5f;
-    float in[5] = {0.0f};
-    float out[5] = {0.0f};
-    float ap[5] = {0.0f};
-    float inrt[5] = {0.0f};
-    float outrt[5] = {0.0f};
-    inrt[4] = outrt[4] = in[4] = out[4] = ap[4] = lambda;
-    float t, n[3] = {0.0f};
+      for(int i=0;i<5;i++) inrt[i] = in[i];
 
-    // intersection with first lens element, but seems like a duplicate purpose of the algebra method above..
-    spherical(cam_pos, cam_dir, &t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n);
-    for(int i=0;i<3;i++) cam_dir[i] = - cam_dir[i]; // need to point away from surface (dot(n,dir) > 0)
-
-    csToSphere(cam_pos, cam_dir, in, in+2, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
-    sphereToCs(in, in + 2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
-
-
-    for(int i=0;i<5;i++) inrt[i] = in[i];
-
+      
+      int error = 0;
+      if(draw_raytraced)
+        error = evaluate_reverse_draw(lenses, lenses_cnt, zoom, inrt, outrt, cr, scale, dim_up, draw_aspheric);
+      else
+        error = evaluate_reverse(lenses, lenses_cnt, zoom, inrt, outrt, draw_aspheric);
+      
     
-    int error = 0;
-    if(draw_raytraced)
-      error = evaluate_reverse_draw(lenses, lenses_cnt, zoom, inrt, outrt, cr, scale, dim_up, draw_aspheric);
-    else
-      error = evaluate_reverse(lenses, lenses_cnt, zoom, inrt, outrt, draw_aspheric);
-    
-   
-    // ray color:
-    hsl[0] = k/(num_rays+1.);
-    hsl[1] = .7f;
-    hsl[2] = .5f;
-    hsl_2_rgb(hsl, rgb);
+      // ray color:
+      hsl[0] = k/(num_rays+1.);
+      hsl[1] = .7f;
+      hsl[2] = .5f;
+      hsl_2_rgb(hsl, rgb);
 
-    if(!error)
-    {
-      // evaluate sensor -> light
-      for(int i=0;i<5;i++) in[i] = outrt[i];
-      in[2] = -in[2];
-      in[3] = -in[3];
-      //outrt[4] equals transmittance
-      in[4] = lambda;
-      poly_system_evaluate(&poly, in, out, 15);
-    }
-
-    if(!error && draw_polynomials)
-    {
-      // draw everything grayed out in case it got killed on the aperture
-      poly_system_evaluate(&poly_aperture, in, ap, 15);
-      const int aperture_death = (ap[0]*ap[0] + ap[1]*ap[1] > aperture_rad*aperture_rad);
-      if(!aperture_death)
+      if(!error)
       {
-        // use transmittance from polynomial evaluation
-        float transmittance = out[4];
-        cairo_set_source_rgba(cr, rgb[0], rgb[1], rgb[2], 3.0 * transmittance);
-        // sensor
-        cairo_move_to(cr, 0, in[dim_up]);
-        cairo_line_to(cr, 0+len, in[dim_up] + len*in[dim_up+2]);
-        stroke_with_pencil(cr, scale, aperture_death ? 40./width : 60./width);
+        // evaluate sensor -> light
+        for(int i=0;i<5;i++) in[i] = outrt[i];
+        in[2] = -in[2];
+        in[3] = -in[3];
+        //outrt[4] equals transmittance
+        in[4] = lambda;
+        poly_system_evaluate(&poly, in, out, 15);
+      }
 
-        // aperture
-        cairo_move_to(cr, aperture_pos, ap[dim_up]);
-        cairo_line_to(cr, aperture_pos+.2*len, ap[dim_up] + .2*len*ap[dim_up+2]);
-        stroke_with_pencil(cr, scale, aperture_death ? 40./width : 60./width);
+      if(!error && draw_polynomials)
+      {
+        // draw everything grayed out in case it got killed on the aperture
+        poly_system_evaluate(&poly_aperture, in, ap, 15);
+        const int aperture_death = (ap[0]*ap[0] + ap[1]*ap[1] > aperture_rad*aperture_rad);
+        if(!aperture_death)
+        {
+          // use transmittance from polynomial evaluation
+          float transmittance = out[4];
+          cairo_set_source_rgba(cr, rgb[0], rgb[1], rgb[2], 3.0 * transmittance);
+          // sensor
+          cairo_move_to(cr, 0, in[dim_up]);
+          cairo_line_to(cr, 0+len, in[dim_up] + len*in[dim_up+2]);
+          stroke_with_pencil(cr, scale, aperture_death ? 40./width : 60./width);
 
-        // outer pupil
-        sphereToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
-        cairo_move_to(cr, cam_pos[2], cam_pos[dim_up]);
-        cairo_line_to(cr, cam_pos[2]+len*cam_dir[2], cam_pos[dim_up] + len*cam_dir[dim_up]);
-        stroke_with_pencil(cr, scale, aperture_death ? 40./width : 60./width);
+          // aperture
+          cairo_move_to(cr, aperture_pos, ap[dim_up]);
+          cairo_line_to(cr, aperture_pos+.2*len, ap[dim_up] + .2*len*ap[dim_up+2]);
+          stroke_with_pencil(cr, scale, aperture_death ? 40./width : 60./width);
+
+          // outer pupil
+          sphereToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
+          cairo_move_to(cr, cam_pos[2], cam_pos[dim_up]);
+          cairo_line_to(cr, cam_pos[2]+len*cam_dir[2], cam_pos[dim_up] + len*cam_dir[dim_up]);
+          stroke_with_pencil(cr, scale, aperture_death ? 40./width : 60./width);
+        }
+      }
+
+      
+
+      if(0)//!error)
+      {
+        outrt[2] = -outrt[2];
+        outrt[3] = -outrt[3];
+        outrt[4] = lambda;
+        error = evaluate_draw(lenses, lenses_cnt, zoom, outrt, inrt, cr, scale, dim_up, draw_aspheric, false, false);
       }
     }
-
-    
-
-    if(0)//!error)
-    {
-      outrt[2] = -outrt[2];
-      outrt[3] = -outrt[3];
-      outrt[4] = lambda;
-      error = evaluate_draw(lenses, lenses_cnt, zoom, outrt, inrt, cr, scale, dim_up, draw_aspheric, false, false);
-    }
   }
-  #endif
+
+
 
   cairo_destroy(cr);
   if(screenshot)
