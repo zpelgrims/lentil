@@ -17,7 +17,6 @@ using json = nlohmann::json;
 typedef struct lens_element_t
 {
   float lens_radius;
-  float lens_radius_original;
   float thickness_short;
   float thickness_mid;
   float thickness_long;
@@ -185,22 +184,21 @@ int lens_configuration(lens_element_t *l, const char *id, int target_focal_lengt
   // calculate lens scale
   float scale = 1.0f;
 //--> will fail if patent focallength is empty
-  if (lens_database[id]["focal-length-mm-raytraced"].empty()){
-    scale = target_focal_length / lens_database[id]["focal-length-mm-patent"].get<float>();
-  } else {
-    scale = target_focal_length / lens_database[id]["focal-length-mm-raytraced"].get<float>();
+  if (target_focal_length != 0){ // dirty way of checking if we want to adjust the scale at all (e.g when calculating the raytraced focal length, we don't want to do this)
+    if (lens_database[id]["focal-length-mm-raytraced"].empty()){
+      scale = target_focal_length / lens_database[id]["focal-length-mm-patent"].get<float>();
+    } else {
+      scale = target_focal_length / lens_database[id]["focal-length-mm-raytraced"].get<float>();
+    }
   }
-  
-  
+
   for (const auto& json_lens_element : lens_database[id]["optical-elements-patent"]) {
 
       lens_element_t lens;
       memset(&lens, 0, sizeof(lens_element_t));
 
       lens.lens_radius = scale * json_lens_element["radius"].get<float>();
-      lens.lens_radius_original = scale * json_lens_element["radius"].get<float>();     
       lens.housing_radius = scale * json_lens_element["housing-radius"].get<float>();
-
       
       if (json_lens_element["thickness"].is_array()){
         lens.thickness_short = scale * json_lens_element["thickness"][0].get<float>();
@@ -209,7 +207,6 @@ int lens_configuration(lens_element_t *l, const char *id, int target_focal_lengt
       } else {
         lens.thickness_short = scale * json_lens_element["thickness"].get<float>();
       }
-
 
       strcpy(lens.material, json_lens_element["material"].get<std::string>().c_str());
       if (strcmp(lens.material, "air") == 0){
@@ -225,7 +222,6 @@ int lens_configuration(lens_element_t *l, const char *id, int target_focal_lengt
       last_ior = lens.ior;
       last_vno = lens.vno;
 
-
       // anamorphic
       auto lens_geometry = json_lens_element["lens-geometry"];
       if (lens_geometry == "cyl-y"){
@@ -237,6 +233,7 @@ int lens_configuration(lens_element_t *l, const char *id, int target_focal_lengt
       } else {
         lens.anamorphic = 0;
       }
+
 
       // aspherical
       if (json_lens_element["aspherical-equation"].is_array()){
@@ -411,7 +408,7 @@ bool lenstable_to_json(lens_element_t *l, const char *filename, const char *id)
     lens_data["optical-elements-patent"][i]["material"] = l[i].material;
     lens_data["optical-elements-patent"][i]["ior"] = l[i].ior;
     lens_data["optical-elements-patent"][i]["abbe"] = l[i].vno;
-    lens_data["optical-elements-patent"][i]["housing_radius"] = l[i].housing_radius;
+    lens_data["optical-elements-patent"][i]["housing-radius"] = l[i].housing_radius;
     
     if(l[i].aspheric == 1){
       lens_data["optical-elements-patent"][i]["lens-geometry"] = "aspherical";

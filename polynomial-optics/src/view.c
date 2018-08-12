@@ -23,6 +23,10 @@ using json = nlohmann::json;
 #define M_PI 3.14159265358979323846
 #endif
 
+#ifndef FOCAL_LENGTH_CHECK
+#define FOCAL_LENGTH_CHECK
+#endif
+
 static float zoom = 0.0f; // zoom, if the lens supports it.
 //static const int degree = 4;  // degree of the polynomial. 1 is thin lens
 //static const float coverage = .5f; // coverage of incoming rays at scene facing pupil (those you point with the mouse)
@@ -65,6 +69,7 @@ float yellow[4] = {0.949, 0.882, 0.749, 0.65};
 float green[4] = {0.749, 0.949, 0.874, 1.0};
 float white50[4] = {1.0, 1.0, 1.0, 0.5};
 float mint[4] = {0.631, 1.0, 0.78, 0.5};
+
 
 static gboolean
 motion_notify(GtkWidget *widget, GdkEventMotion *event, gpointer user_data)
@@ -452,57 +457,80 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
   cairo_fill(cr);
 
 
-  const float len = lens_length/10.0f;
 
-  for(int k=0; k<num_rays; k++){
-
-    // y wedge
-    const float y = 2.0f * (num_rays/2-k)/(float)num_rays * lenses[0].housing_radius;
-
+  #ifdef FOCAL_LENGTH_CHECK
+    // FORWARD TRACING/DRAWING, calculate focal length
     float cam_pos[3] = {0.0f};
-    cam_pos[dim_up] = y;
-    // zeno: what are these calculations doing? figure out
-    cam_pos[2] = sqrtf(lenses[0].lens_radius*lenses[0].lens_radius - lenses[0].housing_radius*lenses[0].housing_radius);
-    const float s = lenses[0].lens_radius / sqrtf(cam_pos[2]*cam_pos[2] + y*y);
-    cam_pos[2] *= s;
-    cam_pos[dim_up] *= s;
-    cam_pos[2] += lens_length - lenses[0].lens_radius;
-
-
     float cam_dir[3] = {0.0f};
-    cam_dir[2] = cam_pos[2] - 99999999;
+    cam_pos[dim_up] = lenses[lenses_cnt-1].housing_radius * 0.5f;
+    cam_dir[2] = cam_pos[2] + 99999;
     cam_dir[dim_up] = cam_pos[dim_up];
-    raytrace_normalise(cam_dir);
-
-    for(int i=0;i<3;i++) cam_pos[i] -= 0.1f * cam_dir[i];
+    //raytrace_normalise(cam_dir);
 
     const float lambda = 0.5f;
-
     float in[5] = {0.0f};
     float out[5] = {0.0f};
     float ap[5] = {0.0f};
     float inrt[5] = {0.0f};
     float outrt[5] = {0.0f};
     inrt[4] = outrt[4] = in[4] = out[4] = ap[4] = lambda;
-
     float t, n[3] = {0.0f};
-    spherical(cam_pos, cam_dir, &t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n);
 
+    inrt[0] = cam_pos[0]; inrt[1] = cam_pos[1]; inrt[2] = cam_pos[2];
+    outrt[0] = cam_dir[0]; outrt[1] = cam_dir[1]; outrt[2] = cam_dir[2];
+
+    int error = 0;
+    if(draw_raytraced)
+      error = evaluate_draw(lenses, lenses_cnt, zoom, inrt, outrt, cr, scale, dim_up, draw_aspheric, true, true);
+  #endif
+
+
+#ifndef FOCAL_LENGTH_CHECK
+  //REVERSE DRAWING
+  const float len = lens_length/10.0f;
+  for(int k=0; k<num_rays; k++){
+
+    float cam_pos[3] = {0.0f};
+    float cam_dir[3] = {0.0f};
+
+    // y wedge
+    const float y = 2.0f * (num_rays/2-k)/(float)num_rays * lenses[0].housing_radius;
+    cam_pos[dim_up] = y;
+
+
+    cam_dir[2] = cam_pos[2] - 99999;
+    cam_dir[dim_up] = cam_pos[dim_up];
+    raytrace_normalise(cam_dir);
+    for(int i=0;i<3;i++) cam_pos[i] -= 0.1f * cam_dir[i];
+
+
+    const float lambda = 0.5f;
+    float in[5] = {0.0f};
+    float out[5] = {0.0f};
+    float ap[5] = {0.0f};
+    float inrt[5] = {0.0f};
+    float outrt[5] = {0.0f};
+    inrt[4] = outrt[4] = in[4] = out[4] = ap[4] = lambda;
+    float t, n[3] = {0.0f};
+
+    // intersection with first lens element, but seems like a duplicate purpose of the algebra method above..
+    spherical(cam_pos, cam_dir, &t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n);
     for(int i=0;i<3;i++) cam_dir[i] = - cam_dir[i]; // need to point away from surface (dot(n,dir) > 0)
 
     csToSphere(cam_pos, cam_dir, in, in+2, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
     sphereToCs(in, in + 2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
 
+
     for(int i=0;i<5;i++) inrt[i] = in[i];
 
+    
     int error = 0;
-
     if(draw_raytraced)
       error = evaluate_reverse_draw(lenses, lenses_cnt, zoom, inrt, outrt, cr, scale, dim_up, draw_aspheric);
     else
       error = evaluate_reverse(lenses, lenses_cnt, zoom, inrt, outrt, draw_aspheric);
-
-
+    
+   
     // ray color:
     hsl[0] = k/(num_rays+1.);
     hsl[1] = .7f;
@@ -549,14 +577,16 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
     }
 
     
+
     if(0)//!error)
     {
       outrt[2] = -outrt[2];
       outrt[3] = -outrt[3];
       outrt[4] = lambda;
-      error = evaluate_draw(lenses, lenses_cnt, zoom, outrt, inrt, cr, scale, dim_up, draw_aspheric);
+      error = evaluate_draw(lenses, lenses_cnt, zoom, outrt, inrt, cr, scale, dim_up, draw_aspheric, false, false);
     }
   }
+  #endif
 
   cairo_destroy(cr);
   if(screenshot)
@@ -603,7 +633,7 @@ int main(int argc, char *argv[])
     }
   }
 
-  
+
   // calculate lens length
   lenses_cnt = lens_configuration(lenses, id, lens_focal_length);
   lens_length = 0;
@@ -638,7 +668,6 @@ int main(int argc, char *argv[])
   gtk_widget_show_all (window);
 
   gtk_main ();
-
 
   poly_system_destroy(&poly);
   poly_system_destroy(&poly_aperture);

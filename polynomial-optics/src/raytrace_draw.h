@@ -4,65 +4,18 @@
 #include <strings.h>
 #include <cairo.h>
 
-
-/* might be useful at some point?
-// line plane intersection with fixed intersection at y = 0, for finding the focal length and sensor shift
-inline float line_plane_y0_intersection(float ray_origin_x, float ray_origin_y, float ray_origin_z, float ray_direction_x, float ray_direction_y, float ray_direction_z){
-    float ray_origin[3] = {ray_origin_x, ray_origin_y, ray_origin_z};
-    float ray_direction[3] = {ray_direction_x, ray_direction_y, ray_direction_z};
-
-    float coord[3] = {100.0, 0.0, 100.0};
-    float plane_normal[3] = {0.0, 1.0, 0.0};
-    raytrace_normalise(ray_direction);
-    raytrace_normalise(coord);
-
-    float dot_coord_plane_normal = raytrace_dot(coord, plane_normal);
-    float dot_plane_normal_ray_origin = raytrace_dot(plane_normal, ray_origin);
-    float dot_plane_normal_ray_direction = raytrace_dot(plane_normal, ray_direction);
-    return ray_origin[2] + (ray_direction[2] * (dot_coord_plane_normal - dot_plane_normal_ray_origin) / dot_plane_normal_ray_direction);
-}
-*/
-
-/*
-// line line intersection for finding the principle plane
-// in 2d yz space, because ray is shot from x=0 into x=0 direction
-Eigen::Vector2d lineLineIntersection(Eigen::Vector3d line1_origin, Eigen::Vector3d line1_direction, Eigen::Vector3d line2_origin, Eigen::Vector3d line2_direction){
-    float A1 = line1_direction(1) - line1_origin(1);
-    float B1 = line1_origin(2) - line1_direction(2);
-    float C1 = A1 * line1_origin(2) + B1 * line1_origin(1);
-    float A2 = line2_direction(1) - line2_origin(1);
-    float B2 = line2_origin(2) - line2_direction(2);
-    float C2 = A2 * line2_origin(2) + B2 * line2_origin(1);
-    float delta = A1 * B2 - A2 * B1;
-    Eigen::Vector2d rv((B2 * C1 - B1 * C2) / delta, (A1 * C2 - A2 * C1) / delta);
-    return rv;
-}
-
-// line plane intersection with fixed intersection at y = 0
-Eigen::Vector3d linePlaneIntersection(Eigen::Vector3d rayOrigin, Eigen::Vector3d rayDirection) {
-    Eigen::Vector3d coord(100.0, 0.0, 100.0);
-    Eigen::Vector3d planeNormal(0.0, 1.0, 0.0);
-    rayDirection.normalize();
-    coord.normalize();
-    return rayOrigin + (rayDirection * (coord.dot(planeNormal) - planeNormal.dot(rayOrigin)) / planeNormal.dot(rayDirection));
-}
-
-// after last lens element:
-Eigen::Vector3d pp_line1start(0.0, rayOriginHeight, 0.0);
-Eigen::Vector3d pp_line1end(0.0, rayOriginHeight, 999999.0);
-Eigen::Vector3d pp_line2end(0.0, ray_origin.y + (ray_direction.y * 10000.0), ray_origin.z + (ray_direction.z * 10000.0));
-
-float principlePlaneDistance = lineLineIntersection(pp_line1start, pp_line1end, ray_origin, pp_line2end).x;
-float focalPointDistance = linePlaneIntersection(ray_origin, ray_direction).z;
-float tracedFocalLength = focalPointDistance - principlePlaneDistance;
-
-*/
-
-// need to put the focal length testing code into evaluate_draw? need to do it outside of the loop where all rays are calculated
-
-
 // evalute sensor to outer pupil:
-static inline int evaluate_draw(const lens_element_t *lenses, const int lenses_cnt, const float zoom, const float *in, float *out, cairo_t *cr, float scale, int dim_up, int draw_aspherical)
+static inline int evaluate_draw(const lens_element_t *lenses, 
+                                const int lenses_cnt, 
+                                const float zoom, 
+                                const float *in, 
+                                float *out, 
+                                cairo_t *cr, 
+                                float scale, 
+                                int dim_up, 
+                                int draw_aspherical,
+                                bool calculate_focal_length,
+                                bool draw_focal_length)
 {
   int error = 0;
   float n1 = spectrum_eta_from_abbe_um(lenses[lenses_cnt-1].ior, lenses[lenses_cnt-1].vno, in[4]);
@@ -71,7 +24,7 @@ static inline int evaluate_draw(const lens_element_t *lenses, const int lenses_c
 
   planeToCs(in, in + 2, pos, dir, 0);
 
-  cairo_set_source_rgba(cr, 0.5, 0.2, 0.2, 0.1);
+  cairo_set_source_rgba(cr, 1.0, 1.0, 0.2, 0.7);
   cairo_move_to(cr, pos[2], pos[dim_up]);
 
   float distsum = 0;
@@ -117,16 +70,69 @@ static inline int evaluate_draw(const lens_element_t *lenses, const int lenses_c
 
     n1 = n2;
   }
+
   // return [x,y,dx,dy,lambda]
   csToSphere(pos, dir, out, out + 2, distsum-fabs(lenses[0].lens_radius), lenses[0].lens_radius);
   out[4] = intensity;
 
-  cairo_line_to(cr, pos[2] + dir[2]*100.0, pos[dim_up] + dir[dim_up]*100.0);
+
+  cairo_line_to(cr, pos[2] + dir[2]*1000.0, pos[dim_up] + dir[dim_up]*1000.0);
   cairo_save(cr);
   cairo_scale(cr, 1/scale, 1/scale);
   cairo_set_line_width(cr, 1.0f/20.0f);
   cairo_stroke(cr);
   cairo_restore(cr);
+
+
+// trying to do the focallength visualisation, this will need to be moved out of this function!!
+  if (calculate_focal_length){
+    // after last lens element:
+    float ray_origin[3] = {pos[0], pos[1], pos[2]};
+    float ray_direction[3] = {dir[0], dir[1], dir[2]};
+    float pp_line1start[3] = {0.0};
+    float pp_line1end[3] = {0.0, 0.0, 99999.0};
+    float pp_line2end[3] = {0.0, 0.0, static_cast<float>(pos[2] + (dir[2] * 1000.0))};
+    pp_line1start[dim_up] = in[dim_up];
+    pp_line1end[dim_up] = in[dim_up];
+    pp_line2end[dim_up] = pos[dim_up] + (dir[dim_up] * 1000.0);
+    float principlePlaneDistance = lineLineIntersection(pp_line1start, pp_line1end, ray_origin, pp_line2end, dim_up);
+
+    float focalPointLineStart[3] = {0.0};
+    float focalPointLineEnd[3] = {0.0, 0.0, 99999.0};
+    float focalPointDistance = lineLineIntersection(focalPointLineStart, focalPointLineEnd, ray_origin, pp_line2end, dim_up);
+    
+    float tracedFocalLength = focalPointDistance - principlePlaneDistance;
+    printf("Traced Focal Length = %f\n", tracedFocalLength);
+    
+    if (draw_focal_length){
+      cairo_new_path(cr);
+      cairo_set_source_rgba(cr, 0.2, 1.0, 0.2, 1.0);
+      cairo_arc(cr, principlePlaneDistance, 0.0, 1, 0, 2 * M_PI);
+      cairo_fill(cr);
+      
+      cairo_new_path(cr);
+      cairo_set_source_rgba(cr, 0.2, 1.0, 1.0, 1.0);
+      cairo_arc(cr, focalPointDistance, 0.0, 1, 0, 2 * M_PI);
+      cairo_fill(cr);
+
+      float max_housing_radius = 70;
+      cairo_set_source_rgba(cr, 0.5, 0.5, 0.5, 1.0);
+      cairo_set_line_width(cr, 0.75);
+      cairo_move_to(cr, principlePlaneDistance, max_housing_radius);
+      cairo_line_to(cr, principlePlaneDistance + tracedFocalLength, max_housing_radius);
+      cairo_stroke(cr);
+
+      cairo_move_to(cr, principlePlaneDistance + tracedFocalLength/2.0, max_housing_radius+5);
+      std::string number = "f = ";
+      number += std::to_string(tracedFocalLength);
+      char const *pchar = number.c_str();
+      cairo_set_font_size(cr, 2.5);
+      cairo_show_text(cr, pchar);
+      cairo_new_path(cr);
+      cairo_stroke(cr);
+    }
+  }
+
 
   return error;
 }
@@ -191,14 +197,6 @@ static inline int evaluate_reverse_draw(const lens_element_t *lenses, const int 
       cairo_restore(cr);
       return error;
     }
-
-    /*
-    // trying to draw dots on intersection points, needs work
-    cairo_set_source_rgba(cr, 1.0, 0.2, 0.2, 1.0);
-    cairo_arc(cr, pos[2], pos[dim_up], 0.25, 0, 2 * M_PI);
-	  cairo_fill(cr);
-    cairo_set_source_rgba(cr, 0.5, 0.5, 0.5, 1.0);
-    */
 
     // and renormalise:
     raytrace_normalise(dir);

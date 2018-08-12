@@ -1,3 +1,5 @@
+#pragma once
+
 #include "spectrum.h"
 #include "lenssystem.h"
 #include <stdio.h>
@@ -480,4 +482,93 @@ static inline int evaluate_aperture_reverse(const lens_element_t *lenses, const 
   csToPlane(pos, dir, out, out + 2, distsum);
   out[4] = intensity;
   return error;
+}
+
+
+
+// line line intersection for finding the principle plane
+float lineLineIntersection(float line1_origin[3], float line1_direction[3], float line2_origin[3], float line2_direction[3], int dim_up){
+    float A1 = line1_direction[dim_up] - line1_origin[dim_up];
+    float B1 = line1_origin[2] - line1_direction[2];
+    float C1 = A1 * line1_origin[2] + B1 * line1_origin[dim_up];
+    float A2 = line2_direction[dim_up] - line2_origin[dim_up];
+    float B2 = line2_origin[2] - line2_direction[2];
+    float C2 = A2 * line2_origin[2] + B2 * line2_origin[dim_up];
+    float delta = A1 * B2 - A2 * B1;
+    
+    /*
+    Eigen::Vector2d rv((B2 * C1 - B1 * C2) / delta, (A1 * C2 - A2 * C1) / delta);
+    return rv;
+    */
+
+    return (B2 * C1 - B1 * C2) / delta;
+}
+
+
+
+// evalute sensor to outer pupil:
+float calculate_focal_length(const lens_element_t *lenses, const int lenses_cnt, const float zoom, const float *in, float *out, int dim_up, bool draw_aspherical)
+{
+  int error = 0;
+  float n1 = spectrum_eta_from_abbe_um(lenses[lenses_cnt-1].ior, lenses[lenses_cnt-1].vno, in[4]);
+  float pos[3], dir[3];
+  float intensity = 1.0f;
+
+  planeToCs(in, in + 2, pos, dir, 0);
+
+  float distsum = 0;
+
+  for(int k=lenses_cnt-1;k>=0;k--)
+  {
+    // propagate the ray reverse to the plane of intersection optical axis/lens element:
+    const float R = -lenses[k].lens_radius; // negative, evaluate() is the adjoint case
+    float t = 0.0f;
+    const float dist = lens_get_thickness(lenses+k, zoom);
+    distsum += dist;
+
+    //normal at intersection
+    float n[3];
+    
+    if(lenses[k].anamorphic)
+      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, lenses[k].cylinder_axis_y);
+    else if(draw_aspherical)
+      error |= aspherical(pos, dir, &t, R, distsum + R, lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
+    else
+      error |= spherical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n);
+
+    // index of refraction and ratio current/next:
+    const float n2 = k ? spectrum_eta_from_abbe_um(lenses[k-1].ior, lenses[k-1].vno, in[4]) : 1.0f; // outside the lens there is vacuum
+
+    intensity *= refract(n1, n2, n, dir);
+    if(intensity < INTENSITY_EPS) error |= 8;
+
+    if(error) return error;
+
+    raytrace_normalise(dir);
+
+    n1 = n2;
+  }
+
+  // return [x,y,dx,dy,lambda]
+  csToSphere(pos, dir, out, out + 2, distsum-fabs(lenses[0].lens_radius), lenses[0].lens_radius);
+  out[4] = intensity;
+
+  
+  // calculate focal length using principal planes
+  float ray_origin[3] = {pos[0], pos[1], pos[2]};
+  float ray_direction[3] = {dir[0], dir[1], dir[2]};
+  float pp_line1start[3] = {0.0};
+  float pp_line1end[3] = {0.0, 0.0, 99999.0};
+  float pp_line2end[3] = {0.0, 0.0, static_cast<float>(pos[2] + (dir[2] * 1000.0))};
+  pp_line1start[dim_up] = in[dim_up];
+  pp_line1end[dim_up] = in[dim_up];
+  pp_line2end[dim_up] = pos[dim_up] + (dir[dim_up] * 1000.0);
+  float principlePlaneDistance = lineLineIntersection(pp_line1start, pp_line1end, ray_origin, pp_line2end, dim_up);
+
+  float focalPointLineStart[3] = {0.0};
+  float focalPointLineEnd[3] = {0.0, 0.0, 99999.0};
+  float focalPointDistance = lineLineIntersection(focalPointLineStart, focalPointLineEnd, ray_origin, pp_line2end, dim_up);
+
+
+  return focalPointDistance - principlePlaneDistance;
 }

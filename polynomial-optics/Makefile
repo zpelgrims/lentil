@@ -37,10 +37,10 @@ src/spectrum.h
 
 
 ifeq ($(OS), Darwin)
-    all: view fit gencode genpoly printpoly lenstable-to-json print-lens-path add-fitted-focal-length generate-lens-defines
+    all: view calculate-focal-length fit gencode genpoly printpoly lenstable-to-json print-lens-path add-fitted-focal-length generate-lens-defines
 endif
 ifeq ($(OS), Linux)
-    all: generate-lens-defines fit gencode genpoly printpoly lenstable-to-json print-lens-path add-fitted-focal-length
+    all: generate-lens-defines calculate-focal-length fit gencode genpoly printpoly lenstable-to-json print-lens-path add-fitted-focal-length
 endif
 
 
@@ -61,6 +61,9 @@ add-fitted-focal-length: Makefile src/add-fitted-focal-length.cpp ${HEADERS}
 
 generate-lens-defines: Makefile src/generate-lens-defines.cpp ${HEADERS}
 	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/generate-lens-defines.cpp -o bin/generate-lens-defines ${LDFLAGS}
+
+calculate-focal-length: Makefile src/calculate-focal-length.cpp ${HEADERS}
+	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/calculate-focal-length.cpp -o bin/calculate-focal-length ${LDFLAGS}
 
 fit: Makefile src/fit.c ${HEADERS}
 	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/fit.c -o bin/fit ${LDFLAGS}
@@ -86,8 +89,8 @@ gencode: Makefile src/gencode.c ${HEADERS}
 
 
 ifeq ($(OS), Darwin)
-clean: rm -f view fit gencode genpoly printpoly lenstable_to_json print-lens-path add-fitted-focal-length generate-lens-defines #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
+clean: rm -f calculate-focal-length view fit gencode genpoly printpoly lenstable_to_json print-lens-path add-fitted-focal-length generate-lens-defines #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
 endif
 ifeq ($(OS), Linux)
-clean: rm -f fit gencode genpoly printpoly lenstable_to_json print-lens-path add-fitted-focal-length generate-lens-defines #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
+clean: rm -f calculate-focal-length fit gencode genpoly printpoly lenstable_to_json print-lens-path add-fitted-focal-length generate-lens-defines #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
 endif
