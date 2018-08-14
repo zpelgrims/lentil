@@ -273,10 +273,15 @@ static inline void csToSphere(const float *inpos, const float *indir, float *out
   float tempDir[3] = {indir[0], indir[1], indir[2]};
   raytrace_normalise(tempDir);
 
+  // tangent
   float ex[3] = {normal[2], 0, -normal[0]};
   raytrace_normalise(ex);
+  
+  // bitangent
   float ey[3];
   raytrace_cross(ey, normal, ex);
+  
+  // store ray direction as projected position on unit disk perpendicular to the normal
   outdir[0] = raytrace_dot(tempDir, ex);
   outdir[1] = raytrace_dot(tempDir, ey);
   outpos[0] = inpos[0];
@@ -487,7 +492,7 @@ static inline int evaluate_aperture_reverse(const lens_element_t *lenses, const 
 
 
 // line line intersection for finding the principle plane
-float lineLineIntersection(float line1_origin[3], float line1_direction[3], float line2_origin[3], float line2_direction[3], int dim_up){
+float lineLineIntersection_x(float line1_origin[3], float line1_direction[3], float line2_origin[3], float line2_direction[3], int dim_up){
     float A1 = line1_direction[dim_up] - line1_origin[dim_up];
     float B1 = line1_origin[2] - line1_direction[2];
     float C1 = A1 * line1_origin[2] + B1 * line1_origin[dim_up];
@@ -549,26 +554,24 @@ float calculate_focal_length(const lens_element_t *lenses, const int lenses_cnt,
     n1 = n2;
   }
 
+  /* in this case, shoudn't be necessary, not even used.. test first before removing though
   // return [x,y,dx,dy,lambda]
   csToSphere(pos, dir, out, out + 2, distsum-fabs(lenses[0].lens_radius), lenses[0].lens_radius);
   out[4] = intensity;
-
+  */
   
   // calculate focal length using principal planes
-  float ray_origin[3] = {pos[0], pos[1], pos[2]};
-  float ray_direction[3] = {dir[0], dir[1], dir[2]};
   float pp_line1start[3] = {0.0};
   float pp_line1end[3] = {0.0, 0.0, 99999.0};
   float pp_line2end[3] = {0.0, 0.0, static_cast<float>(pos[2] + (dir[2] * 1000.0))};
   pp_line1start[dim_up] = in[dim_up];
   pp_line1end[dim_up] = in[dim_up];
   pp_line2end[dim_up] = pos[dim_up] + (dir[dim_up] * 1000.0);
-  float principlePlaneDistance = lineLineIntersection(pp_line1start, pp_line1end, ray_origin, pp_line2end, dim_up);
+  float principlePlaneDistance = lineLineIntersection_x(pp_line1start, pp_line1end, pos, pp_line2end, dim_up);
 
   float focalPointLineStart[3] = {0.0};
   float focalPointLineEnd[3] = {0.0, 0.0, 99999.0};
-  float focalPointDistance = lineLineIntersection(focalPointLineStart, focalPointLineEnd, ray_origin, pp_line2end, dim_up);
-
+  float focalPointDistance = lineLineIntersection_x(focalPointLineStart, focalPointLineEnd, pos, pp_line2end, dim_up);
 
   return focalPointDistance - principlePlaneDistance;
 }

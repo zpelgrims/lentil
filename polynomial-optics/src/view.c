@@ -23,9 +23,6 @@ using json = nlohmann::json;
 #define M_PI 3.14159265358979323846
 #endif
 
-#ifndef FOCAL_LENGTH_CHECK
-//#define FOCAL_LENGTH_CHECK
-#endif
 
 static float zoom = 0.0f; // zoom, if the lens supports it.
 //static const int degree = 4;  // degree of the polynomial. 1 is thin lens
@@ -44,8 +41,8 @@ static float lens_length = 0;
 static float aperture_pos = 0;
 
 //remove these mouse events
-static float mouse_x = 0.0f;
-static float mouse_y = 0.0f;
+//static float mouse_x = 0.0f;
+//static float mouse_y = 0.0f;
 
 static int screenshot = 1;
 static int draw_solve_omega = 0;
@@ -71,14 +68,15 @@ float green[4] = {0.749, 0.949, 0.874, 1.0};
 float white50[4] = {1.0, 1.0, 1.0, 0.5};
 float mint[4] = {0.631, 1.0, 0.78, 0.5};
 
+std::string lens_svg_path = "";
 
 static gboolean
 motion_notify(GtkWidget *widget, GdkEventMotion *event, gpointer user_data)
 {
   if(event->state & GDK_BUTTON1_MASK)
   {
-    mouse_x = event->x;
-    mouse_y = event->y;
+    //mouse_x = event->x;
+    //mouse_y = event->y;
     gtk_widget_queue_draw(widget);
     return TRUE;
   }
@@ -107,16 +105,13 @@ key_press(GtkWidget *widget, GdkEventKey *event, gpointer user_data)
     gtk_widget_queue_draw(widget);
     return TRUE;
   }
-  
   else if(event->keyval == GDK_KEY_f)
   {
-    // adjust lens position to focus perfectly at infinity
     if (draw_focallength) draw_focallength = 0;
     else draw_focallength = 1;
     gtk_widget_queue_draw(widget);
     return TRUE;
   }
-  
   else if(event->keyval == GDK_KEY_plus)
   {
     global_scale += 1;
@@ -157,8 +152,8 @@ static gboolean button_press(GtkWidget *widget, GdkEventButton *event, gpointer 
     gtk_widget_grab_focus(widget);
   if(event->button == 1)// && event->type == GDK_2BUTTON_PRESS)
   {
-    mouse_x = event->x;
-    mouse_y = event->y;
+    //mouse_x = event->x;
+    //mouse_y = event->y;
     gtk_widget_queue_draw(widget);
     return TRUE;
   }
@@ -215,7 +210,7 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
   cairo_surface_t *cst = 0;
   if(screenshot)
   {
-    cst = cairo_svg_surface_create("lens-drawing.svg", width, height);
+    cst = cairo_svg_surface_create(lens_svg_path, width, height);
     cr = cairo_create(cst);
   } else {
     width = widget->allocation.width;
@@ -635,6 +630,22 @@ int main(int argc, char *argv[])
       printf("[view] no aperture poly system focal length %d\n", lens_focal_length);
     }
   }
+
+
+  lens_svg_path = std::getenv("LENTIL_PATH");
+  lens_svg_path += "/database/lenses/";
+  lens_svg_path += std::to_string(lens_database[id][year].get<int>());
+  lens_svg_path += "-";
+  lens_svg_path += lens_database[id][company].get<std::string>();
+  lens_svg_path += "-";
+  lens_svg_path += lens_database[id][product-name].get<std::string>();
+  lens_svg_path += "/";
+  lens_svg_path += std::to_string(lens_database[id][year].get<int>());
+  lens_svg_path += "-";
+  lens_svg_path += lens_database[id][company].get<std::string>();
+  lens_svg_path += "-";
+  lens_svg_path += lens_database[id][product-name].get<std::string>();
+  lens_svg_path += ".svg"
 
 
   // calculate lens length
