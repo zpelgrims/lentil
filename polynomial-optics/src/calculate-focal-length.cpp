@@ -45,8 +45,7 @@ int main(int argc, char *argv[]){
   float raytraced_focal_length = calculate_focal_length(lenses, lenses_cnt, zoom, inrt, outrt, dim_up, true);
 
 
-  // add focal length to json database
-  // read lens database
+  // read lens database and add raytraced focal length
   std::string lens_database_path = std::getenv("LENTIL_PATH");
   lens_database_path += "/database/lenses.json";
 
