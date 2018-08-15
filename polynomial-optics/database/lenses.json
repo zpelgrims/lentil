@@ -1081,6 +1081,135 @@
     "production-ready": true,
     "year": 1948
   },
+  "15": {
+    "commercial": true,
+    "company": "cooke",
+    "focal-length-mm-patent": 254,
+    "focal-length-mm-raytraced": null,
+    "fstop": 2.0,
+    "implementation-version": null,
+    "notes": "Cooke Series O f/2.0 OPIC lens, Horace W. Lee designed the Cooke OPIC lenses to be the first to combine an f/2.0 aperture with a fully corrected color and geometry. Studios snapped up the new Cooke f/2.0 (T2.3) lenses. The original f/2.0 OPIC design became the now-legendary uncoated Cooke Speed Panchros.",
+    "notes-to-self": "not sure at all about the scale of the lens, housing radius is guessed.",
+    "optical-elements-patent": [
+      {
+        "abbe": 59,
+        "aspherical-equation": null,
+        "housing-radius": 4.0,
+        "ior": 1.6118,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 16.59,
+        "thickness": 2.1234
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 4.0,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 76.809,
+        "thickness": 0.35306
+      },
+      {
+        "abbe": 59.0,
+        "aspherical-equation": null,
+        "housing-radius": 4.0,
+        "ior": 1.6118,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 11.3309,
+        "thickness": 2.4765
+      },
+      {
+        "abbe": 41.0,
+        "aspherical-equation": null,
+        "housing-radius": 4.0,
+        "ior": 1.576,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 100000.0,
+        "thickness": 1.06172
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 4.0,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "iris",
+        "radius": 100000.0,
+        "thickness": 1.7691
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 4.0,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 7.1856,
+        "thickness": 1.7691
+      },
+      {
+        "abbe": 41.0,
+        "aspherical-equation": null,
+        "housing-radius": 4.0,
+        "ior": 1.576,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": -7.2872,
+        "thickness": 1.06172
+      },
+      {
+        "abbe": 59.0,
+        "aspherical-equation": null,
+        "housing-radius": 4.0,
+        "ior": 1.6118,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 100000.0,
+        "thickness": 2.4765
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 4.0,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": -9.8526,
+        "thickness": 0.35306
+      },
+      {
+        "abbe": 59.0,
+        "aspherical-equation": null,
+        "housing-radius": 4.0,
+        "ior": 1.6118,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 100000.0,
+        "thickness": 2.12344
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 4.0,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": -17.485,
+        "thickness": 10.0
+      }
+    ],
+    "patent-location": "database/lenses/1920-cooke-speed-panchro/patent/GB157040A.pdf",
+    "patent-number": "GB157040A",
+    "polynomial-optics": [],
+    "prime": true,
+    "product-name": "speed-panchro",
+    "production-ready": false,
+    "year": 1920
+  },
   "3": {
     "commercial": false,
     "company": "Panavision",
