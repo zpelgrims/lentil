@@ -485,7 +485,7 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
     //REVERSE DRAWING
     const float len = lens_length/10.0f;
     for(int k=0; k<num_rays; k++){
-
+      /*      
       float cam_pos[3] = {0.0f};
       float cam_dir[3] = {0.0f};
 
@@ -495,6 +495,24 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
 
 
       cam_dir[2] = cam_pos[2] - 99999;
+      cam_dir[dim_up] = cam_pos[dim_up];
+      raytrace_normalise(cam_dir);
+      */
+
+
+      const float y = 2.0f * (num_rays/2-k)/(float)num_rays * lenses[0].housing_radius;
+
+      float cam_pos[3] = {0.0f};
+      cam_pos[dim_up] = y;
+      cam_pos[2] = sqrtf(lenses[0].lens_radius*lenses[0].lens_radius - lenses[0].housing_radius*lenses[0].housing_radius);
+      const float s = lenses[0].lens_radius / sqrtf(cam_pos[2]*cam_pos[2] + y*y);
+      cam_pos[2] *= s;
+      cam_pos[dim_up] *= s;
+      cam_pos[2] += lens_length - lenses[0].lens_radius;
+
+
+      float cam_dir[3] = {0.0f};
+      cam_dir[2] = cam_pos[2] - 99999999;
       cam_dir[dim_up] = cam_pos[dim_up];
       raytrace_normalise(cam_dir);
       for(int i=0;i<3;i++) cam_pos[i] -= 0.1f * cam_dir[i];
