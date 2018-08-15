@@ -210,7 +210,7 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
   cairo_surface_t *cst = 0;
   if(screenshot)
   {
-    cst = cairo_svg_surface_create(lens_svg_path, width, height);
+    cst = cairo_svg_surface_create(lens_svg_path.c_str(), width, height);
     cr = cairo_create(cst);
   } else {
     width = widget->allocation.width;
@@ -634,18 +634,18 @@ int main(int argc, char *argv[])
 
   lens_svg_path = std::getenv("LENTIL_PATH");
   lens_svg_path += "/database/lenses/";
-  lens_svg_path += std::to_string(lens_database[id][year].get<int>());
+  lens_svg_path += std::to_string(lens_database[id]["year"].get<int>());
   lens_svg_path += "-";
-  lens_svg_path += lens_database[id][company].get<std::string>();
+  lens_svg_path += lens_database[id]["company"].get<std::string>();
   lens_svg_path += "-";
-  lens_svg_path += lens_database[id][product-name].get<std::string>();
+  lens_svg_path += lens_database[id]["product-name"].get<std::string>();
   lens_svg_path += "/";
-  lens_svg_path += std::to_string(lens_database[id][year].get<int>());
+  lens_svg_path += std::to_string(lens_database[id]["year"].get<int>());
   lens_svg_path += "-";
-  lens_svg_path += lens_database[id][company].get<std::string>();
+  lens_svg_path += lens_database[id]["company"].get<std::string>();
   lens_svg_path += "-";
-  lens_svg_path += lens_database[id][product-name].get<std::string>();
-  lens_svg_path += ".svg"
+  lens_svg_path += lens_database[id]["product-name"].get<std::string>();
+  lens_svg_path += ".svg";
 
 
   // calculate lens length

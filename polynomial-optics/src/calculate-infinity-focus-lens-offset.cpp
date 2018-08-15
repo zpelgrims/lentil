@@ -11,67 +11,33 @@ using json = nlohmann::json;
 
 int main(int argc, char *argv[]){
   const char *id = argv[1];
-
   static lens_element_t lenses[50];
   float zoom = 0.0f;
-
   int lenses_cnt = lens_configuration(lenses, id, 0);
-  float lens_length = 0;
-  for(int i=0;i<lenses_cnt;i++) lens_length += lens_get_thickness(lenses+i, zoom);
-  
-
   int dim_up = 1;
   int draw_aspheric = 1;
-
-
-/*
-  // read lens database and add raytraced focal length
-  std::string lens_database_path = std::getenv("LENTIL_PATH");
-  lens_database_path += "/database/lenses.json";
-
-  std::ifstream in_json(lens_database_path.c_str());
-  json lens_database = json::parse(in_json);
-
-  printf("Focal length supplied by patent: %f\n", lens_database[id]["focal-length-mm-patent"].get<float>());
-  printf("Focal length raytraced: %f\n", raytraced_focal_length);
-
-  lens_database[id]["focal-length-mm-raytraced"] = raytraced_focal_length;
-
-  std::ofstream out_json(lens_database_path);
-  out_json << std::setw(2) << lens_database << std::endl;
-
-  printf("Written raytraced focal length [%f] for id [%s] to database\n", raytraced_focal_length, id);
-*/
-
-
-
-
-
-  // write simple linear search for optimal last element thickness, so focal point falls on origin
-  const float len = lens_length/10.0f;
-  const float y = 0.5*lenses[0].housing_radius;
-
   float err = 99999.0;
-  float original_last_element_thickness = lenses[lenses_cnt-1].thickness_mid;
+  float original_last_element_thickness = lenses[lenses_cnt-1].thickness_short;
   float optimal_thickness = 0.0f;
+  const float lambda = 0.5f;
 
-  for(int extra_thickness = -20.0; extra_thickness < 20.0; extra_thickness += 0.01){
+  for(float extra_thickness = 500.0; extra_thickness > -500.0; extra_thickness -= 0.001){
 
     // change last element thickness
-    lenses[lenses_cnt-1].thickness_mid = original_last_element_thickness + extra_thickness;
+    lenses[lenses_cnt-1].thickness_short = original_last_element_thickness + extra_thickness;
+    float lens_length = 0;
+    for(int i=0;i<lenses_cnt;i++) lens_length += lens_get_thickness(lenses+i, zoom);
+    const float len = lens_length/10.0f;
 
     float cam_pos[3] = {0.0f};
     float cam_dir[3] = {0.0f};
-    cam_pos[dim_up] = y;
-
+    cam_pos[dim_up] = 0.5*lenses[lenses_cnt-1].housing_radius;
 
     cam_dir[2] = cam_pos[2] - 99999;
     cam_dir[dim_up] = cam_pos[dim_up];
     raytrace_normalise(cam_dir);
     for(int i=0;i<3;i++) cam_pos[i] -= 0.1f * cam_dir[i];
-
-
-    const float lambda = 0.5f;
+    
     float in[5] = {0.0f};
     float out[5] = {0.0f};
     float ap[5] = {0.0f};
@@ -88,17 +54,35 @@ int main(int argc, char *argv[]){
     sphereToCs(in, in + 2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
 
     for(int i=0;i<5;i++) inrt[i] = in[i];
-
     
+    // sometimes producing nan's..
     float distance = evaluate_reverse_intersection_y0(lenses, lenses_cnt, zoom, inrt, outrt, dim_up, draw_aspheric);
-    if (distance < err && err >= 0.0f){
+
+    if (distance < err && distance >= 0.0f){
       err = distance;
-      optimal_thickness = lenses[lenses_cnt-1].thickness_mid;
-      printf("distance: %f\n", distance);
+      optimal_thickness = lenses[lenses_cnt-1].thickness_short;
     }
-    // else break to avoid further calculations since it repeats linearly?
   }
 
-  printf("Optimal thickness: %f\n", optimal_thickness);
-  return optimal_thickness;
+  if (optimal_thickness <= 0.001f){
+    printf("Raytraced optimal offset is [%f], seems wrong.. aborting.\n", optimal_thickness);
+    return 0;
+  }
+
+
+  // read lens database and adjust thickness of last lens element
+  std::string lens_database_path = std::getenv("LENTIL_PATH");
+  lens_database_path += "/database/lenses.json";
+  std::ifstream in_json(lens_database_path.c_str());
+  json lens_database = json::parse(in_json);
+
+  printf("Last lens element thickness supplied by patent: %f\n", lens_database[id]["optical-elements-patent"][lenses_cnt-1]["thickness"].get<float>());
+  printf("Last lens element thickness raytraced: %f\n", optimal_thickness);
+
+  // should i create separate database entry to preserve the original thickness..?
+  lens_database[id]["optical-elements-patent"][lenses_cnt-1]["thickness"] = optimal_thickness;
+
+  std::ofstream out_json(lens_database_path);
+  out_json << std::setw(2) << lens_database << std::endl;
+  printf("Written optimal offset [%f] for id [%s] to database\n", optimal_thickness, id);
 }

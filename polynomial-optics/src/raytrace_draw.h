@@ -95,11 +95,11 @@ static inline int evaluate_draw(const lens_element_t *lenses,
     pp_line1start[dim_up] = in[dim_up];
     pp_line1end[dim_up] = in[dim_up];
     pp_line2end[dim_up] = pos[dim_up] + (dir[dim_up] * 1000.0);
-    float principlePlaneDistance = lineLineIntersection(pp_line1start, pp_line1end, ray_origin, pp_line2end, dim_up);
+    float principlePlaneDistance = lineLineIntersection_x(pp_line1start, pp_line1end, ray_origin, pp_line2end, dim_up);
 
     float focalPointLineStart[3] = {0.0};
     float focalPointLineEnd[3] = {0.0, 0.0, 99999.0};
-    float focalPointDistance = lineLineIntersection(focalPointLineStart, focalPointLineEnd, ray_origin, pp_line2end, dim_up);
+    float focalPointDistance = lineLineIntersection_x(focalPointLineStart, focalPointLineEnd, ray_origin, pp_line2end, dim_up);
     
     float tracedFocalLength = focalPointDistance - principlePlaneDistance;
     printf("Traced Focal Length = %f\n", tracedFocalLength);

@@ -308,7 +308,7 @@
         "lens-geometry": "spherical",
         "material": "air",
         "radius": -203.55,
-        "thickness": 55.742
+        "thickness": 55.724334716796875
       }
     ],
     "patent-location": "https://patentimages.storage.googleapis.com/2f/75/dd/b76ccb73bc0f44/US2701982.pdf",
@@ -428,7 +428,7 @@
         "lens-geometry": "spherical",
         "material": "air",
         "radius": -52.79999923706055,
-        "thickness": 52.5
+        "thickness": 51.26366424560547
       }
     ],
     "patent-location": null,
@@ -526,7 +526,7 @@
         "lens-geometry": "spherical",
         "material": "air",
         "radius": -149.5,
-        "thickness": 50.0
+        "thickness": 49.72666931152344
       }
     ],
     "patent-location": "https://wp.optics.arizona.edu/jsasian/wp-content/uploads/sites/33/2016/03/L16_OPTI517_Petzval_Portrait_Lens.pdf",
@@ -694,7 +694,7 @@
         "lens-geometry": "spherical",
         "material": "air",
         "radius": -117.55000305175781,
-        "thickness": 131.19000244140625
+        "thickness": 129.97291564941406
       }
     ],
     "patent-location": "database/lenses/1971-nikon-retrofocus-wideangle/patent/US3583791.pdf",
@@ -1070,7 +1070,7 @@
         "lens-geometry": "spherical",
         "material": "air",
         "radius": -282.04998779296875,
-        "thickness": 56.5
+        "thickness": 56.474666595458984
       }
     ],
     "patent-location": "database/lenses/1948-kodak-petzval/patent/US2500046.pdf",
@@ -1235,7 +1235,7 @@
     "patent-number": "US 2006/0050403",
     "polynomial-optics": [],
     "prime": true,
-    "product-name": null,
+    "product-name": "rear-anamorph",
     "production-ready": true,
     "year": 2006
   },
@@ -1666,7 +1666,7 @@
         "lens-geometry": "spherical",
         "material": "air",
         "radius": -120.0,
-        "thickness": 65.0
+        "thickness": 65.06566619873047
       }
     ],
     "patent-location": "database/lenses/1927-biotar-zeiss/patent/DE485798C.pdf",
@@ -1824,7 +1824,7 @@
         "lens-geometry": "spherical",
         "material": "air",
         "radius": 2092.572998046875,
-        "thickness": 63.5
+        "thickness": 63.309669494628906
       }
     ],
     "patent-location": "database/lenses/1969-asahi-takumar/patent/US3451745.pdf",
@@ -2002,7 +2002,7 @@
         "lens-geometry": "spherical",
         "material": "air",
         "radius": -110.64800262451172,
-        "thickness": 102.0
+        "thickness": 103.26067352294922
       }
     ],
     "patent-location": "database/lenses/1970-asahi-takumar/patent/US3506336.pdf",
@@ -2230,7 +2230,7 @@
         "lens-geometry": "spherical",
         "material": "air",
         "radius": -98.62000274658203,
-        "thickness": 260.0
+        "thickness": 482.6409606933594
       }
     ],
     "patent-location": "database/lenses/1974-asahi-takumar/patent/US3841736.pdf",
@@ -2378,7 +2378,7 @@
         "lens-geometry": "spherical",
         "material": "air",
         "radius": -37.84000015258789,
-        "thickness": 100.0
+        "thickness": 99.54026794433594
       }
     ],
     "patent-location": "database/lenses/1954-zeiss-flektagon/patent/DE953471C.pdf",

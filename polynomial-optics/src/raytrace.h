@@ -614,7 +614,6 @@ static inline float evaluate_reverse_intersection_y0(const lens_element_t *lense
 
     if(n[2] < 0.0) error |= 16;
 
-
     // index of refraction and ratio current/next:
     const float n2 = spectrum_eta_from_abbe_um(lenses[k].ior, lenses[k].vno, in[4]);
     intensity *= refract(n1, n2, n, dir);
