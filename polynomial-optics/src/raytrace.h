@@ -293,13 +293,13 @@ static inline void csToCylinder(const float *inpos, const float *indir, float *o
 {
   const float normal[3] = {0.0f};
   if (cyl_y){
-    normal[0] = pos[0]/R;
+    normal[0] = inpos[0]/R;
     normal[1] = 0.0f;
-    normal[2] = fabsf((pos[2] - center)/R);
+    normal[2] = fabsf((inpos[2] - center)/R);
   } else {
     normal[0] = 0.0f;
-    normal[1] = pos[1]/R;
-    normal[2] = fabsf((pos[2] - center)/R);
+    normal[1] = inpos[1]/R;
+    normal[2] = fabsf((inpos[2] - center)/R);
   }
   float tempDir[3] = {indir[0], indir[1], indir[2]};
   raytrace_normalise(tempDir);
@@ -319,7 +319,35 @@ static inline void csToCylinder(const float *inpos, const float *indir, float *o
   outpos[1] = inpos[1];
 }
 
-// add cylinderToCs function
+// untested and probably wrong
+static inline void cylinderToCs(const float *inpos, const float *indir, float *outpos, float *outdir, const float center, const float R, bool cyl_y)
+{
+  const float normal[3] = {0.0f};
+  if (cyl_y){
+    normal[0] = inpos[0]/R;
+    normal[1] = 0.0f;
+    normal[2] = sqrtf(max(0, R*R-inpos[0]*inpos[0]-inpos[1]*inpos[1]))/fabsf(R);
+  } else {
+    normal[0] = 0.0f;
+    normal[1] = inpos[1]/R;
+    normal[2] = sqrtf(max(0, R*R-inpos[0]*inpos[0]-inpos[1]*inpos[1]))/fabsf(R);
+  }
+
+  const float tempDir[3] = {indir[0], indir[1], sqrtf(max(0.0, 1.0f-indir[0]*indir[0]-indir[1]*indir[1]))};
+
+  float ex[3] = {normal[2], 0, -normal[0]};
+  raytrace_normalise(ex);
+  float ey[3];
+  raytrace_cross(ey, normal, ex);
+
+  outdir[0] = tempDir[0] * ex[0] + tempDir[1] * ey[0] + tempDir[2] * normal[0];
+  outdir[1] = tempDir[0] * ex[1] + tempDir[1] * ey[1] + tempDir[2] * normal[1];
+  outdir[2] = tempDir[0] * ex[2] + tempDir[1] * ey[2] + tempDir[2] * normal[2];
+  outpos[0] = inpos[0];
+  outpos[1] = inpos[1];
+  outpos[2] = normal[2] * R + center;
+}
+
 
 // evalute sensor to outer pupil acounting for fresnel:
 static inline int evaluate(const lens_element_t *lenses, const int lenses_cnt, const float zoom, const float *in, float *out, int aspheric)
