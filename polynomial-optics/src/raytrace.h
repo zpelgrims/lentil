@@ -288,6 +288,39 @@ static inline void csToSphere(const float *inpos, const float *indir, float *out
   outpos[1] = inpos[1];
 }
 
+// untested and probably wrong
+static inline void csToCylinder(const float *inpos, const float *indir, float *outpos, float *outdir, const float center, const float R, bool cyl_y)
+{
+  const float normal[3] = {0.0f};
+  if (cyl_y){
+    normal[0] = pos[0]/R;
+    normal[1] = 0.0f;
+    normal[2] = fabsf((pos[2] - center)/R);
+  } else {
+    normal[0] = 0.0f;
+    normal[1] = pos[1]/R;
+    normal[2] = fabsf((pos[2] - center)/R);
+  }
+  float tempDir[3] = {indir[0], indir[1], indir[2]};
+  raytrace_normalise(tempDir);
+
+  // tangent
+  float ex[3] = {normal[2], 0, -normal[0]};
+  raytrace_normalise(ex);
+  
+  // bitangent
+  float ey[3];
+  raytrace_cross(ey, normal, ex);
+  
+  // store ray direction as projected position on unit disk perpendicular to the normal
+  outdir[0] = raytrace_dot(tempDir, ex);
+  outdir[1] = raytrace_dot(tempDir, ey);
+  outpos[0] = inpos[0];
+  outpos[1] = inpos[1];
+}
+
+// add cylinderToCs function
+
 // evalute sensor to outer pupil acounting for fresnel:
 static inline int evaluate(const lens_element_t *lenses, const int lenses_cnt, const float zoom, const float *in, float *out, int aspheric)
 {
