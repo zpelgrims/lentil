@@ -70,7 +70,6 @@ int main(int argc, char *argv[]){
 
     for(int i=0;i<5;i++) inrt[i] = in[i];
     
-    // sometimes producing nan's..
     float distance = evaluate_reverse_intersection_y0(lenses, lenses_cnt, zoom, inrt, outrt, dim_up, draw_aspheric);
 
     if (distance < err && distance >= 0.0f){

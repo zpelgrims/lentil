@@ -61,7 +61,9 @@ if(1 || view[2] >= camera_data->lens_field_of_view)
     };
     normalise(view);
     float out_new[5];
-    lens_csToSphere(pred_out_cs, view, out_new, out_new+2, - camera_data->lens_outer_pupil_curvature_radius, camera_data->lens_outer_pupil_curvature_radius);
+    if (camera_data->lens_outer_pupil_geometry == "cyl-y") lens_csToCylinder(pred_out_cs, view, out_new, out_new+2, - camera_data->lens_outer_pupil_curvature_radius, camera_data->lens_outer_pupil_curvature_radius, true);
+    else if (camera_data->lens_outer_pupil_geometry == "cyl-x") lens_csToCylinder(pred_out_cs, view, out_new, out_new+2, - camera_data->lens_outer_pupil_curvature_radius, camera_data->lens_outer_pupil_curvature_radius, false);
+    else lens_csToSphere(pred_out_cs, view, out_new, out_new+2, - camera_data->lens_outer_pupil_curvature_radius, camera_data->lens_outer_pupil_curvature_radius);
     const float delta_out[] = {out_new[2] - out[2], out_new[3] - out[3]};
     sqr_err = delta_out[0]*delta_out[0]+delta_out[1]*delta_out[1];
     float domega2_dx0[2][2];
