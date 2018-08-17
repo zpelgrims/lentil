@@ -28,7 +28,7 @@ typedef struct lens_element_t
   int anamorphic;
   bool cylinder_axis_y;
   char material[32];
-  char geometry[100];
+  std::string geometry;
 } lens_element_t;
 
 
@@ -242,7 +242,7 @@ int lens_configuration(lens_element_t *l, const char *id, int target_focal_lengt
       // aspherical
       if (json_lens_element["aspherical-equation"].is_array()){
         lens.aspheric = 1;
-        lens.geometry = "aspherical"
+        lens.geometry = "aspherical";
         for(int i = 0; i < 4; i++, i++){
           lens.aspheric_correction_coefficients[i] = json_lens_element["aspherical-equation"][i].get<float>();
         }

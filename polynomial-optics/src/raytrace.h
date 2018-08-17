@@ -291,7 +291,7 @@ static inline void csToSphere(const float *inpos, const float *indir, float *out
 // untested and probably wrong
 static inline void csToCylinder(const float *inpos, const float *indir, float *outpos, float *outdir, const float center, const float R, bool cyl_y)
 {
-  const float normal[3] = {0.0f};
+  float normal[3] = {0.0f};
   if (cyl_y){
     normal[0] = inpos[0]/R;
     normal[1] = 0.0f;
@@ -322,7 +322,7 @@ static inline void csToCylinder(const float *inpos, const float *indir, float *o
 // untested and probably wrong
 static inline void cylinderToCs(const float *inpos, const float *indir, float *outpos, float *outdir, const float center, const float R, bool cyl_y)
 {
-  const float normal[3] = {0.0f};
+  float normal[3] = {0.0f};
   if (cyl_y){
     normal[0] = inpos[0]/R;
     normal[1] = 0.0f;
