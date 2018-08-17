@@ -527,12 +527,27 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
       inrt[4] = outrt[4] = in[4] = out[4] = ap[4] = lambda;
       float t, n[3] = {0.0f};
 
-      // intersection with first lens element, but seems like a duplicate purpose of the algebra method above..
-      spherical(cam_pos, cam_dir, &t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n);
-      for(int i=0;i<3;i++) cam_dir[i] = - cam_dir[i]; // need to point away from surface (dot(n,dir) > 0)
-
-      csToSphere(cam_pos, cam_dir, in, in+2, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
-      sphereToCs(in, in + 2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
+      if (lenses[0].geometry == "cyl-y"){
+        // intersection with first lens element, but seems like a duplicate purpose of the algebra method above..
+        cylindrical(cam_pos, cam_dir, &t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n, true);
+        for(int i=0;i<3;i++) cam_dir[i] = - cam_dir[i]; // need to point away from surface (dot(n,dir) > 0)
+        csToCylinder(cam_pos, cam_dir, in, in+2, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
+        cylinderToCs(in, in + 2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
+      }
+      else if (lenses[0].geometry == "cyl-x"){
+        // intersection with first lens element, but seems like a duplicate purpose of the algebra method above..
+        cylindrical(cam_pos, cam_dir, &t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n, false);
+        for(int i=0;i<3;i++) cam_dir[i] = - cam_dir[i]; // need to point away from surface (dot(n,dir) > 0)
+        csToCylinder(cam_pos, cam_dir, in, in+2, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
+        cylinderToCs(in, in + 2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
+      }
+      else {
+        // intersection with first lens element, but seems like a duplicate purpose of the algebra method above..
+        spherical(cam_pos, cam_dir, &t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n);
+        for(int i=0;i<3;i++) cam_dir[i] = - cam_dir[i]; // need to point away from surface (dot(n,dir) > 0)
+        csToSphere(cam_pos, cam_dir, in, in+2, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
+        sphereToCs(in, in + 2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
+      }
 
 
       for(int i=0;i<5;i++) inrt[i] = in[i];
@@ -583,7 +598,9 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
           stroke_with_pencil(cr, scale, aperture_death ? 40./width : 60./width);
 
           // outer pupil
-          sphereToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
+          if (lenses[0].geometry == "cyl-y") cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
+          else if (lenses[0].geometry == "cyl-x") cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
+          else sphereToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
           cairo_move_to(cr, cam_pos[2], cam_pos[dim_up]);
           cairo_line_to(cr, cam_pos[2]+len*cam_dir[2], cam_pos[dim_up] + len*cam_dir[dim_up]);
           stroke_with_pencil(cr, scale, aperture_death ? 40./width : 60./width);

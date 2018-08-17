@@ -235,7 +235,11 @@ void print_lt_sample_aperture(FILE *f, const poly_system_t *system, const poly_s
     fprintf(f, ";\n");
   }
   fprintf(f, "    float pred_out_cs[7] = {0.0f};\n");
-  fprintf(f, "    lens_sphereToCs(out, out+2, pred_out_cs, pred_out_cs+3, - camera_data->lens_outer_pupil_curvature_radius, camera_data->lens_outer_pupil_curvature_radius);\n");
+
+  fprintf(f, "    if (camera_data->lens_outer_pupil_geometry == 'cyl-y') lens_cylinderToCs(out, out+2, pred_out_cs, pred_out_cs+3, - camera_data->lens_outer_pupil_curvature_radius, camera_data->lens_outer_pupil_curvature_radius, true);\n");
+	fprintf(f, "    else if (camera_data->lens_outer_pupil_geometry == 'cyl-x') lens_cylinderToCs(out, out+2, pred_out_cs, pred_out_cs+3, - camera_data->lens_outer_pupil_curvature_radius, camera_data->lens_outer_pupil_curvature_radius, false);\n");
+  fprintf(f, "    else lens_sphereToCs(out, out+2, pred_out_cs, pred_out_cs+3, - camera_data->lens_outer_pupil_curvature_radius, camera_data->lens_outer_pupil_curvature_radius);\n");
+
   fprintf(f, "    float view[3] =\n    {\n");
   fprintf(f, "      scene_x - pred_out_cs[0],\n");
   fprintf(f, "      scene_y - pred_out_cs[1],\n");
@@ -244,7 +248,9 @@ void print_lt_sample_aperture(FILE *f, const poly_system_t *system, const poly_s
 
   fprintf(f, "    float out_new[5];\n");
   //Position is just converted back, direction gets replaced with new one
-  fprintf(f, "    lens_csToSphere(pred_out_cs, view, out_new, out_new+2, - camera_data->lens_outer_pupil_curvature_radius, camera_data->lens_outer_pupil_curvature_radius);\n");
+  fprintf(f, "    if (camera_data->lens_outer_pupil_geometry == "cyl-y") lens_csToCylinder(pred_out_cs, view, out_new, out_new+2, - camera_data->lens_outer_pupil_curvature_radius, camera_data->lens_outer_pupil_curvature_radius, true);\n");
+	fprintf(f, "    else if (camera_data->lens_outer_pupil_geometry == "cyl-x") lens_csToCylinder(pred_out_cs, view, out_new, out_new+2, - camera_data->lens_outer_pupil_curvature_radius, camera_data->lens_outer_pupil_curvature_radius, false);\n");
+  fprintf(f, "    else lens_csToSphere(pred_out_cs, view, out_new, out_new+2, - camera_data->lens_outer_pupil_curvature_radius, camera_data->lens_outer_pupil_curvature_radius);\n");
 
   //Calculate error vector (out_new - pred_out)[dx,dy]
   fprintf(f, "    const float delta_out[] = {out_new[2] - out[2], out_new[3] - out[3]};\n");

@@ -127,7 +127,11 @@ int main(int argc, char **argv)
   float out[] = {0, 0, 0, 0, 0};
   poly_system_evaluate(&poly, sensor, out, 100);
   float wspos[3], wsdir[3];
-  sphereToCs(out, out+2, wspos, wsdir, 0, lenses[0].lens_radius);
+
+  if (lenses[0].geometry == "cyl-y") cylinderToCs(out, out+2, wspos, wsdir, 0, lenses[0].lens_radius, true);
+  else if (lenses[0].geometry == "cyl-x") cylinderToCs(out, out+2, wspos, wsdir, 0, lenses[0].lens_radius, false);
+  else sphereToCs(out, out+2, wspos, wsdir, 0, lenses[0].lens_radius);
+  
   raytrace_normalise(wsdir);
   wsdir[2] = wsdir[2]<-1?-1:wsdir[2]>1?1:wsdir[2];
   float fov = wsdir[2];
