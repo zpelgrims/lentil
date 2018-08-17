@@ -4,26 +4,25 @@ Fork of "Sparse high-degree polynomials for wide-angle lenses (2016)" paper
 Added features:
 
 - Support for anamorphic lens elements in both axes
+- Exit pupil is not assumed to be spherical
 - Read lens descriptions from JSON database
+- Calculation of raytraced focal length/infinity focus
 
 1. Build the code by running ```. ./build.sh```.
 2. View a lens description
+3. Raytrace the focal length/infinity focus
 3. Generate the polynomial code using ```src/database-to-code.sh int_lens_id int_focal_length```
 
-
-![lens-drawing](./lens-drawing.svg)
 
 ------------------------
 ------------------------
 
 Overview
 ------------------------
-The provided code can be used to find sparse polynomials transferring rays
-through a lens system.
+The provided code can be used to find sparse polynomials transferring rays through a lens system.
 
-It is part of our paper:  
-Schrade, E., Hanika, J., & Dachsbacher, C. (2016). Sparse high-degree polynomials
-for wide-angle lenses. In Eurographics Symposium on Rendering.
+It is part of our paper:
+Schrade, E., Hanika, J., & Dachsbacher, C. (2016). Sparse high-degree polynomials for wide-angle lenses. In Eurographics Symposium on Rendering.
 
 With the source code you can:
 
@@ -98,4 +97,3 @@ Description of the tools
     for aperture sampling.  
     _example: ```./gencode int_lens_id int_focal_length```  
     For examples how to use the generated code see _render/lens.h_
-
