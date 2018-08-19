@@ -29,8 +29,6 @@ static float zoom = 0.0f; // zoom, if the lens supports it.
 //static const float coverage = .5f; // coverage of incoming rays at scene facing pupil (those you point with the mouse)
 static int num_rays = 100;
 static int dim_up = 0; // plot yz (side) or xz (top) of the lens in 2d?
-static char lensfilename[512] = "";
-static char lens_name[512];
 static poly_system_t poly, poly_aperture;
 static float aperture_rad;
 static lens_element_t lenses[50];
@@ -75,8 +73,6 @@ motion_notify(GtkWidget *widget, GdkEventMotion *event, gpointer user_data)
 {
   if(event->state & GDK_BUTTON1_MASK)
   {
-    //mouse_x = event->x;
-    //mouse_y = event->y;
     gtk_widget_queue_draw(widget);
     return TRUE;
   }
@@ -323,8 +319,8 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
   // top/side text
   cairo_move_to(cr, 0.0 - ruler_padding, max_housing_radius + ruler_padding*2);
   std::string dim_up_text;
-  if (dim_up) dim_up_text = "dim_up = 1 [top]";
-  else        dim_up_text = "dim_up = 0 [side]";
+  if (dim_up) dim_up_text = "dim_up = 1 [side]";
+  else        dim_up_text = "dim_up = 0 [top]";
   char const *pchar = dim_up_text.c_str();
   cairo_set_font_size(cr, 2.5);
   cairo_show_text(cr, pchar);
