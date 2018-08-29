@@ -1,6 +1,6 @@
 //todo: better .fit paths/names
 
-#include <Eigen/Dense>
+#include "../../Eigen/Eigen/Dense"
 #include "raytrace.h"
 #include "poly.h"
 
