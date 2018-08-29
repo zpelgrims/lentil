@@ -337,10 +337,8 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
   for(int i=0;i<lenses_cnt;i++)
   {
     float rad = lenses[i].lens_radius;
-    if (lenses[i].anamorphic){
-      if (dim_up == 1 && lenses[i].cylinder_axis_y) rad = 99999.0;
-      else if (dim_up == 0 && !lenses[i].cylinder_axis_y) rad = 99999.0;
-    }
+    if (lenses[i].geometry == "cyl-y" && dim_up == 1) rad = 99999.0;
+    else if (lenses[i].geometry == "cyl-x" && dim_up == 0) rad = 99999.0;
     
     float hrad = lenses[i].housing_radius;
     float t = lens_get_thickness(lenses+i, zoom);
@@ -353,10 +351,9 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
       cairo_save(cr);
 
       float rad2 = lenses[i+1].lens_radius;
-      if (lenses[i+1].anamorphic){
-        if (dim_up == 1 && lenses[i+1].cylinder_axis_y) rad2 = 99999.0;
-        else if (dim_up == 0 && !lenses[i+1].cylinder_axis_y) rad2 = 99999.0;
-      }
+      if (lenses[i+1].geometry == "cyl-y" && dim_up == 1) rad2 = 99999.0;
+      else if (lenses[i+1].geometry == "cyl-x" && dim_up == 0) rad2 = 99999.0;
+    
 
       float hrad2 = lenses[i+1].housing_radius;
       float off  = rad  > 0.0f ? 0.0f : M_PI;
@@ -394,8 +391,8 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
       }
       cairo_close_path(cr);
       
-      if (lenses[i+1].anamorphic) cairo_set_source_rgba(cr, mint[0], mint[1], mint[2], mint[3]);
-      else if (lenses[i+1].aspheric) cairo_set_source_rgba(cr, green[0], green[1], green[2], green[3]);
+      if (lenses[i+1].geometry == "cyl-y" || lenses[i+1].geometry == "cyl-x") cairo_set_source_rgba(cr, mint[0], mint[1], mint[2], mint[3]);
+      else if (lenses[i+1].geometry == "aspherical") cairo_set_source_rgba(cr, green[0], green[1], green[2], green[3]);
       else cairo_set_source_rgb(cr, grey[0], grey[1], grey[2]);
       cairo_fill_preserve(cr);
 
@@ -428,8 +425,8 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
       stroke_with_pencil(cr, scale, 40./width);
 
       cairo_close_path(cr);
-      if (lenses[i].anamorphic) cairo_set_source_rgba(cr, mint[0], mint[1], mint[2], mint[3]);
-      else if (lenses[i].aspheric) cairo_set_source_rgba(cr, green[0], green[1], green[2], green[3]);
+      if (lenses[i].geometry == "cyl-y" || lenses[i].geometry == "cyl-x") cairo_set_source_rgba(cr, mint[0], mint[1], mint[2], mint[3]);
+      else if (lenses[i].geometry == "aspherical") cairo_set_source_rgba(cr, green[0], green[1], green[2], green[3]);
       else cairo_set_source_rgb(cr, grey[0], grey[1], grey[2]);
       cairo_fill(cr);
 
@@ -594,8 +591,11 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
           stroke_with_pencil(cr, scale, aperture_death ? 40./width : 60./width);
 
           // outer pupil
-          if (lenses[0].geometry == "cyl-y") cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
-          else if (lenses[0].geometry == "cyl-x") cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
+          // need to account for top/side view here?
+          if (lenses[0].geometry == "cyl-y" && dim_up == 0) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
+          else if (lenses[0].geometry == "cyl-y" && dim_up == 1) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - 99999.0, 99999.0, true);
+          else if (lenses[0].geometry == "cyl-x" && dim_up == 0) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - 99999.0, 99999.0, false);
+          else if (lenses[0].geometry == "cyl-x" && dim_up == 1) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
           else sphereToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
           cairo_move_to(cr, cam_pos[2], cam_pos[dim_up]);
           cairo_line_to(cr, cam_pos[2]+len*cam_dir[2], cam_pos[dim_up] + len*cam_dir[dim_up]);

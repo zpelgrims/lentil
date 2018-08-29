@@ -236,8 +236,8 @@ void print_lt_sample_aperture(FILE *f, const poly_system_t *system, const poly_s
   }
   fprintf(f, "    float pred_out_cs[7] = {0.0f};\n");
 
-  fprintf(f, "    if (camera_data->lens_outer_pupil_geometry == 'cyl-y') lens_cylinderToCs(out, out+2, pred_out_cs, pred_out_cs+3, - camera_data->lens_outer_pupil_curvature_radius, camera_data->lens_outer_pupil_curvature_radius, true);\n");
-	fprintf(f, "    else if (camera_data->lens_outer_pupil_geometry == 'cyl-x') lens_cylinderToCs(out, out+2, pred_out_cs, pred_out_cs+3, - camera_data->lens_outer_pupil_curvature_radius, camera_data->lens_outer_pupil_curvature_radius, false);\n");
+  fprintf(f, "    if (camera_data->lens_outer_pupil_geometry == \"cyl-y\") lens_cylinderToCs(out, out+2, pred_out_cs, pred_out_cs+3, - camera_data->lens_outer_pupil_curvature_radius, camera_data->lens_outer_pupil_curvature_radius, true);\n");
+	fprintf(f, "    else if (camera_data->lens_outer_pupil_geometry == \"cyl-x\") lens_cylinderToCs(out, out+2, pred_out_cs, pred_out_cs+3, - camera_data->lens_outer_pupil_curvature_radius, camera_data->lens_outer_pupil_curvature_radius, false);\n");
   fprintf(f, "    else lens_sphereToCs(out, out+2, pred_out_cs, pred_out_cs+3, - camera_data->lens_outer_pupil_curvature_radius, camera_data->lens_outer_pupil_curvature_radius);\n");
 
   fprintf(f, "    float view[3] =\n    {\n");
@@ -248,8 +248,8 @@ void print_lt_sample_aperture(FILE *f, const poly_system_t *system, const poly_s
 
   fprintf(f, "    float out_new[5];\n");
   //Position is just converted back, direction gets replaced with new one
-  fprintf(f, "    if (camera_data->lens_outer_pupil_geometry == 'cyl-y') lens_csToCylinder(pred_out_cs, view, out_new, out_new+2, - camera_data->lens_outer_pupil_curvature_radius, camera_data->lens_outer_pupil_curvature_radius, true);\n");
-	fprintf(f, "    else if (camera_data->lens_outer_pupil_geometry == 'cyl-x') lens_csToCylinder(pred_out_cs, view, out_new, out_new+2, - camera_data->lens_outer_pupil_curvature_radius, camera_data->lens_outer_pupil_curvature_radius, false);\n");
+  fprintf(f, "    if (camera_data->lens_outer_pupil_geometry == \"cyl-y\") lens_csToCylinder(pred_out_cs, view, out_new, out_new+2, - camera_data->lens_outer_pupil_curvature_radius, camera_data->lens_outer_pupil_curvature_radius, true);\n");
+	fprintf(f, "    else if (camera_data->lens_outer_pupil_geometry == \"cyl-x\") lens_csToCylinder(pred_out_cs, view, out_new, out_new+2, - camera_data->lens_outer_pupil_curvature_radius, camera_data->lens_outer_pupil_curvature_radius, false);\n");
   fprintf(f, "    else lens_csToSphere(pred_out_cs, view, out_new, out_new+2, - camera_data->lens_outer_pupil_curvature_radius, camera_data->lens_outer_pupil_curvature_radius);\n");
 
   //Calculate error vector (out_new - pred_out)[dx,dy]

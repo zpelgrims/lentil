@@ -1211,7 +1211,7 @@
     "year": 1920
   },
   "16": {
-    "commercial": true,
+    "commercial": false,
     "company": "cooke",
     "focal-length-mm-patent": 25.4,
     "focal-length-mm-raytraced": 9.555700302124023,
@@ -1303,17 +1303,27 @@
       {
         "abbe": null,
         "aspherical-equation": null,
-        "housing-radius": 0.75,
+        "housing-radius": 0.55,
         "ior": null,
         "lens-geometry": "spherical",
         "material": "air",
         "radius": 0.8429,
-        "thickness": 0.455
+        "thickness": 0.2275
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 0.55,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "iris",
+        "radius": 99999,
+        "thickness": 0.2275
       },
       {
         "abbe": 44.5,
         "aspherical-equation": null,
-        "housing-radius": 0.75,
+        "housing-radius": 0.55,
         "ior": 1.6159,
         "lens-geometry": "spherical",
         "material": "abbe",
@@ -1401,12 +1411,14 @@
         "thickness": 2.498
       }
     ],
-    "patent-location": "",
+    "patent-location": "https://patentimages.storage.googleapis.com/14/ca/8f/ca77e3572940d2/US2832262.pdf",
     "patent-number": "US2832262",
-    "polynomial-optics": [],
+    "polynomial-optics": [
+      100
+    ],
     "prime": true,
     "product-name": "anamorphic",
-    "production-ready": false,
+    "production-ready": true,
     "year": 1954
   },
   "3": {

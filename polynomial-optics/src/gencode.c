@@ -121,7 +121,7 @@ int main(int argc, char **argv)
   fprintf(f, "camera_data->lens_aperture_pos = %f; // distance aperture -> outer pupil in mm\n", aperture_pos);
   fprintf(f, "camera_data->lens_aperture_housing_radius = %f; // lens housing radius at the aperture\n", aperture_housing_radius);
   fprintf(f, "camera_data->lens_outer_pupil_curvature_radius = %f; // radius of curvature of the outer pupil\n", lenses[0].lens_radius);
-  fprintf(f, "camera_data->lens_outer_pupil_geometry = %s; // geometry of outer pupil\n", lenses[0].geometry.c_str());
+  fprintf(f, "camera_data->lens_outer_pupil_geometry = \"%s\"; // geometry of outer pupil\n", lenses[0].geometry.c_str());
   // calculate approximate fov for 35mm sensor
   float sensor[] = {22.f, 0, (lenses[lenses_cnt-1].housing_radius-22.f)/bfl, 0, .55};
   float out[] = {0, 0, 0, 0, 0};
