@@ -39,13 +39,19 @@ static inline int evaluate_draw(const lens_element_t *lenses,
 
     //normal at intersection
     float n[3];
-    
-    if(lenses[k].anamorphic)
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, lenses[k].cylinder_axis_y);
-    else if(draw_aspherical)
+
+    if (lenses[k].geometry == "cyl-y"){
+      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
+    }
+    else if (lenses[k].geometry == "cyl-x"){
+      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
+    }
+    else if (draw_aspherical){
       error |= aspherical(pos, dir, &t, R, distsum + R, lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
-    else
+    }
+    else {
       error |= spherical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n);
+    }
 
     // index of refraction and ratio current/next:
     const float n2 = k ? spectrum_eta_from_abbe_um(lenses[k-1].ior, lenses[k-1].vno, in[4]) : 1.0f; // outside the lens there is vacuum
@@ -173,13 +179,18 @@ static inline int evaluate_reverse_draw(const lens_element_t *lenses, const int 
     //normal at intersection
     float n[3] = {0.0f};
     
-    if(lenses[k].anamorphic){
-        error |= cylindrical(pos, dir, &t, R, distsum - R, lenses[k].housing_radius, n, lenses[k].cylinder_axis_y);
+    if (lenses[k].geometry == "cyl-y"){
+      error |= cylindrical(pos, dir, &t, R, distsum - R, lenses[k].housing_radius, n, true);
     }
-    else if(draw_aspherical)
+    else if (lenses[k].geometry == "cyl-x"){
+      error |= cylindrical(pos, dir, &t, R, distsum - R, lenses[k].housing_radius, n, false);
+    }
+    else if (draw_aspherical){
       error |= aspherical(pos, dir, &t, R, distsum - R, lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
-    else
+    }
+    else {
       error |= spherical(pos, dir, &t, R, distsum - R, lenses[k].housing_radius, n);
+    }
 
     if(n[2] < 0.0) error |= 16;
 

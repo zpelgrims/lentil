@@ -372,12 +372,18 @@ static inline int evaluate(const lens_element_t *lenses, const int lenses_cnt, c
     //normal at intersection
     float n[3] = {0.0f};
 
-    if(lenses[k].anamorphic)
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, lenses[k].cylinder_axis_y);
-    else if(aspheric)
+    if(lenses[k].geometry == "cyl-y"){
+      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
+    }
+    else if (lenses[k].geometry == "cyl-x"){
+      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
+    }
+    else if(lenses[k].geometry == "aspherical"){
       error |= aspherical(pos, dir, &t, R, distsum + R, lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
-    else
+    }
+    else {
       error |= spherical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n);
+    }
 
     // index of refraction and ratio current/next:
     const float n2 = k ? spectrum_eta_from_abbe_um(lenses[k-1].ior, lenses[k-1].vno, in[4]) : 1.0f; // outside the lens there is vacuum
@@ -423,12 +429,18 @@ static inline int evaluate_reverse(const lens_element_t *lenses, const int lense
     //normal at intersection
     float n[3] = {0.0};
 
-    if(lenses[k].anamorphic)
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, lenses[k].cylinder_axis_y);
-    else if(aspheric)
+    if (lenses[k].geometry == "cyl-y"){
+      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
+    }
+    else if (lenses[k].geometry == "cyl-x"){
+      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
+    }
+    else if (aspheric){
       error |= aspherical(pos, dir, &t, R, distsum + R, lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
-    else
+    }
+    else {
       error |= spherical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n);
+    }
 
     // index of refraction and ratio current/next:
     const float n2 = spectrum_eta_from_abbe_um(lenses[k].ior, lenses[k].vno, in[4]);
@@ -475,12 +487,18 @@ static inline int evaluate_aperture(const lens_element_t *lenses, const int lens
     //normal at intersection
     float n[3] = {0.0f};
 
-    if(lenses[k].anamorphic)
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, lenses[k].cylinder_axis_y);
-    else if(aspheric)
+    if (lenses[k].geometry == "cyl-y"){
+      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
+    }
+    else if (lenses[k].geometry == "cyl-x"){
+      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
+    }
+    else if(aspheric) {
       error |= aspherical(pos, dir, &t, R, distsum + R, lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
-    else
+    }
+    else {
       error |= spherical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n);
+    }
 
     // index of refraction and ratio current/next:
     const float n2 = k ? spectrum_eta_from_abbe_um(lenses[k-1].ior, lenses[k-1].vno, in[4]) : 1.0f; // outside the lens there is vacuum
@@ -526,12 +544,18 @@ static inline int evaluate_aperture_reverse(const lens_element_t *lenses, const 
     //normal at intersection
     float n[3];
 
-    if(lenses[k].anamorphic)
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, lenses[k].cylinder_axis_y);
-    else if(aspheric)
+    if (lenses[k].geometry == "cyl-y"){
+      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
+    }
+    else if (lenses[k].geometry == "cyl-x"){
+      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
+    }
+    else if (aspheric){
       error |= aspherical(pos, dir, &t, R, distsum + R, lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
-    else
+    }
+    else {
       error |= spherical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n);
+    }
 
     // index of refraction and ratio current/next:
     const float n2 = spectrum_eta_from_abbe_um(lenses[k].ior, lenses[k].vno, in[4]);
@@ -602,12 +626,18 @@ float calculate_focal_length(const lens_element_t *lenses, const int lenses_cnt,
     //normal at intersection
     float n[3];
     
-    if(lenses[k].anamorphic)
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, lenses[k].cylinder_axis_y);
-    else if(draw_aspherical)
+    if (lenses[k].geometry == "cyl-y"){
+      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
+    }
+    else if (lenses[k].geometry == "cyl-x"){
+      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
+    }
+    else if (draw_aspherical){
       error |= aspherical(pos, dir, &t, R, distsum + R, lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
-    else
+    }
+    else {
       error |= spherical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n);
+    }
 
     // index of refraction and ratio current/next:
     const float n2 = k ? spectrum_eta_from_abbe_um(lenses[k-1].ior, lenses[k-1].vno, in[4]) : 1.0f; // outside the lens there is vacuum
@@ -676,12 +706,18 @@ static inline float evaluate_reverse_intersection_y0(const lens_element_t *lense
     //normal at intersection
     float n[3] = {0.0f};
     
-    if(lenses[k].anamorphic)
-        error |= cylindrical(pos, dir, &t, R, distsum - R, lenses[k].housing_radius, n, lenses[k].cylinder_axis_y);
-    else if(draw_aspherical)
+    if (lenses[k].geometry == "cyl-y"){
+      error |= cylindrical(pos, dir, &t, R, distsum - R, lenses[k].housing_radius, n, true);
+    }
+    else if (lenses[k].geometry == "cyl-x"){
+      error |= cylindrical(pos, dir, &t, R, distsum - R, lenses[k].housing_radius, n, false);
+    }
+    else if (draw_aspherical){
       error |= aspherical(pos, dir, &t, R, distsum - R, lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
-    else
+    }
+    else {
       error |= spherical(pos, dir, &t, R, distsum - R, lenses[k].housing_radius, n);
+    }
 
     if(n[2] < 0.0) error |= 16;
 

@@ -37,10 +37,10 @@ src/spectrum.h
 
 
 ifeq ($(OS), Darwin)
-    all: view calculate-infinity-focus-lens-offset calculate-focal-length fit gencode genpoly printpoly lenstable-to-json print-lens-path add-fitted-focal-length generate-lens-defines
+    all: view calculate-infinity-focus-lens-offset calculate-focal-length fit gencode genpoly printpoly print-lens-path add-fitted-focal-length generate-lens-defines
 endif
 ifeq ($(OS), Linux)
-    all: generate-lens-defines calculate-infinity-focus-lens-offset calculate-focal-length fit gencode genpoly printpoly lenstable-to-json print-lens-path add-fitted-focal-length
+    all: generate-lens-defines calculate-infinity-focus-lens-offset calculate-focal-length fit gencode genpoly printpoly print-lens-path add-fitted-focal-length
 endif
 
 
@@ -49,9 +49,6 @@ ifeq ($(OS), Darwin)
 view: Makefile src/view.c ${HEADERS}
 	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/view.c $(shell pkg-config --cflags --libs gtk+-2.0) ${LDFLAGS} -o bin/view ${LDFLAGS}
 endif
-
-lenstable-to-json: Makefile src/lenstable-to-json.cpp ${HEADERS}
-	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/lenstable-to-json.cpp -o bin/lenstable-to-json ${LDFLAGS}
 
 print-lens-path: Makefile src/print-lens-path.cpp ${HEADERS}
 	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/print-lens-path.cpp -o bin/print-lens-path ${LDFLAGS}
@@ -92,8 +89,8 @@ gencode: Makefile src/gencode.c ${HEADERS}
 
 
 ifeq ($(OS), Darwin)
-clean: rm -f calculate-focal-length calculate-infinity-focus-lens-offset view fit gencode genpoly printpoly lenstable_to_json print-lens-path add-fitted-focal-length generate-lens-defines #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
+clean: rm -f calculate-focal-length calculate-infinity-focus-lens-offset view fit gencode genpoly printpoly print-lens-path add-fitted-focal-length generate-lens-defines #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
 endif
 ifeq ($(OS), Linux)
-clean: rm -f calculate-focal-length calculate-infinity-focus-lens-offset fit gencode genpoly printpoly lenstable_to_json print-lens-path add-fitted-focal-length generate-lens-defines #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
+clean: rm -f calculate-focal-length calculate-infinity-focus-lens-offset fit gencode genpoly printpoly print-lens-path add-fitted-focal-length generate-lens-defines #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
 endif
