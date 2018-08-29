@@ -109,7 +109,7 @@ int main(int argc, char **argv)
   lens_name += std::to_string(lens_database[id]["year"].get<int>());
   lens_name += "-";
   lens_name += std::to_string(lens_focal_length);
-
+  
 
   f = fopen(lens_constants_path.c_str(), "wb");
   fprintf(f, "case %s:\n{\n", case_lens_name.c_str());
@@ -123,6 +123,7 @@ int main(int argc, char **argv)
   fprintf(f, "camera_data->lens_aperture_housing_radius = %f; // lens housing radius at the aperture\n", aperture_housing_radius);
   fprintf(f, "camera_data->lens_outer_pupil_curvature_radius = %f; // radius of curvature of the outer pupil\n", lenses[0].lens_radius);
   fprintf(f, "camera_data->lens_outer_pupil_geometry = \"%s\"; // geometry of outer pupil\n", lenses[0].geometry.c_str());
+  fprintf(f, "camera_data->lens_fstop = %f; // effective_focal_length/(2*aperture_housing_radius)\n", lens_database[id]["fstop"].get<float>());
   // calculate approximate fov for 35mm sensor
   float sensor[] = {22.f, 0, (lenses[lenses_cnt-1].housing_radius-22.f)/bfl, 0, .55};
   float out[] = {0, 0, 0, 0, 0};
