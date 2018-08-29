@@ -16,8 +16,16 @@ int main(int argc, char *argv[])
   std::ifstream in_json(lens_database_path);
   json lens_database = json::parse(in_json);
 
-  lens_database[id]["polynomial-optics"].push_back(lens_focal_length);
+  // check if focal length already is in list
+  for (const auto& i : lens_database[id]["polynomial-optics"]){
+    if (i == lens_focal_length){
+      printf("Focal length [%d] is already present in fitted focal length list.\n", lens_focal_length);
+      return 0;
+    }
+  }
 
+  lens_database[id]["polynomial-optics"].push_back(lens_focal_length);
+  
   std::ofstream out_json(lens_database_path);
   out_json << std::setw(2) << lens_database << std::endl;
 }
