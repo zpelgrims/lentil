@@ -4,7 +4,7 @@
     "company": "angenieux",
     "focal-length-mm-patent": 100.0,
     "focal-length-mm-raytraced": 99.67037200927734,
-    "fstop": null,
+    "fstop": 1.954321026802063,
     "implementation-version": null,
     "notes": "large aperture six element objective, nice swirly bokeh",
     "optical-elements-adjusted": [
