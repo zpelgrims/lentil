@@ -32,6 +32,10 @@ $LENTIL_PATH/bin/gencode $LENS_ID $LENS_FOCAL_LENGTH &&
 $LENTIL_PATH/bin/add-fitted-focal-length $LENS_ID $LENS_FOCAL_LENGTH &&
 echo "Added " $LENS_FOCAL_LENGTH " to list of fitted focal lengths." &&
 
+# add raytraced focal length and fstop
+$LENTIL_PATH/bin/calculate-focal-length $LENS_ID &&
+$LENTIL_PATH/bin/add-fstop-to-database $LENS_ID &&
+
 # auto-generate lens defines
 $LENTIL_PATH/bin/generate-lens-defines &&
 
