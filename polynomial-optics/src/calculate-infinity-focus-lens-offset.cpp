@@ -31,7 +31,7 @@ int main(int argc, char *argv[]){
 
     float cam_pos[3] = {0.0f};
     float cam_dir[3] = {0.0f};
-    cam_pos[dim_up] = 0.5*lenses[lenses_cnt-1].housing_radius;
+    cam_pos[dim_up] = 0.1*lenses[lenses_cnt-1].housing_radius;
 
     cam_dir[2] = cam_pos[2] - 99999;
     cam_dir[dim_up] = cam_pos[dim_up];

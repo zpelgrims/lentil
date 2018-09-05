@@ -972,7 +972,7 @@
         "lens-geometry": "spherical",
         "material": "air",
         "radius": -33.95199966430664,
-        "thickness": 35.0
+        "thickness": 36.203453063964844
       }
     ],
     "patent-location": "database/lenses/1982-canon-retrofocus-wideangle/patent/US4310222.pdf",
@@ -1876,7 +1876,7 @@
         "lens-geometry": "cyl-x",
         "material": "air",
         "radius": 261.747,
-        "thickness": 39.25
+        "thickness": 39.10345458984375
       }
     ],
     "patent-location": null,
