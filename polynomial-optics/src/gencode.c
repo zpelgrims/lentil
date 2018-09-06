@@ -122,7 +122,7 @@ int main(int argc, char **argv)
   fprintf(f, "camera_data->lens_aperture_pos = %f; // distance aperture -> outer pupil in mm\n", aperture_pos);
   fprintf(f, "camera_data->lens_aperture_housing_radius = %f; // lens housing radius at the aperture\n", aperture_housing_radius);
   fprintf(f, "camera_data->lens_outer_pupil_curvature_radius = %f; // radius of curvature of the outer pupil\n", lenses[0].lens_radius);
-  fprintf(f, "camera_data->lens_outer_pupil_geometry = \"%s\"; // geometry of outer pupil\n", lenses[0].geometry.c_str());
+  fprintf(f, "camera_data->lens_outer_pupil_geometry = \"%s\"; // geometry of outer pupil\n", lenses[0].geometry);
   fprintf(f, "camera_data->lens_fstop = %f; // effective_focal_length/(2*aperture_housing_radius)\n", lens_database[id]["fstop"].get<float>());
   // calculate approximate fov for 35mm sensor
   float sensor[] = {22.f, 0, (lenses[lenses_cnt-1].housing_radius-22.f)/bfl, 0, .55};
@@ -130,8 +130,8 @@ int main(int argc, char **argv)
   poly_system_evaluate(&poly, sensor, out, 100);
   float wspos[3], wsdir[3];
 
-  if (lenses[0].geometry == "cyl-y") cylinderToCs(out, out+2, wspos, wsdir, 0, lenses[0].lens_radius, true);
-  else if (lenses[0].geometry == "cyl-x") cylinderToCs(out, out+2, wspos, wsdir, 0, lenses[0].lens_radius, false);
+  if (strcmp(lenses[0].geometry, "cyl-y") == 0) cylinderToCs(out, out+2, wspos, wsdir, 0, lenses[0].lens_radius, true);
+  else if (strcmp(lenses[0].geometry, "cyl-x") == 0) cylinderToCs(out, out+2, wspos, wsdir, 0, lenses[0].lens_radius, false);
   else sphereToCs(out, out+2, wspos, wsdir, 0, lenses[0].lens_radius);
   
   raytrace_normalise(wsdir);

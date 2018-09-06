@@ -21,6 +21,8 @@ ifeq ($(OS), Linux)
 	OPTFLAGS += -Wno-ignored-attributes -Wno-misleading-indentation
 endif
 
+OPTFLAGS += -g
+
 
 LDFLAGS=-lm
 

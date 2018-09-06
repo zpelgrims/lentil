@@ -337,8 +337,8 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
   for(int i=0;i<lenses_cnt;i++)
   {
     float rad = lenses[i].lens_radius;
-    if (lenses[i].geometry == "cyl-y" && dim_up == 1) rad = 99999.0;
-    else if (lenses[i].geometry == "cyl-x" && dim_up == 0) rad = 99999.0;
+    if (strcmp(lenses[i].geometry, "cyl-y") == 0 && dim_up == 1) rad = 99999.0;
+    else if (strcmp(lenses[i].geometry, "cyl-x") == 0 && dim_up == 0) rad = 99999.0;
     
     float hrad = lenses[i].housing_radius;
     float t = lens_get_thickness(lenses+i, zoom);
@@ -351,8 +351,8 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
       cairo_save(cr);
 
       float rad2 = lenses[i+1].lens_radius;
-      if (lenses[i+1].geometry == "cyl-y" && dim_up == 1) rad2 = 99999.0;
-      else if (lenses[i+1].geometry == "cyl-x" && dim_up == 0) rad2 = 99999.0;
+      if (strcmp(lenses[i+1].geometry, "cyl-y") == 0 && dim_up == 1) rad2 = 99999.0;
+      else if (strcmp(lenses[i+1].geometry, "cyl-x") == 0 && dim_up == 0) rad2 = 99999.0;
     
 
       float hrad2 = lenses[i+1].housing_radius;
@@ -391,7 +391,7 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
       }
       cairo_close_path(cr);
       
-      if (lenses[i+1].geometry == "cyl-y" || lenses[i+1].geometry == "cyl-x") cairo_set_source_rgba(cr, mint[0], mint[1], mint[2], mint[3]);
+      if (strcmp(lenses[i+1].geometry, "cyl-y") == 0 || strcmp(lenses[i+1].geometry, "cyl-x") == 0) cairo_set_source_rgba(cr, mint[0], mint[1], mint[2], mint[3]);
       else if (lenses[i+1].geometry == "aspherical") cairo_set_source_rgba(cr, green[0], green[1], green[2], green[3]);
       else cairo_set_source_rgb(cr, grey[0], grey[1], grey[2]);
       cairo_fill_preserve(cr);
@@ -425,8 +425,8 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
       stroke_with_pencil(cr, scale, 40./width);
 
       cairo_close_path(cr);
-      if (lenses[i].geometry == "cyl-y" || lenses[i].geometry == "cyl-x") cairo_set_source_rgba(cr, mint[0], mint[1], mint[2], mint[3]);
-      else if (lenses[i].geometry == "aspherical") cairo_set_source_rgba(cr, green[0], green[1], green[2], green[3]);
+      if (strcmp(lenses[i].geometry, "cyl-y") == 0 || strcmp(lenses[i].geometry, "cyl-x") == 0) cairo_set_source_rgba(cr, mint[0], mint[1], mint[2], mint[3]);
+      else if (strcmp(lenses[i].geometry, "aspherical") == 0) cairo_set_source_rgba(cr, green[0], green[1], green[2], green[3]);
       else cairo_set_source_rgb(cr, grey[0], grey[1], grey[2]);
       cairo_fill(cr);
 
@@ -520,14 +520,14 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
       inrt[4] = outrt[4] = in[4] = out[4] = ap[4] = lambda;
       float t, n[3] = {0.0f};
 
-      if (lenses[0].geometry == "cyl-y"){
+      if (strcmp(lenses[0].geometry, "cyl-y") == 0){
         // intersection with first lens element, but seems like a duplicate purpose of the algebra method above..
         cylindrical(cam_pos, cam_dir, &t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n, true);
         for(int i=0;i<3;i++) cam_dir[i] = - cam_dir[i]; // need to point away from surface (dot(n,dir) > 0)
         csToCylinder(cam_pos, cam_dir, in, in+2, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
         cylinderToCs(in, in + 2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
       }
-      else if (lenses[0].geometry == "cyl-x"){
+      else if (strcmp(lenses[0].geometry, "cyl-x") == 0){
         // intersection with first lens element, but seems like a duplicate purpose of the algebra method above..
         cylindrical(cam_pos, cam_dir, &t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n, false);
         for(int i=0;i<3;i++) cam_dir[i] = - cam_dir[i]; // need to point away from surface (dot(n,dir) > 0)
@@ -592,10 +592,10 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
 
           // outer pupil
           // need to account for top/side view here?
-          if (lenses[0].geometry == "cyl-y" && dim_up == 0) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
-          else if (lenses[0].geometry == "cyl-y" && dim_up == 1) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - 99999.0, 99999.0, true);
-          else if (lenses[0].geometry == "cyl-x" && dim_up == 0) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - 99999.0, 99999.0, false);
-          else if (lenses[0].geometry == "cyl-x" && dim_up == 1) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
+          if (strcmp(lenses[0].geometry, "cyl-y") == 0 && dim_up == 0) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
+          else if (strcmp(lenses[0].geometry, "cyl-y") == 0 && dim_up == 1) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - 99999.0, 99999.0, true);
+          else if (strcmp(lenses[0].geometry, "cyl-x") == 0 && dim_up == 0) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - 99999.0, 99999.0, false);
+          else if (strcmp(lenses[0].geometry, "cyl-x") == 0 && dim_up == 1) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
           else sphereToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
           cairo_move_to(cr, cam_pos[2], cam_pos[dim_up]);
           cairo_line_to(cr, cam_pos[2]+len*cam_dir[2], cam_pos[dim_up] + len*cam_dir[dim_up]);

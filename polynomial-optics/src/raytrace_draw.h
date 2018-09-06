@@ -40,10 +40,10 @@ static inline int evaluate_draw(const lens_element_t *lenses,
     //normal at intersection
     float n[3];
 
-    if (lenses[k].geometry == "cyl-y"){
+    if (strcmp(lenses[k].geometry, "cyl-y") == 0){
       error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
     }
-    else if (lenses[k].geometry == "cyl-x"){
+    else if (strcmp(lenses[k].geometry, "cyl-x") == 0){
       error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
     }
     else if (draw_aspherical){
@@ -78,8 +78,8 @@ static inline int evaluate_draw(const lens_element_t *lenses,
   }
 
   // return [x,y,dx,dy,lambda]
-  if (lenses[0].geometry == "cyl-y") csToCylinder(pos, dir, out, out + 2, distsum-fabs(lenses[0].lens_radius), lenses[0].lens_radius, true);
-  else if (lenses[0].geometry == "cyl-x") csToCylinder(pos, dir, out, out + 2, distsum-fabs(lenses[0].lens_radius), lenses[0].lens_radius, false);
+  if (strcmp(lenses[0].geometry, "cyl-y") == 0) csToCylinder(pos, dir, out, out + 2, distsum-fabs(lenses[0].lens_radius), lenses[0].lens_radius, true);
+  else if (strcmp(lenses[0].geometry, "cyl-x") == 0) csToCylinder(pos, dir, out, out + 2, distsum-fabs(lenses[0].lens_radius), lenses[0].lens_radius, false);
   else csToSphere(pos, dir, out, out + 2, distsum-fabs(lenses[0].lens_radius), lenses[0].lens_radius);
 
   out[4] = intensity;
@@ -157,8 +157,8 @@ static inline int evaluate_reverse_draw(const lens_element_t *lenses, const int 
   float lens_length = 0;
   for(int i=0;i<lenses_cnt;i++) lens_length += lens_get_thickness(lenses+i, zoom);
 
-  if (lenses[0].geometry == "cyl-y") cylinderToCs(in, in + 2, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
-  else if (lenses[0].geometry == "cyl-x") cylinderToCs(in, in + 2, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
+  if (strcmp(lenses[0].geometry, "cyl-y") == 0) cylinderToCs(in, in + 2, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
+  else if (strcmp(lenses[0].geometry, "cyl-x") == 0) cylinderToCs(in, in + 2, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
   else sphereToCs(in, in + 2, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
 
   // sphere param only knows about directions facing /away/ from outer pupil, so
@@ -179,10 +179,10 @@ static inline int evaluate_reverse_draw(const lens_element_t *lenses, const int 
     //normal at intersection
     float n[3] = {0.0f};
     
-    if (lenses[k].geometry == "cyl-y"){
+    if (strcmp(lenses[k].geometry, "cyl-y") == 0){
       error |= cylindrical(pos, dir, &t, R, distsum - R, lenses[k].housing_radius, n, true);
     }
-    else if (lenses[k].geometry == "cyl-x"){
+    else if (strcmp(lenses[k].geometry, "cyl-x") == 0){
       error |= cylindrical(pos, dir, &t, R, distsum - R, lenses[k].housing_radius, n, false);
     }
     else if (draw_aspherical){
