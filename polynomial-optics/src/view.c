@@ -110,13 +110,13 @@ key_press(GtkWidget *widget, GdkEventKey *event, gpointer user_data)
   }
   else if(event->keyval == GDK_KEY_plus)
   {
-    global_scale += 1;
+    global_scale /= 0.95;
     gtk_widget_queue_draw(widget);
     return TRUE;
   }
   else if(event->keyval == GDK_KEY_minus)
   {
-    global_scale -= 1;
+    global_scale *= 0.95;
     gtk_widget_queue_draw(widget);
     return TRUE;
   }

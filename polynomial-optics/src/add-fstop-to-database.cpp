@@ -27,6 +27,8 @@ int main(int argc, char *argv[])
   // loading lens config with 0.0 focal length, which means no scale transform on the lens
   int lenses_cnt = lens_configuration(lenses, id, 0.0f);
   float aperture_radius = lens_get_aperture_radius(lenses, lenses_cnt);
+
+// it now seems quite likely that we have to use the back_focal_length instead.. take note!!
   float fstop = static_cast<float>(lens_focal_length_raytraced)/(aperture_radius*2.0);
 
   lens_database[id]["fstop"] = fstop;
