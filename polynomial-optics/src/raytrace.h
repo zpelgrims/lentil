@@ -651,12 +651,6 @@ float calculate_focal_length(const lens_element_t *lenses, const int lenses_cnt,
 
     n1 = n2;
   }
-
-  /* in this case, shoudn't be necessary, not even used.. test first before removing though
-  // return [x,y,dx,dy,lambda]
-  csToSphere(pos, dir, out, out + 2, distsum-fabs(lenses[0].lens_radius), lenses[0].lens_radius);
-  out[4] = intensity;
-  */
   
   // calculate focal length using principal planes
   float pp_line1start[3] = {0.0};

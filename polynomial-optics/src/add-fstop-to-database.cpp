@@ -28,8 +28,21 @@ int main(int argc, char *argv[])
   int lenses_cnt = lens_configuration(lenses, id, 0.0f);
   float aperture_radius = lens_get_aperture_radius(lenses, lenses_cnt);
 
-// it now seems quite likely that we have to use the back_focal_length instead.. take note!!
+
+
+
+
+
+// fstop = 1.0 / (sin(half-angle) * 2.0)!!!
+// will need to do some raytracing to figure out the maximum half angle
+
   float fstop = static_cast<float>(lens_focal_length_raytraced)/(aperture_radius*2.0);
+
+
+
+
+
+
 
   lens_database[id]["fstop"] = fstop;
   printf("Added calculated f-stop of [%f] to lens database.\n", fstop);
