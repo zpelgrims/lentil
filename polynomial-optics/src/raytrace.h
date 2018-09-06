@@ -4,6 +4,7 @@
 #include "lenssystem.h"
 #include <stdio.h>
 #include <strings.h>
+#include <vector>
 
 #define max(a, b) ((a)>(b)?(a):(b))
 
@@ -731,4 +732,71 @@ static inline float evaluate_reverse_intersection_y0(const lens_element_t *lense
   
   // y=0 intersection
   return pos[dim_up] - pos[2]*dir[dim_up]/dir[2];
+}
+
+
+static inline bool evaluate_reverse_fstop(const lens_element_t *lenses, const int lenses_cnt, const float zoom, const float *in, float *out, int dim_up, int draw_aspherical, std::vector<float> positiondata)
+{
+  int error = 0;
+  float n1 = 1.0f;
+  float pos[3] = {0.0f}, dir[3] = {0.0f};
+  float intensity = 1.0f;
+
+  float lens_length = 0;
+  for(int i=0;i<lenses_cnt;i++) lens_length += lens_get_thickness(lenses+i, zoom);
+
+  if (lenses[0].geometry == "cyl-y") cylinderToCs(in, in + 2, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
+  else if (lenses[0].geometry == "cyl-x") cylinderToCs(in, in + 2, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
+  else sphereToCs(in, in + 2, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
+
+
+  // sphere param only knows about directions facing /away/ from outer pupil, so
+  // need to flip this if we're tracing into the lens towards the sensor:
+  for(int i = 0; i < 3; i++) dir[i] = -dir[i];
+
+  float distsum = lens_length;
+
+  for(int k=0;k<lenses_cnt;k++)
+  {
+    const float R = lenses[k].lens_radius;
+    float t = 0.0f;
+    const float dist = lens_get_thickness(lenses+k, zoom);
+
+    //normal at intersection
+    float n[3] = {0.0f};
+    
+    if (lenses[k].geometry == "cyl-y"){
+      error |= cylindrical(pos, dir, &t, R, distsum - R, lenses[k].housing_radius, n, true);
+    }
+    else if (lenses[k].geometry == "cyl-x"){
+      error |= cylindrical(pos, dir, &t, R, distsum - R, lenses[k].housing_radius, n, false);
+    }
+    else if (draw_aspherical){
+      error |= aspherical(pos, dir, &t, R, distsum - R, lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
+    }
+    else {
+      error |= spherical(pos, dir, &t, R, distsum - R, lenses[k].housing_radius, n);
+    }
+
+    if(n[2] < 0.0) error |= 16;
+
+    // index of refraction and ratio current/next:
+    const float n2 = spectrum_eta_from_abbe_um(lenses[k].ior, lenses[k].vno, in[4]);
+    intensity *= refract(n1, n2, n, dir);
+    if(intensity < INTENSITY_EPS) error |= 8;
+
+    if(error) return false;
+
+    // and renormalise:
+    raytrace_normalise(dir);
+
+    distsum -= dist;
+    n1 = n2;
+  }
+  
+  // [xdistance between last lens intersection and y0 intersection, ydistance last lens intersection]
+  positiondata[0] = pos[2] - (pos[dim_up] - pos[2]*dir[dim_up]/dir[2]);
+  positiondata[1] = pos[dim_up];
+
+  return true;
 }

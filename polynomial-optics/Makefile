@@ -37,10 +37,10 @@ src/spectrum.h
 
 
 ifeq ($(OS), Darwin)
-    all: add-fstop-to-database view calculate-infinity-focus-lens-offset calculate-focal-length fit gencode genpoly printpoly print-lens-path add-fitted-focal-length generate-lens-defines
+    all: calculate-fstop view calculate-infinity-focus-lens-offset calculate-focal-length fit gencode genpoly printpoly print-lens-path add-fitted-focal-length generate-lens-defines
 endif
 ifeq ($(OS), Linux)
-    all: add-fstop-to-database generate-lens-defines calculate-infinity-focus-lens-offset calculate-focal-length fit gencode genpoly printpoly print-lens-path add-fitted-focal-length
+    all: calculate-fstop generate-lens-defines calculate-infinity-focus-lens-offset calculate-focal-length fit gencode genpoly printpoly print-lens-path add-fitted-focal-length
 endif
 
 
@@ -53,8 +53,8 @@ endif
 print-lens-path: Makefile src/print-lens-path.cpp ${HEADERS}
 	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/print-lens-path.cpp -o bin/print-lens-path ${LDFLAGS}
 
-add-fstop-to-database: Makefile src/add-fstop-to-database.cpp ${HEADERS}
-	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/add-fstop-to-database.cpp -o bin/add-fstop-to-database ${LDFLAGS}
+calculate-fstop: Makefile src/calculate-fstop.cpp ${HEADERS}
+	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/calculate-fstop.cpp -o bin/calculate-fstop ${LDFLAGS}
 
 add-fitted-focal-length: Makefile src/add-fitted-focal-length.cpp ${HEADERS}
 	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/add-fitted-focal-length.cpp -o bin/add-fitted-focal-length ${LDFLAGS}
@@ -92,8 +92,8 @@ gencode: Makefile src/gencode.c ${HEADERS}
 
 
 ifeq ($(OS), Darwin)
-clean: rm -f add-fstop-to-database calculate-focal-length calculate-infinity-focus-lens-offset view fit gencode genpoly printpoly print-lens-path add-fitted-focal-length generate-lens-defines #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
+clean: rm -f calculate-fstop calculate-focal-length calculate-infinity-focus-lens-offset view fit gencode genpoly printpoly print-lens-path add-fitted-focal-length generate-lens-defines #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
 endif
 ifeq ($(OS), Linux)
-clean: rm -f add-fstop-to-database calculate-focal-length calculate-infinity-focus-lens-offset fit gencode genpoly printpoly print-lens-path add-fitted-focal-length generate-lens-defines #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
+clean: rm -f calculate-fstop calculate-focal-length calculate-infinity-focus-lens-offset fit gencode genpoly printpoly print-lens-path add-fitted-focal-length generate-lens-defines #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
 endif

@@ -505,7 +505,7 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
 
 
       float cam_dir[3] = {0.0f};
-      cam_dir[2] = cam_pos[2] - 99999999;
+      cam_dir[2] = cam_pos[2] - 99999.0;
       cam_dir[dim_up] = cam_pos[dim_up];
       raytrace_normalise(cam_dir);
       for(int i=0;i<3;i++) cam_pos[i] -= 0.1f * cam_dir[i];
