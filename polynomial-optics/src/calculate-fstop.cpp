@@ -30,9 +30,11 @@ int main(int argc, char *argv[])
   float lens_length = 0.0;
   int draw_aspheric = 1; 
 
+  int cnt = 0;
+
   for(int i=0;i<lenses_cnt;i++) lens_length += lens_get_thickness(lenses+i, zoom);
 
-  for(int wedge = 0; wedge < 100; wedge++){
+  for(int wedge = 1; wedge < 100; wedge++){
 
     float y_wedge = lenses[0].housing_radius / (100.0/static_cast<float>(wedge));
 
@@ -86,17 +88,16 @@ int main(int argc, char *argv[])
     if (!evaluate_reverse_fstop(lenses, lenses_cnt, zoom, inrt, outrt, dim_up, draw_aspheric, positiondata)){
       break;
     }
+
+    cnt += 1;
   }
 
-  for (auto i : positiondata){
-    printf("positiondata: %f\n", i);
-  }
-  
+  printf("Last valid exit vertex position: %f, %f\n", positiondata[0], positiondata[1]);
+  printf("Failed at try %d of 100\n", cnt);
 
   float fstop = 1.0 / (std::atan(positiondata[1] / positiondata[0]) * 2.0);
-  
   if ((fstop != fstop) || (fstop == 0.0)){
-    printf("fstop is an incorrect value, aborting: fstop %f", fstop);
+    printf("fstop is an incorrect value, aborting: fstop %f\n", fstop);
     return 0;
   }
 

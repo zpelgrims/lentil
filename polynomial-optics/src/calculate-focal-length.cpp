@@ -40,8 +40,6 @@ int main(int argc, char *argv[]){
   outrt[2] = cam_dir[2];
   inrt[4] = outrt[4] = lambda;
 
-  float t, n[3] = {0.0f};
-
   float raytraced_focal_length = calculate_focal_length(lenses, lenses_cnt, zoom, inrt, outrt, dim_up, true);
 
 

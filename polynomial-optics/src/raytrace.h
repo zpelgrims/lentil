@@ -792,12 +792,11 @@ static inline bool evaluate_reverse_fstop(const lens_element_t *lenses, const in
 
     distsum -= dist;
     n1 = n2;
-
-    // [xdistance between last lens intersection and y0 intersection, ydistance last lens intersection]
-    positiondata[0] = pos[2] - (pos[dim_up] - pos[2]*dir[dim_up]/dir[2]);
-    positiondata[1] = pos[dim_up];
-    printf("%f, %f", positiondata[0], positiondata[1]);
   }
-  
+
+  // [xdistance between last lens intersection and y0 intersection, ydistance last lens intersection]
+  positiondata[0] = pos[2] - (pos[dim_up] - pos[2]*dir[dim_up]/dir[2]);
+  positiondata[1] = pos[dim_up];
+
   return true;
 }

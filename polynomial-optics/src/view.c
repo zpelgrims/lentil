@@ -392,7 +392,7 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
       cairo_close_path(cr);
       
       if (strcmp(lenses[i+1].geometry, "cyl-y") == 0 || strcmp(lenses[i+1].geometry, "cyl-x") == 0) cairo_set_source_rgba(cr, mint[0], mint[1], mint[2], mint[3]);
-      else if (lenses[i+1].geometry == "aspherical") cairo_set_source_rgba(cr, green[0], green[1], green[2], green[3]);
+      else if (strcmp(lenses[i+1].geometry, "aspherical") == 0) cairo_set_source_rgba(cr, green[0], green[1], green[2], green[3]);
       else cairo_set_source_rgb(cr, grey[0], grey[1], grey[2]);
       cairo_fill_preserve(cr);
 
@@ -612,6 +612,7 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
         outrt[4] = lambda;
         error = evaluate_draw(lenses, lenses_cnt, zoom, outrt, inrt, cr, scale, dim_up, draw_aspheric, false, false);
       }
+      
     }
   }
 
