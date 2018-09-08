@@ -1080,10 +1080,9 @@
     "commercial": true,
     "company": "cooke",
     "focal-length-mm-patent": 25.4,
-    "focal-length-mm-raytraced": null,
+    "focal-length-mm-raytraced": 25.92892837524414,
     "fstop": 1.9737238883972168,
     "notes": "Cooke Series O f/2.0 OPIC lens, Horace W. Lee designed the Cooke OPIC lenses to be the first to combine an f/2.0 aperture with a fully corrected color and geometry. Studios snapped up the new Cooke f/2.0 (T2.3) lenses. The original f/2.0 OPIC design became the now-legendary uncoated Cooke Speed Panchros.",
-    "notes-to-self": "not sure at all about the scale of the lens, housing radius is guessed. Probably lens for 16mm format.",
     "optical-elements-patent": [
       {
         "abbe": 59,
@@ -1205,11 +1204,11 @@
     "year": 1920
   },
   "0008": {
-    "commercial": false,
+    "commercial": true,
     "company": "nikon",
     "focal-length-mm-patent": 51.6,
-    "focal-length-mm-raytraced": 52.78437805175781,
-    "fstop": 1.1904919147491455,
+    "focal-length-mm-raytraced": 52.808231353759766,
+    "fstop": 1.1877518892288208,
     "notes": "f/1.25",
     "optical-elements-patent": [
       {
@@ -1385,24 +1384,24 @@
     ],
     "patent-location": "https://patentimages.storage.googleapis.com/1e/73/5f/75daed5fac34e2/US8721094.pdf",
     "patent-number": "US8721094",
-    "polynomial-optics": null,
+    "polynomial-optics": [],
     "prime": true,
     "product-name": "unknown",
-    "production-ready": false,
+    "production-ready": true,
     "year": 2014
   },
   "0009": {
     "commercial": false,
     "company": "zeiss",
     "focal-length-mm-patent": 100,
-    "focal-length-mm-raytraced": 99.29978942871094,
-    "fstop": 1.463258147239685,
+    "focal-length-mm-raytraced": 99.09127044677734,
+    "fstop": 1.3602111339569092,
     "notes": "58mm?",
     "optical-elements-patent": [
       {
         "abbe": 48.0,
         "aspherical-equation": null,
-        "housing-radius": 35.0,
+        "housing-radius": 37.0,
         "ior": 1.6423799991607666,
         "lens-geometry": "spherical",
         "material": "abbe",
@@ -1412,7 +1411,7 @@
       {
         "abbe": 0.0,
         "aspherical-equation": null,
-        "housing-radius": 35.0,
+        "housing-radius": 37.0,
         "ior": 1.0,
         "lens-geometry": "spherical",
         "material": "air",
@@ -1422,7 +1421,7 @@
       {
         "abbe": 56.900001525878906,
         "aspherical-equation": null,
-        "housing-radius": 30.0,
+        "housing-radius": 33.0,
         "ior": 1.6230599880218506,
         "lens-geometry": "spherical",
         "material": "abbe",
@@ -1432,7 +1431,7 @@
       {
         "abbe": 41.20000076293945,
         "aspherical-equation": null,
-        "housing-radius": 30.0,
+        "housing-radius": 33.0,
         "ior": 1.575659990310669,
         "lens-geometry": "spherical",
         "material": "abbe",
@@ -1447,7 +1446,7 @@
         "lens-geometry": "spherical",
         "material": "air",
         "radius": 28.299999237060547,
-        "thickness": 10.0
+        "thickness": 11.1
       },
       {
         "abbe": 0.0,
@@ -1455,9 +1454,9 @@
         "housing-radius": 22.5,
         "ior": 1.0,
         "lens-geometry": "spherical",
-        "material": "IRIS",
-        "radius": 10000.0,
-        "thickness": 8.899999618530273
+        "material": "iris",
+        "radius": 99999.0,
+        "thickness": 7.8
       },
       {
         "abbe": 32.20000076293945,
@@ -1472,7 +1471,7 @@
       {
         "abbe": 48.0,
         "aspherical-equation": null,
-        "housing-radius": 27.0,
+        "housing-radius": 30.0,
         "ior": 1.6423799991607666,
         "lens-geometry": "spherical",
         "material": "abbe",
@@ -1482,7 +1481,7 @@
       {
         "abbe": 0.0,
         "aspherical-equation": null,
-        "housing-radius": 27.0,
+        "housing-radius": 30.0,
         "ior": 1.0,
         "lens-geometry": "spherical",
         "material": "air",
@@ -1492,7 +1491,7 @@
       {
         "abbe": 48.0,
         "aspherical-equation": null,
-        "housing-radius": 27.0,
+        "housing-radius": 30.0,
         "ior": 1.6423799991607666,
         "lens-geometry": "spherical",
         "material": "abbe",
@@ -1502,12 +1501,12 @@
       {
         "abbe": 0.0,
         "aspherical-equation": null,
-        "housing-radius": 27.0,
+        "housing-radius": 30.0,
         "ior": 1.0,
         "lens-geometry": "spherical",
         "material": "air",
         "radius": -120.0,
-        "thickness": 65.06566619873047
+        "thickness": 65.2511215209961
       }
     ],
     "patent-location": "database/lenses/1927-biotar-zeiss/patent/DE485798C.pdf",
