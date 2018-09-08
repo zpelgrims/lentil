@@ -4,7 +4,7 @@
     "company": "angenieux",
     "focal-length-mm-patent": 100.0,
     "focal-length-mm-raytraced": 99.67037200927734,
-    "fstop": 1.0758081674575806,
+    "fstop": 1.104755163192749,
     "notes": "large aperture six element objective, nice swirly bokeh",
     "optical-elements-adjusted": [
       {
@@ -325,7 +325,7 @@
     "company": "meyer-optik-goerlitz",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": 99.65371704101563,
-    "fstop": 1.441695213317871,
+    "fstop": 1.4671032428741455,
     "notes": "Primoplan 58mm f1.5",
     "optical-elements-patent": [
       {
@@ -442,7 +442,7 @@
     "company": "unknown",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": 85.5024185180664,
-    "fstop": 3.4157071113586426,
+    "fstop": 3.4082977771759033,
     "notes": "classical 19th century petzval lens, should be scaled to 100mm",
     "optical-elements-patent": [
       {
@@ -539,7 +539,7 @@
     "company": "nikon",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": 99.26875305175781,
-    "fstop": 2.7731218338012695,
+    "fstop": 2.7449190616607666,
     "notes": "This invention provides a retrofocus-type wide angle lens having a relative aperture of F/2.8, an angle of field of 75° and a back focus of more than 1.3 times the focallength and comprises seven lens elements",
     "optical-elements-patent": [
       {
@@ -706,7 +706,7 @@
     "company": "canon",
     "focal-length-mm-patent": 14.2,
     "focal-length-mm-raytraced": 15.135459899902344,
-    "fstop": 2.6202163696289063,
+    "fstop": 2.636186361312866,
     "notes": "The present invention relates to a retro-focus type wide angle lens which is compact despite its remarkably large field of view and well compensated for various aberrations. f = 14.2, f2.8, Angle of field = 114",
     "notes-to-self": "3rd lens element in patent seems to have incorrect radius of curvature when compared to provided image (58.28->40.28). This has been corrected in the optical-elements-patent dict.",
     "optical-elements-patent": [
@@ -984,7 +984,7 @@
     "company": "kodak",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": 100.00676727294922,
-    "fstop": 2.175820827484131,
+    "fstop": 2.195089340209961,
     "notes": "Petzval type lens, f=100mm",
     "optical-elements-patent": [
       {
@@ -1081,7 +1081,7 @@
     "company": "cooke",
     "focal-length-mm-patent": 25.4,
     "focal-length-mm-raytraced": 25.92892837524414,
-    "fstop": 1.9737238883972168,
+    "fstop": 1.994993805885315,
     "notes": "Cooke Series O f/2.0 OPIC lens, Horace W. Lee designed the Cooke OPIC lenses to be the first to combine an f/2.0 aperture with a fully corrected color and geometry. Studios snapped up the new Cooke f/2.0 (T2.3) lenses. The original f/2.0 OPIC design became the now-legendary uncoated Cooke Speed Panchros.",
     "optical-elements-patent": [
       {
@@ -1208,7 +1208,7 @@
     "company": "nikon",
     "focal-length-mm-patent": 51.6,
     "focal-length-mm-raytraced": 52.808231353759766,
-    "fstop": 1.1877518892288208,
+    "fstop": 1.2235713005065918,
     "notes": "f/1.25",
     "optical-elements-patent": [
       {
@@ -1395,7 +1395,7 @@
     "company": "zeiss",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": 99.09127044677734,
-    "fstop": 1.3602111339569092,
+    "fstop": 1.3913335800170898,
     "notes": "58mm?",
     "optical-elements-patent": [
       {
@@ -1522,7 +1522,7 @@
     "company": "asahi",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": 99.61552429199219,
-    "fstop": 1.2203494310379028,
+    "fstop": 1.24519681930542,
     "notes": "Based on the Biotar design, 50mm",
     "optical-elements-patent": [
       {
@@ -1679,7 +1679,7 @@
     "company": "asahi",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": 99.20272827148438,
-    "fstop": 1.938520908355713,
+    "fstop": 1.960183024406433,
     "notes": "SMC Takumar 35mm f2.0",
     "optical-elements-patent": [
       {
@@ -1856,7 +1856,7 @@
     "company": "asahi",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": 126.5606689453125,
-    "fstop": 4.522519111633301,
+    "fstop": 4.531745433807373,
     "notes": "SMC Takumar 18mm f3.5",
     "notes-to-self": "The dimensions have been matched, yet the FL/fstop are incorrect. There also seems to be a discrepency between the provided image and the raytraced drawing (lens element 4 from image space). Currently not suited for production in this state.",
     "optical-elements-patent": [
@@ -2094,7 +2094,7 @@
     "company": "zeiss",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": 99.331298828125,
-    "fstop": 3.1603751182556152,
+    "fstop": 3.173597574234009,
     "notes": "Flektagon 35mm f2.8",
     "notes-to-self": "Huge discrepancy between drawings and raytrace drawings. The numbers match but the distance between the lens elements is not the same at all..",
     "optical-elements-patent": [
