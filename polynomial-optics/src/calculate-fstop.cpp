@@ -34,9 +34,9 @@ int main(int argc, char *argv[])
 
   for(int i=0;i<lenses_cnt;i++) lens_length += lens_get_thickness(lenses+i, zoom);
 
-  for(int wedge = 1; wedge < 100; wedge++){
+  for(int wedge = 1; wedge < 1000; wedge++){
 
-    float y_wedge = lenses[0].housing_radius / (100.0/static_cast<float>(wedge));
+    float y_wedge = lenses[0].housing_radius / (1000.0/static_cast<float>(wedge));
 
     float cam_pos[3] = {0.0f};
     cam_pos[dim_up] = y_wedge;
@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
   }
 
   printf("Last valid exit vertex position: %f, %f\n", positiondata[0], positiondata[1]);
-  printf("Failed at try %d of 100\n", cnt);
+  printf("Failed at try %d of 1000\n", cnt);
 
   float fstop = 1.0 / (std::atan(positiondata[1] / positiondata[0]) * 2.0);
   if ((fstop != fstop) || (fstop == 0.0)){
