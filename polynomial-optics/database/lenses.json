@@ -5,7 +5,6 @@
     "focal-length-mm-patent": 100.0,
     "focal-length-mm-raytraced": 99.67037200927734,
     "fstop": 1.0758081674575806,
-    "implementation-version": null,
     "notes": "large aperture six element objective, nice swirly bokeh",
     "optical-elements-adjusted": [
       {
@@ -326,9 +325,8 @@
     "company": "meyer-optik-goerlitz",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": 99.65371704101563,
-    "fstop": 1.513588547706604,
-    "implementation-version": null,
-    "notes": "Primoplan 58mm f1.9",
+    "fstop": 1.441695213317871,
+    "notes": "Primoplan 58mm f1.5",
     "optical-elements-patent": [
       {
         "abbe": 51.1,
@@ -347,28 +345,28 @@
         "ior": 1.0,
         "lens-geometry": "spherical",
         "material": "air",
-        "radius": 1450.0999755859375,
-        "thickness": 0.699999988079071
+        "radius": 1450.01,
+        "thickness": 0.7
       },
       {
         "abbe": 33.79999923706055,
         "aspherical-equation": null,
-        "housing-radius": 34.0,
-        "ior": 1.6480000019073486,
+        "housing-radius": 29.0,
+        "ior": 1.648,
         "lens-geometry": "spherical",
         "material": "abbe",
-        "radius": 43.29999923706055,
-        "thickness": 3.5999999046325684
+        "radius": 43.3,
+        "thickness": 3.6
       },
       {
-        "abbe": 57.099998474121094,
+        "abbe": 57.1,
         "aspherical-equation": null,
         "housing-radius": 25.0,
-        "ior": 1.6230000257492065,
+        "ior": 1.623,
         "lens-geometry": "spherical",
         "material": "abbe",
-        "radius": 26.899999618530273,
-        "thickness": 10.899999618530273
+        "radius": 26.9,
+        "thickness": 10.9
       },
       {
         "abbe": 0.0,
@@ -378,7 +376,7 @@
         "lens-geometry": "spherical",
         "material": "air",
         "radius": 54.0,
-        "thickness": 5.099999904632568
+        "thickness": 7.1
       },
       {
         "abbe": 0.0,
@@ -386,19 +384,19 @@
         "housing-radius": 25.0,
         "ior": 1.0,
         "lens-geometry": "spherical",
-        "material": "IRIS",
-        "radius": 10000.0,
-        "thickness": 5.099999904632568
+        "material": "iris",
+        "radius": 99999.0,
+        "thickness": 3.1
       },
       {
-        "abbe": 31.299999237060547,
+        "abbe": 31.3,
         "aspherical-equation": null,
         "housing-radius": 25.25,
-        "ior": 1.687000036239624,
+        "ior": 1.687,
         "lens-geometry": "spherical",
         "material": "abbe",
         "radius": -193.0,
-        "thickness": 3.5999999046325684
+        "thickness": 3.6
       },
       {
         "abbe": 0.0,
@@ -407,18 +405,18 @@
         "ior": 1.0,
         "lens-geometry": "spherical",
         "material": "air",
-        "radius": 32.900001525878906,
-        "thickness": 11.199999809265137
+        "radius": 32.9,
+        "thickness": 11.2
       },
       {
-        "abbe": 53.20000076293945,
+        "abbe": 53.2,
         "aspherical-equation": null,
         "housing-radius": 27.5,
-        "ior": 1.621000051498413,
+        "ior": 1.621,
         "lens-geometry": "spherical",
         "material": "abbe",
-        "radius": 82.80000305175781,
-        "thickness": 23.600000381469727
+        "radius": 82.8,
+        "thickness": 23.6
       },
       {
         "abbe": 0.0,
@@ -427,11 +425,11 @@
         "ior": 1.0,
         "lens-geometry": "spherical",
         "material": "air",
-        "radius": -52.79999923706055,
-        "thickness": 51.26366424560547
+        "radius": -52.8,
+        "thickness": 51.60711669921875
       }
     ],
-    "patent-location": null,
+    "patent-location": "database/lenses/1936-meyer-optik-goerlitz-primoplan/patent/DE1387593.pdf",
     "patent-number": "DE1387593",
     "polynomial-optics": [],
     "prime": true,
@@ -445,7 +443,6 @@
     "focal-length-mm-patent": 150,
     "focal-length-mm-raytraced": null,
     "fstop": 3.4157071113586426,
-    "implementation-version": null,
     "notes": "classical 19th century petzval lens, should be scaled to 100mm",
     "optical-elements-patent": [
       {
@@ -543,7 +540,6 @@
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": 99.38836669921875,
     "fstop": 3.1771795749664307,
-    "implementation-version": null,
     "notes": "This invention provides a retrofocus-type wide angle lens having a relative aperture of F/2.8, an angle of field of 75° and a back focus of more than 1.3 times the focallength and comprises seven lens elements",
     "optical-elements-patent": [
       {
@@ -711,7 +707,6 @@
     "focal-length-mm-patent": 14.2,
     "focal-length-mm-raytraced": 16.0,
     "fstop": 2.5124905109405518,
-    "implementation-version": null,
     "notes": "The present invention relates to a retro-focus type wide angle lens which is compact despite its remarkably large field of view and well compensated for various aberrations. f = 14.2, f2.8, Angle of field = 114",
     "optical-elements-patent": [
       {
@@ -989,7 +984,6 @@
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": 100.00676727294922,
     "fstop": 2.1862411499023438,
-    "implementation-version": null,
     "notes": "Petzval type lens, f=100mm",
     "optical-elements-patent": [
       {
@@ -1087,7 +1081,6 @@
     "focal-length-mm-patent": 254,
     "focal-length-mm-raytraced": null,
     "fstop": 2.0,
-    "implementation-version": null,
     "notes": "Cooke Series O f/2.0 OPIC lens, Horace W. Lee designed the Cooke OPIC lenses to be the first to combine an f/2.0 aperture with a fully corrected color and geometry. Studios snapped up the new Cooke f/2.0 (T2.3) lenses. The original f/2.0 OPIC design became the now-legendary uncoated Cooke Speed Panchros.",
     "notes-to-self": "not sure at all about the scale of the lens, housing radius is guessed. Probably lens for 16mm format.",
     "optical-elements-patent": [
@@ -1210,13 +1203,1034 @@
     "production-ready": false,
     "year": 1920
   },
+  "0008": {
+    "commercial": false,
+    "company": "nikon",
+    "focal-length-mm-patent": 51.6,
+    "focal-length-mm-raytraced": 52.78437805175781,
+    "fstop": 1.1904919147491455,
+    "notes": "f/1.25",
+    "optical-elements-patent": [
+      {
+        "abbe": 46.57,
+        "aspherical-equation": null,
+        "housing-radius": 23.0,
+        "ior": 1.804,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 81.4768,
+        "thickness": 5.0
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 23.0,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": -2838.8241,
+        "thickness": 0.3
+      },
+      {
+        "abbe": 29.42,
+        "aspherical-equation": null,
+        "housing-radius": 20.5,
+        "ior": 1.9503,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 33.1597,
+        "thickness": 7.0
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 19.0,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 60.4403,
+        "thickness": 1.4
+      },
+      {
+        "abbe": 26.52,
+        "aspherical-equation": null,
+        "housing-radius": 19.0,
+        "ior": 1.761821,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 95.328,
+        "thickness": 2.0
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 16.0,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 23.0471,
+        "thickness": 11.3
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 16.0,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "iris",
+        "radius": 999999.0,
+        "thickness": 7.0
+      },
+      {
+        "abbe": 25.42,
+        "aspherical-equation": null,
+        "housing-radius": 14.5,
+        "ior": 1.865181,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": -26.4313,
+        "thickness": 1.6
+      },
+      {
+        "abbe": 46.57,
+        "aspherical-equation": null,
+        "housing-radius": 16.0,
+        "ior": 1.804,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": -125.7273,
+        "thickness": 4.6
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 16.0,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": -32.7268,
+        "thickness": 2.7
+      },
+      {
+        "abbe": 25.42,
+        "aspherical-equation": null,
+        "housing-radius": 16.0,
+        "ior": 1.805181,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": -23.4449,
+        "thickness": 1.7
+      },
+      {
+        "abbe": 40.76,
+        "aspherical-equation": null,
+        "housing-radius": 19.5,
+        "ior": 1.882997,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": -64.8415,
+        "thickness": 5.0
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 19.5,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": -31.7094,
+        "thickness": 0.1
+      },
+      {
+        "abbe": 40.76,
+        "aspherical-equation": null,
+        "housing-radius": 20.5,
+        "ior": 1.882997,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": -187.549,
+        "thickness": 4.2
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 20.5,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": -47.396,
+        "thickness": 0.1
+      },
+      {
+        "abbe": 46.67,
+        "aspherical-equation": null,
+        "housing-radius": 20.0,
+        "ior": 1.804,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 79.1117,
+        "thickness": 3.8
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 20.0,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": -1019.1299,
+        "thickness": 40.0280876159668
+      }
+    ],
+    "patent-location": "https://patentimages.storage.googleapis.com/1e/73/5f/75daed5fac34e2/US8721094.pdf",
+    "patent-number": "US8721094",
+    "polynomial-optics": null,
+    "prime": true,
+    "product-name": "unknown",
+    "production-ready": false,
+    "year": 2014
+  },
+  "0009": {
+    "commercial": false,
+    "company": "zeiss",
+    "focal-length-mm-patent": 100,
+    "focal-length-mm-raytraced": 99.29978942871094,
+    "fstop": 1.463258147239685,
+    "notes": "58mm?",
+    "optical-elements-patent": [
+      {
+        "abbe": 48.0,
+        "aspherical-equation": null,
+        "housing-radius": 35.0,
+        "ior": 1.6423799991607666,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 83.5999984741211,
+        "thickness": 10.75
+      },
+      {
+        "abbe": 0.0,
+        "aspherical-equation": null,
+        "housing-radius": 35.0,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 321.0,
+        "thickness": 1.649999976158142
+      },
+      {
+        "abbe": 56.900001525878906,
+        "aspherical-equation": null,
+        "housing-radius": 30.0,
+        "ior": 1.6230599880218506,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 44.79999923706055,
+        "thickness": 15.550000190734863
+      },
+      {
+        "abbe": 41.20000076293945,
+        "aspherical-equation": null,
+        "housing-radius": 30.0,
+        "ior": 1.575659990310669,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": -1150.0,
+        "thickness": 5.050000190734863
+      },
+      {
+        "abbe": 0.0,
+        "aspherical-equation": null,
+        "housing-radius": 22.5,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 28.299999237060547,
+        "thickness": 10.0
+      },
+      {
+        "abbe": 0.0,
+        "aspherical-equation": null,
+        "housing-radius": 22.5,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "IRIS",
+        "radius": 10000.0,
+        "thickness": 8.899999618530273
+      },
+      {
+        "abbe": 32.20000076293945,
+        "aspherical-equation": null,
+        "housing-radius": 22.5,
+        "ior": 1.672700047492981,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": -38.5,
+        "thickness": 5.050000190734863
+      },
+      {
+        "abbe": 48.0,
+        "aspherical-equation": null,
+        "housing-radius": 27.0,
+        "ior": 1.6423799991607666,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 50.5,
+        "thickness": 21.219999313354492
+      },
+      {
+        "abbe": 0.0,
+        "aspherical-equation": null,
+        "housing-radius": 27.0,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": -53.20000076293945,
+        "thickness": 0.9700000286102295
+      },
+      {
+        "abbe": 48.0,
+        "aspherical-equation": null,
+        "housing-radius": 27.0,
+        "ior": 1.6423799991607666,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 106.0,
+        "thickness": 13.899999618530273
+      },
+      {
+        "abbe": 0.0,
+        "aspherical-equation": null,
+        "housing-radius": 27.0,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": -120.0,
+        "thickness": 65.06566619873047
+      }
+    ],
+    "patent-location": "database/lenses/1927-biotar-zeiss/patent/DE485798C.pdf",
+    "patent-number": "DE485798C",
+    "polynomial-optics": [],
+    "prime": true,
+    "product-name": "biotar",
+    "production-ready": true,
+    "year": 1927
+  },
+  "0010": {
+    "commercial": false,
+    "company": "asahi",
+    "focal-length-mm-patent": 100,
+    "focal-length-mm-raytraced": 99.61552429199219,
+    "fstop": 1.2203494310379028,
+    "notes": "Based on the Biotar design, 50mm",
+    "optical-elements-patent": [
+      {
+        "abbe": 46.599998474121094,
+        "aspherical-equation": null,
+        "housing-radius": 42.0,
+        "ior": 1.8041599988937378,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 110.0,
+        "thickness": 10.0
+      },
+      {
+        "abbe": 0.0,
+        "aspherical-equation": null,
+        "housing-radius": 42.0,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 588.7479858398438,
+        "thickness": 0.20000000298023224
+      },
+      {
+        "abbe": 45.400001525878906,
+        "aspherical-equation": null,
+        "housing-radius": 36.0,
+        "ior": 1.7944600582122803,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 51.599998474121094,
+        "thickness": 14.5
+      },
+      {
+        "abbe": 0.0,
+        "aspherical-equation": null,
+        "housing-radius": 36.0,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 100.4260025024414,
+        "thickness": 3.5
+      },
+      {
+        "abbe": 29.5,
+        "aspherical-equation": null,
+        "housing-radius": 32.400001525878906,
+        "ior": 1.717360019683838,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 119.0,
+        "thickness": 3.0
+      },
+      {
+        "abbe": 0.0,
+        "aspherical-equation": null,
+        "housing-radius": 26.399999618530273,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 32.79199981689453,
+        "thickness": 16.260000228881836
+      },
+      {
+        "abbe": 0.0,
+        "aspherical-equation": null,
+        "housing-radius": 26.399999618530273,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "IRIS",
+        "radius": 100000.0,
+        "thickness": 16.25
+      },
+      {
+        "abbe": 31.100000381469727,
+        "aspherical-equation": null,
+        "housing-radius": 26.399999618530273,
+        "ior": 1.6889300346374512,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": -36.5,
+        "thickness": 2.0
+      },
+      {
+        "abbe": 49.599998474121094,
+        "aspherical-equation": null,
+        "housing-radius": 32.400001525878906,
+        "ior": 1.7725199460983276,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 131.5,
+        "thickness": 20.0
+      },
+      {
+        "abbe": 0.0,
+        "aspherical-equation": null,
+        "housing-radius": 32.400001525878906,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": -56.805999755859375,
+        "thickness": 0.20000000298023224
+      },
+      {
+        "abbe": 49.599998474121094,
+        "aspherical-equation": null,
+        "housing-radius": 32.400001525878906,
+        "ior": 1.7725199460983276,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": -160.0,
+        "thickness": 8.5
+      },
+      {
+        "abbe": 0.0,
+        "aspherical-equation": null,
+        "housing-radius": 32.400001525878906,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": -74.35199737548828,
+        "thickness": 0.20000000298023224
+      },
+      {
+        "abbe": 49.599998474121094,
+        "aspherical-equation": null,
+        "housing-radius": 32.400001525878906,
+        "ior": 1.7725199460983276,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 122.0,
+        "thickness": 9.5
+      },
+      {
+        "abbe": 0.0,
+        "aspherical-equation": null,
+        "housing-radius": 32.0,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 2092.572998046875,
+        "thickness": 63.309669494628906
+      }
+    ],
+    "patent-location": "database/lenses/1969-asahi-takumar/patent/US3451745.pdf",
+    "patent-number": "US3451745",
+    "polynomial-optics": [],
+    "prime": true,
+    "product-name": "takumar",
+    "production-ready": true,
+    "year": 1969
+  },
+  "0011": {
+    "commercial": false,
+    "company": "asahi",
+    "focal-length-mm-patent": 100,
+    "focal-length-mm-raytraced": 99.3973388671875,
+    "fstop": 2.659605026245117,
+    "notes": "SMC Takumar 35mm f2.0",
+    "optical-elements-patent": [
+      {
+        "abbe": 61.20000076293945,
+        "aspherical-equation": null,
+        "housing-radius": 35.0,
+        "ior": 1.5891300439834595,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 450.0,
+        "thickness": 7.0
+      },
+      {
+        "abbe": 0.0,
+        "aspherical-equation": null,
+        "housing-radius": 30.0,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 80.13700103759766,
+        "thickness": 47.0
+      },
+      {
+        "abbe": 40.29999923706055,
+        "aspherical-equation": null,
+        "housing-radius": 25.0,
+        "ior": 1.7619999647140503,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": -2300.0,
+        "thickness": 10.0
+      },
+      {
+        "abbe": 0.0,
+        "aspherical-equation": null,
+        "housing-radius": 25.0,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": -292.2340087890625,
+        "thickness": 2.0
+      },
+      {
+        "abbe": 49.599998474121094,
+        "aspherical-equation": null,
+        "housing-radius": 25.0,
+        "ior": 1.7725199460983276,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 95.69999694824219,
+        "thickness": 18.0
+      },
+      {
+        "abbe": 0.0,
+        "aspherical-equation": null,
+        "housing-radius": 25.0,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": -707.468017578125,
+        "thickness": 1.0
+      },
+      {
+        "abbe": 48.900001525878906,
+        "aspherical-equation": null,
+        "housing-radius": 25.0,
+        "ior": 1.5317200422286987,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 80.0,
+        "thickness": 8.0
+      },
+      {
+        "abbe": 0.0,
+        "aspherical-equation": null,
+        "housing-radius": 25.0,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 84.48799896240234,
+        "thickness": 9.0
+      },
+      {
+        "abbe": 0.0,
+        "aspherical-equation": null,
+        "housing-radius": 25.0,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "IRIS",
+        "radius": 100000.0,
+        "thickness": 9.0
+      },
+      {
+        "abbe": 27.700000762939453,
+        "aspherical-equation": null,
+        "housing-radius": 25.0,
+        "ior": 1.7407699823379517,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": -91.5,
+        "thickness": 6.5
+      },
+      {
+        "abbe": 0.0,
+        "aspherical-equation": null,
+        "housing-radius": 25.0,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 98.0250015258789,
+        "thickness": 8.0
+      },
+      {
+        "abbe": 37.20000076293945,
+        "aspherical-equation": null,
+        "housing-radius": 25.0,
+        "ior": 1.8339999914169312,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 1000.0,
+        "thickness": 4.0
+      },
+      {
+        "abbe": 49.599998474121094,
+        "aspherical-equation": null,
+        "housing-radius": 25.0,
+        "ior": 1.7725199460983276,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 71.0,
+        "thickness": 19.0
+      },
+      {
+        "abbe": 0.0,
+        "aspherical-equation": null,
+        "housing-radius": 25.0,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": -89.35399627685547,
+        "thickness": 0.5
+      },
+      {
+        "abbe": 49.599998474121094,
+        "aspherical-equation": null,
+        "housing-radius": 25.0,
+        "ior": 1.7725199460983276,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": -600.0,
+        "thickness": 10.0
+      },
+      {
+        "abbe": 0.0,
+        "aspherical-equation": null,
+        "housing-radius": 25.0,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": -110.64800262451172,
+        "thickness": 103.26067352294922
+      }
+    ],
+    "patent-location": "database/lenses/1970-asahi-takumar/patent/US3506336.pdf",
+    "patent-number": "US3506336",
+    "polynomial-optics": [],
+    "prime": true,
+    "product-name": "takumar",
+    "production-ready": true,
+    "year": 1970
+  },
+  "0012": {
+    "commercial": false,
+    "company": "asahi",
+    "focal-length-mm-patent": 100,
+    "focal-length-mm-raytraced": null,
+    "fstop": 4.234973430633545,
+    "notes": "SMC Takumar 18mm f3.5",
+    "optical-elements-patent": [
+      {
+        "abbe": 40.79999923706055,
+        "aspherical-equation": null,
+        "housing-radius": 70.0,
+        "ior": 1.8061000108718872,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 169.25,
+        "thickness": 9.569999694824219
+      },
+      {
+        "abbe": 0.0,
+        "aspherical-equation": null,
+        "housing-radius": 60.0,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 95.7300033569336,
+        "thickness": 47.09000015258789
+      },
+      {
+        "abbe": 48.900001525878906,
+        "aspherical-equation": null,
+        "housing-radius": 60.0,
+        "ior": 1.5317200422286987,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 3033.139892578125,
+        "thickness": 43.16999816894531
+      },
+      {
+        "abbe": 0.0,
+        "aspherical-equation": null,
+        "housing-radius": 60.0,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": -342.3900146484375,
+        "thickness": 0.6499999761581421
+      },
+      {
+        "abbe": 53.29999923706055,
+        "aspherical-equation": null,
+        "housing-radius": 35.0,
+        "ior": 1.69350004196167,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 130.30999755859375,
+        "thickness": 7.230000019073486
+      },
+      {
+        "abbe": 0.0,
+        "aspherical-equation": null,
+        "housing-radius": 32.0,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 57.79999923706055,
+        "thickness": 18.809999465942383
+      },
+      {
+        "abbe": 54.0,
+        "aspherical-equation": null,
+        "housing-radius": 32.0,
+        "ior": 1.7130000591278076,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 246.94000244140625,
+        "thickness": 7.449999809265137
+      },
+      {
+        "abbe": 0.0,
+        "aspherical-equation": null,
+        "housing-radius": 32.0,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 72.22000122070313,
+        "thickness": 14.739999771118164
+      },
+      {
+        "abbe": 27.799999237060547,
+        "aspherical-equation": null,
+        "housing-radius": 30.0,
+        "ior": 1.7407699823379517,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 235.07000732421875,
+        "thickness": 18.110000610351563
+      },
+      {
+        "abbe": 0.0,
+        "aspherical-equation": null,
+        "housing-radius": 30.0,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": -357.57000732421875,
+        "thickness": 18.969999313354492
+      },
+      {
+        "abbe": 43.70000076293945,
+        "aspherical-equation": null,
+        "housing-radius": 32.0,
+        "ior": 1.60562002658844,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 272.1199951171875,
+        "thickness": 36.59000015258789
+      },
+      {
+        "abbe": 0.0,
+        "aspherical-equation": null,
+        "housing-radius": 32.0,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": -86.37000274658203,
+        "thickness": 13.699999809265137
+      },
+      {
+        "abbe": 59.0,
+        "aspherical-equation": null,
+        "housing-radius": 30.0,
+        "ior": 1.5182299613952637,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 312.4700012207031,
+        "thickness": 18.110000610351563
+      },
+      {
+        "abbe": 37.20000076293945,
+        "aspherical-equation": null,
+        "housing-radius": 30.0,
+        "ior": 1.8339999914169312,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": -52.40999984741211,
+        "thickness": 5.760000228881836
+      },
+      {
+        "abbe": 0.0,
+        "aspherical-equation": null,
+        "housing-radius": 30.0,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 894.1199951171875,
+        "thickness": 8.430000305175781
+      },
+      {
+        "abbe": 53.29999923706055,
+        "aspherical-equation": null,
+        "housing-radius": 30.0,
+        "ior": 1.69350004196167,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": -1416.27001953125,
+        "thickness": 16.639999389648438
+      },
+      {
+        "abbe": 0.0,
+        "aspherical-equation": null,
+        "housing-radius": 32.0,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": -110.97000122070313,
+        "thickness": 0.49000000953674316
+      },
+      {
+        "abbe": 25.399999618530273,
+        "aspherical-equation": null,
+        "housing-radius": 35.0,
+        "ior": 1.8051799535751343,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": -887.2999877929688,
+        "thickness": 5.269999980926514
+      },
+      {
+        "abbe": 0.0,
+        "aspherical-equation": null,
+        "housing-radius": 35.0,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 118.0,
+        "thickness": 10.710000038146973
+      },
+      {
+        "abbe": 53.0,
+        "aspherical-equation": null,
+        "housing-radius": 36.0,
+        "ior": 1.6484999656677246,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": -1386.5400390625,
+        "thickness": 16.309999465942383
+      },
+      {
+        "abbe": 0.0,
+        "aspherical-equation": null,
+        "housing-radius": 36.0,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": -98.62000274658203,
+        "thickness": 237.416015625
+      }
+    ],
+    "patent-location": "database/lenses/1974-asahi-takumar/patent/US3841736.pdf",
+    "patent-number": "US3841736",
+    "polynomial-optics": [],
+    "prime": true,
+    "product-name": "takumar",
+    "production-ready": true,
+    "year": 1974
+  },
+  "0013": {
+    "commercial": false,
+    "company": "zeiss",
+    "focal-length-mm-patent": 100,
+    "focal-length-mm-raytraced": 99.331298828125,
+    "fstop": 3.555276870727539,
+    "notes": "Flektagon 35mm f2.8",
+    "optical-elements-patent": [
+      {
+        "abbe": 60.29999923706055,
+        "aspherical-equation": null,
+        "housing-radius": 40.0,
+        "ior": 1.624400019645691,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 116.41999816894531,
+        "thickness": 6.889999866485596
+      },
+      {
+        "abbe": 0.0,
+        "aspherical-equation": null,
+        "housing-radius": 35.0,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 65.01000213623047,
+        "thickness": 73.05999755859375
+      },
+      {
+        "abbe": 42.20000076293945,
+        "aspherical-equation": null,
+        "housing-radius": 20.0,
+        "ior": 1.6051000356674194,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 67.31999969482422,
+        "thickness": 8.130000114440918
+      },
+      {
+        "abbe": 0.0,
+        "aspherical-equation": null,
+        "housing-radius": 20.0,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 561.280029296875,
+        "thickness": 1.2400000095367432
+      },
+      {
+        "abbe": 51.0,
+        "aspherical-equation": null,
+        "housing-radius": 17.5,
+        "ior": 1.6583000421524048,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 30.549999237060547,
+        "thickness": 9.649999618530273
+      },
+      {
+        "abbe": 35.900001525878906,
+        "aspherical-equation": null,
+        "housing-radius": 17.5,
+        "ior": 1.6644999980926514,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 68.68000030517578,
+        "thickness": 3.309999942779541
+      },
+      {
+        "abbe": 0.0,
+        "aspherical-equation": null,
+        "housing-radius": 17.5,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 21.889999389648438,
+        "thickness": 9.369999885559082
+      },
+      {
+        "abbe": 0.0,
+        "aspherical-equation": null,
+        "housing-radius": 17.5,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "IRIS",
+        "radius": 100000.0,
+        "thickness": 11.029999732971191
+      },
+      {
+        "abbe": 26.700000762939453,
+        "aspherical-equation": null,
+        "housing-radius": 16.5,
+        "ior": 1.7588000297546387,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": -26.360000610351563,
+        "thickness": 3.309999942779541
+      },
+      {
+        "abbe": 0.0,
+        "aspherical-equation": null,
+        "housing-radius": 16.5,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": -37.40999984741211,
+        "thickness": 0.2800000011920929
+      },
+      {
+        "abbe": 36.29999923706055,
+        "aspherical-equation": null,
+        "housing-radius": 16.5,
+        "ior": 1.6203999519348145,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": -222.89999389648438,
+        "thickness": 2.759999990463257
+      },
+      {
+        "abbe": 60.29999923706055,
+        "aspherical-equation": null,
+        "housing-radius": 16.5,
+        "ior": 1.6224000453948975,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 183.47999572753906,
+        "thickness": 8.130000114440918
+      },
+      {
+        "abbe": 0.0,
+        "aspherical-equation": null,
+        "housing-radius": 16.5,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": -37.84000015258789,
+        "thickness": 99.54026794433594
+      }
+    ],
+    "patent-location": "database/lenses/1954-zeiss-flektagon/patent/DE953471C.pdf",
+    "patent-number": "DE953471",
+    "polynomial-optics": [],
+    "prime": true,
+    "product-name": "flektagon",
+    "production-ready": true,
+    "year": 1954
+  },
   "2001": {
     "commercial": false,
     "company": "cooke",
     "focal-length-mm-patent": 25.4,
     "focal-length-mm-raytraced": 9.555700302124023,
     "fstop": null,
-    "implementation-version": null,
     "notes": "Anamorphic 2x stretch",
     "notes-to-self": "not sure about scale",
     "optical-elements-patent": [
@@ -1421,201 +2435,12 @@
     "production-ready": true,
     "year": 1954
   },
-  "0008": {
-    "commercial": false,
-    "company": "nikon",
-    "focal-length-mm-patent": 51.6,
-    "focal-length-mm-raytraced": 52.78437805175781,
-    "fstop": 1.1904919147491455,
-    "implementation-version": null,
-    "notes": "f/1.25",
-    "optical-elements-patent": [
-      {
-        "abbe": 46.57,
-        "aspherical-equation": null,
-        "housing-radius": 23.0,
-        "ior": 1.804,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": 81.4768,
-        "thickness": 5.0
-      },
-      {
-        "abbe": null,
-        "aspherical-equation": null,
-        "housing-radius": 23.0,
-        "ior": null,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": -2838.8241,
-        "thickness": 0.3
-      },
-      {
-        "abbe": 29.42,
-        "aspherical-equation": null,
-        "housing-radius": 20.5,
-        "ior": 1.9503,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": 33.1597,
-        "thickness": 7.0
-      },
-      {
-        "abbe": null,
-        "aspherical-equation": null,
-        "housing-radius": 19.0,
-        "ior": null,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": 60.4403,
-        "thickness": 1.4
-      },
-      {
-        "abbe": 26.52,
-        "aspherical-equation": null,
-        "housing-radius": 19.0,
-        "ior": 1.761821,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": 95.328,
-        "thickness": 2.0
-      },
-      {
-        "abbe": null,
-        "aspherical-equation": null,
-        "housing-radius": 16.0,
-        "ior": null,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": 23.0471,
-        "thickness": 11.3
-      },
-      {
-        "abbe": null,
-        "aspherical-equation": null,
-        "housing-radius": 16.0,
-        "ior": null,
-        "lens-geometry": "spherical",
-        "material": "iris",
-        "radius": 999999.0,
-        "thickness": 7.0
-      },
-      {
-        "abbe": 25.42,
-        "aspherical-equation": null,
-        "housing-radius": 14.5,
-        "ior": 1.865181,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": -26.4313,
-        "thickness": 1.6
-      },
-      {
-        "abbe": 46.57,
-        "aspherical-equation": null,
-        "housing-radius": 16.0,
-        "ior": 1.804,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": -125.7273,
-        "thickness": 4.6
-      },
-      {
-        "abbe": null,
-        "aspherical-equation": null,
-        "housing-radius": 16.0,
-        "ior": null,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": -32.7268,
-        "thickness": 2.7
-      },
-      {
-        "abbe": 25.42,
-        "aspherical-equation": null,
-        "housing-radius": 16.0,
-        "ior": 1.805181,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": -23.4449,
-        "thickness": 1.7
-      },
-      {
-        "abbe": 40.76,
-        "aspherical-equation": null,
-        "housing-radius": 19.5,
-        "ior": 1.882997,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": -64.8415,
-        "thickness": 5.0
-      },
-      {
-        "abbe": null,
-        "aspherical-equation": null,
-        "housing-radius": 19.5,
-        "ior": null,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": -31.7094,
-        "thickness": 0.1
-      },
-      {
-        "abbe": 40.76,
-        "aspherical-equation": null,
-        "housing-radius": 20.5,
-        "ior": 1.882997,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": -187.549,
-        "thickness": 4.2
-      },
-      {
-        "abbe": null,
-        "aspherical-equation": null,
-        "housing-radius": 20.5,
-        "ior": null,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": -47.396,
-        "thickness": 0.1
-      },
-      {
-        "abbe": 46.67,
-        "aspherical-equation": null,
-        "housing-radius": 20.0,
-        "ior": 1.804,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": 79.1117,
-        "thickness": 3.8
-      },
-      {
-        "abbe": null,
-        "aspherical-equation": null,
-        "housing-radius": 20.0,
-        "ior": null,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": -1019.1299,
-        "thickness": 40.0280876159668
-      }
-    ],
-    "patent-location": "https://patentimages.storage.googleapis.com/1e/73/5f/75daed5fac34e2/US8721094.pdf",
-    "patent-number": "US8721094",
-    "polynomial-optics": null,
-    "prime": true,
-    "product-name": "unknown",
-    "production-ready": false,
-    "year": 2014
-  },
   "2002": {
     "commercial": false,
     "company": "Panavision",
     "focal-length-mm-patent": 100.0,
     "focal-length-mm-raytraced": null,
     "fstop": null,
-    "implementation-version": null,
     "notes": "Rear anamorph. To be placed behind a primary spherical lens. Squeeze factor 1.34. Index of refraction and Abbe numbers not in patent, instead glass type is given. IOR and abbe taken from OHARA glass catalogue.",
     "optical-elements-patent": [
       {
@@ -1773,7 +2598,6 @@
     "focal-length-mm-patent": 100.0,
     "focal-length-mm-raytraced": null,
     "fstop": null,
-    "implementation-version": null,
     "notes": "Testing combining rear anamorphic (#2002) + regular lens (#0001)",
     "optical-elements-patent": [
       {
@@ -2076,845 +2900,5 @@
     "product-name": "rear-anamorph-double-gauss",
     "production-ready": true,
     "year": 2006
-  },
-  "0009": {
-    "commercial": false,
-    "company": "zeiss",
-    "focal-length-mm-patent": 100,
-    "focal-length-mm-raytraced": 99.29978942871094,
-    "fstop": 1.463258147239685,
-    "implementation-version": null,
-    "notes": "58mm?",
-    "optical-elements-patent": [
-      {
-        "abbe": 48.0,
-        "aspherical-equation": null,
-        "housing-radius": 35.0,
-        "ior": 1.6423799991607666,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": 83.5999984741211,
-        "thickness": 10.75
-      },
-      {
-        "abbe": 0.0,
-        "aspherical-equation": null,
-        "housing-radius": 35.0,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": 321.0,
-        "thickness": 1.649999976158142
-      },
-      {
-        "abbe": 56.900001525878906,
-        "aspherical-equation": null,
-        "housing-radius": 30.0,
-        "ior": 1.6230599880218506,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": 44.79999923706055,
-        "thickness": 15.550000190734863
-      },
-      {
-        "abbe": 41.20000076293945,
-        "aspherical-equation": null,
-        "housing-radius": 30.0,
-        "ior": 1.575659990310669,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": -1150.0,
-        "thickness": 5.050000190734863
-      },
-      {
-        "abbe": 0.0,
-        "aspherical-equation": null,
-        "housing-radius": 22.5,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": 28.299999237060547,
-        "thickness": 10.0
-      },
-      {
-        "abbe": 0.0,
-        "aspherical-equation": null,
-        "housing-radius": 22.5,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "IRIS",
-        "radius": 10000.0,
-        "thickness": 8.899999618530273
-      },
-      {
-        "abbe": 32.20000076293945,
-        "aspherical-equation": null,
-        "housing-radius": 22.5,
-        "ior": 1.672700047492981,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": -38.5,
-        "thickness": 5.050000190734863
-      },
-      {
-        "abbe": 48.0,
-        "aspherical-equation": null,
-        "housing-radius": 27.0,
-        "ior": 1.6423799991607666,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": 50.5,
-        "thickness": 21.219999313354492
-      },
-      {
-        "abbe": 0.0,
-        "aspherical-equation": null,
-        "housing-radius": 27.0,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": -53.20000076293945,
-        "thickness": 0.9700000286102295
-      },
-      {
-        "abbe": 48.0,
-        "aspherical-equation": null,
-        "housing-radius": 27.0,
-        "ior": 1.6423799991607666,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": 106.0,
-        "thickness": 13.899999618530273
-      },
-      {
-        "abbe": 0.0,
-        "aspherical-equation": null,
-        "housing-radius": 27.0,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": -120.0,
-        "thickness": 65.06566619873047
-      }
-    ],
-    "patent-location": "database/lenses/1927-biotar-zeiss/patent/DE485798C.pdf",
-    "patent-number": "DE485798C",
-    "polynomial-optics": [],
-    "prime": true,
-    "product-name": "biotar",
-    "production-ready": true,
-    "year": 1927
-  },
-  "0010": {
-    "commercial": false,
-    "company": "asahi",
-    "focal-length-mm-patent": 100,
-    "focal-length-mm-raytraced": 99.61552429199219,
-    "fstop": 1.2203494310379028,
-    "implementation-version": null,
-    "notes": "Based on the Biotar design, 50mm",
-    "optical-elements-patent": [
-      {
-        "abbe": 46.599998474121094,
-        "aspherical-equation": null,
-        "housing-radius": 42.0,
-        "ior": 1.8041599988937378,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": 110.0,
-        "thickness": 10.0
-      },
-      {
-        "abbe": 0.0,
-        "aspherical-equation": null,
-        "housing-radius": 42.0,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": 588.7479858398438,
-        "thickness": 0.20000000298023224
-      },
-      {
-        "abbe": 45.400001525878906,
-        "aspherical-equation": null,
-        "housing-radius": 36.0,
-        "ior": 1.7944600582122803,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": 51.599998474121094,
-        "thickness": 14.5
-      },
-      {
-        "abbe": 0.0,
-        "aspherical-equation": null,
-        "housing-radius": 36.0,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": 100.4260025024414,
-        "thickness": 3.5
-      },
-      {
-        "abbe": 29.5,
-        "aspherical-equation": null,
-        "housing-radius": 32.400001525878906,
-        "ior": 1.717360019683838,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": 119.0,
-        "thickness": 3.0
-      },
-      {
-        "abbe": 0.0,
-        "aspherical-equation": null,
-        "housing-radius": 26.399999618530273,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": 32.79199981689453,
-        "thickness": 16.260000228881836
-      },
-      {
-        "abbe": 0.0,
-        "aspherical-equation": null,
-        "housing-radius": 26.399999618530273,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "IRIS",
-        "radius": 100000.0,
-        "thickness": 16.25
-      },
-      {
-        "abbe": 31.100000381469727,
-        "aspherical-equation": null,
-        "housing-radius": 26.399999618530273,
-        "ior": 1.6889300346374512,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": -36.5,
-        "thickness": 2.0
-      },
-      {
-        "abbe": 49.599998474121094,
-        "aspherical-equation": null,
-        "housing-radius": 32.400001525878906,
-        "ior": 1.7725199460983276,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": 131.5,
-        "thickness": 20.0
-      },
-      {
-        "abbe": 0.0,
-        "aspherical-equation": null,
-        "housing-radius": 32.400001525878906,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": -56.805999755859375,
-        "thickness": 0.20000000298023224
-      },
-      {
-        "abbe": 49.599998474121094,
-        "aspherical-equation": null,
-        "housing-radius": 32.400001525878906,
-        "ior": 1.7725199460983276,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": -160.0,
-        "thickness": 8.5
-      },
-      {
-        "abbe": 0.0,
-        "aspherical-equation": null,
-        "housing-radius": 32.400001525878906,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": -74.35199737548828,
-        "thickness": 0.20000000298023224
-      },
-      {
-        "abbe": 49.599998474121094,
-        "aspherical-equation": null,
-        "housing-radius": 32.400001525878906,
-        "ior": 1.7725199460983276,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": 122.0,
-        "thickness": 9.5
-      },
-      {
-        "abbe": 0.0,
-        "aspherical-equation": null,
-        "housing-radius": 32.0,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": 2092.572998046875,
-        "thickness": 63.309669494628906
-      }
-    ],
-    "patent-location": "database/lenses/1969-asahi-takumar/patent/US3451745.pdf",
-    "patent-number": "US3451745",
-    "polynomial-optics": [],
-    "prime": true,
-    "product-name": "takumar",
-    "production-ready": true,
-    "year": 1969
-  },
-  "0011": {
-    "commercial": false,
-    "company": "asahi",
-    "focal-length-mm-patent": 100,
-    "focal-length-mm-raytraced": 99.3973388671875,
-    "fstop": 2.659605026245117,
-    "implementation-version": null,
-    "notes": "SMC Takumar 35mm f2.0",
-    "optical-elements-patent": [
-      {
-        "abbe": 61.20000076293945,
-        "aspherical-equation": null,
-        "housing-radius": 35.0,
-        "ior": 1.5891300439834595,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": 450.0,
-        "thickness": 7.0
-      },
-      {
-        "abbe": 0.0,
-        "aspherical-equation": null,
-        "housing-radius": 30.0,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": 80.13700103759766,
-        "thickness": 47.0
-      },
-      {
-        "abbe": 40.29999923706055,
-        "aspherical-equation": null,
-        "housing-radius": 25.0,
-        "ior": 1.7619999647140503,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": -2300.0,
-        "thickness": 10.0
-      },
-      {
-        "abbe": 0.0,
-        "aspherical-equation": null,
-        "housing-radius": 25.0,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": -292.2340087890625,
-        "thickness": 2.0
-      },
-      {
-        "abbe": 49.599998474121094,
-        "aspherical-equation": null,
-        "housing-radius": 25.0,
-        "ior": 1.7725199460983276,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": 95.69999694824219,
-        "thickness": 18.0
-      },
-      {
-        "abbe": 0.0,
-        "aspherical-equation": null,
-        "housing-radius": 25.0,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": -707.468017578125,
-        "thickness": 1.0
-      },
-      {
-        "abbe": 48.900001525878906,
-        "aspherical-equation": null,
-        "housing-radius": 25.0,
-        "ior": 1.5317200422286987,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": 80.0,
-        "thickness": 8.0
-      },
-      {
-        "abbe": 0.0,
-        "aspherical-equation": null,
-        "housing-radius": 25.0,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": 84.48799896240234,
-        "thickness": 9.0
-      },
-      {
-        "abbe": 0.0,
-        "aspherical-equation": null,
-        "housing-radius": 25.0,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "IRIS",
-        "radius": 100000.0,
-        "thickness": 9.0
-      },
-      {
-        "abbe": 27.700000762939453,
-        "aspherical-equation": null,
-        "housing-radius": 25.0,
-        "ior": 1.7407699823379517,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": -91.5,
-        "thickness": 6.5
-      },
-      {
-        "abbe": 0.0,
-        "aspherical-equation": null,
-        "housing-radius": 25.0,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": 98.0250015258789,
-        "thickness": 8.0
-      },
-      {
-        "abbe": 37.20000076293945,
-        "aspherical-equation": null,
-        "housing-radius": 25.0,
-        "ior": 1.8339999914169312,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": 1000.0,
-        "thickness": 4.0
-      },
-      {
-        "abbe": 49.599998474121094,
-        "aspherical-equation": null,
-        "housing-radius": 25.0,
-        "ior": 1.7725199460983276,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": 71.0,
-        "thickness": 19.0
-      },
-      {
-        "abbe": 0.0,
-        "aspherical-equation": null,
-        "housing-radius": 25.0,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": -89.35399627685547,
-        "thickness": 0.5
-      },
-      {
-        "abbe": 49.599998474121094,
-        "aspherical-equation": null,
-        "housing-radius": 25.0,
-        "ior": 1.7725199460983276,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": -600.0,
-        "thickness": 10.0
-      },
-      {
-        "abbe": 0.0,
-        "aspherical-equation": null,
-        "housing-radius": 25.0,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": -110.64800262451172,
-        "thickness": 103.26067352294922
-      }
-    ],
-    "patent-location": "database/lenses/1970-asahi-takumar/patent/US3506336.pdf",
-    "patent-number": "US3506336",
-    "polynomial-optics": [],
-    "prime": true,
-    "product-name": "takumar",
-    "production-ready": true,
-    "year": 1970
-  },
-  "0012": {
-    "commercial": false,
-    "company": "asahi",
-    "focal-length-mm-patent": 100,
-    "focal-length-mm-raytraced": null,
-    "fstop": 4.234973430633545,
-    "implementation-version": null,
-    "notes": "SMC Takumar 18mm f3.5",
-    "optical-elements-patent": [
-      {
-        "abbe": 40.79999923706055,
-        "aspherical-equation": null,
-        "housing-radius": 70.0,
-        "ior": 1.8061000108718872,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": 169.25,
-        "thickness": 9.569999694824219
-      },
-      {
-        "abbe": 0.0,
-        "aspherical-equation": null,
-        "housing-radius": 60.0,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": 95.7300033569336,
-        "thickness": 47.09000015258789
-      },
-      {
-        "abbe": 48.900001525878906,
-        "aspherical-equation": null,
-        "housing-radius": 60.0,
-        "ior": 1.5317200422286987,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": 3033.139892578125,
-        "thickness": 43.16999816894531
-      },
-      {
-        "abbe": 0.0,
-        "aspherical-equation": null,
-        "housing-radius": 60.0,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": -342.3900146484375,
-        "thickness": 0.6499999761581421
-      },
-      {
-        "abbe": 53.29999923706055,
-        "aspherical-equation": null,
-        "housing-radius": 35.0,
-        "ior": 1.69350004196167,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": 130.30999755859375,
-        "thickness": 7.230000019073486
-      },
-      {
-        "abbe": 0.0,
-        "aspherical-equation": null,
-        "housing-radius": 32.0,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": 57.79999923706055,
-        "thickness": 18.809999465942383
-      },
-      {
-        "abbe": 54.0,
-        "aspherical-equation": null,
-        "housing-radius": 32.0,
-        "ior": 1.7130000591278076,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": 246.94000244140625,
-        "thickness": 7.449999809265137
-      },
-      {
-        "abbe": 0.0,
-        "aspherical-equation": null,
-        "housing-radius": 32.0,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": 72.22000122070313,
-        "thickness": 14.739999771118164
-      },
-      {
-        "abbe": 27.799999237060547,
-        "aspherical-equation": null,
-        "housing-radius": 30.0,
-        "ior": 1.7407699823379517,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": 235.07000732421875,
-        "thickness": 18.110000610351563
-      },
-      {
-        "abbe": 0.0,
-        "aspherical-equation": null,
-        "housing-radius": 30.0,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": -357.57000732421875,
-        "thickness": 18.969999313354492
-      },
-      {
-        "abbe": 43.70000076293945,
-        "aspherical-equation": null,
-        "housing-radius": 32.0,
-        "ior": 1.60562002658844,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": 272.1199951171875,
-        "thickness": 36.59000015258789
-      },
-      {
-        "abbe": 0.0,
-        "aspherical-equation": null,
-        "housing-radius": 32.0,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": -86.37000274658203,
-        "thickness": 13.699999809265137
-      },
-      {
-        "abbe": 59.0,
-        "aspherical-equation": null,
-        "housing-radius": 30.0,
-        "ior": 1.5182299613952637,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": 312.4700012207031,
-        "thickness": 18.110000610351563
-      },
-      {
-        "abbe": 37.20000076293945,
-        "aspherical-equation": null,
-        "housing-radius": 30.0,
-        "ior": 1.8339999914169312,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": -52.40999984741211,
-        "thickness": 5.760000228881836
-      },
-      {
-        "abbe": 0.0,
-        "aspherical-equation": null,
-        "housing-radius": 30.0,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": 894.1199951171875,
-        "thickness": 8.430000305175781
-      },
-      {
-        "abbe": 53.29999923706055,
-        "aspherical-equation": null,
-        "housing-radius": 30.0,
-        "ior": 1.69350004196167,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": -1416.27001953125,
-        "thickness": 16.639999389648438
-      },
-      {
-        "abbe": 0.0,
-        "aspherical-equation": null,
-        "housing-radius": 32.0,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": -110.97000122070313,
-        "thickness": 0.49000000953674316
-      },
-      {
-        "abbe": 25.399999618530273,
-        "aspherical-equation": null,
-        "housing-radius": 35.0,
-        "ior": 1.8051799535751343,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": -887.2999877929688,
-        "thickness": 5.269999980926514
-      },
-      {
-        "abbe": 0.0,
-        "aspherical-equation": null,
-        "housing-radius": 35.0,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": 118.0,
-        "thickness": 10.710000038146973
-      },
-      {
-        "abbe": 53.0,
-        "aspherical-equation": null,
-        "housing-radius": 36.0,
-        "ior": 1.6484999656677246,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": -1386.5400390625,
-        "thickness": 16.309999465942383
-      },
-      {
-        "abbe": 0.0,
-        "aspherical-equation": null,
-        "housing-radius": 36.0,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": -98.62000274658203,
-        "thickness": 237.416015625
-      }
-    ],
-    "patent-location": "database/lenses/1974-asahi-takumar/patent/US3841736.pdf",
-    "patent-number": "US3841736",
-    "polynomial-optics": [],
-    "prime": true,
-    "product-name": "takumar",
-    "production-ready": true,
-    "year": 1974
-  },
-  "0013": {
-    "commercial": false,
-    "company": "zeiss",
-    "focal-length-mm-patent": 100,
-    "focal-length-mm-raytraced": 99.331298828125,
-    "fstop": 3.555276870727539,
-    "implementation-version": null,
-    "notes": "Flektagon 35mm f2.8",
-    "optical-elements-patent": [
-      {
-        "abbe": 60.29999923706055,
-        "aspherical-equation": null,
-        "housing-radius": 40.0,
-        "ior": 1.624400019645691,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": 116.41999816894531,
-        "thickness": 6.889999866485596
-      },
-      {
-        "abbe": 0.0,
-        "aspherical-equation": null,
-        "housing-radius": 35.0,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": 65.01000213623047,
-        "thickness": 73.05999755859375
-      },
-      {
-        "abbe": 42.20000076293945,
-        "aspherical-equation": null,
-        "housing-radius": 20.0,
-        "ior": 1.6051000356674194,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": 67.31999969482422,
-        "thickness": 8.130000114440918
-      },
-      {
-        "abbe": 0.0,
-        "aspherical-equation": null,
-        "housing-radius": 20.0,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": 561.280029296875,
-        "thickness": 1.2400000095367432
-      },
-      {
-        "abbe": 51.0,
-        "aspherical-equation": null,
-        "housing-radius": 17.5,
-        "ior": 1.6583000421524048,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": 30.549999237060547,
-        "thickness": 9.649999618530273
-      },
-      {
-        "abbe": 35.900001525878906,
-        "aspherical-equation": null,
-        "housing-radius": 17.5,
-        "ior": 1.6644999980926514,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": 68.68000030517578,
-        "thickness": 3.309999942779541
-      },
-      {
-        "abbe": 0.0,
-        "aspherical-equation": null,
-        "housing-radius": 17.5,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": 21.889999389648438,
-        "thickness": 9.369999885559082
-      },
-      {
-        "abbe": 0.0,
-        "aspherical-equation": null,
-        "housing-radius": 17.5,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "IRIS",
-        "radius": 100000.0,
-        "thickness": 11.029999732971191
-      },
-      {
-        "abbe": 26.700000762939453,
-        "aspherical-equation": null,
-        "housing-radius": 16.5,
-        "ior": 1.7588000297546387,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": -26.360000610351563,
-        "thickness": 3.309999942779541
-      },
-      {
-        "abbe": 0.0,
-        "aspherical-equation": null,
-        "housing-radius": 16.5,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": -37.40999984741211,
-        "thickness": 0.2800000011920929
-      },
-      {
-        "abbe": 36.29999923706055,
-        "aspherical-equation": null,
-        "housing-radius": 16.5,
-        "ior": 1.6203999519348145,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": -222.89999389648438,
-        "thickness": 2.759999990463257
-      },
-      {
-        "abbe": 60.29999923706055,
-        "aspherical-equation": null,
-        "housing-radius": 16.5,
-        "ior": 1.6224000453948975,
-        "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": 183.47999572753906,
-        "thickness": 8.130000114440918
-      },
-      {
-        "abbe": 0.0,
-        "aspherical-equation": null,
-        "housing-radius": 16.5,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": -37.84000015258789,
-        "thickness": 99.54026794433594
-      }
-    ],
-    "patent-location": "database/lenses/1954-zeiss-flektagon/patent/DE953471C.pdf",
-    "patent-number": "DE953471",
-    "polynomial-optics": [],
-    "prime": true,
-    "product-name": "flektagon",
-    "production-ready": true,
-    "year": 1954
   }
 }
