@@ -21,7 +21,8 @@ ifeq ($(OS), Linux)
 	OPTFLAGS += -Wno-ignored-attributes -Wno-misleading-indentation
 endif
 
-OPTFLAGS += -g
+#debug symbols for debugging with gdb
+#OPTFLAGS += -g
 
 
 LDFLAGS=-lm
@@ -39,10 +40,10 @@ src/spectrum.h
 
 
 ifeq ($(OS), Darwin)
-    all: calculate-fstop view calculate-infinity-focus-lens-offset calculate-focal-length fit gencode genpoly printpoly print-lens-path add-fitted-focal-length generate-lens-defines
+    all: create-public-json calculate-fstop view calculate-infinity-focus-lens-offset calculate-focal-length fit gencode genpoly printpoly print-lens-path add-fitted-focal-length generate-lens-defines
 endif
 ifeq ($(OS), Linux)
-    all: calculate-fstop generate-lens-defines calculate-infinity-focus-lens-offset calculate-focal-length fit gencode genpoly printpoly print-lens-path add-fitted-focal-length
+    all: create-public-json calculate-fstop generate-lens-defines calculate-infinity-focus-lens-offset calculate-focal-length fit gencode genpoly printpoly print-lens-path add-fitted-focal-length
 endif
 
 
@@ -57,6 +58,9 @@ print-lens-path: Makefile src/print-lens-path.cpp ${HEADERS}
 
 calculate-fstop: Makefile src/calculate-fstop.cpp ${HEADERS}
 	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/calculate-fstop.cpp -o bin/calculate-fstop ${LDFLAGS}
+
+create-public-json: Makefile src/create-public-json.cpp ${HEADERS}
+	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/create-public-json.cpp -o bin/create-public-json ${LDFLAGS}
 
 add-fitted-focal-length: Makefile src/add-fitted-focal-length.cpp ${HEADERS}
 	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/add-fitted-focal-length.cpp -o bin/add-fitted-focal-length ${LDFLAGS}
@@ -94,8 +98,8 @@ gencode: Makefile src/gencode.c ${HEADERS}
 
 
 ifeq ($(OS), Darwin)
-clean: rm -f calculate-fstop calculate-focal-length calculate-infinity-focus-lens-offset view fit gencode genpoly printpoly print-lens-path add-fitted-focal-length generate-lens-defines #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
+clean: rm -f create-public-json calculate-fstop calculate-focal-length calculate-infinity-focus-lens-offset view fit gencode genpoly printpoly print-lens-path add-fitted-focal-length generate-lens-defines #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
 endif
 ifeq ($(OS), Linux)
-clean: rm -f calculate-fstop calculate-focal-length calculate-infinity-focus-lens-offset fit gencode genpoly printpoly print-lens-path add-fitted-focal-length generate-lens-defines #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
+clean: rm -f create-public-json calculate-fstop calculate-focal-length calculate-infinity-focus-lens-offset fit gencode genpoly printpoly print-lens-path add-fitted-focal-length generate-lens-defines #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
 endif

@@ -1,5 +1,5 @@
 {
-  "1": {
+  "0001": {
     "commercial": false,
     "company": "angenieux",
     "focal-length-mm-patent": 100.0,
@@ -321,7 +321,7 @@
     "production-ready": true,
     "year": 1953
   },
-  "10": {
+  "0002": {
     "commercial": false,
     "company": "meyer-optik-goerlitz",
     "focal-length-mm-patent": 100,
@@ -439,7 +439,7 @@
     "production-ready": true,
     "year": 1936
   },
-  "11": {
+  "0003": {
     "commercial": false,
     "company": null,
     "focal-length-mm-patent": 150,
@@ -537,7 +537,7 @@
     "production-ready": true,
     "year": 1900
   },
-  "12": {
+  "0004": {
     "commercial": false,
     "company": "nikon",
     "focal-length-mm-patent": 100,
@@ -705,7 +705,7 @@
     "production-ready": true,
     "year": 1971
   },
-  "13": {
+  "0005": {
     "commercial": false,
     "company": "canon",
     "focal-length-mm-patent": 14.2,
@@ -983,7 +983,7 @@
     "production-ready": true,
     "year": 1982
   },
-  "14": {
+  "0006": {
     "commercial": false,
     "company": "kodak",
     "focal-length-mm-patent": 100,
@@ -1081,7 +1081,7 @@
     "production-ready": true,
     "year": 1948
   },
-  "15": {
+  "0007": {
     "commercial": true,
     "company": "cooke",
     "focal-length-mm-patent": 254,
@@ -1210,7 +1210,7 @@
     "production-ready": false,
     "year": 1920
   },
-  "16": {
+  "2001": {
     "commercial": false,
     "company": "cooke",
     "focal-length-mm-patent": 25.4,
@@ -1421,7 +1421,7 @@
     "production-ready": true,
     "year": 1954
   },
-  "17": {
+  "0008": {
     "commercial": false,
     "company": "nikon",
     "focal-length-mm-patent": 51.6,
@@ -1609,7 +1609,7 @@
     "production-ready": false,
     "year": 2014
   },
-  "3": {
+  "2002": {
     "commercial": false,
     "company": "Panavision",
     "focal-length-mm-patent": 100.0,
@@ -1767,14 +1767,14 @@
     "production-ready": true,
     "year": 2006
   },
-  "4": {
+  "2003": {
     "commercial": false,
     "company": "Panavision-Angenieux",
     "focal-length-mm-patent": 100.0,
     "focal-length-mm-raytraced": null,
     "fstop": null,
     "implementation-version": null,
-    "notes": "Testing combining rear anamorphic (#3) + regular lens (#1)",
+    "notes": "Testing combining rear anamorphic (#2002) + regular lens (#0001)",
     "optical-elements-patent": [
       {
         "abbe": 32.3,
@@ -2077,7 +2077,7 @@
     "production-ready": true,
     "year": 2006
   },
-  "5": {
+  "0009": {
     "commercial": false,
     "company": "zeiss",
     "focal-length-mm-patent": 100,
@@ -2205,7 +2205,7 @@
     "production-ready": true,
     "year": 1927
   },
-  "6": {
+  "0010": {
     "commercial": false,
     "company": "asahi",
     "focal-length-mm-patent": 100,
@@ -2363,7 +2363,7 @@
     "production-ready": true,
     "year": 1969
   },
-  "7": {
+  "0011": {
     "commercial": false,
     "company": "asahi",
     "focal-length-mm-patent": 100,
@@ -2541,12 +2541,12 @@
     "production-ready": true,
     "year": 1970
   },
-  "8": {
+  "0012": {
     "commercial": false,
     "company": "asahi",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": null,
-    "fstop": null,
+    "fstop": 4.234973430633545,
     "implementation-version": null,
     "notes": "SMC Takumar 18mm f3.5",
     "optical-elements-patent": [
@@ -2758,7 +2758,7 @@
         "lens-geometry": "spherical",
         "material": "air",
         "radius": -98.62000274658203,
-        "thickness": 482.6409606933594
+        "thickness": 237.416015625
       }
     ],
     "patent-location": "database/lenses/1974-asahi-takumar/patent/US3841736.pdf",
@@ -2769,7 +2769,7 @@
     "production-ready": true,
     "year": 1974
   },
-  "9": {
+  "0013": {
     "commercial": false,
     "company": "zeiss",
     "focal-length-mm-patent": 100,
