@@ -984,7 +984,7 @@
     "company": "kodak",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": 100.00676727294922,
-    "fstop": 2.1862411499023438,
+    "fstop": 2.175820827484131,
     "notes": "Petzval type lens, f=100mm",
     "optical-elements-patent": [
       {
@@ -1079,16 +1079,16 @@
   "0007": {
     "commercial": true,
     "company": "cooke",
-    "focal-length-mm-patent": 254,
+    "focal-length-mm-patent": 25.4,
     "focal-length-mm-raytraced": null,
-    "fstop": 2.0,
+    "fstop": 1.9737238883972168,
     "notes": "Cooke Series O f/2.0 OPIC lens, Horace W. Lee designed the Cooke OPIC lenses to be the first to combine an f/2.0 aperture with a fully corrected color and geometry. Studios snapped up the new Cooke f/2.0 (T2.3) lenses. The original f/2.0 OPIC design became the now-legendary uncoated Cooke Speed Panchros.",
     "notes-to-self": "not sure at all about the scale of the lens, housing radius is guessed. Probably lens for 16mm format.",
     "optical-elements-patent": [
       {
         "abbe": 59,
         "aspherical-equation": null,
-        "housing-radius": 4.0,
+        "housing-radius": 6.5,
         "ior": 1.6118,
         "lens-geometry": "spherical",
         "material": "abbe",
@@ -1098,7 +1098,7 @@
       {
         "abbe": null,
         "aspherical-equation": null,
-        "housing-radius": 4.0,
+        "housing-radius": 6.5,
         "ior": null,
         "lens-geometry": "spherical",
         "material": "air",
@@ -1108,7 +1108,7 @@
       {
         "abbe": 59.0,
         "aspherical-equation": null,
-        "housing-radius": 4.0,
+        "housing-radius": 6.0,
         "ior": 1.6118,
         "lens-geometry": "spherical",
         "material": "abbe",
@@ -1118,7 +1118,7 @@
       {
         "abbe": 41.0,
         "aspherical-equation": null,
-        "housing-radius": 4.0,
+        "housing-radius": 6.0,
         "ior": 1.576,
         "lens-geometry": "spherical",
         "material": "abbe",
@@ -1128,17 +1128,7 @@
       {
         "abbe": null,
         "aspherical-equation": null,
-        "housing-radius": 4.0,
-        "ior": null,
-        "lens-geometry": "spherical",
-        "material": "iris",
-        "radius": 100000.0,
-        "thickness": 1.7691
-      },
-      {
-        "abbe": null,
-        "aspherical-equation": null,
-        "housing-radius": 4.0,
+        "housing-radius": 4.65,
         "ior": null,
         "lens-geometry": "spherical",
         "material": "air",
@@ -1146,9 +1136,19 @@
         "thickness": 1.7691
       },
       {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 4.65,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "iris",
+        "radius": 99999.0,
+        "thickness": 1.7691
+      },
+      {
         "abbe": 41.0,
         "aspherical-equation": null,
-        "housing-radius": 4.0,
+        "housing-radius": 4.65,
         "ior": 1.576,
         "lens-geometry": "spherical",
         "material": "abbe",
@@ -1158,7 +1158,7 @@
       {
         "abbe": 59.0,
         "aspherical-equation": null,
-        "housing-radius": 4.0,
+        "housing-radius": 6.0,
         "ior": 1.6118,
         "lens-geometry": "spherical",
         "material": "abbe",
@@ -1168,7 +1168,7 @@
       {
         "abbe": null,
         "aspherical-equation": null,
-        "housing-radius": 4.0,
+        "housing-radius": 6.0,
         "ior": null,
         "lens-geometry": "spherical",
         "material": "air",
@@ -1178,7 +1178,7 @@
       {
         "abbe": 59.0,
         "aspherical-equation": null,
-        "housing-radius": 4.0,
+        "housing-radius": 6.5,
         "ior": 1.6118,
         "lens-geometry": "spherical",
         "material": "abbe",
@@ -1188,12 +1188,12 @@
       {
         "abbe": null,
         "aspherical-equation": null,
-        "housing-radius": 4.0,
+        "housing-radius": 6.5,
         "ior": null,
         "lens-geometry": "spherical",
         "material": "air",
         "radius": -17.485,
-        "thickness": 10.0
+        "thickness": 19.62871551513672
       }
     ],
     "patent-location": "database/lenses/1920-cooke-speed-panchro/patent/GB157040A.pdf",
@@ -1201,7 +1201,7 @@
     "polynomial-optics": [],
     "prime": true,
     "product-name": "speed-panchro",
-    "production-ready": false,
+    "production-ready": true,
     "year": 1920
   },
   "0008": {
