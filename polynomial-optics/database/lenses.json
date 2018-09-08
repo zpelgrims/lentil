@@ -439,9 +439,9 @@
   },
   "0003": {
     "commercial": false,
-    "company": null,
-    "focal-length-mm-patent": 150,
-    "focal-length-mm-raytraced": null,
+    "company": "unknown",
+    "focal-length-mm-patent": 100,
+    "focal-length-mm-raytraced": 85.5024185180664,
     "fstop": 3.4157071113586426,
     "notes": "classical 19th century petzval lens, should be scaled to 100mm",
     "optical-elements-patent": [
@@ -449,77 +449,77 @@
         "abbe": 62.0,
         "aspherical-equation": null,
         "housing-radius": 15.0,
-        "ior": 1.5169999599456787,
+        "ior": 1.517,
         "lens-geometry": "spherical",
         "material": "abbe",
-        "radius": 52.900001525878906,
-        "thickness": 5.800000190734863
+        "radius": 52.9,
+        "thickness": 5.8
       },
       {
         "abbe": 54.0,
         "aspherical-equation": null,
         "housing-radius": 15.0,
-        "ior": 1.5759999752044678,
+        "ior": 1.576,
         "lens-geometry": "spherical",
         "material": "abbe",
-        "radius": -41.400001525878906,
+        "radius": -41.4,
         "thickness": 1.5
       },
       {
-        "abbe": 0.0,
+        "abbe": null,
         "aspherical-equation": null,
         "housing-radius": 15.0,
-        "ior": 1.0,
+        "ior": null,
         "lens-geometry": "spherical",
         "material": "air",
-        "radius": 436.20001220703125,
-        "thickness": 23.299999237060547
+        "radius": 436.2,
+        "thickness": 23.3
       },
       {
-        "abbe": 0.0,
+        "abbe": null,
         "aspherical-equation": null,
         "housing-radius": 10.0,
-        "ior": 1.0,
+        "ior": null,
         "lens-geometry": "spherical",
         "material": "iris",
-        "radius": 100000.0,
-        "thickness": 23.299999237060547
+        "radius": 99999.0,
+        "thickness": 23.3
       },
       {
         "abbe": 62.0,
         "aspherical-equation": null,
         "housing-radius": 9.0,
-        "ior": 1.5169999599456787,
+        "ior": 1.517,
         "lens-geometry": "spherical",
         "material": "abbe",
-        "radius": 104.80000305175781,
-        "thickness": 2.200000047683716
+        "radius": 104.8,
+        "thickness": 2.2
       },
       {
-        "abbe": 0.0,
+        "abbe": null,
         "aspherical-equation": null,
         "housing-radius": 9.0,
-        "ior": 1.0,
+        "ior": null,
         "lens-geometry": "spherical",
         "material": "air",
-        "radius": 36.79999923706055,
-        "thickness": 0.699999988079071
+        "radius": 36.8,
+        "thickness": 0.7
       },
       {
         "abbe": 54.0,
         "aspherical-equation": null,
         "housing-radius": 9.0,
-        "ior": 1.5759999752044678,
+        "ior": 1.576,
         "lens-geometry": "spherical",
         "material": "abbe",
         "radius": 45.5,
-        "thickness": 3.5999999046325684
+        "thickness": 3.6
       },
       {
-        "abbe": 0.0,
+        "abbe": null,
         "aspherical-equation": null,
         "housing-radius": 9.0,
-        "ior": 1.0,
+        "ior": null,
         "lens-geometry": "spherical",
         "material": "air",
         "radius": -149.5,
@@ -538,95 +538,95 @@
     "commercial": false,
     "company": "nikon",
     "focal-length-mm-patent": 100,
-    "focal-length-mm-raytraced": 99.38836669921875,
-    "fstop": 3.1771795749664307,
+    "focal-length-mm-raytraced": 99.26875305175781,
+    "fstop": 2.7731218338012695,
     "notes": "This invention provides a retrofocus-type wide angle lens having a relative aperture of F/2.8, an angle of field of 75° and a back focus of more than 1.3 times the focallength and comprises seven lens elements",
     "optical-elements-patent": [
       {
-        "abbe": 58.099998474121094,
+        "abbe": 58.1,
         "aspherical-equation": null,
         "housing-radius": 50.0,
-        "ior": 1.6399999856948853,
+        "ior": 1.64,
         "lens-geometry": "spherical",
         "material": "abbe",
-        "radius": 96.1500015258789,
+        "radius": 96.15,
         "thickness": 7.0
       },
       {
-        "abbe": 0.0,
-        "aspherical-equation": null,
-        "housing-radius": 50.0,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": 53.849998474121094,
-        "thickness": 17.3799991607666
-      },
-      {
-        "abbe": 53.20000076293945,
+        "abbe": null,
         "aspherical-equation": null,
         "housing-radius": 45.0,
-        "ior": 1.5890400409698486,
+        "ior": null,
         "lens-geometry": "spherical",
-        "material": "abbe",
-        "radius": 117.4800033569336,
-        "thickness": 5.590000152587891
+        "material": "air",
+        "radius": 53.85,
+        "thickness": 17.38
       },
       {
-        "abbe": 0.0,
+        "abbe": 53.2,
         "aspherical-equation": null,
         "housing-radius": 45.0,
-        "ior": 1.0,
-        "lens-geometry": "spherical",
-        "material": "air",
-        "radius": 69.93000030517578,
-        "thickness": 52.45000076293945
-      },
-      {
-        "abbe": 46.20000076293945,
-        "aspherical-equation": null,
-        "housing-radius": 25.0,
-        "ior": 1.7668399810791016,
+        "ior": 1.58904,
         "lens-geometry": "spherical",
         "material": "abbe",
-        "radius": 106.63999938964844,
-        "thickness": 15.729999542236328
+        "radius": 117.48,
+        "thickness": 5.59
       },
       {
-        "abbe": 0.0,
+        "abbe": null,
         "aspherical-equation": null,
-        "housing-radius": 25.0,
-        "ior": 1.0,
+        "housing-radius": 42.0,
+        "ior": null,
         "lens-geometry": "spherical",
         "material": "air",
-        "radius": -188.11000061035156,
-        "thickness": 4.900000095367432
+        "radius": 69.93,
+        "thickness": 52.45
+      },
+      {
+        "abbe": 46.2,
+        "aspherical-equation": null,
+        "housing-radius": 30.0,
+        "ior": 1.76684,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 106.64,
+        "thickness": 15.73
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 30.0,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": -188.11,
+        "thickness": 4.9
       },
       {
         "abbe": 27.5,
         "aspherical-equation": null,
-        "housing-radius": 25.0,
-        "ior": 1.7668399810791016,
+        "housing-radius": 30.0,
+        "ior": 1.76684,
         "lens-geometry": "spherical",
         "material": "abbe",
-        "radius": -192.30999755859375,
-        "thickness": 15.380000114440918
+        "radius": -192.31,
+        "thickness": 15.38
       },
       {
-        "abbe": 0.0,
+        "abbe": null,
         "aspherical-equation": null,
-        "housing-radius": 25.0,
-        "ior": 1.0,
+        "housing-radius": 30.0,
+        "ior": null,
         "lens-geometry": "spherical",
         "material": "air",
-        "radius": -140.91000366210938,
-        "thickness": 9.579999923706055
+        "radius": -140.91,
+        "thickness": 9.58
       },
       {
-        "abbe": 0.0,
+        "abbe": null,
         "aspherical-equation": null,
         "housing-radius": 25.0,
-        "ior": 1.0,
+        "ior": null,
         "lens-geometry": "spherical",
         "material": "iris",
         "radius": 100000.0,
@@ -636,60 +636,60 @@
         "abbe": 27.5,
         "aspherical-equation": null,
         "housing-radius": 25.0,
-        "ior": 1.7552000284194946,
+        "ior": 1.7552,
         "lens-geometry": "spherical",
         "material": "abbe",
-        "radius": -65.04000091552734,
-        "thickness": 16.219999313354492
+        "radius": -65.04,
+        "thickness": 16.22
       },
       {
-        "abbe": 0.0,
+        "abbe": null,
         "aspherical-equation": null,
         "housing-radius": 25.0,
-        "ior": 1.0,
+        "ior": null,
         "lens-geometry": "spherical",
         "material": "air",
-        "radius": 188.11000061035156,
-        "thickness": 2.5199999809265137
+        "radius": 188.11,
+        "thickness": 2.52
       },
       {
-        "abbe": 53.900001525878906,
+        "abbe": 53.9,
         "aspherical-equation": null,
         "housing-radius": 25.0,
-        "ior": 1.7130000591278076,
+        "ior": 1.713,
         "lens-geometry": "spherical",
         "material": "abbe",
-        "radius": -323.42999267578125,
+        "radius": -323.43,
         "thickness": 7.0
       },
       {
-        "abbe": 0.0,
+        "abbe": null,
         "aspherical-equation": null,
         "housing-radius": 25.0,
-        "ior": 1.0,
+        "ior": null,
         "lens-geometry": "spherical",
         "material": "air",
-        "radius": -65.38999938964844,
-        "thickness": 0.18000000715255737
+        "radius": -65.39,
+        "thickness": 0.18
       },
       {
-        "abbe": 57.29999923706055,
+        "abbe": 57.3,
         "aspherical-equation": null,
         "housing-radius": 30.0,
-        "ior": 1.6583000421524048,
+        "ior": 1.6583,
         "lens-geometry": "spherical",
         "material": "abbe",
         "radius": -8741.25,
-        "thickness": 6.639999866485596
+        "thickness": 6.64
       },
       {
-        "abbe": 0.0,
+        "abbe": null,
         "aspherical-equation": null,
         "housing-radius": 30.0,
-        "ior": 1.0,
+        "ior": null,
         "lens-geometry": "spherical",
         "material": "air",
-        "radius": -117.55000305175781,
+        "radius": -117.55,
         "thickness": 129.97291564941406
       }
     ],
@@ -710,19 +710,19 @@
     "notes": "The present invention relates to a retro-focus type wide angle lens which is compact despite its remarkably large field of view and well compensated for various aberrations. f = 14.2, f2.8, Angle of field = 114",
     "optical-elements-patent": [
       {
-        "abbe": 50.20000076293945,
+        "abbe": 50.2,
         "aspherical-equation": null,
-        "housing-radius": 20.0,
-        "ior": 1.7200000286102295,
+        "housing-radius": 30.0,
+        "ior": 1.72,
         "lens-geometry": "spherical",
         "material": "abbe",
-        "radius": 38.79399871826172,
-        "thickness": 3.0999999046325684
+        "radius": 38.794,
+        "thickness": 3.1
       },
       {
         "abbe": 0.0,
         "aspherical-equation": null,
-        "housing-radius": 20.0,
+        "housing-radius": 25.0,
         "ior": 1.0,
         "lens-geometry": "spherical",
         "material": "air",
@@ -732,7 +732,7 @@
       {
         "abbe": 60.70000076293945,
         "aspherical-equation": null,
-        "housing-radius": 15.0,
+        "housing-radius": 24.0,
         "ior": 1.6030999422073364,
         "lens-geometry": "spherical",
         "material": "abbe",
@@ -742,7 +742,7 @@
       {
         "abbe": 0.0,
         "aspherical-equation": null,
-        "housing-radius": 15.0,
+        "housing-radius": 24.0,
         "ior": 1.0,
         "lens-geometry": "spherical",
         "material": "air",
@@ -752,7 +752,7 @@
       {
         "abbe": 55.5,
         "aspherical-equation": null,
-        "housing-radius": 15.0,
+        "housing-radius": 20.0,
         "ior": 1.6967999935150146,
         "lens-geometry": "spherical",
         "material": "abbe",
@@ -762,7 +762,7 @@
       {
         "abbe": 0.0,
         "aspherical-equation": null,
-        "housing-radius": 15.0,
+        "housing-radius": 20.0,
         "ior": 1.0,
         "lens-geometry": "spherical",
         "material": "air",
@@ -782,7 +782,7 @@
       {
         "abbe": 0.0,
         "aspherical-equation": null,
-        "housing-radius": 12.0,
+        "housing-radius": 15.0,
         "ior": 1.0,
         "lens-geometry": "spherical",
         "material": "air",
@@ -792,7 +792,7 @@
       {
         "abbe": 55.5,
         "aspherical-equation": null,
-        "housing-radius": 10.0,
+        "housing-radius": 15.0,
         "ior": 1.6967999935150146,
         "lens-geometry": "spherical",
         "material": "abbe",
