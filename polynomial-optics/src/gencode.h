@@ -279,7 +279,7 @@ void print_lt_sample_aperture(FILE *f, const poly_system_t *system, const poly_s
   // 5.3) propagate error back to sensor
   fprintf(f, "    for(int i=0;i<2;i++)\n    {\n");
   for(int k=0;k<2;k++)
-    fprintf(f, "      %s += invJ[%d][i]*delta_out[i];\n", vnamei[k], k);
+    fprintf(f, "      %s += 0.72 * invJ[%d][i] * delta_out[i];\n", vnamei[k], k); //note the magic .72 number, dampening the newton iterations
   fprintf(f, "    }\n");
   fprintf(f, "    if(sqr_err>prev_sqr_err) error |= 1;\n");
   fprintf(f, "    if(sqr_ap_err>prev_sqr_ap_err) error |= 2;\n");

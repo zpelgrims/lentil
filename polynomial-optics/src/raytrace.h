@@ -405,6 +405,66 @@ static inline int evaluate(const lens_element_t *lenses, const int lenses_cnt, c
   return error;
 }
 
+
+// evalute sensor to outer pupil acounting for fresnel:
+static inline int evaluate_for_pos_dir(const lens_element_t *lenses, const int lenses_cnt, const float zoom, const float *in, float *out, int aspheric, float *pos, float *dir)
+{
+  int error = 0;
+  float n1 = spectrum_eta_from_abbe_um(lenses[lenses_cnt-1].ior, lenses[lenses_cnt-1].vno, in[4]);
+  float intensity = 1.0f;
+
+  planeToCs(in, in + 2, pos, dir, 0);
+
+  float distsum = 0;
+
+  for(int k=lenses_cnt-1;k>=0;k--)
+  {
+    // propagate the ray reverse to the plane of intersection optical axis/lens element:
+    const float R = -lenses[k].lens_radius; // negative, evaluate() is the adjoint case
+    float t = 0.0f;
+    const float dist = lens_get_thickness(lenses+k, zoom);
+    distsum += dist;
+
+    //normal at intersection
+    float n[3] = {0.0f};
+
+    if(strcmp(lenses[k].geometry, "cyl-y") == 0){
+      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
+    }
+    else if (strcmp(lenses[k].geometry, "cyl-x") == 0){
+      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
+    }
+    else if(strcmp(lenses[k].geometry, "aspherical") == 0){
+      error |= aspherical(pos, dir, &t, R, distsum + R, lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
+    }
+    else {
+      error |= spherical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n);
+    }
+
+    // index of refraction and ratio current/next:
+    const float n2 = k ? spectrum_eta_from_abbe_um(lenses[k-1].ior, lenses[k-1].vno, in[4]) : 1.0f; // outside the lens there is vacuum
+
+    intensity *= refract(n1, n2, n, dir);
+    if(intensity < INTENSITY_EPS) error |= 8;
+    if(error) return error;
+
+    raytrace_normalise(dir);
+
+    n1 = n2;
+  }
+
+  /*
+  // return [x,y,dx,dy,lambda]
+  if (strcmp(lenses[0].geometry, "cyl-y") == 0) csToCylinder(pos, dir, out, out + 2, distsum-fabs(lenses[0].lens_radius), lenses[0].lens_radius, true);
+  else if (strcmp(lenses[0].geometry, "cyl-x") == 0) csToCylinder(pos, dir, out, out + 2, distsum-fabs(lenses[0].lens_radius), lenses[0].lens_radius, false);
+  else csToSphere(pos, dir, out, out + 2, distsum-fabs(lenses[0].lens_radius), lenses[0].lens_radius);
+  */
+ 
+  out[4] = intensity;
+  return error;
+}
+
+
 // evaluate scene to sensor:
 static inline int evaluate_reverse(const lens_element_t *lenses, const int lenses_cnt, const float zoom, const float *in, float *out, int aspheric)
 {

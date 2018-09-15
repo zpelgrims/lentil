@@ -95,9 +95,9 @@ int main(int argc, char *argv[])
   printf("Last valid exit vertex position: %f, %f\n", positiondata[0], positiondata[1]);
   printf("Failed at try %d of 1000\n", cnt);
 
-  // should be 1/2sin(angle)
   float theta = std::atan(positiondata[1] / positiondata[0]);
   float fstop = 1.0 / (std::sin(theta)* 2.0);
+
   if ((fstop != fstop) || (fstop == 0.0)){
     printf("fstop is an incorrect value, aborting: fstop %f\n", fstop);
     return 0;

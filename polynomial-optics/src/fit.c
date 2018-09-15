@@ -88,7 +88,8 @@ int main(int argc, char *argv[])
       35.0f/2.0f - y*35.0f,
       p_rad/p_dist * cosf(2.0f*M_PI*u)*sqrtf(v),
       p_rad/p_dist * sinf(2.0f*M_PI*u)*sqrtf(v),
-      0.4f + 0.3f*w};
+      0.4f + 0.3f*w //random wavelength between 400 and 700
+    };
     ray_in[2] -= ray_in[0] / p_dist;
     ray_in[3] -= ray_in[1] / p_dist;
     float out[5];
@@ -96,7 +97,7 @@ int main(int argc, char *argv[])
     if(!error)
     {
       for(int k=0;k<5;k++) sample_in[5*valid + k] = ray_in[k];
-      for(int k=0;k<5;k++) sample[valid+k*sample_cnt] = out[k];
+      for(int k=0;k<5;k++) sample[valid + k*sample_cnt] = out[k];
       valid++;
     }
     // only need to be able to determine the dimensionality of our problem, not much more:
