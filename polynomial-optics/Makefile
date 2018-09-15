@@ -22,7 +22,7 @@ ifeq ($(OS), Linux)
 endif
 
 #debug symbols for debugging with gdb
-#OPTFLAGS += -g
+OPTFLAGS += -g
 
 
 LDFLAGS=-lm

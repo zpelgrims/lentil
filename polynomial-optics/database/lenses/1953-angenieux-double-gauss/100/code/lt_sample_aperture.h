@@ -79,8 +79,8 @@ if(1 || view[2] >= camera_data->lens_field_of_view)
     invJ[1][0] = -domega2_dx0[1][0]*invdet;
     for(int i=0;i<2;i++)
     {
-      x += invJ[0][i]*delta_out[i];
-      y += invJ[1][i]*delta_out[i];
+      x += 0.72 * invJ[0][i] * delta_out[i];
+      y += 0.72 * invJ[1][i] * delta_out[i];
     }
     if(sqr_err>prev_sqr_err) error |= 1;
     if(sqr_ap_err>prev_sqr_ap_err) error |= 2;
