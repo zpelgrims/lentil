@@ -9,7 +9,7 @@ This is the folder I'd like you to push your work to. Please commit as much as y
 
 **Initial todo** *(feel free to modify)*:
 
-- [ ] Figure out the best initial path to take:
+- [x] Figure out the best initial path to take:
 	- Using a pre-built platform: could be annoying to customize, but some features will be great out of the box
 	- Building the whole thing from scratch: if the user model/payment model is relatively easy to add, this might be the best option since we don't need many other features.
 	
