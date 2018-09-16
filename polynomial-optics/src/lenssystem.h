@@ -70,6 +70,12 @@ float lens_get_aperture_pos(lens_element_t *l, int num, float zoom)
 int lens_configuration(lens_element_t *l, const char *id, int target_focal_length)
 {
   std::string lens_database_path = std::getenv("LENTIL_PATH");
+  std::string polynomial_optics = "polynomial-optics";
+  if (!(lens_database_path.find(polynomial_optics) != std::string::npos)) {
+    printf("LENTIL_PATH has not set correctly! Point it to the polynomial-optics folder. \n");
+    return -1;
+  }
+
   lens_database_path += "/database/lenses.json";
   std::ifstream in_json(lens_database_path);
   json lens_database = json::parse(in_json);
