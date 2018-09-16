@@ -6,4 +6,4 @@
 
 - 9/16/18 3:00-3:30
           4:00-
-  - Work on figuring out how to map lenses from json object to models
+  - Create function to map lenses from json object to models

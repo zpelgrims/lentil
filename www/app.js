@@ -18,6 +18,7 @@ db.on('error', console.error.bind(console, 'connection error: '));
 const lensArray = Object.keys(lenses).map((key) => [key, lenses[key]]);
 
 // For each lens, create a model
+// Now update each model upon any changes
 lensMap(lensArray);
 
 // Setup ejs
