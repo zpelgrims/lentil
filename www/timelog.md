@@ -5,5 +5,7 @@
   lenses to model
 
 - 9/16/18 3:00-3:30
-          4:00-
+          4:00-6:30
   - Create function to map lenses from json object to models
+  - Create user model, routes, views
+  - Setup passport user authentication
