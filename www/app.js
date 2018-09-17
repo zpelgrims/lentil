@@ -26,11 +26,13 @@ app.set('view engine', 'ejs');
 // References files from /public directory
 app.use(express.static(__dirname + '/public'));
 
-// Require route file(s)
+// Require route files
 const indexRoutes = require('./routes/index');
+const userRoutes = require('./routes/user');
 
 // Use route files
 app.use(indexRoutes);
+app.use(userRoutes);
 
 app.listen(PORT, () => {
   console.log('The server is running on: ', PORT);
