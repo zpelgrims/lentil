@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
 
 // Register page
 router.get('/register', (req, res) => {
@@ -9,8 +11,20 @@ router.get('/register', (req, res) => {
 
 // Register logic
 router.post('/register', (req, res) => {
-  // Handle registration here
-  res.redirect('/');
+  User.register(
+    new User({
+      email: req.body.email,
+      username: req.body.username
+    }), req.body.password, (err, user) => {
+    if(err) {
+      console.log(err);
+      return res.render('register');
+    }
+    passport.authenticate('local')(req, res, () => {
+      console.log('Successfully registered!');
+      res.redirect('/');
+    });
+  });
 });
 
 // Login page
@@ -19,8 +33,15 @@ router.get('/login', (req, res) => {
 });
 
 // Login logic
-router.post('/login', (req, res) => {
-  // Handle logic here
+router.post('/login', passport.authenticate('local', {
+  successRedirect: '/',
+  failureRedirect: '/login'
+  }), (req, res) => {
+});
+
+// Logout logic
+router.get('/logout', (req, res, next) => {
+  req.logout();
   res.redirect('/');
 });
 

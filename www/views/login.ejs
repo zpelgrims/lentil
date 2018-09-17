@@ -1,4 +1,13 @@
 <h1>Login</h1>
-<input type="text">
-<input type="password">
-<button>Register</button>
+
+<form action="/login" method="POST">
+  <div class="form-group">
+    <input type="text" name="username" placeholder="Username" required>
+  </div>
+  <div class="form-group">
+    <input type="password" name="password" placeholder="Password" required>
+  </div>
+  <div class="form-group">
+    <button class="btn btn-lg">Register</button>
+  </div>
+</form>
