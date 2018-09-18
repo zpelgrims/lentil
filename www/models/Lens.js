@@ -13,7 +13,8 @@ const lensSchema = new mongoose.Schema({
   prime: Boolean,
   product_name: String,
   production_ready: Boolean,
-  year: Number
+  year: Number,
+  image: String
 });
 
 const Lens = mongoose.model('Lens', lensSchema);

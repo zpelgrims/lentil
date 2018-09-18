@@ -12,3 +12,5 @@
 
 - 9/17/18 4:30-5:00
   - Successfully create lens ownership for users
+
+- 9/18/18 12:00-
