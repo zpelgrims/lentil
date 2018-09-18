@@ -39,6 +39,9 @@ $LENTIL_PATH/bin/add-fstop-to-database $LENS_ID &&
 # auto-generate lens defines
 $LENTIL_PATH/bin/generate-lens-defines &&
 
+$LENTIL_PATH/bin/create-public-json &&
+python $LENTIL_PATH/src/copy-images-to-www.py &&
+
 # cleanup
 rm -rf -v $LENTIL_PATH/data/tmp/$LENS_ID/$LENS_FOCAL_LENGTH &&
 rm -d -v $LENTIL_PATH/data/tmp/$LENS_ID
