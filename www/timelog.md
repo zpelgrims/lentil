@@ -9,3 +9,6 @@
   - Create function to map lenses from json object to models
   - Create user model, routes, views
   - Setup passport user authentication
+
+- 9/17/18 4:30-5:00
+  - Successfully create lens ownership for users

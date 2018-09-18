@@ -13,7 +13,11 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String
-  }
+  },
+  lenses: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Lens'
+  }]
 });
 
 userSchema.plugin(passportLocalMongoose);

@@ -17,6 +17,10 @@
       <p><strong>product-name:</strong> <%= lens.product_name %></p>
       <p><strong>production-ready:</strong> <%= lens.production_ready %></p>
       <p><strong>year:</strong> <%= lens.year %></p>
+
+      <% if(user) { %>
+        <a href="/<%= lens._id %>/purchase">Buy Now</a>
+      <% } %>
     </div>
   <% }); %>
 </div>
