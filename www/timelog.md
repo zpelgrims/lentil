@@ -13,4 +13,7 @@
 - 9/17/18 4:30-5:00
   - Successfully create lens ownership for users
 
-- 9/18/18 12:00-
+- 9/18/18 12:00-1:00
+          1:15-2:00
+  - Create logic to display svg files
+  - Dynamically update lens models.

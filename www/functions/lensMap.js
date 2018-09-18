@@ -16,7 +16,7 @@ function lensMap(lensArray) {
       production_ready: lensArray[i][1]['production-ready'],
       year: lensArray[i][1].year,
       image: lensArray[i][1].image
-    })
+    });
   }
 }
 
