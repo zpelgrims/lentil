@@ -7,8 +7,8 @@
 using json = nlohmann::json;
 
 
-std::string construct_lens_image_www_location(std::string key, auto element) {
-  std::string lens_image_www_location = lentil_path + "/www/public/imgs/lenses/";
+std::string construct_lens_image_www_location(std::string key, json element) {
+  std::string lens_image_www_location = "/www/public/imgs/lenses/";
   lens_image_www_location += key;
   lens_image_www_location += "/";
   lens_image_www_location += std::to_string(element["year"].get<int>());
@@ -18,7 +18,7 @@ std::string construct_lens_image_www_location(std::string key, auto element) {
   lens_image_www_location += element["product-name"].get<std::string>();
   lens_image_www_location += ".svg";
 
-  return lens_image_www_location
+  return lens_image_www_location;
 }
 
 void create_public_json(json lens_database, std::string lens_public_database_path) {

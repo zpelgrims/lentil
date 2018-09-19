@@ -12,6 +12,7 @@
     "prime": true,
     "product-name": "double-gauss",
     "production-ready": true,
+    "www-svg-location": "/www/public/imgs/lenses/0001/1953-angenieux-double-gauss.svg",
     "year": 1953
   },
   "0002": {
@@ -25,6 +26,7 @@
     "prime": true,
     "product-name": "primoplan",
     "production-ready": true,
+    "www-svg-location": "/www/public/imgs/lenses/0002/1936-meyer-optik-goerlitz-primoplan.svg",
     "year": 1936
   },
   "0003": {
@@ -38,6 +40,7 @@
     "prime": true,
     "product-name": "petzval",
     "production-ready": true,
+    "www-svg-location": "/www/public/imgs/lenses/0003/1900-unknown-petzval.svg",
     "year": 1900
   },
   "0004": {
@@ -51,6 +54,7 @@
     "prime": true,
     "product-name": "retrofocus-wideangle",
     "production-ready": true,
+    "www-svg-location": "/www/public/imgs/lenses/0004/1971-nikon-retrofocus-wideangle.svg",
     "year": 1971
   },
   "0005": {
@@ -65,6 +69,7 @@
     "prime": true,
     "product-name": "retrofocus-wideangle",
     "production-ready": true,
+    "www-svg-location": "/www/public/imgs/lenses/0005/1982-canon-retrofocus-wideangle.svg",
     "year": 1982
   },
   "0006": {
@@ -78,6 +83,7 @@
     "prime": true,
     "product-name": "petzval",
     "production-ready": true,
+    "www-svg-location": "/www/public/imgs/lenses/0006/1948-kodak-petzval.svg",
     "year": 1948
   },
   "0007": {
@@ -91,6 +97,7 @@
     "prime": true,
     "product-name": "speed-panchro",
     "production-ready": true,
+    "www-svg-location": "/www/public/imgs/lenses/0007/1920-cooke-speed-panchro.svg",
     "year": 1920
   },
   "0008": {
@@ -104,6 +111,7 @@
     "prime": true,
     "product-name": "unknown",
     "production-ready": true,
+    "www-svg-location": "/www/public/imgs/lenses/0008/2014-nikon-unknown.svg",
     "year": 2014
   },
   "0009": {
@@ -117,6 +125,7 @@
     "prime": true,
     "product-name": "biotar",
     "production-ready": true,
+    "www-svg-location": "/www/public/imgs/lenses/0009/1927-zeiss-biotar.svg",
     "year": 1927
   },
   "0010": {
@@ -130,6 +139,7 @@
     "prime": true,
     "product-name": "takumar",
     "production-ready": true,
+    "www-svg-location": "/www/public/imgs/lenses/0010/1969-asahi-takumar.svg",
     "year": 1969
   },
   "0011": {
@@ -143,6 +153,7 @@
     "prime": true,
     "product-name": "takumar",
     "production-ready": true,
+    "www-svg-location": "/www/public/imgs/lenses/0011/1970-asahi-takumar.svg",
     "year": 1970
   },
   "0013": {
@@ -157,6 +168,7 @@
     "prime": true,
     "product-name": "flektagon",
     "production-ready": true,
+    "www-svg-location": "/www/public/imgs/lenses/0013/1954-zeiss-flektagon.svg",
     "year": 1954
   }
 }
