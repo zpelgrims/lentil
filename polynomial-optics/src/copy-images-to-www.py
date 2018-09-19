@@ -14,7 +14,7 @@ class copy_to_www_folder():
         return "{}-{}-{}".format(lens["year"], lens["company"], lens["product-name"])
 
     def _construct_imgs_www_folder(self):
-        return "{}/../www/imgs/lenses/".format(self.lentil_path)
+        return "{}/../www/public/imgs/lenses/".format(self.lentil_path)
 
     def remove_image_folder(self):
         try:

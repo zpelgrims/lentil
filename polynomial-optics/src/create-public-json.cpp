@@ -7,6 +7,20 @@
 using json = nlohmann::json;
 
 
+std::string construct_lens_image_www_location(std::string key, auto element) {
+  std::string lens_image_www_location = lentil_path + "/www/public/imgs/lenses/";
+  lens_image_www_location += key;
+  lens_image_www_location += "/";
+  lens_image_www_location += std::to_string(element["year"].get<int>());
+  lens_image_www_location += "-";
+  lens_image_www_location += element["company"].get<std::string>();
+  lens_image_www_location += "-";
+  lens_image_www_location += element["product-name"].get<std::string>();
+  lens_image_www_location += ".svg";
+
+  return lens_image_www_location
+}
+
 void create_public_json(json lens_database, std::string lens_public_database_path) {
   std::vector<std::string> to_erase = {};
 
@@ -26,6 +40,8 @@ void create_public_json(json lens_database, std::string lens_public_database_pat
     element.erase("patent-location");
     element.erase("focal-length-mm-raytraced");
     element.erase("focal-length-mm-patent");
+    
+    element.emplace("www-svg-location", construct_lens_image_www_location(it.key(), it.value()));
   }
 
   for (auto key : to_erase) {
