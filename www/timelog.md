@@ -17,3 +17,6 @@
           1:15-2:00
   - Create logic to display svg files
   - Dynamically update lens models.
+
+- 9/19/18 11:00
+  - Add svg files to lens models and display on website
