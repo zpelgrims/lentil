@@ -18,8 +18,6 @@ mongoose.connect('mongodb://localhost/lentil') // Setup production db later
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error: '));
 
-// Remove all lens models
-Lens.collection.deleteMany({});
 // Map json lenses object to array
 const lensArray = Object.keys(lenses).map((key) => [key, lenses[key]]);
 

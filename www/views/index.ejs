@@ -2,7 +2,7 @@
 
 <h1 class="text-center">Lenses</h1>
 
-<div class="col-md-6 col-md-offset-3">
+<div class="col-md-4">
   <% lenses.forEach((lens) => { %>
     <div class="thumbnail">
       <p><strong>commercial:</strong> <%= lens.commercial %></p>
@@ -20,7 +20,11 @@
       <img src="<%= lens.image %>" alt="<%= lens.image %>">
 
       <% if(user) { %>
-        <a href="/<%= lens._id %>/purchase">Buy Now</a>
+        <% if(user.lenses.indexOf(lens._id) == -1) { %>
+          <a href="/<%= lens._id %>/purchase">Buy Now</a>
+        <% } else { %>
+          <p>You own this!</p>
+        <% } %>
       <% } %>
     </div>
   <% }); %>

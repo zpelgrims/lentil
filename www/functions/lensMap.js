@@ -2,7 +2,7 @@ const Lens = require('../models/Lens');
 
 function lensMap(lensArray) {
   for(var i = 0; i < lensArray.length; i++) {
-    Lens.create({
+    Lens.update({
       commercial: lensArray[i][1].commercial,
       company: lensArray[i][1].company,
       focal_length_mm_patent:  lensArray[i][1]['focal-length-mm-patent'],
