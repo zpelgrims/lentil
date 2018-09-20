@@ -20,5 +20,7 @@
 
 - 9/19/18 11:00-11:15
           3:45-5:00
+          6:00-6:30
   - Add svg files to lens models and display on website
-  - Work on displaying lens ownership
+  - Display lens ownership
+  - Dynamically update lens models

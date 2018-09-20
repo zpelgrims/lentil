@@ -19,7 +19,7 @@ This is the folder I'd like you to push your work to. Please commit as much as y
 	- Public `.json` can be found [here](https://github.com/zpelgrims/lentil/blob/master/www/json/lenses_public.json), expect this file to be updated from time to time.
 	
 
-- [ ] User model
+- [x] User model
 	- Users need to register/login, their info & purchases need to be stored in a database
 	- It should be clear on products/content page which ones they already own
 
