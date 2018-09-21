@@ -27,7 +27,8 @@
 
 - 9/21/18 9:00-9:15
           12:00-2:30
-          2:45-
+          2:45-3:45
   - Setup filter functionality
   - Basic stylistic improvements
-  - Work on payment
+  - Setup payment model
+  - Add payment verification middleware
