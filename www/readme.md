@@ -24,11 +24,19 @@ This is the folder I'd like you to push your work to. Please commit as much as y
 	- It should be clear on products/content page which ones they already own
 
 
-- [ ] Add a filter function
+- [x] Add a filter function
+	- Filters based on company, product or year. These options can easily
+	be changed.
 	
 	
 - [ ] Payment model
 	- Paypal is great, but it would be best to also support credit/debit cards since the primary target are studios, not necessarily individuals.
+
+
+- [ ] Migrate database to mlab
+
+
+- [ ] Create basic front-end layout
 	
 	
 - [ ] The plugin compile needs to be triggered on-demand by the user.
@@ -37,7 +45,7 @@ This is the folder I'd like you to push your work to. Please commit as much as y
 	- Essentially.. figure out how to trigger a command in the terminal from the webpage.
 	
 	
-- [ ] Avoid having to manually add new lens entries. The lenses will most likely be updated along the way and it will be a mess to manage all that. But since we're already loading the content from the database, this shouldn't be a big issue.
+- [x] Avoid having to manually add new lens entries. The lenses will most likely be updated along the way and it will be a mess to manage all that. But since we're already loading the content from the database, this shouldn't be a big issue.
 	
 	
 - [ ] Eventually setup the hosting/domain. I've got good experiences with [digitalocean](https://www.digitalocean.com "digitalocean.com"), hopefully we can host it there. But that's for a long way down the line.

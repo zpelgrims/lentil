@@ -1,0 +1,19 @@
+.lenses {
+
+  &__card {
+    width: 100%;
+    height: 50vh;
+    background-color: #f2f2f2;
+    padding: 1rem;
+    margin-top: 2rem;
+
+    &__title {
+      text-transform: uppercase;
+    }
+
+    img {
+      height: 80%;
+      width: 100%;
+    }
+  }
+}

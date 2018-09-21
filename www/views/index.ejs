@@ -1,31 +1,40 @@
 <% include partials/header %>
 
-<h1 class="text-center">Lenses</h1>
+<div class="container">
+  <h1 class="text-center">Lenses</h1>
+  <a href="/login">Login</a>
+  <a href="/register">Register</a>
+  
+  <form action="/">
+    <div class="form-group">
+      <label for="filter">Filter by:</label>
+      <select name="filter" id="filter">
+        <option value="company">Company</option>
+        <option value="product">Product</option>
+        <option value="year">Year</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <button class="btn btn-default">Go</button>
+    </div>
+  </form>
+</div>
 
-<div class="col-md-4">
+<div class="lenses">
   <% lenses.forEach((lens) => { %>
-    <div class="thumbnail">
-      <p><strong>commercial:</strong> <%= lens.commercial %></p>
-      <p><strong>company:</strong> <%= lens.company %></p>
-      <p><strong>focal-length-mm-patent:</strong> <%= lens.focal_length_mm_patent %></p>
-      <p><strong>focal-length-mm-raytraced:</strong> <%= lens.focal_length_mm_raytraced %></p>
-      <p><strong>fstop:</strong> <%= lens.fstop %></p>
-      <p><strong>notes:</strong> <%= lens.notes %></p>
-      <p><strong>patent-number:</strong> <%= lens.patent_number %></p>
-      <p><strong>polynomial-optics:</strong> <%= lens.polynomial_optics %></p>
-      <p><strong>prime:</strong> <%= lens.prime %></p>
-      <p><strong>product-name:</strong> <%= lens.product_name %></p>
-      <p><strong>production-ready:</strong> <%= lens.production_ready %></p>
-      <p><strong>year:</strong> <%= lens.year %></p>
-      <img src="<%= lens.image %>" alt="<%= lens.image %>">
-
-      <% if(user) { %>
-        <% if(user.lenses.indexOf(lens._id) == -1) { %>
-          <a href="/<%= lens._id %>/purchase">Buy Now</a>
-        <% } else { %>
-          <p>You own this!</p>
+    <div class="col-md-4">
+      <div class="lenses__card">
+        <h3 class="text-center lenses__card__title"><%= lens.year %> <%= lens.company %> <%= lens.product_name %></h3>
+        <img src="<%= lens.image %>" alt="<%= lens.image %>">
+  
+        <% if(user) { %>
+          <% if(user.lenses.indexOf(lens._id) == -1) { %>
+            <a href="/<%= lens._id %>/purchase">Buy Now</a>
+          <% } else { %>
+            <p>You own this!</p>
+          <% } %>
         <% } %>
-      <% } %>
+      </div>
     </div>
   <% }); %>
 </div>

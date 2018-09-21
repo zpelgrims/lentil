@@ -24,3 +24,10 @@
   - Add svg files to lens models and display on website
   - Display lens ownership
   - Dynamically update lens models
+
+- 9/21/18 9:00-9:15
+          12:00-2:30
+          2:45-
+  - Setup filter functionality
+  - Basic stylistic improvements
+  - Work on payment
