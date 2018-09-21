@@ -2,12 +2,13 @@ const express = require('express');
 const router = express.Router();
 const keys = require('../keys');
 const Lens = require('../models/Lens');
+const middleware = require('../middleware');
 
 // Setup stripe 
 const stripe = require('stripe')(keys.stripe.privkey);
 
 // Stripe payment form
-router.get('/:id/pay', (req, res) => {
+router.get('/:id/pay', middleware.isLoggedIn, middleware.isValidId, (req, res) => {
   Lens.findById(req.params.id, (err, lens) => {
     if(err) {
       console.log(err);
@@ -18,7 +19,7 @@ router.get('/:id/pay', (req, res) => {
 });
 
 // Payment processing logic
-router.post('/:id/charge', (req, res) => {
+router.post('/:id/charge', middleware.isLoggedIn, (req, res) => {
   let amount = 500;
 
   stripe.customers.create({

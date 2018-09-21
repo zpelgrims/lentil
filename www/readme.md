@@ -33,13 +33,16 @@ This is the folder I'd like you to push your work to. Please commit as much as y
 	- Paypal is great, but it would be best to also support credit/debit cards since the primary target are studios, not necessarily individuals.
 
 
-- [ ] Add ownership of lenses to user model after confirmed payment
+- [x] Add ownership of lenses to user model after confirmed payment
 
 
 - [ ] Migrate database to mlab
 
 
 - [ ] Create basic front-end layout
+
+
+- [ ] Add flash messages for UI
 	
 	
 - [ ] The plugin compile needs to be triggered on-demand by the user.
