@@ -29,8 +29,11 @@ This is the folder I'd like you to push your work to. Please commit as much as y
 	be changed.
 	
 	
-- [ ] Payment model
+- [x] Payment model
 	- Paypal is great, but it would be best to also support credit/debit cards since the primary target are studios, not necessarily individuals.
+
+
+- [ ] Add ownership of lenses to user model after confirmed payment
 
 
 - [ ] Migrate database to mlab

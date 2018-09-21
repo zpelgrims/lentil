@@ -29,7 +29,7 @@
   
         <% if(user) { %>
           <% if(user.lenses.indexOf(lens._id) == -1) { %>
-            <a href="/<%= lens._id %>/purchase">Buy Now</a>
+            <a href="/<%= lens._id %>/pay">Buy Now</a>
           <% } else { %>
             <p>You own this!</p>
           <% } %>
