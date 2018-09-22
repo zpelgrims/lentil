@@ -24,13 +24,20 @@ This is the folder I'd like you to push your work to. Please commit as much as y
 	- It should be clear on products/content page which ones they already own
 
 
-- [x] Add a filter function
-	- Filters based on company, product or year. These options can easily
-	be changed.
+- [ ] Add a filter function
+	- [x] Filters based on company, product or year. These options can easily
+	be changed
+	- [ ] Filter based on company: provide checkboxes for the companies that you want to display
+	- [ ] Year: from min to max
+	- [ ] Focal length: from min to max
+
 	
-	
-- [x] Payment model
-	- Paypal is great, but it would be best to also support credit/debit cards since the primary target are studios, not necessarily individuals.
+- [ ] Payment model
+	- [x] Paypal is great, but it would be best to also support credit/debit cards since the primary target are studios, not necessarily individuals.
+	- [ ] Create a cart so people can do checkouts of multiple lenses at once
+
+
+- [ ] Lens expansion on-click
 
 
 - [x] Add ownership of lenses to user model after confirmed payment
@@ -52,6 +59,6 @@ This is the folder I'd like you to push your work to. Please commit as much as y
 	
 	
 - [x] Avoid having to manually add new lens entries. The lenses will most likely be updated along the way and it will be a mess to manage all that. But since we're already loading the content from the database, this shouldn't be a big issue.
-	
+
 	
 - [ ] Eventually setup the hosting/domain. I've got good experiences with [digitalocean](https://www.digitalocean.com "digitalocean.com"), hopefully we can host it there. But that's for a long way down the line.
