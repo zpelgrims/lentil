@@ -8,7 +8,7 @@ using json = nlohmann::json;
 
 
 std::string construct_lens_image_www_location(std::string key, json element) {
-  std::string lens_image_www_location = "/www/public/imgs/lenses/";
+  std::string lens_image_www_location = "/imgs/lenses/";
   lens_image_www_location += key;
   lens_image_www_location += "/";
   lens_image_www_location += std::to_string(element["year"].get<int>());
