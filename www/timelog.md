@@ -33,4 +33,5 @@
   - Setup payment model
   - Add payment verification middleware
 
-- 9/24/18 11:30-
+- 9/24/18 11:30-1:00
+  - Migrate database to production server
