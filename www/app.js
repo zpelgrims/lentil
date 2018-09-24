@@ -9,13 +9,12 @@ const LocalStrategy = require('passport-local');
 const User = require('./models/User');
 const bodyParser = require('body-parser');
 const keys = require('./keys');
-const cons = require('consolidate');
 
 // Dynamically switch between dev and live ports
 const PORT = process.env.PORT || 3000;
 
 // Setup database
-mongoose.connect('mongodb://localhost/lentil') // Setup production db later
+mongoose.connect('mongodb://localhost/lentil') || mongoose.connect(keys.db);
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error: '));
@@ -25,11 +24,6 @@ const lensArray = Object.keys(lenses).map((key) => [key, lenses[key]]);
 
 // Update or add each lens model
 lensMap(lensArray);
-
-// Setup pug view engine
-// cons.pug('views/pay.pug', {pubkey: keys.pubkey}, (err, pug) => {
-//   if(err) console.log(err);
-// });
 
 // Setup ejs view engine
 app.set('view engine', 'ejs');
@@ -41,7 +35,7 @@ app.use(express.static(__dirname + '/public'));
 
 // Passport Config
 app.use(require('express-session')({
-  secret: 'p4ssp0rt-s3cr3t',
+  secret: keys.passport,
   resave: false,
   saveUninitialized: false,
   maxAge: 365 * 24 * 60 * 60 * 1000

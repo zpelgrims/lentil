@@ -32,3 +32,5 @@
   - Basic stylistic improvements
   - Setup payment model
   - Add payment verification middleware
+
+- 9/24/18 11:30-
