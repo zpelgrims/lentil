@@ -21,4 +21,16 @@ router.get('/', (req, res) => {
   });
 });
 
+router.get('/:id/add', (req, res) => {
+  Lens.findById(req.params.id, (err, lens) => {
+    if(err) {
+      console.log(err);
+    } else {
+      req.user.cart.push(lens._id);
+      req.user.save();
+    }
+    res.redirect('back');
+  });
+});
+
 module.exports = router;

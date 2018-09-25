@@ -8,19 +8,15 @@ const middleware = require('../middleware');
 const stripe = require('stripe')(keys.stripe.privkey);
 
 // Stripe payment form
-router.get('/:id/pay', middleware.isLoggedIn, middleware.isValidId, (req, res) => {
-  Lens.findById(req.params.id, (err, lens) => {
-    if(err) {
-      console.log(err);
-    } else {
-      res.render('pay.ejs', {pubkey: keys.stripe.pubkey, lens: lens});
-    }
-  });
+router.get('/pay', middleware.isLoggedIn, (req, res) => {
+  let amount = 500 * req.user.cart.length;
+
+  res.render('pay.ejs', {pubkey: keys.stripe.pubkey, amount: amount});
 });
 
 // Payment processing logic
-router.post('/:id/charge', middleware.isLoggedIn, (req, res) => {
-  let amount = 500;
+router.post('/charge', middleware.isLoggedIn, (req, res) => {
+  let amount = 500 * req.user.cart.length;
 
   stripe.customers.create({
     email: req.body.stripeEmail,
@@ -34,19 +30,16 @@ router.post('/:id/charge', middleware.isLoggedIn, (req, res) => {
       customer: customer.id
     }))
   .then(() => {
-    Lens.findById(req.params.id, (err, lens) => {
-      if(err) {
-        console.log(err);
-      } else {
-        if(req.user) {
-          if(req.user.lenses.indexOf(lens._id) == -1) {
-            req.user.lenses.push(lens._id);
-            req.user.save();
-          }
-        }
-      }
-      res.redirect('/');
+    // Move items from cart to lenses array
+    req.user.cart.forEach((item) => {
+      req.user.lenses.push(item);
     });
+    // Empty cart
+    req.user.cart = [];
+    // Save user model
+    req.user.save();
+
+    res.redirect('/');
   });
 });
 

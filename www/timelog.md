@@ -35,3 +35,5 @@
 
 - 9/24/18 11:30-1:00
   - Migrate database to production server
+
+- 9/25/18 11:00-
