@@ -4,6 +4,9 @@
   <h1 class="text-center">Lenses</h1>
   <a href="/login">Login</a>
   <a href="/register">Register</a>
+  <% if(user && user.cart) { %>
+    <a href="/pay">Checkout</a>
+  <% } %>
   
   <form action="/">
     <div class="form-group">
@@ -29,7 +32,11 @@
   
         <% if(user) { %>
           <% if(user.lenses.indexOf(lens._id) == -1) { %>
-            <a href="/<%= lens._id %>/pay">Buy Now</a>
+            <% if(user.cart.indexOf(lens._id) == -1) { %>
+              <a href="/<%= lens._id %>/add">Add to cart</a>
+            <% } else { %>
+              <p>Added to cart</p>
+            <% } %>
           <% } else { %>
             <p>You own this!</p>
           <% } %>

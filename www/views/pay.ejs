@@ -1,10 +1,10 @@
 <h1>Pay</h1>
-<form action="/<%= lens._id %>/charge" method="POST">
+<form action="/charge" method="POST">
   <script
     src="https://checkout.stripe.com/checkout.js" 
     class="stripe-button"
-    data-key="pk_test_Wb52B3HnqaQHUArRiNfPGgUE"
-    data-amount="500"
+    data-key="<%= pubkey %>"
+    data-amount="<%= amount %>"
     data-locale="auto">
   </script>
 </form>

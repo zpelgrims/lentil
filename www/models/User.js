@@ -17,6 +17,10 @@ const userSchema = new mongoose.Schema({
   lenses: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Lens'
+  }],
+  cart: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Lens'
   }]
 });
 
