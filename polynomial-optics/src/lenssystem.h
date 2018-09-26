@@ -222,3 +222,8 @@ static inline void lens_canonicalize_name(const char *filename, char *out)
   }
   out[i++] = 0;
 }
+
+
+inline void add_to_thickness_last_element(lens_element_t *l, const float sensorshift, const int lenses_cnt, const float thickness_original) {
+  l[lenses_cnt-1].thickness_short = thickness_original + sensorshift;
+}
