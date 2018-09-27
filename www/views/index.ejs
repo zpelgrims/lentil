@@ -4,8 +4,8 @@
   <h1 class="text-center">Lenses</h1>
   <a href="/login">Login</a>
   <a href="/register">Register</a>
-  <% if(user && user.cart) { %>
-    <a href="/pay">Checkout</a>
+  <% if(user && user.cart.length > 0) { %>
+    <a href="/cart">Cart</a>
   <% } %>
   
   <form action="/">

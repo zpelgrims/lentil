@@ -7,6 +7,18 @@ const middleware = require('../middleware');
 // Setup stripe 
 const stripe = require('stripe')(keys.stripe.privkey);
 
+// User cart page
+router.get('/cart', middleware.isLoggedIn, (req, res) => {
+  Lens.findById(...req.user.cart, (err, lenses) => {
+    if(err) {
+      console.log(err);
+    } else {
+      console.log(lenses);
+      res.render('cart', {lenses: [lenses]});
+    }
+  });
+});
+
 // Stripe payment form
 router.get('/pay', middleware.isLoggedIn, (req, res) => {
   let amount = 500 * req.user.cart.length;

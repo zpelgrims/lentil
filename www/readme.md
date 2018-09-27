@@ -34,7 +34,8 @@ This is the folder I'd like you to push your work to. Please commit as much as y
 	
 - [ ] Payment model
 	- [x] Paypal is great, but it would be best to also support credit/debit cards since the primary target are studios, not necessarily individuals.
-	- [ ] Create a cart so people can do checkouts of multiple lenses at once
+	- [x] Create a cart so people can do checkouts of multiple lenses at once
+	- [x] Create cart page to display items added to cart before checkout
 
 
 - [ ] Lens expansion on-click
