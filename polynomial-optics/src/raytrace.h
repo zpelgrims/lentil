@@ -665,7 +665,8 @@ float lineLineIntersection_x(float line1_origin[3], float line1_direction[3], fl
 
 
 // evalute sensor to outer pupil:
-float calculate_focal_length(const lens_element_t *lenses, const int lenses_cnt, const float zoom, const float *in, float *out, int dim_up, bool draw_aspherical)
+float calculate_focal_length(
+  const lens_element_t *lenses, const int lenses_cnt, const float zoom, const float *in, float *out, int dim_up, bool draw_aspherical)
 {
   int error = 0;
   float n1 = spectrum_eta_from_abbe_um(lenses[lenses_cnt-1].ior, lenses[lenses_cnt-1].vno, in[4]);
@@ -731,7 +732,8 @@ float calculate_focal_length(const lens_element_t *lenses, const int lenses_cnt,
 
 
 
-static inline float evaluate_reverse_intersection_y0(const lens_element_t *lenses, const int lenses_cnt, const float zoom, const float *in, float *out, int dim_up, int draw_aspherical)
+static inline float evaluate_reverse_intersection_y0(
+  const lens_element_t *lenses, const int lenses_cnt, const float zoom, const float *in, float *out, int dim_up, int draw_aspherical)
 {
   int error = 0;
   float n1 = 1.0f;
@@ -795,7 +797,8 @@ static inline float evaluate_reverse_intersection_y0(const lens_element_t *lense
 }
 
 
-static inline bool evaluate_reverse_fstop(const lens_element_t *lenses, const int lenses_cnt, const float zoom, const float *in, float *out, int dim_up, int draw_aspherical, std::vector<float> &positiondata)
+static inline bool evaluate_reverse_fstop(
+  const lens_element_t *lenses, const int lenses_cnt, const float zoom, const float *in, float *out, int dim_up, int draw_aspherical, std::vector<float> &positiondata)
 {
   int error = 0;
   float n1 = 1.0f;
