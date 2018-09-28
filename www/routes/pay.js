@@ -9,12 +9,11 @@ const stripe = require('stripe')(keys.stripe.privkey);
 
 // User cart page
 router.get('/cart', middleware.isLoggedIn, (req, res) => {
-  Lens.findById(...req.user.cart, (err, lenses) => {
+  Lens.findById(...req.user.cart._id, (err, lenses) => {
     if(err) {
       console.log(err);
     } else {
-      console.log(lenses);
-      res.render('cart', {lenses: [lenses]});
+      res.render('cart', {lenses: lenses});
     }
   });
 });

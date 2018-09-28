@@ -8,23 +8,54 @@
     <a href="/cart">Cart</a>
   <% } %>
   
-  <form action="/">
-    <div class="form-group">
-      <label for="filter">Filter by:</label>
-      <select name="filter" id="filter">
-        <option value="company">Company</option>
-        <option value="product">Product</option>
-        <option value="year">Year</option>
-      </select>
+  <div class="filter col-md-12">
+    <h3 class="text-center">Filter</h3>
+    <div class="col-md-4 text-center">
+      <button id="company">Company</button>
+      <div class="filter__company" id="filterCompany">
+        <form action="/">
+          <% companies.forEach((company) => { %>
+            <label><input type="checkbox" name="company"
+              value="<%= company %>"
+              > <%= company %></label>
+          <% }); %>
+          <label><input type="checkbox" name="company"
+              value="all"
+            > ALL</label>
+          <button>Go</button>
+        </form>
+      </div>
     </div>
-    <div class="form-group">
-      <button class="btn btn-default">Go</button>
+    <div class="col-md-4 text-center">
+      <button id="year">Year</button>
+      <div class="filter__year" id="filterYear">
+        <form action="/">
+          <select name="year">
+            <option value="min">Min to Max</option>
+            <option value="max">Max to Min</option>
+          </select>
+          <button>Go</button>
+        </form>
+      </div>
     </div>
-  </form>
+    <div class="col-md-4 text-center">
+      <button id="focal">Focal length</button>
+      <div class="filter__focal" id="filterFocal">
+        <form action="/">
+          <select name="focal">
+            <option value="min">Min to Max</option>
+            <option value="max">Max to Min</option>
+          </select>
+          <button>Go</button>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="lenses">
   <% lenses.forEach((lens) => { %>
+    
     <div class="col-md-4">
       <div class="lenses__card">
         <h3 class="text-center lenses__card__title"><%= lens.year %> <%= lens.company %> <%= lens.product_name %></h3>

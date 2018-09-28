@@ -9,14 +9,50 @@ router.get('/', (req, res) => {
     if(err) {
       console.log(err);
     } else {
-      if(req.query.filter == 'company') {
-        lenses.sort(sortBy('company'));
-      } else if(req.query.filter == 'product') {
-        lenses.sort(sortBy('product_name'));
-      } else if(req.query.filter == 'year') {
+      // Sort by year
+      if(req.query.year == 'min') {
         lenses.sort(sortBy('year'));
+      } else if(req.query.year == 'max') {
+        lenses.sort(sortBy('-year'))
       }
-      res.render('index', {lenses: lenses, user: req.user});
+
+      // Sort by focal length
+      if(req.query.focal == 'min') {
+        lenses.sort(sortBy('fstop'));
+      } else if(req.query.focal == 'max') {
+        lenses.sort(sortBy('-fstop'))
+      }
+
+      // Create array of companies for filter options
+      let companies = [];
+      for(let i = 0; i < lenses.length; i++) {
+        if(!companies.indexOf(lenses[i].company) > -1) {
+          companies.push(lenses[i].company);
+        }
+      }
+
+      // Display lenses based on company filter query
+      if(req.query.company) {
+        let lensArray = [];
+        lenses.forEach((lens) => {
+          if(req.query.company == 'all') {
+            lensArray.push(lens);
+          } else if(req.query.company.constructor === Array) {
+            req.query.company.forEach((company) => {
+              if(lens.company == company) {
+                lensArray.push(lens);
+              }
+            });
+          } else {
+            if(lens.company == req.query.company) {
+              lensArray.push(lens);
+            }
+          }
+        });
+        return res.render('index', {lenses: lensArray, user: req.user, companies: companies});
+      }
+
+      res.render('index', {lenses: lenses, user: req.user, companies: companies});
     }
   });
 });

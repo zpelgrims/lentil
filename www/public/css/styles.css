@@ -22,3 +22,12 @@ html {
 
 body {
   box-sizing: border-box; }
+
+.filter__company {
+  visibility: hidden; }
+
+.filter__year {
+  visibility: hidden; }
+
+.filter__focal {
+  visibility: hidden; }

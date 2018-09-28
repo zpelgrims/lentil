@@ -9,6 +9,8 @@ const LocalStrategy = require('passport-local');
 const User = require('./models/User');
 const bodyParser = require('body-parser');
 const keys = require('./keys');
+const jsdom = require('jsdom');
+const {JSDOM} = jsdom;
 
 // Dynamically switch between dev and live ports
 const PORT = process.env.PORT || 3000;
