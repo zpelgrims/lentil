@@ -4,46 +4,105 @@
   <h1 class="text-center">Lenses</h1>
   <a href="/login">Login</a>
   <a href="/register">Register</a>
-  <% if(user && user.cart) { %>
-    <a href="/pay">Checkout</a>
+  <% if(user && user.cart.length > 0) { %>
+    <a href="/cart">Cart</a>
   <% } %>
   
-  <form action="/">
-    <div class="form-group">
-      <label for="filter">Filter by:</label>
-      <select name="filter" id="filter">
-        <option value="company">Company</option>
-        <option value="product">Product</option>
-        <option value="year">Year</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <button class="btn btn-default">Go</button>
-    </div>
-  </form>
-</div>
-
-<div class="lenses">
-  <% lenses.forEach((lens) => { %>
-    <div class="col-md-4">
-      <div class="lenses__card">
-        <h3 class="text-center lenses__card__title"><%= lens.year %> <%= lens.company %> <%= lens.product_name %></h3>
-        <img src="<%= lens.image %>" alt="<%= lens.image %>">
-  
-        <% if(user) { %>
-          <% if(user.lenses.indexOf(lens._id) == -1) { %>
-            <% if(user.cart.indexOf(lens._id) == -1) { %>
-              <a href="/<%= lens._id %>/add">Add to cart</a>
-            <% } else { %>
-              <p>Added to cart</p>
-            <% } %>
-          <% } else { %>
-            <p>You own this!</p>
-          <% } %>
-        <% } %>
+  <!-- <div class="filter col-md-12">
+    <h3 class="text-center">sort:</h3>
+    <div class="col-md-4 text-center">
+      <button id="company">Company</button>
+      <div class="filter__company" id="filterCompany">
+        <form action="/">
+          <% companies.forEach((company) => { %>
+            <label><input type="checkbox" name="company"
+              value="<%= company %>"
+              > <%= company %></label>
+          <% }); %>
+          <label><input type="checkbox" name="company"
+              value="all"
+            > ALL</label>
+          <button>Go</button>
+        </form>
       </div>
     </div>
-  <% }); %>
+    <div class="col-md-4 text-center">
+      <button id="year">Year</button>
+      <div class="filter__year" id="filterYear">
+        <form action="/">
+          <% companies.forEach((company) => { %>
+            <label><input type="checkbox" name="company"
+              value="<%= company %>"
+              > <%= company %></label>
+          <% }); %>
+          <label><input type="checkbox" name="company"
+              value="all"
+            > ALL</label>
+          <label for="year">Year</label>
+          <select name="year">
+            <option value="min">Min to Max</option>
+            <option value="max">Max to Min</option>
+          </select>
+          <label for="focal">Focal</label>
+          <select name="focal">
+            <option value="min">Min to Max</option>
+            <option value="max">Max to Min</option>
+          </select>
+          <button>Go</button>
+        </form>
+      </div>
+    </div>
+  </div> -->
+
+  <div class="filter">
+    <form action="/">
+      <p>sort: <span id="company">company &#9660;</span> | <span id="filter">filter &#9660;</span> | <button>GO</button></p>
+      <div class="filter__company" id="filterCompany">
+        <% companies.forEach((company) => { %>
+          <label><input type="checkbox" name="company"
+            value="<%= company %>"
+            > <%= company %></label>
+        <% }); %>
+        <label><input type="checkbox" name="company"
+            value="all"
+          > ALL</label>
+      </div>
+      <div class="filter__filter" id="filterFilter">
+        <select name="filter">
+          <option value="year">year</option>
+          <option value="focal">focal length</option>
+        </select>
+      </div>
+    </form>
+  </div>
+
+</div>
+
+
+<div class="container">
+  <div class="lenses">
+    <% lenses.forEach((lens) => { %>
+      
+      <div class="col-md-4">
+        <div class="lenses__card">
+          <h3 class="text-center lenses__card__title"><%= lens.year %> <%= lens.company %> <%= lens.product_name %></h3>
+          <img src="<%= lens.image %>" alt="<%= lens.image %>">
+    
+          <% if(user) { %>
+            <% if(user.lenses.indexOf(lens._id) == -1) { %>
+              <% if(user.cart.indexOf(lens._id) == -1) { %>
+                <a href="/<%= lens._id %>/add">Add to cart</a>
+              <% } else { %>
+                <p>Added to cart</p>
+              <% } %>
+            <% } else { %>
+              <p>You own this!</p>
+            <% } %>
+          <% } %>
+        </div>
+      </div>
+    <% }); %>
+  </div>
 </div>
 
 <% include partials/footer %>

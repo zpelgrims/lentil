@@ -24,17 +24,20 @@ This is the folder I'd like you to push your work to. Please commit as much as y
 	- It should be clear on products/content page which ones they already own
 
 
-- [ ] Add a filter function
+- [x] Add a filter function
 	- [x] Filters based on company, product or year. These options can easily
 	be changed
-	- [ ] Filter based on company: provide checkboxes for the companies that you want to display
-	- [ ] Year: from min to max
-	- [ ] Focal length: from min to max
+	- [x] Filter based on company: provide checkboxes for the companies that you want to display
+	- [x] Year: from min to max
+	- [x] Focal length: from min to max
+	- [x] Allow for multiple filter queries at once
 
 	
-- [ ] Payment model
+- [x] Payment model
 	- [x] Paypal is great, but it would be best to also support credit/debit cards since the primary target are studios, not necessarily individuals.
-	- [ ] Create a cart so people can do checkouts of multiple lenses at once
+	- [x] Create a cart so people can do checkouts of multiple lenses at once
+	- [x] Create cart page to display items added to cart before checkout
+	- [x] Fix bug to display multiple items in cart
 
 
 - [ ] Lens expansion on-click
@@ -43,7 +46,7 @@ This is the folder I'd like you to push your work to. Please commit as much as y
 - [x] Add ownership of lenses to user model after confirmed payment
 
 
-- [ ] Migrate database to mlab
+- [x] Migrate database to mlab
 
 
 - [ ] Create basic front-end layout

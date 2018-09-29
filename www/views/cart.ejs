@@ -1,0 +1,15 @@
+<h1>Cart</h1>
+
+<a href="/pay">Checkout</a>
+
+<div class="lenses">
+  <% console.log(lenses); %>
+  <% lenses.forEach((lens) => { %>
+    <div class="col-md-4">
+      <div class="lenses__card">
+        <h3 class="text-center lenses__card__title"><%= lens.year %> <%= lens.company %> <%= lens.product_name %></h3>
+        <img src="<%= lens.image %>" alt="<%= lens.image %>">
+      </div>
+    </div>
+  <% }); %>
+</div>

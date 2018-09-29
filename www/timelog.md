@@ -36,4 +36,19 @@
 - 9/24/18 11:30-1:00
   - Migrate database to production server
 
-- 9/25/18 11:00-
+- 9/25/18 11:00-12:45
+  - Setup user cart logic with multiple item checkout
+
+- 9/26/18 7:30-8:00
+  - Work on setting up filter based on company
+
+- 9/27/18 12:15-1:00
+          3:00-3:45
+          4:15-5:30
+  - Work on advanced filter functionality
+
+- 9/28/18 11:30-12:45
+  - Finish advanced filter functionality
+  - Fix bug to display multiple items in cart
+
+- 9/29/18 2:30-

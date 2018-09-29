@@ -22,3 +22,9 @@ html {
 
 body {
   box-sizing: border-box; }
+
+.filter__company {
+  visibility: hidden; }
+
+.filter__filter {
+  visibility: hidden; }

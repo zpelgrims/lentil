@@ -7,6 +7,25 @@ const middleware = require('../middleware');
 // Setup stripe 
 const stripe = require('stripe')(keys.stripe.privkey);
 
+// User cart page
+router.get('/cart', middleware.isLoggedIn, (req, res) => {
+  Lens.find({}, (err, lenses) => {
+    if(err) {
+      console.log(err);
+    } else {
+      let lensArray = [];
+      req.user.cart.forEach((item) => {
+        lenses.forEach((lens) => {
+          if(item.toString() == lens._id.toString()) {
+            lensArray.push(lens);
+          }
+        });
+      });
+      res.render('cart', {lenses: lensArray});
+    }
+  });
+});
+
 // Stripe payment form
 router.get('/pay', middleware.isLoggedIn, (req, res) => {
   let amount = 500 * req.user.cart.length;
