@@ -30,6 +30,7 @@ This is the folder I'd like you to push your work to. Please commit as much as y
 	- [x] Filter based on company: provide checkboxes for the companies that you want to display
 	- [x] Year: from min to max
 	- [x] Focal length: from min to max
+	- [x] Allow for multiple filter queries at once
 
 	
 - [x] Payment model

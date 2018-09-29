@@ -10,23 +10,17 @@ router.get('/', (req, res) => {
       console.log(err);
     } else {
       // Sort by year
-      if(req.query.year == 'min') {
+      if(req.query.filter == 'year') {
         lenses.sort(sortBy('year'));
-      } else if(req.query.year == 'max') {
-        lenses.sort(sortBy('-year'))
-      }
-
-      // Sort by focal length
-      if(req.query.focal == 'min') {
+      } else if (req.query.filter == 'focal') {
         lenses.sort(sortBy('fstop'));
-      } else if(req.query.focal == 'max') {
-        lenses.sort(sortBy('-fstop'))
       }
 
       // Create array of companies for filter options
       let companies = [];
       for(let i = 0; i < lenses.length; i++) {
-        if(!companies.indexOf(lenses[i].company) > -1) {
+        if(companies.indexOf(lenses[i].company) > -1) {
+        } else {
           companies.push(lenses[i].company);
         }
       }

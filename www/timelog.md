@@ -47,5 +47,8 @@
           4:15-5:30
   - Work on advanced filter functionality
 
-- 9/28/18 11:30-
+- 9/28/18 11:30-12:45
   - Finish advanced filter functionality
+  - Fix bug to display multiple items in cart
+
+- 9/29/18 2:30-
