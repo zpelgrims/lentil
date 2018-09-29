@@ -95,7 +95,12 @@ int lens_configuration(lens_element_t *l, const char *id, int target_focal_lengt
     }
   }
 
-  for (const auto& json_lens_element : lens_database[id]["optical-elements-patent"]) {
+  std::string optical_elements_switch = "optical-elements-patent";
+  if (!lens_database[id]["optical-elements-adjusted"].empty()) {
+    optical_elements_switch = "optical-elements-adjusted";
+  }
+  
+  for (const auto& json_lens_element : lens_database[id][optical_elements_switch]) {
 
       lens_element_t lens;
       memset(&lens, 0, sizeof(lens_element_t));
