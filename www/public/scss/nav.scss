@@ -1,0 +1,31 @@
+.nav {
+  padding: 1rem 2rem;
+  display: flex; 
+  align-items: center;
+  justify-content: space-between;
+
+  &__brand {
+    color: $font-color;
+    font-size: 4rem;
+    flex: 1;
+
+    &:hover {
+      color: black;
+      text-decoration: none;
+    }
+  }
+
+  &__right {
+
+    &__item {
+      color: $font-color;
+      font-size: 2rem;
+      padding: 0 1rem;
+
+      &:hover {
+        color: black;
+        text-decoration: none;
+      }
+    }
+  }
+}

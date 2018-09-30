@@ -1,3 +1,5 @@
+$font-color: #333333;
+
 *,
 *::after,
 *::before {
@@ -12,4 +14,7 @@ html {
 
 body {
   box-sizing: border-box;
+  font-family: 'Spectral';
+  color: $font-color;
+  background: #efefef;
 }

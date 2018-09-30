@@ -51,4 +51,8 @@
   - Finish advanced filter functionality
   - Fix bug to display multiple items in cart
 
-- 9/29/18 2:30-
+- 9/29/18 2:30-4:30
+          5:15-6:30
+  - Change filter to allow multiple queries at once
+  - Work on setting up lens expansion
+  - Begin styling

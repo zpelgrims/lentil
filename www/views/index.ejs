@@ -1,62 +1,40 @@
 <% include partials/header %>
 
 <div class="container">
-  <h1 class="text-center">Lenses</h1>
-  <a href="/login">Login</a>
-  <a href="/register">Register</a>
-  <% if(user && user.cart.length > 0) { %>
-    <a href="/cart">Cart</a>
-  <% } %>
-  
-  <!-- <div class="filter col-md-12">
-    <h3 class="text-center">sort:</h3>
-    <div class="col-md-4 text-center">
-      <button id="company">Company</button>
-      <div class="filter__company" id="filterCompany">
-        <form action="/">
-          <% companies.forEach((company) => { %>
-            <label><input type="checkbox" name="company"
-              value="<%= company %>"
-              > <%= company %></label>
-          <% }); %>
-          <label><input type="checkbox" name="company"
-              value="all"
-            > ALL</label>
-          <button>Go</button>
-        </form>
-      </div>
+  <nav class="nav">
+    <a href="/" class="nav__brand">lentil.labs</a>
+    <div class="nav__right">
+      <a href="/" class="nav__right__item">lenses</a>/
+      <a href="#" class="nav__right__item">gallery</a>/
+      <a href="#" class="nav__right__item">changelog</a>/
+      <a href="/cart" class="nav__right__item">my cart</a>/
+      <a href="#" class="nav__right__item">about us</a>
     </div>
-    <div class="col-md-4 text-center">
-      <button id="year">Year</button>
-      <div class="filter__year" id="filterYear">
-        <form action="/">
-          <% companies.forEach((company) => { %>
-            <label><input type="checkbox" name="company"
-              value="<%= company %>"
-              > <%= company %></label>
-          <% }); %>
-          <label><input type="checkbox" name="company"
-              value="all"
-            > ALL</label>
-          <label for="year">Year</label>
-          <select name="year">
-            <option value="min">Min to Max</option>
-            <option value="max">Max to Min</option>
-          </select>
-          <label for="focal">Focal</label>
-          <select name="focal">
-            <option value="min">Min to Max</option>
-            <option value="max">Max to Min</option>
-          </select>
-          <button>Go</button>
-        </form>
-      </div>
+  </nav>
+
+  <div class="description">
+    <div class="col-md-6">
+      <h3 class="description__left">
+        lentil is a camera toolkit for production raytracers 
+        capable of rendering images with high-order abberations 
+        at a fraction of the cost of tracing rays through the 
+        lens elements
+      </h3>
     </div>
-  </div> -->
+    <div class="col-md-6">
+      <h3 class="description__right">
+        the choice of lens greatly helps determine the feeling 
+        of practical film. In computer graphics thus far, this 
+        has been neglected. Our mission is to change this.
+      </h3>
+    </div>
+  </div>
+
+  <hr>
 
   <div class="filter">
     <form action="/">
-      <p>sort: <span id="company">company &#9660;</span> | <span id="filter">filter &#9660;</span> | <button>GO</button></p>
+      <p>sort: <span id="company">company <span>&#9660;</span></span> | <span id="filter">filter <span>&#9660;</span></span> | <button class="filter__btn">GO</button></p>
       <div class="filter__company" id="filterCompany">
         <% companies.forEach((company) => { %>
           <label><input type="checkbox" name="company"
@@ -68,9 +46,9 @@
           > ALL</label>
       </div>
       <div class="filter__filter" id="filterFilter">
-        <select name="filter">
-          <option value="year">year</option>
-          <option value="focal">focal length</option>
+        <select name="filter" class="filter__filter__dropdown">
+          <option value="year" class="filter__filter__dropdown--option">year</option>
+          <option value="focal" class="filter__filter__dropdown--option">focal length</option>
         </select>
       </div>
     </form>
@@ -85,8 +63,10 @@
       
       <div class="col-md-4">
         <div class="lenses__card">
-          <h3 class="text-center lenses__card__title"><%= lens.year %> <%= lens.company %> <%= lens.product_name %></h3>
-          <img src="<%= lens.image %>" alt="<%= lens.image %>">
+          <div class="lenses__card__image">
+            <img src="<%= lens.image %>" alt="<%= lens.image %>">
+          </div>
+          <h3 class="text-center lenses__card__title"><%= lens.company %> | <%= lens.product_name %> | <%= lens.year %></h3>
     
           <% if(user) { %>
             <% if(user.lenses.indexOf(lens._id) == -1) { %>
