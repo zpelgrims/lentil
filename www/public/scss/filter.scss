@@ -1,10 +1,47 @@
 .filter {
+  text-align: right;
+  font-size: 1.6rem;
   
   &__company {
-    visibility: hidden;
+    display: none;
   }
 
   &__filter {
-    visibility: hidden;
+    display: none;
+
+    &__dropdown {
+      background: none;
+      border: none;
+
+      &:focus {
+        outline: none;
+      }
+
+      &--option {
+        background-color: none;
+        border-color: $font-color;
+
+        &:hover {
+          background-color: #f2f2f2;
+        }
+      }
+    }
+  }
+
+  &__btn {
+    background: none;
+    border: none;
+  }
+
+  span {
+    cursor: pointer;
+
+    &:hover {
+      color: black;
+    }
+
+    span {
+      font-size: 1rem;
+    }
   }
 }
