@@ -407,7 +407,7 @@ static inline int evaluate(const lens_element_t *lenses, const int lenses_cnt, c
 
 
 // evalute sensor to outer pupil acounting for fresnel:
-static inline int evaluate_for_pos_dir(const lens_element_t *lenses, const int lenses_cnt, const float zoom, const float *in, float *out, int aspheric, float *pos, float *dir, const float total_lens_length)
+static inline int evaluate_for_pos_dir(const lens_element_t *lenses, const int lenses_cnt, const float zoom, const float *in, int aspheric, float *pos, float *dir, const float total_lens_length)
 {
   int error = 0;
   float n1 = spectrum_eta_from_abbe_um(lenses[lenses_cnt-1].ior, lenses[lenses_cnt-1].vno, in[4]);
@@ -460,7 +460,7 @@ static inline int evaluate_for_pos_dir(const lens_element_t *lenses, const int l
   else csToSphere(pos, dir, out, out + 2, distsum-fabs(lenses[0].lens_radius), lenses[0].lens_radius);
   */
  
-  out[4] = intensity;
+  //out[4] = intensity;
   return error;
 }
 
