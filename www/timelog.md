@@ -57,4 +57,6 @@
   - Work on setting up lens expansion
   - Begin styling
 
-- 10/01/18 1:15-
+- 10/01/18 1:15-2:45
+  - Fix the filter menu
+  - General styling

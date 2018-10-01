@@ -1,12 +1,13 @@
 .description {
 
   &__left {
-    padding-right: 2.5rem;
-    border-right: 1px solid black;
+    padding-right: 3rem;
+    border-right: 1px solid rgba(0, 0, 0, 0.5);
     text-align: right;
+    margin-bottom: 3rem;
   }
 
   &__right {
-    
+    margin-bottom: 3rem;
   }
 }
