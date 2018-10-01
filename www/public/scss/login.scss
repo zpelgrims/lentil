@@ -1,0 +1,70 @@
+.login {
+  min-height: 75vh;
+  position: relative;
+
+  &__title {
+    margin: 2rem;
+    color: $font-color;
+  }
+
+  &__well {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 60vh;
+    width: 35vw;
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__textbox {
+    font-family: Arial;
+    text-align: center;
+    border: none;
+    background-color: inherit;
+    border-bottom: 1px solid rgba($font-color, 0.5);
+    font-size: 1.8rem;
+    margin: 1rem;
+
+    &:hover {
+      border-bottom: 1px solid $font-color;
+    }
+
+    &:focus {
+      outline: none;
+      border-bottom: 1px solid $highlight-color;
+      color: $font-color;
+    }
+  }
+
+  &__button {
+    background-color: $highlight-color;
+    color: white;
+    border: none;
+    padding: 1rem 5rem;
+    border-radius: 5px;
+    text-transform: uppercase;
+    font-family: Arial;
+    transition: all .2s;
+
+    &:hover {
+      background-color: $lowlight-color;
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    &:active {
+      background-color: $highlight-color;
+    }
+  }
+}
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px #efefef inset;
+}

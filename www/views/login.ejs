@@ -1,13 +1,22 @@
-<h1>Login</h1>
+<% include partials/header %>
 
-<form action="/login" method="POST">
-  <div class="form-group">
-    <input type="text" name="username" placeholder="Username" required>
+<div class="container">
+  <div class="login">
+    <form action="/login" method="POST">
+      <div class="login__well">
+        <h1 class="login__title">login</h1>
+        <div class="form-group">
+          <input type="text" name="username" placeholder="Username" class="login__textbox" required>
+        </div>
+        <div class="form-group">
+          <input type="password" name="password" placeholder="Password" class="login__textbox" required>
+        </div>
+        <div class="form-group">
+          <button class="login__button">login</button>
+        </div>
+      </div>
+    </form>
   </div>
-  <div class="form-group">
-    <input type="password" name="password" placeholder="Password" required>
-  </div>
-  <div class="form-group">
-    <button class="btn btn-lg">Register</button>
-  </div>
-</form>
+</div>
+
+<% include partials/footer %>

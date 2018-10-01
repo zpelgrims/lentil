@@ -140,3 +140,54 @@ hr {
   width: 100%; }
   .footer__text {
     text-align: center; }
+
+.login {
+  min-height: 75vh;
+  position: relative; }
+  .login__title {
+    margin: 2rem;
+    color: #333333; }
+  .login__well {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 60vh;
+    width: 35vw;
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; }
+  .login__textbox {
+    font-family: Arial;
+    text-align: center;
+    border: none;
+    background-color: inherit;
+    border-bottom: 1px solid rgba(51, 51, 51, 0.5);
+    font-size: 1.8rem;
+    margin: 1rem; }
+    .login__textbox:hover {
+      border-bottom: 1px solid #333333; }
+    .login__textbox:focus {
+      outline: none;
+      border-bottom: 1px solid #e87979;
+      color: #333333; }
+  .login__button {
+    background-color: #e87979;
+    color: white;
+    border: none;
+    padding: 1rem 5rem;
+    border-radius: 5px;
+    text-transform: uppercase;
+    font-family: Arial;
+    transition: all .2s; }
+    .login__button:hover {
+      background-color: #d85050; }
+    .login__button:focus {
+      outline: none; }
+    .login__button:active {
+      background-color: #e87979; }
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px #efefef inset; }

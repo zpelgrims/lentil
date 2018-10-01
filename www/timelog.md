@@ -58,5 +58,6 @@
   - Begin styling
 
 - 10/01/18 1:15-2:45
+           3:15-
   - Fix the filter menu
   - General styling
