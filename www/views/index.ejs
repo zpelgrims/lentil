@@ -34,22 +34,20 @@
 
   <div class="filter">
     <form action="/">
-      <p>sort: <span id="company">company <span>&#9660;</span></span> | <span id="filter">filter <span>&#9660;</span></span> | <button class="filter__btn">GO</button></p>
+      <p>sort by: 
+          <select name="filter" class="filter__filter__dropdown">
+            <option value="focal" class="filter__filter__dropdown--option">focal length</option>
+            <option value="year" class="filter__filter__dropdown--option">year</option>
+          </select> | <span id="filter"><span id="company">company <span id="caret">&#9660;</span></span> | <button class="filter__btn">GO</button></p>
       <div class="filter__company" id="filterCompany">
         <% companies.forEach((company) => { %>
-          <label><input type="checkbox" name="company"
+          <input type="checkbox" name="company"
             value="<%= company %>"
-            > <%= company %></label>
+            > <%= company %>
         <% }); %>
-        <label><input type="checkbox" name="company"
+        <input type="checkbox" name="company"
             value="all"
-          > ALL</label>
-      </div>
-      <div class="filter__filter" id="filterFilter">
-        <select name="filter" class="filter__filter__dropdown">
-          <option value="year" class="filter__filter__dropdown--option">year</option>
-          <option value="focal" class="filter__filter__dropdown--option">focal length</option>
-        </select>
+          > ALL
       </div>
     </form>
   </div>
