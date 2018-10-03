@@ -13,6 +13,13 @@
       color: black;
       text-decoration: none;
     }
+
+    &:focus, 
+    &:active,
+    &:visited {
+      text-decoration: none;
+      color: $font-color;
+    }
   }
 
   &__right {
@@ -20,12 +27,23 @@
     &__item {
       color: $font-color;
       font-size: 2rem;
-      padding: 0 1rem;
+      margin: 0 1rem;
 
       &:hover {
         color: black;
         text-decoration: none;
       }
+
+      &:focus, 
+      &:active,
+      &:visited {
+        text-decoration: none;
+        color: $font-color;
+      }
     }
   }
+}
+
+.active {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
 }

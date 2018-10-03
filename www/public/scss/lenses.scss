@@ -6,16 +6,29 @@
 
     &__title {
       text-transform: lowercase;
-      font-size: 2rem;
+      font-size: 1.8rem;
+      margin-top: 1rem;
+
+      &:hover {
+        color: black;
+        cursor: pointer;
+      }
     }
 
     &__image {
       height: auto;
       width: 100%;
+      transition: all .2s;
+
+      &:hover {
+        transform: scale(1.01);
+        cursor: pointer;
+      }
 
       img {
         height: 100%;
         width: 100%;
+        border-radius: 5px;
       }
     }
   }
