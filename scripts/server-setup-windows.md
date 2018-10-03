@@ -7,10 +7,12 @@
 - > visual studio build tools
 - > git
 - > wget
-- > lentil repo
+- > lentil repository
 - > a few of the latest arnold 5 sdk packages
 
 ---
+
+#### commands:
 
 - [ ] open admin cmd prompt:
     - probably will have to do this manually? will have to get into a shell to execute any command to begin with..
@@ -22,15 +24,17 @@
 
 - [ ] restart admin cmd prompt:
 
-    - there is probably a reboot command for the cmd prompt?
+    - there is probably a reboot command for the cmd prompt? Can only find reboot machine commands so far..
 
 - [x] Install Visual Studio Command Line Tools:
 
     `choco install visualstudio2017buildtools --package-parameters "--allWorkloads --includeRecommended --includeOptional --passive --locale en-US"`
 
-    .. or maybe full install is not necessary?
+    .. or maybe full install is not necessary? lots less storage and download time
 
     `choco install visualstudio2017buildtools"`
+
+    type `y` x5
 
 - [x] install git
 
@@ -53,14 +57,14 @@
 
 - [ ] download arnold sdk packages using `wget` (should store these on a server somewhere for easy downloading)
 
-    - something like:
-    `wget https://www.dropbox.com/sh/rx57g4e3reamk3i/AAD5wLVnUQL1GEvDKv3MbbRfa?dl=1`
+    - `wget https://www.dropbox.com/sh/rx57g4e3reamk3i/AAD5wLVnUQL1GEvDKv3MbbRfa?dl=1`
 
-    could be dl=0 at end of link? untested
+    - could be `dl=0` at end of link? untested
 
 
 - [x] run the visual studio command line:
 
     - ```"C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvars64.bat"```
 
-- 
+
+.. TBC
