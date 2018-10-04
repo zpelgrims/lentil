@@ -11,21 +11,22 @@ cd "C:\lentil-build"
 
 
 :: restart cmd prompt
-:: is this possible like this in a batch script? test out
-start &exit
+:: is this possible like this in a batch script? nope! 
+start
+:: &exit
 
 
 :: install wget
 choco install wget --yes
 
 
-:: install pathed
+:: install pathed for easy %PATH% manipulation
 mkdir "C:\lentil-build\tools"
 cd "C:\lentil-build\tools"
 wget http://p-nand-q.com/download/gtools/gtools-current.exe
 
 
-:: pathed dryrun to install .net framework
+:: pathed dryrun to force install .net framework
 "C:\Program Files (x86)\p-nand-q.com\GTools\pathed"
 
 
