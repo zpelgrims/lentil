@@ -53,6 +53,10 @@ choco install 7zip --yes
 :: C:\lentil-build\tools\RefreshEnv.cmd
 
 
+:: clone lentil repo
+git clone https://zpelgrims@github.com/zpelgrims/lentil.git
+
+
 :: download arnold sdk's
 :: maybe should put absolute path
 cd "C:\lentil-build"
@@ -71,3 +75,6 @@ choco install "visualstudio2017-workload-vctools" --yes --passive
 :: initialize x64 developer command line environment:
 "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
 
+
+:: change directory to lentil repo
+cd "C:\lentil-build\lentil"
