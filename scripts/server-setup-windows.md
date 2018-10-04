@@ -35,6 +35,11 @@
 
     - `start &exit`
 
+- [x] install wget
+
+    - `choco install wget`
+    - type `y`
+
 - [x] download pathed:
 
     - `mkdir "C:\lentil-build\tools"`
@@ -66,11 +71,6 @@
 - [x] refresh envvars
 
     - `C:\lentil-build\tools\RefreshEnv.cmd`
-
-- [x] install wget
-
-    - `choco install wget`
-    - type `y`
 
 
 - [x] clone lentil repository:
