@@ -53,10 +53,10 @@ C:\lentil-build\tools\RefreshEnv.cmd
 
 :: download arnold sdk's
 :: maybe should put absolute path
-wget -O arnold https://www.dropbox.com/sh/rx57g4e3reamk3i/AAD5wLVnUQL1GEvDKv3MbbRfa?dl=1
+wget -O arnold.zip https://www.dropbox.com/sh/rx57g4e3reamk3i/AAD5wLVnUQL1GEvDKv3MbbRfa?dl=1
 
 :: unzip arnold sdk's
-
+7z arnold.zip
 
 :: install visual studio 2017 build tools
 choco install "visualstudio2017buildtools" --yes --passive
