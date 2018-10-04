@@ -40,7 +40,7 @@ This is the folder I'd like you to push your work to. Please commit as much as y
 	- [x] Fix bug to display multiple items in cart
 
 
-- [ ] Lens expansion on-click
+- [x] Lens expansion on-click
 
 
 - [x] Add ownership of lenses to user model after confirmed payment

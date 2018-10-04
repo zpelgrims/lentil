@@ -13,7 +13,7 @@ const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 
 // Dynamically switch between dev and live ports
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 // Setup database
 mongoose.connect('mongodb://localhost/lentil') || mongoose.connect(keys.db);

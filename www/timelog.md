@@ -58,6 +58,13 @@
   - Begin styling
 
 - 10/01/18 1:15-2:45
-           3:15-
+           3:15-4:00
   - Fix the filter menu
   - General styling
+
+- 10/2/18 12:00-1:30
+  - Work on expanded lens display
+
+- 10/4/18 1:15-3:00
+  - Setup expanded lens display
+  - Add twentytwenty plugin

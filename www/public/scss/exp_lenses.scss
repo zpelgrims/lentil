@@ -1,0 +1,24 @@
+.exp-lense {
+
+  &__card {
+    width: 68vw;
+    left: calc(-34vw + 50%);
+    display: none;
+    margin-top: 5rem;
+
+    &__info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+
+      &__prop {
+      
+        &--val {
+          color: black;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+}

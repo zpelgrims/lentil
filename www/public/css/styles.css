@@ -1,24 +1,33 @@
-.lenses__card {
-  width: 100%;
-  margin-top: 2rem; }
-  .lenses__card__title {
-    text-transform: lowercase;
-    font-size: 1.8rem;
-    margin-top: 1rem; }
-    .lenses__card__title:hover {
-      color: black;
-      cursor: pointer; }
-  .lenses__card__image {
-    height: auto;
+.lense {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  margin: 1.5%; }
+  .lense__card {
     width: 100%;
-    transition: all .2s; }
-    .lenses__card__image:hover {
-      transform: scale(1.01);
-      cursor: pointer; }
-    .lenses__card__image img {
-      height: 100%;
+    margin-top: 2rem; }
+    .lense__card__title {
+      text-transform: lowercase;
+      font-size: 1.8rem;
+      margin-top: 1rem; }
+      .lense__card__title:hover {
+        color: black;
+        cursor: pointer; }
+    .lense__card__image {
+      height: auto;
       width: 100%;
-      border-radius: 5px; }
+      transition: all .2s; }
+      .lense__card__image:hover {
+        transform: scale(1.01);
+        cursor: pointer; }
+      .lense__card__image img {
+        height: 100%;
+        width: 100%;
+        border-radius: 5px; }
+
+.lenses {
+  display: flex;
+  flex-wrap: wrap; }
 
 *,
 *::after,
@@ -47,6 +56,22 @@ hr {
 
 #caret {
   font-size: 1rem; }
+
+.button {
+  background-color: #e87979;
+  color: white;
+  border: none;
+  padding: 1rem 5rem;
+  border-radius: 5px;
+  text-transform: lowercase;
+  font-size: 2rem;
+  transition: all .2s; }
+  .button:hover {
+    background-color: #d85050; }
+  .button:focus {
+    outline: none; }
+  .button:active {
+    background-color: #e87979; }
 
 ::selection {
   background-color: #e87979;
@@ -191,3 +216,17 @@ hr {
 
 input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0px 1000px #efefef inset; }
+
+.exp-lense__card {
+  width: 68vw;
+  left: calc(-34vw + 50%);
+  display: none;
+  margin-top: 5rem; }
+  .exp-lense__card__info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between; }
+    .exp-lense__card__info__prop--val {
+      color: black;
+      font-weight: 500; }

@@ -35,6 +35,29 @@ hr {
   font-size: 1rem;
 }
 
+.button {
+  background-color: $highlight-color;
+  color: white;
+  border: none;
+  padding: 1rem 5rem;
+  border-radius: 5px;
+  text-transform: lowercase;
+  font-size: 2rem;
+  transition: all .2s;
+
+  &:hover {
+    background-color: $lowlight-color;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:active {
+    background-color: $highlight-color;
+  }
+}
+
 // Override all highlighted text color for all browsers
 ::selection {
   background-color: $highlight-color;

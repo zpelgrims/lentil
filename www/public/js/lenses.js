@@ -1,6 +1,5 @@
-var card = document.querySelector('.lenses__card');
+var card = document.querySelector('.lense__card--0');
 
 card.onclick = () => {
-  var expcard = document.getElementById(card.id);
-  expcard.style.display = 'block';
+  document.querySelector('.exp-lense__card--0').style.display = "block";
 }
