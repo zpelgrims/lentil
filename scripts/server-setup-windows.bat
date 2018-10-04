@@ -10,10 +10,7 @@ cd "C:\lentil-build"
 @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
 
 
-:: restart cmd prompt
-:: is this possible like this in a batch script? nope! 
-start
-:: &exit
+:: possibly might have to restart cmd prompt here
 
 
 :: install wget
@@ -24,6 +21,7 @@ choco install wget --yes
 mkdir "C:\lentil-build\tools"
 cd "C:\lentil-build\tools"
 wget http://p-nand-q.com/download/gtools/gtools-current.exe
+C:\lentil-build\tools\gtools-current.exe
 
 
 :: pathed dryrun to force install .net framework
@@ -50,12 +48,12 @@ C:\lentil-build\tools\RefreshEnv.cmd
 
 :: download arnold sdk's
 :: maybe should put absolute path
-wget -O https://www.dropbox.com/sh/rx57g4e3reamk3i/AAD5wLVnUQL1GEvDKv3MbbRfa?dl=1 arnold
+wget -O arnold https://www.dropbox.com/sh/rx57g4e3reamk3i/AAD5wLVnUQL1GEvDKv3MbbRfa?dl=1
 
 
 :: install visual studio 2017 build tools
-choco install "visualstudio2017buildtools" --yes
-choco install "visualstudio2017-workload-vctools" --yes
+choco install "visualstudio2017buildtools" --yes --passive
+choco install "visualstudio2017-workload-vctools" --yes --passive
 
 
 :: initialize x64 developer command line environment:
