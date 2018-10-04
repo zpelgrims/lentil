@@ -29,7 +29,8 @@ call "C:\Program Files (x86)\p-nand-q.com\GTools\pathed"
 
 
 :: download envvar refresher by chocolatey
-wget https://github.com/chocolatey/choco/raw/master/src/chocolatey.resources/redirects/RefreshEnv.cmd
+:: maybe not needed
+:: wget https://github.com/chocolatey/choco/raw/master/src/chocolatey.resources/redirects/RefreshEnv.cmd
 
 
 :: install git
@@ -47,13 +48,15 @@ choco install 7zip --yes
 "C:\Program Files (x86)\p-nand-q.com\GTools\pathed" /APPEND "C:\Program Files\7-Zip" /MACHINE
 
 
-:: refresh envvars
-C:\lentil-build\tools\RefreshEnv.cmd
+:: refresh envvars, is this needed?
+:: this currently quits the batch script.. fix!
+:: C:\lentil-build\tools\RefreshEnv.cmd
 
 
 :: download arnold sdk's
 :: maybe should put absolute path
 wget -O arnold.zip https://www.dropbox.com/sh/rx57g4e3reamk3i/AAD5wLVnUQL1GEvDKv3MbbRfa?dl=1
+
 
 :: unzip arnold sdk's
 7z arnold.zip
