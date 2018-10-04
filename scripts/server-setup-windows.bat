@@ -55,11 +55,13 @@ choco install 7zip --yes
 
 :: download arnold sdk's
 :: maybe should put absolute path
+cd "C:\lentil-build"
 wget -O arnold.zip https://www.dropbox.com/sh/rx57g4e3reamk3i/AAD5wLVnUQL1GEvDKv3MbbRfa?dl=1
 
 
 :: unzip arnold sdk's
-7z arnold.zip
+7z x arnold.zip -oarnold
+
 
 :: install visual studio 2017 build tools
 choco install "visualstudio2017buildtools" --yes --passive
