@@ -19,6 +19,12 @@
 
 - [ ] open admin cmd prompt:
     - probably will have to do this manually? will have to get into a shell to execute any command to begin with..
+
+- [x] create lentil folder:
+
+    - `mkdir "C:\lentil-build"`
+
+    - `cd "C:\lentil-build"`
     
 
 - [x] install chocolatey
@@ -52,14 +58,14 @@
 
 - [x] install cmake
 
-    - `choco install cmake'`
+    - `choco install cmake`
     - type `y`
     - ~~`setx PATH "%PATH%;C:\Program Files\Cmake\bin" /M`~~
     - `"C:\Program Files (x86)\p-nand-q.com\GTools\pathed" /APPEND "C:\Program Files\Cmake\bin" /MACHINE`
 
 - [x] refresh envvars
 
-    - `RefreshEnv.cmd`
+    - `C:\lentil-build\tools\RefreshEnv.cmd`
 
 - [x] install wget
 
@@ -68,12 +74,8 @@
 
 
 - [x] clone lentil repository:
-    
-    - `mkdir "C:\lentil-build"`
 
-    - `cd "C:\lentil-build"`
-
-    Would be nice if this didn't give a login popup:
+    Would be nice if this didn't give a login popup due to private repo:
     
     - `git clone https://zpelgrims@github.com/zpelgrims/lentil.git`
 
