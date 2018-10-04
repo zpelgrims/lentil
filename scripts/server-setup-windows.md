@@ -32,7 +32,8 @@
 
     .. or maybe full install is not necessary? lots less storage and download time
 
-    `choco install visualstudio2017buildtools"`
+    `choco install "visualstudio2017buildtools"`
+    `choco install "visualstudio2017-workload-vctools"`
 
     type `y` x5
 
@@ -46,24 +47,23 @@
     - `choco install wget`
     - type `y`
 
-- [ ] add git bin to PATH envvar
+- [x] add git bin to PATH envvar
 
     - `setx PATH "%PATH%;C:\Program Files\Git\bin" /M`
 
-- [ ] clone lentil repository:
+- [x] clone lentil repository:
     
     `mkdir "C:\lentil-build"`
 
     `cd "C:\lentil-build"`
 
+    Would be nice if this didn't give a login popup:
     `git clone https://zpelgrims@github.com/zpelgrims/lentil.git`
 
 
-- [ ] download arnold sdk packages using `wget` (should store these on a server somewhere for easy downloading)
+- [x] download arnold sdk packages using `wget` (should store these on a server somewhere for easy downloading)
 
-    - `wget https://www.dropbox.com/sh/rx57g4e3reamk3i/AAD5wLVnUQL1GEvDKv3MbbRfa?dl=1`
-
-    - could be `dl=0` at end of link? untested
+    - `wget -O https://www.dropbox.com/sh/rx57g4e3reamk3i/AAD5wLVnUQL1GEvDKv3MbbRfa?dl=1 arnold`
 
 
 - [x] run the visual studio command line:
