@@ -22,9 +22,9 @@
 
     ```@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"```
 
-- [ ] restart admin cmd prompt:
+- [x] restart admin cmd prompt:
 
-    - there is probably a reboot command for the cmd prompt? Can only find reboot machine commands so far..
+    - `start &exit`
 
 - [x] Install Visual Studio Command Line Tools:
 
@@ -46,13 +46,17 @@
     - `choco install wget`
     - type `y`
 
+- [ ] add git bin to PATH envvar
+
+    - `setx PATH "%PATH%;C:\Program Files\Git\bin" /M`
+
 - [ ] clone lentil repository:
     
     `mkdir "C:\lentil-build"`
 
     `cd "C:\lentil-build"`
 
-    `git clone https://github.com/zpelgrims/lentil.git`
+    `git clone https://zpelgrims@github.com/zpelgrims/lentil.git`
 
 
 - [ ] download arnold sdk packages using `wget` (should store these on a server somewhere for easy downloading)
