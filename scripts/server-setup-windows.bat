@@ -25,11 +25,11 @@ C:\lentil-build\tools\gtools-current.exe
 
 
 :: pathed dryrun to force install .net framework
-"C:\Program Files (x86)\p-nand-q.com\GTools\pathed"
+call "C:\Program Files (x86)\p-nand-q.com\GTools\pathed"
 
 
 :: download envvar refresher by chocolatey
-https://github.com/chocolatey/choco/raw/master/src/chocolatey.resources/redirects/RefreshEnv.cmd
+wget https://github.com/chocolatey/choco/raw/master/src/chocolatey.resources/redirects/RefreshEnv.cmd
 
 
 :: install git
@@ -42,6 +42,11 @@ choco install cmake --yes
 "C:\Program Files (x86)\p-nand-q.com\GTools\pathed" /APPEND "C:\Program Files\Cmake\bin" /MACHINE
 
 
+:: install 7zip
+choco install 7zip --yes
+"C:\Program Files (x86)\p-nand-q.com\GTools\pathed" /APPEND "C:\Program Files\7-Zip" /MACHINE
+
+
 :: refresh envvars
 C:\lentil-build\tools\RefreshEnv.cmd
 
@@ -49,6 +54,8 @@ C:\lentil-build\tools\RefreshEnv.cmd
 :: download arnold sdk's
 :: maybe should put absolute path
 wget -O arnold https://www.dropbox.com/sh/rx57g4e3reamk3i/AAD5wLVnUQL1GEvDKv3MbbRfa?dl=1
+
+:: unzip arnold sdk's
 
 
 :: install visual studio 2017 build tools
