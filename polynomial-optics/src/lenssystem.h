@@ -26,7 +26,6 @@ typedef struct lens_element_t
   float aspheric_correction_coefficients[4];
   int aspheric;
   char material[32];
-  //std::string geometry;
   char geometry[50];
 } lens_element_t;
 
