@@ -54,7 +54,7 @@ choco install 7zip --yes
 
 
 :: clone lentil repo
-git clone https://zpelgrims@github.com/zpelgrims/lentil.git
+git clone --recurse-submodules https://zpelgrims@github.com/zpelgrims/lentil.git
 
 
 :: download arnold sdk's
