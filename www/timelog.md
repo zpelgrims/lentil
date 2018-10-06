@@ -70,7 +70,8 @@
   - Add twentytwenty plugin
 
 - 10/5/18 3:00-5:30
-          6:30-
+          6:30-8:15
   - Lens expansion bug fix
   - Add lens expansion to each lens card dynamically
   - Style lens expansion
+  - Finish lens expansion (hopefully)
