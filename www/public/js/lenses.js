@@ -4,9 +4,13 @@ document.querySelectorAll('.lense__card').forEach((card) => {
     if(card.classList.contains('activelens')) {
       card.classList.remove('activelens');
       document.querySelector('#expcard-' + id).style.display = "none";
+      document.querySelector('#expcard-' + id).parentElement.style.height = "0";
+      document.querySelector('#expcard-' + id).parentElement.style.margin = "0";
     } else {
       card.classList.add('activelens');
       document.querySelector('#expcard-' + id).style.display = "block";
+      document.querySelector('#expcard-' + id).parentElement.style.height = "34.7rem";
+      document.querySelector('#expcard-' + id).parentElement.style.margin = "0 0 5rem 0";
     }
   };
 });

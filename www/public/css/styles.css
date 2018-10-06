@@ -223,10 +223,11 @@ input:-webkit-autofill {
 
 .exp-lense__card {
   width: 68vw;
-  left: calc(-34vw + 50%);
   display: none;
   margin-top: 5rem;
-  height: 100%; }
+  height: 100%;
+  position: absolute;
+  left: 15vw; }
   .exp-lense__card__info {
     height: 34.7rem;
     display: flex;

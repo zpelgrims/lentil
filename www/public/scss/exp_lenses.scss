@@ -2,10 +2,11 @@
 
   &__card {
     width: 68vw;
-    left: calc(-34vw + 50%);
     display: none;
     margin-top: 5rem;
     height: 100%;
+    position: absolute;
+    left: 15vw;
 
     &__info {
       height: 34.7rem;

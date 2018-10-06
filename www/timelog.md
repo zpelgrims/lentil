@@ -73,3 +73,4 @@
           6:30-
   - Lens expansion bug fix
   - Add lens expansion to each lens card dynamically
+  - Style lens expansion
