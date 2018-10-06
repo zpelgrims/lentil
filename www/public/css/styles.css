@@ -29,6 +29,10 @@
   display: flex;
   flex-wrap: wrap; }
 
+.activelens {
+  margin-top: -1rem;
+  color: #e87979; }
+
 *,
 *::after,
 *::before {
@@ -221,12 +225,17 @@ input:-webkit-autofill {
   width: 68vw;
   left: calc(-34vw + 50%);
   display: none;
-  margin-top: 5rem; }
+  margin-top: 5rem;
+  height: 100%; }
   .exp-lense__card__info {
+    height: 34.7rem;
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: space-between; }
-    .exp-lense__card__info__prop--val {
-      color: black;
-      font-weight: 500; }
+    .exp-lense__card__info__prop {
+      width: 100%;
+      font-size: 1.6rem; }
+
+.twentytwenty-container {
+  min-height: 34.7rem;
+  border-bottom: 1px solid rgba(232, 121, 121, 0.3); }

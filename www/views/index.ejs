@@ -50,7 +50,7 @@
     <% for(let i = 0; i < lenses.length; i++) { %>
       <% let lens = lenses[i]; %>
       <div class="lense">
-        <div class="lense__card lense__card--<%= [i] %>">
+        <div class="lense__card lense__card--<%= [i] %>" id="card-<%= [i] %>">
           <div class="lense__card__image">
             <img src="<%= lens.image %>" alt="<%= lens.image %>">
           </div>
@@ -69,20 +69,28 @@
           <% } %>
         </div>
         <div class="exp-lense">
-          <div class="exp-lense__card exp-lense__card--<%= [i] %>">
+          <div class="exp-lense__card exp-lense__card--<%= [i] %>" id="expcard-<%= [i] %>">
             <div class="col-md-4">
               <div class="exp-lense__card__info">
                 <% if(lens.polynomial_optics) { %>
-                  <p class="exp-lense__card__info__prop">focal lengths <%= lens.polynomial_optics %></p>
+                  <p class="exp-lense__card__info__prop">
+                    <span class="exp-lense__card__info__prop--key">focal lengths</span> <span class="exp-lenses__card__info__prop--val">[<%= lens.polynomial_optics %>]</span>
+                  </p>
                 <% } %>
-                <p class="exp-lense__card__info__prop">f-stop <span class="exp-lenses__card__info__prop--val">f<%= lens.fstop.toFixed(1) %></span></p>
-                <p class="exp-lense__card__info__prop">year <span class="exp-lenses__card__info__prop--val"><%= lens.year %></span></p>
-                <p class="exp-lense__card__info__prop">notes <span class="exp-lenses__card__info__prop--val"><%= lens.notes %></span></p>
+                <p class="exp-lense__card__info__prop">
+                    <span class="exp-lense__card__info__prop--key">f-stop</span> <span class="exp-lenses__card__info__prop--val">f<%= lens.fstop.toFixed(1) %></span>
+                </p>
+                <p class="exp-lense__card__info__prop">
+                    <span class="exp-lense__card__info__prop--key">year</span> <span class="exp-lenses__card__info__prop--val"><%= lens.year %></span>
+                </p>
+                <p class="exp-lense__card__info__prop">
+                    <span class="exp-lense__card__info__prop--key">notes</span> <span class="exp-lenses__card__info__prop--val"><%= lens.notes %></span>
+                </p>
                 <button href="/<%= lens._id %>/add" class="button">add to cart</button>
               </div>
             </div>
             <div class="col-md-8">
-              <div id="container1" class="twentytwenty-container">
+              <div class="twentytwenty-container">
                 <img src="http://placehold.it/800x400&amp;text=1" />
                 <img src="http://placehold.it/800x400&amp;text=2" />
               </div>

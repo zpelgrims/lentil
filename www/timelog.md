@@ -68,3 +68,8 @@
 - 10/4/18 1:15-3:00
   - Setup expanded lens display
   - Add twentytwenty plugin
+
+- 10/5/18 3:00-5:30
+          6:30-
+  - Lens expansion bug fix
+  - Add lens expansion to each lens card dynamically

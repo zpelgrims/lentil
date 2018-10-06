@@ -5,20 +5,31 @@
     left: calc(-34vw + 50%);
     display: none;
     margin-top: 5rem;
+    height: 100%;
 
     &__info {
+      height: 34.7rem;
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: space-between;
 
       &__prop {
+        width: 100%;
+        font-size: 1.6rem;
+
+        &--key {
+
+        }
       
         &--val {
-          color: black;
-          font-weight: 500;
+
         }
       }
     }
   }
+}
+
+.twentytwenty-container {
+  min-height: 34.7rem;
+  border-bottom: 1px solid rgba($highlight-color, 0.3);
 }
