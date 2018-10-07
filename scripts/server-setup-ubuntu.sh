@@ -1,7 +1,11 @@
 # server-setup-ubuntu.sh
 
+# set timezone, should be equal between all build servers regardless of location
+
 # create home folder
 mkdir ~/lentil-build/
+export LENTIL_BUILD_HOME=~/lentil-build/
+mkdir ~/lentil-build/builds/
 cd ~/lentil-build/
 
 # install build essentials (make, gcc, ..)
