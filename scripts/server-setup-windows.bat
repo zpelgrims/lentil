@@ -1,3 +1,8 @@
+:: issues:
+:: can't install .net framework 3.5
+:: couldn't find git
+
+
 title "Windows build machine set-up"
 
 
@@ -11,6 +16,11 @@ cd "C:\lentil-build"
 
 
 :: possibly might have to restart cmd prompt here
+
+
+:: install .net framework 3.5
+::powershell.exe -Command "Dism.exe /online /enable-feature /featurename:NetFX3 /All /Source:C:\sources\sxs /LimitAccess"
+choco install dotnet3.5
 
 
 :: install wget
