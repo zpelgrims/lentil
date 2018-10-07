@@ -1,7 +1,8 @@
-:: issues:
-:: can't install .net framework 3.5
-:: couldn't find git
+:: this script needs to be launched from the administrator cmdprompt
 
+:: issues
+:: why is choco not available
+:: use 'Install-ChocolateyPath -PathToInstall "$($env:SystemDrive)\tools\gittfs"' for PATH envvar setting?
 
 title "Windows build machine set-up"
 
@@ -20,7 +21,7 @@ cd "C:\lentil-build"
 
 :: install .net framework 3.5
 ::powershell.exe -Command "Dism.exe /online /enable-feature /featurename:NetFX3 /All /Source:C:\sources\sxs /LimitAccess"
-choco install dotnet3.5
+choco install dotnet3.5 --yes
 
 
 :: install wget
@@ -40,17 +41,12 @@ call "C:\Program Files (x86)\p-nand-q.com\GTools\pathed"
 
 :: download envvar refresher by chocolatey
 :: maybe not needed
-:: wget https://github.com/chocolatey/choco/raw/master/src/chocolatey.resources/redirects/RefreshEnv.cmd
+wget https://github.com/chocolatey/choco/raw/master/src/chocolatey.resources/redirects/RefreshEnv.cmd
 
 
 :: install git
 choco install git -params '"/GitAndUnixToolsOnPath"' --yes
 "C:\Program Files (x86)\p-nand-q.com\GTools\pathed" /APPEND "C:\Program Files\Git\bin" /MACHINE
-
-
-:: install cmake.. not necessary since we're not using make on windows
-::choco install cmake --yes
-::"C:\Program Files (x86)\p-nand-q.com\GTools\pathed" /APPEND "C:\Program Files\Cmake\bin" /MACHINE
 
 
 :: install 7zip

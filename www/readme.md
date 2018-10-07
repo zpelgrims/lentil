@@ -3,11 +3,11 @@
 This is the folder I'd like you to push your work to. Please commit as much as you can, it doesn't need to be functional code, it can be your thoughts/findings in text as well. This way I will be able to somewhat keep track of it all.
 
 
-------------
+---
 
 
 
-**Initial todo** *(feel free to modify)*:
+**BACK END TODO** *(feel free to modify)*:
 
 - [x] Figure out the best initial path to take:
 	- Using a pre-built platform: could be annoying to customize, but some features will be great out of the box
@@ -31,6 +31,7 @@ This is the folder I'd like you to push your work to. Please commit as much as y
 	- [x] Year: from min to max
 	- [x] Focal length: from min to max
 	- [x] Allow for multiple filter queries at once
+	- [ ] Remember the filter options when the page reloads
 
 	
 - [x] Payment model
@@ -49,19 +50,31 @@ This is the folder I'd like you to push your work to. Please commit as much as y
 - [x] Migrate database to mlab
 
 
-- [ ] Create basic front-end layout
-
-
 - [ ] Add flash messages for UI
 	
 	
 - [ ] The plugin compile needs to be triggered on-demand by the user.
 	- Because we need to include only (all) the lenses they purchased. 
-	- This will involve passing a list of the purchased lenses to a Makefile, which needs to be executed in a terminal. Then the whole thing needs to be uploaded and passed as a download link to the user.
-	- Essentially.. figure out how to trigger a command in the terminal from the webpage.
+	- Need to pass a command to the build server.
+		- create a connection (ssh?), ssh keys will need to be stored so the connection is automatic and doesn't need human validation. Not sure about the security impacts of this? There must be a go-to way to do this, i just don't know it
+		- pass the command (something like: `. ./build_server.sh username_string lens_string`)
+		- command will return a location on the webserver (zeno will sync the final .zip file to the webserver in the buildscript)
+	- Extra difficulty will be that there are 3 cases (linux, macOS, windows) and windows server will be hardest to interact with
+	- maybe use this module? Not sure, just a suggestion
+		- https://www.npmjs.com/package/node-cmd 
 	
 	
 - [x] Avoid having to manually add new lens entries. The lenses will most likely be updated along the way and it will be a mess to manage all that. But since we're already loading the content from the database, this shouldn't be a big issue.
-
 	
-- [ ] Eventually setup the hosting/domain. I've got good experiences with [digitalocean](https://www.digitalocean.com "digitalocean.com"), hopefully we can host it there. But that's for a long way down the line.
+- [ ] Eventually setup the hosting/domain. I'd like to host it on vultr.com since that's where the build servers will be hosted as well.
+
+---
+
+**FRONT END TODO** *(feel free to modify)*:
+
+
+- [x] Create basic front-end layout
+- [ ] Create nice looking filter/sort menu
+- [ ] Fix comparison images not loading intially
+- [ ] Text in general can be smaller in size
+- [ ] Reduce how much the lenses move up when clicked (probs about half of what we have now)
