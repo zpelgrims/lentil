@@ -28,4 +28,3 @@ export LENTIL_ARNOLD_SDKS=~/lentil-build/arnold
 git clone --recurse-submodules https://zpelgrims@github.com/zpelgrims/lentil.git
 
 cd ~/lentil-build/lentil
-mkdir ~/lentil-build/lentil/pota/bin

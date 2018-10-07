@@ -38,9 +38,9 @@ choco install git -params '"/GitAndUnixToolsOnPath"' --yes
 "C:\Program Files (x86)\p-nand-q.com\GTools\pathed" /APPEND "C:\Program Files\Git\bin" /MACHINE
 
 
-:: install cmake
-choco install cmake --yes
-"C:\Program Files (x86)\p-nand-q.com\GTools\pathed" /APPEND "C:\Program Files\Cmake\bin" /MACHINE
+:: install cmake.. not necessary since we're not using make on windows
+::choco install cmake --yes
+::"C:\Program Files (x86)\p-nand-q.com\GTools\pathed" /APPEND "C:\Program Files\Cmake\bin" /MACHINE
 
 
 :: install 7zip
