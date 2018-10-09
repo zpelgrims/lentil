@@ -15,13 +15,14 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
   <script>
-    setTimeout(function(){
+    $(function(){
       $(".twentytwenty-container").twentytwenty({
         default_offset_pct: 0.5,
+        orientation: 'horizontal',
         no_overlay: true,
         move_slider_on_hover: true
       });
-    }, 500);
+    });
   </script>
 </body>
 </html>

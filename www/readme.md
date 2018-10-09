@@ -78,3 +78,4 @@ This is the folder I'd like you to push your work to. Please commit as much as y
 - [ ] Fix comparison images not loading intially
 - [ ] Text in general can be smaller in size
 - [ ] Reduce how much the lenses move up when clicked (probs about half of what we have now)
+- [x] Hardcode git version log section

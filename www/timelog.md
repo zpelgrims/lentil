@@ -75,3 +75,9 @@
   - Add lens expansion to each lens card dynamically
   - Style lens expansion
   - Finish lens expansion (hopefully)
+
+- 10/7/18 6:15-7:00
+  - Work on twentytwenty plugin
+
+- 10/9/18 4:30-
+  - Hardcode git version log
