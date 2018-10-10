@@ -79,5 +79,10 @@
 - 10/7/18 6:15-7:00
   - Work on twentytwenty plugin
 
-- 10/9/18 4:30-
+- 10/9/18 4:30-5:45
   - Hardcode git version log
+  - Work on filter section re-style
+
+- 10/10/18 11:00-11:15
+           12:00-1:30
+  - Re-style filter menu

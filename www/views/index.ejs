@@ -2,50 +2,63 @@
 
 <div class="container">
 
-  <div class="description">
-    <div class="col-md-6">
-      <h3 class="description__left">
-        lentil is a camera toolkit for production raytracers 
-        capable of rendering images with high-order abberations 
-        at a fraction of the cost of tracing rays through the 
-        lens elements
-      </h3>
-    </div>
-    <div class="col-md-6">
-      <h3 class="description__right">
-        the choice of lens greatly helps determine the feeling 
-        of practical film. In computer graphics thus far, this 
-        has been neglected. Our mission is to change this.
-      </h3>
+  <div class="col-md-10 col-md-offset-1">
+    <div class="description">
+      <div class="col-md-6">
+        <h3 class="description__left">
+          lentil is a camera toolkit for production raytracers 
+          capable of rendering images with high-order abberations 
+          at a fraction of the cost of tracing rays through the 
+          lens elements
+        </h3>
+      </div>
+      <div class="col-md-6">
+        <h3 class="description__right">
+          the choice of lens greatly helps determine the feeling 
+          of practical film. In computer graphics thus far, this 
+          has been neglected. Our mission is to change this.
+        </h3>
+      </div>
     </div>
   </div>
 
-  <div class="log">
-    <p class="text-center">
-      <strong>lentil-arnold-2.2.1</strong> (2b6348a), released 25th January 18<br>
-      <strong>lentil-vray-1.5</strong> (f24jf89a), released 23rd January 18<br>
-      <strong>lentil-redshift-1.3</strong> (ajf019b), released 19th December 17<br>
-    </p>
+  <div class="col-md-12">
+    <div class="log">
+      <p class="text-center">
+        <strong>lentil-arnold-2.2.1</strong> (2b6348a), released 25th January 18<br>
+        <strong>lentil-vray-1.5</strong> (f24jf89a), released 23rd January 18<br>
+        <strong>lentil-redshift-1.3</strong> (ajf019b), released 19th December 17<br>
+      </p>
+    </div>
   </div>
 
   <hr>
 
   <div class="filter">
     <form action="/">
-      <p>sort by: 
-          <select name="filter" class="filter__filter__dropdown">
-            <option value="focal" class="filter__filter__dropdown--option">focal length</option>
-            <option value="year" class="filter__filter__dropdown--option">year</option>
-          </select> | <span id="filter"><span id="company">company <span id="caret">&#9660;</span></span> | <button class="filter__btn">GO</button></p>
-      <div class="filter__company" id="filterCompany">
-        <% companies.forEach((company) => { %>
-          <input type="checkbox" name="company"
-            value="<%= company %>"
-            > <%= company %>
-        <% }); %>
-        <input type="checkbox" name="company"
-            value="all"
-          > ALL
+      <div class="filterOpts">sort by: 
+        <select name="filter" class="filter__filter__dropdown">
+          <option value="focal" class="filter__filter__dropdown--option">focal length</option>
+          <option value="year" class="filter__filter__dropdown--option">year</option>
+        </select> | 
+        <div class="dropdown">
+          <span class="dropdown__title">
+            company <span id="caret">&#9660;</span>
+          </span>
+          <ul class="dropdown__list" style="display: none;">
+            <li class="dropdown__list__item">
+              <label for="all">all</label><input type="checkbox" name="company"
+                value="all" class="checkbox" id="all">
+            </li>
+            <% companies.forEach((company) => { %>
+              <li class="dropdown__list__item">
+                <label for="<%= company %>"><%= company %> </label><input type="checkbox" name="company"
+                value="<%= company %>" class="checkbox" id="<%= company %>">
+              </li>
+            <% }); %>
+          </ul>
+        </div>
+         | <button class="filter__btn">GO</button>
       </div>
     </form>
   </div>

@@ -74,8 +74,9 @@ This is the folder I'd like you to push your work to. Please commit as much as y
 
 
 - [x] Create basic front-end layout
-- [ ] Create nice looking filter/sort menu
+- [x] Create nice looking filter/sort menu
 - [ ] Fix comparison images not loading intially
-- [ ] Text in general can be smaller in size
-- [ ] Reduce how much the lenses move up when clicked (probs about half of what we have now)
+- [x] Text in general can be smaller in size
+- [x] Reduce how much the lenses move up when clicked (probs about half of what we have now)
 - [x] Hardcode git version log section
+- [ ] Add minimal animations
