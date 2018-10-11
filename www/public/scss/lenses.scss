@@ -3,6 +3,7 @@
   flex-direction: column;
   width: 30%;
   margin: 1.5%;
+  animation: 1s fadein forwards;
 
   &__card {
     width: 100%;
@@ -12,6 +13,7 @@
       text-transform: lowercase;
       font-size: 1.8rem;
       margin-top: 1rem;
+      transition: .2s all;
 
       &:hover {
         color: black;
@@ -44,6 +46,6 @@
 }
 
 .activelens {
-  margin-top: -.1rem;
   color: #e87979;
+  animation: .2s slideup forwards;
 }

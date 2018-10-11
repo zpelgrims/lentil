@@ -87,4 +87,6 @@
            12:00-1:30
   - Re-style filter menu
 
-- 10/11/18 7:00-
+- 10/11/18 7:00-7:15
+           7:30-
+  - Check all checkboxes when all is selected

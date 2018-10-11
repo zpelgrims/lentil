@@ -17,6 +17,7 @@ document.querySelectorAll('.lense__card').forEach((card) => {
       });
       card.classList.add('activelens');
       document.querySelector('#expcard-' + id).style.display = "block";
+      document.querySelector('#expcard-' + id).style.animation = ".5s fadein forwards";
       document.querySelector('#expcard-' + id).parentElement.style.height = "34.7rem";
       document.querySelector('#expcard-' + id).parentElement.style.margin = "0 0 5rem 0";
     }

@@ -1,0 +1,37 @@
+@keyframes underline {
+  0% {
+    border-bottom: 1px solid rgba(0, 0, 0, 0);
+  }
+  100% {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  }
+}
+
+@keyframes fadein {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadedown {
+  0% {
+    opacity: 0;
+    margin-top: 0;
+  }
+  100% {
+    opacity: 1;
+    margin-top: 3rem;
+  }
+}
+
+@keyframes slideup {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-2rem);
+  }
+}

@@ -3,14 +3,16 @@
   display: flex;
   flex-direction: column;
   width: 30%;
-  margin: 1.5%; }
+  margin: 1.5%;
+  animation: 1s fadein forwards; }
   .lense__card {
     width: 100%;
     margin-top: 2rem; }
     .lense__card__title {
       text-transform: lowercase;
       font-size: 1.8rem;
-      margin-top: 1rem; }
+      margin-top: 1rem;
+      transition: .2s all; }
       .lense__card__title:hover {
         color: black;
         cursor: pointer; }
@@ -31,8 +33,8 @@
   flex-wrap: wrap; }
 
 .activelens {
-  margin-top: -.1rem;
-  color: #e87979; }
+  color: #e87979;
+  animation: .2s slideup forwards; }
 
 *,
 *::after,
@@ -131,22 +133,24 @@ hr {
   justify-content: flex-end;
   align-items: center; }
 
-.description__left {
-  padding-right: 3rem;
-  border-right: 1px solid rgba(0, 0, 0, 0.5);
-  text-align: right;
-  margin-bottom: 3rem;
-  font-size: 2.2rem; }
-
-.description__right {
-  margin-bottom: 3rem;
-  font-size: 2.2rem; }
+.description {
+  animation: 1s fadedown forwards; }
+  .description__left {
+    padding-right: 3rem;
+    border-right: 1px solid rgba(0, 0, 0, 0.5);
+    text-align: right;
+    margin-bottom: 3rem;
+    font-size: 2.2rem; }
+  .description__right {
+    margin-bottom: 3rem;
+    font-size: 2.2rem; }
 
 .nav {
   padding: 1rem 2rem;
   display: flex;
   align-items: center;
-  justify-content: space-between; }
+  justify-content: space-between;
+  animation: 1s fadein forwards; }
   .nav__brand {
     color: #333333;
     font-size: 4rem;
@@ -160,10 +164,12 @@ hr {
   .nav__right__item {
     color: #333333;
     font-size: 2rem;
-    margin: 0 1rem; }
+    margin: 0 1rem;
+    transition: all .2s; }
     .nav__right__item:hover {
       color: black;
-      text-decoration: none; }
+      text-decoration: none;
+      animation: .3s underline forwards; }
     .nav__right__item:focus, .nav__right__item:active, .nav__right__item:visited {
       text-decoration: none;
       color: #333333; }
@@ -235,6 +241,7 @@ input:-webkit-autofill {
 .exp-lense__card {
   width: 68vw;
   display: none;
+  opacity: 0;
   margin-top: 5rem;
   height: auto;
   position: absolute;
@@ -306,3 +313,29 @@ input:-webkit-autofill {
     transition: all .3s; }
   .checkbox:checked:after {
     color: black; }
+
+@keyframes underline {
+  0% {
+    border-bottom: 1px solid rgba(0, 0, 0, 0); }
+  100% {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3); } }
+
+@keyframes fadein {
+  0% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+
+@keyframes fadedown {
+  0% {
+    opacity: 0;
+    margin-top: 0; }
+  100% {
+    opacity: 1;
+    margin-top: 3rem; } }
+
+@keyframes slideup {
+  0% {
+    transform: translateY(0); }
+  100% {
+    transform: translateY(-2rem); } }

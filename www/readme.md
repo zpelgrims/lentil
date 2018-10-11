@@ -79,4 +79,5 @@ This is the folder I'd like you to push your work to. Please commit as much as y
 - [x] Text in general can be smaller in size
 - [x] Reduce how much the lenses move up when clicked (probs about half of what we have now)
 - [x] Hardcode git version log section
-- [ ] Add minimal animations
+- [x] Add minimal animations
+- [ ] Restyle info section of expanded lens card
