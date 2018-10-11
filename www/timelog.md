@@ -88,5 +88,10 @@
   - Re-style filter menu
 
 - 10/11/18 7:00-7:15
-           7:30-
+           7:30-8:15
+           12:15-12:45
+           1:30-
   - Check all checkboxes when all is selected
+  - Add minimal animations
+  - Image comparison plugin research
+  - Re-style info section of expanded lens

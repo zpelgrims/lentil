@@ -16,15 +16,19 @@
       justify-content: space-between;
 
       &__prop {
-        width: 100%;
         font-size: 1.6rem;
+        display: flex;
+        width: 100%;
 
         &--key {
-
+          min-width: 25%;
+          text-align: right;
+          padding-right: 1rem;
         }
       
         &--val {
-
+          min-width: 75%;
+          text-align: left;
         }
       }
     }
