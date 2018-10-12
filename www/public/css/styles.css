@@ -250,7 +250,7 @@ input:-webkit-autofill {
     position: absolute;
     left: 15vw; }
     .exp-lense__card__info {
-      height: 27rem;
+      height: 30.8rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between; }
@@ -259,11 +259,11 @@ input:-webkit-autofill {
         display: flex;
         width: 100%; }
         .exp-lense__card__info__prop--key {
-          min-width: 25%;
+          min-width: 30%;
           text-align: right;
           padding-right: 1rem; }
         .exp-lense__card__info__prop--val {
-          min-width: 75%;
+          min-width: 70%;
           text-align: left; }
 
 .twentytwenty-container {

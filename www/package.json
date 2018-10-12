@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "connect-flash": "^0.1.1",
     "consolidate": "^0.15.1",
     "ejs": "^2.6.1",
     "express": "^4.16.3",

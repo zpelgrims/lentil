@@ -98,3 +98,6 @@
   - Re-style info section of expanded lens
   - Research node-cmd
   - Setup 4 image slider
+
+- 10/12/18 10:00-
+  - Setup flash messages

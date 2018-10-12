@@ -3,7 +3,6 @@
       built on the shoulders of the raytracing giants
     </p>
   </footer>
-  
   <script type="text/javascript" src="js/filter.js"></script>
   <script type="text/javascript" src="js/lenses.js"></script>
   <script
@@ -14,11 +13,9 @@
   <script src="lib/twentytwenty-master/js/jquery.event.move.js" type="text/javascript"></script>
   <script src="lib/twentytwenty-master/js/jquery.twentytwenty.js" type="text/javascript"></script>
   <script>
-    setTimeout(() => {
-      jQuery(function(){
-        jQuery(".twentytwenty-container").twentytwenty({default_offset_pct: 0.5});
-      });
-    }, 300);
+    $(() => {
+      $(".twentytwenty-container").twentytwenty({default_offset_pct: 0.5});
+    });
   </script>
 </body>
 </html>

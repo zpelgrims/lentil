@@ -11,7 +11,7 @@
     left: 15vw;
 
     &__info {
-      height: 27rem;
+      height: 30.8rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -22,13 +22,13 @@
         width: 100%;
 
         &--key {
-          min-width: 25%;
+          min-width: 30%;
           text-align: right;
           padding-right: 1rem;
         }
       
         &--val {
-          min-width: 75%;
+          min-width: 70%;
           text-align: left;
         }
       }

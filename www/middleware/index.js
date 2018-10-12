@@ -6,6 +6,7 @@ middlewareObj.isLoggedIn = (req, res, next) => {
     return next();
   }
   console.log('User not logged in');
+  req.flash('error', 'You must be logged in to do that.');
   res.redirect('/login')
 }
 
