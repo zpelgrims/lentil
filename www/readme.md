@@ -60,6 +60,8 @@ This is the folder I'd like you to push your work to. Please commit as much as y
 - [x] Remove pay page and simply run through checkout button with 
 payment popup.	
 
+- [ ] Display ownership icons dynamically
+
 - [ ] Make git version log dynamic
 
 - [x] Allow user to remove an item from cart
@@ -94,7 +96,7 @@ payment popup.
 - [x] Restyle info section of expanded lens card
 - [x] Setup image slider to have 4 images
 - [x] Begin styling cart page
-- [ ] Add icons to lenses to mark ownership
-- [ ] Add icons to lenses to mark being in cart
+- [x] Add icons to lenses to mark ownership
+- [x] Add icons to lenses to mark being in cart
 - [ ] Add icons for new lenses
 - [ ] Underline current page in navbar

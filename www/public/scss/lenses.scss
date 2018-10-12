@@ -24,6 +24,7 @@
 
     &__image {
       height: auto;
+      position: relative;
       width: 100%;
       transition: all .2s;
 
@@ -36,6 +37,22 @@
         height: 100%;
         width: 100%;
         border-radius: 5px;
+      }
+
+      &__tag {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        color: white;
+        z-index: 25;
+      }
+
+      &__cart {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        color: white;
+        z-index: 25;
       }
     }
   }

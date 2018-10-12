@@ -19,6 +19,7 @@
         cursor: pointer; }
     .lense__card__image {
       height: auto;
+      position: relative;
       width: 100%;
       transition: all .2s; }
       .lense__card__image:hover {
@@ -28,6 +29,18 @@
         height: 100%;
         width: 100%;
         border-radius: 5px; }
+      .lense__card__image__tag {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        color: white;
+        z-index: 25; }
+      .lense__card__image__cart {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        color: white;
+        z-index: 25; }
 
 .lenses {
   display: flex;
