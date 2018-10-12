@@ -16,7 +16,15 @@
         </div>
       <% }); %>
     </div>
-    <a class="button pull-right" href="/pay">checkout</a>
+    <form action="/charge" method="POST">
+      <script
+        src="https://checkout.stripe.com/checkout.js" 
+        class="stripe-button"
+        data-key="<%= pubkey %>"
+        data-amount="<%= amount %>"
+        data-locale="auto">
+      </script>
+    </form>
   </div>
 </div>
 

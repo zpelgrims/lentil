@@ -106,3 +106,4 @@
   - Style cart page
   - Update readme
   - Allow user to remove a lens from their cart
+  - Remove pay page and pay directly from cart page
