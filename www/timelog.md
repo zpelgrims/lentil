@@ -90,8 +90,11 @@
 - 10/11/18 7:00-7:15
            7:30-8:15
            12:15-12:45
-           1:30-
+           1:30-2:15
+           7:15-8:00
   - Check all checkboxes when all is selected
   - Add minimal animations
   - Image comparison plugin research
   - Re-style info section of expanded lens
+  - Research node-cmd
+  - Setup 4 image slider

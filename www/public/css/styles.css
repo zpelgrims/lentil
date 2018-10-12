@@ -4,7 +4,8 @@
   flex-direction: column;
   width: 30%;
   margin: 1.5%;
-  animation: 1s fadein forwards; }
+  animation: 1s fadein forwards;
+  height: 100%; }
   .lense__card {
     width: 100%;
     margin-top: 2rem; }
@@ -238,34 +239,45 @@ hr {
 input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0px 1000px #efefef inset; }
 
-.exp-lense__card {
-  width: 68vw;
-  display: none;
-  opacity: 0;
-  margin-top: 5rem;
-  height: auto;
-  position: absolute;
-  left: 15vw; }
-  .exp-lense__card__info {
-    height: 34.7rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; }
-    .exp-lense__card__info__prop {
-      font-size: 1.6rem;
+.exp-lense {
+  height: 0; }
+  .exp-lense__card {
+    width: 68vw;
+    display: block;
+    opacity: 0;
+    margin-top: 5rem;
+    height: auto;
+    position: absolute;
+    left: 15vw; }
+    .exp-lense__card__info {
+      height: 27rem;
       display: flex;
-      width: 100%; }
-      .exp-lense__card__info__prop--key {
-        min-width: 25%;
-        text-align: right;
-        padding-right: 1rem; }
-      .exp-lense__card__info__prop--val {
-        min-width: 75%;
-        text-align: left; }
+      flex-direction: column;
+      justify-content: space-between; }
+      .exp-lense__card__info__prop {
+        font-size: 1.6rem;
+        display: flex;
+        width: 100%; }
+        .exp-lense__card__info__prop--key {
+          min-width: 25%;
+          text-align: right;
+          padding-right: 1rem; }
+        .exp-lense__card__info__prop--val {
+          min-width: 75%;
+          text-align: left; }
 
 .twentytwenty-container {
-  min-height: 34.7rem;
+  min-height: 100%;
   border-bottom: 1px solid rgba(232, 121, 121, 0.3); }
+
+.twentytwenty-handle {
+  top: 0%;
+  width: 0px;
+  height: 0px;
+  margin-left: -3px; }
+
+.twentytwenty-horizontal .twentytwenty-handle:after, .twentytwenty-horizontal .twentytwenty-handle:before {
+  width: 2px; }
 
 .dropdown {
   display: flex;
