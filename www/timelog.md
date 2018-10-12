@@ -100,6 +100,9 @@
   - Setup 4 image slider
 
 - 10/12/18 10:00-10:45
-           11:30-
+           11:30-12:15
+           1:30-
   - Setup flash messages
   - Style cart page
+  - Update readme
+  - Allow user to remove a lens from their cart

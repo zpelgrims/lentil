@@ -26,6 +26,23 @@ router.get('/cart', middleware.isLoggedIn, (req, res) => {
   });
 });
 
+// Remove cart item logic
+router.get('/cart/:id/delete', (req, res) => {
+  Lens.findById(req.params.id, (err, lens) => {
+    if(err) {
+      console.log(err);
+    } else {
+      let i = req.user.cart.indexOf(lens._id);
+      console.log(i);
+      if(i > -1) {
+        req.user.cart.splice(i, 1);
+        req.user.save();
+      }
+      res.redirect('back');
+    }
+  });
+});
+
 // Stripe payment form
 router.get('/pay', middleware.isLoggedIn, (req, res) => {
   let amount = 500 * req.user.cart.length;

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Lens = require('../models/Lens');
 const sortBy = require('sort-by');
+const middleware = require('../middleware');
 
 // Index Page
 router.get('/', (req, res) => {
@@ -43,15 +44,15 @@ router.get('/', (req, res) => {
             }
           }
         });
-        return res.render('index', {lenses: lensArray, user: req.user, companies: companies});
+        return res.render('index', {lenses: lensArray, user: req.user, companies: companies, page: 'lenses'});
       }
 
-      res.render('index', {lenses: lenses, user: req.user, companies: companies});
+      res.render('index', {lenses: lenses, user: req.user, companies: companies, page: 'lenses'});
     }
   });
 });
 
-router.get('/:id/add', (req, res) => {
+router.get('/:id/add', middleware.isLoggedIn, (req, res) => {
   Lens.findById(req.params.id, (err, lens) => {
     if(err) {
       console.log(err);
@@ -59,7 +60,7 @@ router.get('/:id/add', (req, res) => {
       req.user.cart.push(lens._id);
       req.user.save();
     }
-    res.redirect('back');
+    res.redirect('/');
   });
 });
 

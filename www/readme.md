@@ -50,8 +50,19 @@ This is the folder I'd like you to push your work to. Please commit as much as y
 - [x] Migrate database to mlab
 
 
-- [ ] Add flash messages for UI
-	
+- [x] Add flash messages for UI
+
+- [ ] Add more middleware
+	- [ ] Must not be able to add the same lens to cart more than once
+	- [ ] Must not add lens to cart if user already owns it
+	- [ ] 
+
+- [ ] Remove pay page and simply run through checkout button with 
+payment popup.	
+
+- [ ] Make git version log dynamic
+
+- [x] Allow user to remove an item from cart
 	
 - [ ] The plugin compile needs to be triggered on-demand by the user.
 	- Because we need to include only (all) the lenses they purchased. 
@@ -83,3 +94,7 @@ This is the folder I'd like you to push your work to. Please commit as much as y
 - [x] Restyle info section of expanded lens card
 - [x] Setup image slider to have 4 images
 - [x] Begin styling cart page
+- [ ] Add icons to lenses to mark ownership
+- [ ] Add icons to lenses to mark being in cart
+- [ ] Add icons for new lenses
+- [ ] Underline current page in navbar

@@ -34,9 +34,10 @@ router.get('/login', (req, res) => {
 
 // Login logic
 router.post('/login', passport.authenticate('local', {
-  successRedirect: '/',
   failureRedirect: '/login'
   }), (req, res) => {
+    res.redirect(req.session.returnTo || '/');
+    delete req.session.returnTo;
 });
 
 // Logout logic
