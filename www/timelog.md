@@ -99,5 +99,7 @@
   - Research node-cmd
   - Setup 4 image slider
 
-- 10/12/18 10:00-
+- 10/12/18 10:00-10:45
+           11:30-
   - Setup flash messages
+  - Style cart page

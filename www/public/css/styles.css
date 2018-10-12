@@ -75,11 +75,19 @@ hr {
   font-size: 2rem;
   transition: all .2s; }
   .button:hover {
-    background-color: #d85050; }
+    background-color: #d85050;
+    color: white;
+    text-decoration: none; }
   .button:focus {
-    outline: none; }
+    color: white;
+    outline: none;
+    text-decoration: none; }
   .button:active {
-    background-color: #e87979; }
+    background-color: #e87979;
+    text-decoration: none; }
+
+.content {
+  min-height: 100vh; }
 
 ::selection {
   background-color: #e87979;
@@ -184,7 +192,8 @@ hr {
   color: #dfdfdf;
   font-size: 1.6rem;
   padding: 2rem;
-  width: 100%; }
+  width: 100%;
+  position: absolute; }
   .footer__text {
     text-align: center; }
 
@@ -245,10 +254,9 @@ input:-webkit-autofill {
     width: 68vw;
     display: block;
     opacity: 0;
-    margin-top: 5rem;
-    height: auto;
+    margin-top: 3rem;
     position: absolute;
-    left: 15vw; }
+    left: -9999px; }
     .exp-lense__card__info {
       height: 30.8rem;
       display: flex;

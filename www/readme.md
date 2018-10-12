@@ -82,4 +82,4 @@ This is the folder I'd like you to push your work to. Please commit as much as y
 - [x] Add minimal animations
 - [x] Restyle info section of expanded lens card
 - [x] Setup image slider to have 4 images
-- [ ] Begin styling cart page
+- [x] Begin styling cart page

@@ -1,19 +1,22 @@
 <% include partials/header %>
 
-<h1>Cart</h1>
-
-<a href="/pay">Checkout</a>
-
-<div class="lenses">
-  <% console.log(lenses); %>
-  <% lenses.forEach((lens) => { %>
-    <div class="col-md-4">
-      <div class="lenses__card">
-        <h3 class="text-center lenses__card__title"><%= lens.year %> <%= lens.company %> <%= lens.product_name %></h3>
-        <img src="<%= lens.image %>" alt="<%= lens.image %>">
-      </div>
+<div class="container">
+  <div class="content">
+    <h1 class="text-center">my cart</h1>
+    <div class="lenses">
+      <% lenses.forEach((lens) => { %>
+        <div class="lense">
+          <div class="lense__card">
+            <div class="lense__card__image">
+              <img src="<%= lens.image %>" alt="<%= lens.image %>">
+            </div>
+            <h3 class="lense__card__title"><%= lens.company %> | <%= lens.product_name %> | <%= lens.year %></h3>
+          </div>
+        </div>
+      <% }); %>
     </div>
-  <% }); %>
+    <a class="button pull-right" href="/pay">checkout</a>
+  </div>
 </div>
 
 <% include partials/footer %>
