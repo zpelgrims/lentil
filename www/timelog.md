@@ -75,3 +75,35 @@
   - Add lens expansion to each lens card dynamically
   - Style lens expansion
   - Finish lens expansion (hopefully)
+
+- 10/7/18 6:15-7:00
+  - Work on twentytwenty plugin
+
+- 10/9/18 4:30-5:45
+  - Hardcode git version log
+  - Work on filter section re-style
+
+- 10/10/18 11:00-11:15
+           12:00-1:30
+  - Re-style filter menu
+
+- 10/11/18 7:00-7:15
+           7:30-8:15
+           12:15-12:45
+           1:30-2:15
+           7:15-8:00
+  - Check all checkboxes when all is selected
+  - Add minimal animations
+  - Image comparison plugin research
+  - Re-style info section of expanded lens
+  - Research node-cmd
+  - Setup 4 image slider
+
+- 10/12/18 10:00-10:45
+           11:30-12:15
+           1:30-
+  - Setup flash messages
+  - Style cart page
+  - Update readme
+  - Allow user to remove a lens from their cart
+  - Remove pay page and pay directly from cart page

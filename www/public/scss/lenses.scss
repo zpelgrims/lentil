@@ -3,6 +3,8 @@
   flex-direction: column;
   width: 30%;
   margin: 1.5%;
+  animation: 1s fadein forwards;
+  height: 100%;
 
   &__card {
     width: 100%;
@@ -12,6 +14,7 @@
       text-transform: lowercase;
       font-size: 1.8rem;
       margin-top: 1rem;
+      transition: .2s all;
 
       &:hover {
         color: black;
@@ -21,6 +24,7 @@
 
     &__image {
       height: auto;
+      position: relative;
       width: 100%;
       transition: all .2s;
 
@@ -34,6 +38,22 @@
         width: 100%;
         border-radius: 5px;
       }
+
+      &__tag {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        color: white;
+        z-index: 25;
+      }
+
+      &__cart {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        color: white;
+        z-index: 25;
+      }
     }
   }
 }
@@ -44,6 +64,6 @@
 }
 
 .activelens {
-  margin-top: -1rem;
   color: #e87979;
+  animation: .2s slideup forwards;
 }

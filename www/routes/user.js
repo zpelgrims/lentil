@@ -29,14 +29,15 @@ router.post('/register', (req, res) => {
 
 // Login page
 router.get('/login', (req, res) => {
-  res.render('login');
+  res.render('login', {message: req.flash('error')});
 });
 
 // Login logic
 router.post('/login', passport.authenticate('local', {
-  successRedirect: '/',
   failureRedirect: '/login'
   }), (req, res) => {
+    res.redirect(req.session.returnTo || '/');
+    delete req.session.returnTo;
 });
 
 // Logout logic

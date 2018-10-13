@@ -1,29 +1,34 @@
 .exp-lense {
+  height: 0;
 
   &__card {
     width: 68vw;
-    display: none;
-    margin-top: 5rem;
-    height: auto;
+    display: block;
+    opacity: 0;
+    margin-top: 3rem;
     position: absolute;
-    left: 15vw;
+    left: -9999px;
 
     &__info {
-      height: 34.7rem;
+      height: 30.8rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
 
       &__prop {
-        width: 100%;
         font-size: 1.6rem;
+        display: flex;
+        width: 100%;
 
         &--key {
-
+          min-width: 30%;
+          text-align: right;
+          padding-right: 1rem;
         }
       
         &--val {
-
+          min-width: 70%;
+          text-align: left;
         }
       }
     }
@@ -31,6 +36,16 @@
 }
 
 .twentytwenty-container {
-  min-height: 34.7rem;
+  min-height: 100%;
   border-bottom: 1px solid rgba($highlight-color, 0.3);
+}
+
+.twentytwenty-handle{
+	top: 0%;
+  width: 0px;
+  height: 0px;
+  margin-left: -3px;
+}
+.twentytwenty-horizontal .twentytwenty-handle:after, .twentytwenty-horizontal .twentytwenty-handle:before{
+	width: 2px;
 }

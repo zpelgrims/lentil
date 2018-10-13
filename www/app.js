@@ -9,6 +9,7 @@ const LocalStrategy = require('passport-local');
 const User = require('./models/User');
 const bodyParser = require('body-parser');
 const keys = require('./keys');
+const flash = require('connect-flash');
 
 // Dynamically switch between dev and live ports
 const PORT = process.env.PORT || 3000;
@@ -32,6 +33,8 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: false}));
 // References files from /public directory
 app.use(express.static(__dirname + '/public'));
+// Setup flash
+app.use(flash());
 
 // Passport Config
 app.use(require('express-session')({

@@ -43,19 +43,29 @@ hr {
   border-radius: 5px;
   text-transform: lowercase;
   font-size: 2rem;
+  text-align: center;
   transition: all .2s;
 
   &:hover {
     background-color: $lowlight-color;
+    color: white;
+    text-decoration: none;
   }
 
   &:focus {
+    color: white;
     outline: none;
+    text-decoration: none;
   }
 
   &:active {
     background-color: $highlight-color;
+    text-decoration: none;
   }
+}
+
+.content {
+  min-height: 100vh;
 }
 
 // Override all highlighted text color for all browsers
