@@ -116,13 +116,14 @@ int main(int argc, char **argv)
   fprintf(f, "camera->lens_name = \"%smm\"; // descriptive name of the lens\n", lens_name.c_str());
   fprintf(f, "camera->lens_outer_pupil_radius = %f; // scene facing radius in mm\n", lenses[0].housing_radius);
   fprintf(f, "camera->lens_inner_pupil_radius = %f; // sensor facing radius in mm\n", lenses[lenses_cnt-1].housing_radius);
+  fprintf(f, "camera->lens_outer_pupil_curvature_radius = %f; // radius of curvature of the outer pupil\n", lenses[0].lens_radius);
   fprintf(f, "camera->lens_length = %f; // overall lens length in mm\n", lens_length);
   fprintf(f, "camera->lens_back_focal_length = %f; // approximate lens back focal length in mm\n", bfl);
   fprintf(f, "camera->lens_effective_focal_length = %f; // effective focal length in mm\n", static_cast<float>(lens_focal_length));
   fprintf(f, "camera->lens_aperture_pos = %f; // distance aperture -> outer pupil in mm\n", aperture_pos);
   fprintf(f, "camera->lens_aperture_housing_radius = %f; // lens housing radius at the aperture\n", aperture_housing_radius);
-  fprintf(f, "camera->lens_outer_pupil_curvature_radius = %f; // radius of curvature of the outer pupil\n", lenses[0].lens_radius);
   fprintf(f, "camera->lens_outer_pupil_geometry = \"%s\"; // geometry of outer pupil\n", lenses[0].geometry);
+  fprintf(f, "camera->lens_inner_pupil_geometry = \"%s\"; // geometry of outer pupil\n", lenses[lenses_cnt-1].geometry);
   fprintf(f, "camera->lens_fstop = %f; // effective_focal_length/(2*aperture_housing_radius)\n", lens_database[id]["fstop"].get<float>());
   
   // calculate approximate fov for 35mm sensor
