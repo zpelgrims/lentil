@@ -4,3 +4,6 @@
 [submodule "Eigen"]
 	path = Eigen
 	url = https://github.com/eigenteam/eigen-git-mirror.git
+[submodule "fmt"]
+	path = fmt
+	url = https://github.com/fmtlib/fmt.git
