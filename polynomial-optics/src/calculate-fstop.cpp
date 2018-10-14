@@ -8,6 +8,8 @@
 using json = nlohmann::json;
 
 
+// extract aperture radius for maximum fstop and write it out
+
 int main(int argc, char *argv[])
 {
   const char *id = argv[1];
@@ -28,8 +30,9 @@ int main(int argc, char *argv[])
   const float lambda = 0.55f;
   std::vector<float> positiondata = {0.0, 0.0};
   float lens_length = 0.0;
-  int draw_aspheric = 1; 
-
+  int draw_aspheric = 1;
+  float max_aperture_radius = 0.0f;
+  float prev_best_aperture_radius = 0.0f;
   int cnt = 0;
 
   for(int i=0;i<lenses_cnt;i++) lens_length += lens_get_thickness(lenses+i, zoom);
@@ -60,14 +63,14 @@ int main(int argc, char *argv[])
     inrt[4] = outrt[4] = in[4] = out[4] = ap[4] = lambda;
     float t, n[3] = {0.0f};
 
-    if (strcmp(lenses[0].geometry, "cyl-y") == 0){
+    if (!strcasecmp(lenses[0].geometry, "cyl-y")){
       // intersection with first lens element, but seems like a duplicate purpose of the algebra method above..
       cylindrical(cam_pos, cam_dir, &t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n, true);
       for(int i=0;i<3;i++) cam_dir[i] = - cam_dir[i]; // need to point away from surface (dot(n,dir) > 0)
       csToCylinder(cam_pos, cam_dir, in, in+2, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
       cylinderToCs(in, in + 2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
     }
-    else if (strcmp(lenses[0].geometry, "cyl-x") == 0){
+    else if (!strcasecmp(lenses[0].geometry, "cyl-x")){
       // intersection with first lens element, but seems like a duplicate purpose of the algebra method above..
       cylindrical(cam_pos, cam_dir, &t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n, false);
       for(int i=0;i<3;i++) cam_dir[i] = - cam_dir[i]; // need to point away from surface (dot(n,dir) > 0)
@@ -85,8 +88,10 @@ int main(int argc, char *argv[])
     for(int i=0;i<5;i++) inrt[i] = in[i];
     
     // evaluate until ray is blocked, positiondata will still have value of previous ray
-    if (!evaluate_reverse_fstop(lenses, lenses_cnt, zoom, inrt, outrt, dim_up, draw_aspheric, positiondata)){
+    if (!evaluate_reverse_fstop(lenses, lenses_cnt, zoom, inrt, outrt, dim_up, draw_aspheric, positiondata, max_aperture_radius)){
       break;
+    } else {
+      prev_best_aperture_radius = max_aperture_radius;
     }
 
     cnt += 1;
@@ -106,7 +111,9 @@ int main(int argc, char *argv[])
 
   lens_database[id]["fstop"] = fstop;
   printf("Added calculated f-stop of [%f] to lens database.\n", fstop);
-  
+  lens_database[id]["max-fstop-aperture-radius"] = prev_best_aperture_radius;
+  printf("Added maximum aperture radius of [%f] to lens database.\n", prev_best_aperture_radius);
+
   std::ofstream out_json(lens_database_path);
   out_json << std::setw(2) << lens_database << std::endl;
 }
