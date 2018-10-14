@@ -45,19 +45,16 @@ int main(int argc, char *argv[]){
 
 
   // read lens database and add raytraced focal length
-  std::string lens_database_path = std::getenv("LENTIL_PATH");
-  lens_database_path += "/database/lenses.json";
-
+  std::string lens_database_path = fmt::format("{}/database/lenses.json", std::getenv("LENTIL_PATH"));
   std::ifstream in_json(lens_database_path.c_str());
   json lens_database = json::parse(in_json);
 
-  fmt::format("Focal length supplied by patent: {0}\n", lens_database[id]["focal-length-mm-patent"].get<float>());
-  fmt::format("Focal length raytraced: {}\n", raytraced_focal_length);
+  fmt::print("Focal length supplied by patent: {0}\n", lens_database[id]["focal-length-mm-patent"].get<float>());
+  fmt::print("Focal length raytraced: {}\n", raytraced_focal_length);
 
   lens_database[id]["focal-length-mm-raytraced"] = raytraced_focal_length;
 
   std::ofstream out_json(lens_database_path);
   out_json << std::setw(2) << lens_database << std::endl;
-
-  fmt::format("Written raytraced focal length {} for id {} to database\n", raytraced_focal_length, id);
+  fmt::print("Written raytraced focal length {} for id {} to database\n", raytraced_focal_length, id);
 }

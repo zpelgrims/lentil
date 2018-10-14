@@ -9,21 +9,18 @@
 using json = nlohmann::json;
 
 
-// extract aperture radius for maximum fstop and write it out
-
 int main(int argc, char *argv[])
 {
   const char *id = argv[1];
 
-  std::string lens_database_path = std::getenv("LENTIL_PATH");
-  lens_database_path += "/database/lenses.json";
+  std::string lens_database_path = fmt::format("{}/database/lenses.json", std::getenv("LENTIL_PATH"));
   std::ifstream in_json(lens_database_path);
   json lens_database = json::parse(in_json);
 
 
   static lens_element_t lenses[50];
 
-  // loading lens config with 0.0 focal length, which means no scale transform on the lens
+  // loading lens config with focallength=0, which means no scale transform on the lens
   int lenses_cnt = lens_configuration(lenses, id, 0);
 
   float zoom = 0.0f;
@@ -98,22 +95,22 @@ int main(int argc, char *argv[])
     cnt += 1;
   }
 
-  fmt::format("Last valid exit vertex position: [{}, {}]\n", positiondata[0], positiondata[1]);
-  fmt::format("Failed at try {} of 1000\n", cnt);
+  fmt::print("Last valid exit vertex position: [{}, {}]\n", positiondata[0], positiondata[1]);
+  fmt::print("Failed at try {} of 1000\n", cnt);
 
   float theta = std::atan(positiondata[1] / positiondata[0]);
   float fstop = 1.0 / (std::sin(theta)* 2.0);
 
   if ((fstop != fstop) || (fstop == 0.0)){
-    fmt::format("f-stop has an incorrect value [{}], aborting\n", fstop);
+    fmt::print("f-stop has an incorrect value [{}], aborting\n", fstop);
     return 0;
   }
 
 
   lens_database[id]["fstop"] = fstop;
-  fmt::format("Added calculated f-stop [{}] to lens database.\n", fstop);
+  fmt::print("Added calculated f-stop [{}] to lens database.\n", fstop);
   lens_database[id]["max-fstop-aperture-radius"] = prev_best_aperture_radius;
-  fmt::format("Added maximum aperture radius [{}] to lens database.\n", prev_best_aperture_radius);
+  fmt::print("Added maximum aperture radius [{}] to lens database.\n", prev_best_aperture_radius);
 
   std::ofstream out_json(lens_database_path);
   out_json << std::setw(2) << lens_database << std::endl;

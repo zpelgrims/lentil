@@ -40,10 +40,6 @@ static float lens_pupil_rad = 0.0f;
 static float lens_length = 0;
 static float aperture_pos = 0;
 
-//remove these mouse events
-//static float mouse_x = 0.0f;
-//static float mouse_y = 0.0f;
-
 static int screenshot = 1;
 static int draw_solve_omega = 0;
 static int draw_raytraced = 1;
@@ -150,8 +146,6 @@ static gboolean button_press(GtkWidget *widget, GdkEventButton *event, gpointer 
     gtk_widget_grab_focus(widget);
   if(event->button == 1)// && event->type == GDK_2BUTTON_PRESS)
   {
-    //mouse_x = event->x;
-    //mouse_y = event->y;
     gtk_widget_queue_draw(widget);
     return TRUE;
   }
@@ -636,50 +630,38 @@ int main(int argc, char *argv[])
   int lens_focal_length = atol(argv[2]);
 
   // read lens database
-  std::string lens_database_path = std::getenv("LENTIL_PATH");
-  lens_database_path += "/database/lenses.json";
-
+  std::string lens_database_path = fmt::format("{}/database/lenses.json", std::getenv("LENTIL_PATH"));
   std::ifstream in_json(lens_database_path.c_str());
   json lens_database = json::parse(in_json);
 
   for (const auto& i : lens_database[id]["polynomial-optics"]){
     if (i == lens_focal_length){
-      std::string fit_location_exitpupil = find_lens_id_location(id, lens_focal_length);
-      fit_location_exitpupil += "fitted/exitpupil.fit";
+      std::string fit_location_exitpupil = fmt::format("{}/fitted/exitpupil.fit", find_lens_id_location(id, lens_focal_length));
       if(poly_system_read(&poly, fit_location_exitpupil.c_str())){
-        fmt::format("[view] could not read poly system '{}'\n", fit_location_exitpupil.c_str());
+        fmt::print("[view] could not read poly system '{}'\n", fit_location_exitpupil.c_str());
       }
     } else {
-      fmt::format("[view] no exitpupil poly system focal length {}\n", lens_focal_length);
+      fmt::print("[view] no exitpupil poly system focal length {}\n", lens_focal_length);
     }
   }
   for (const auto& i : lens_database[id]["polynomial-optics-aperture"]){
     if (i == lens_focal_length){
-      std::string fit_location_aperture = find_lens_id_location(id, lens_focal_length);
-      fit_location_aperture += "fitted/aperture.fit";
+      std::string fit_location_aperture = fmt::format("{}/fitted/aperture.fit", find_lens_id_location(id, lens_focal_length));
       if(poly_system_read(&poly_aperture, fit_location_aperture.c_str())){
-        fmt::format("[view] could not read poly system '{}'\n", fit_location_aperture.c_str());
+        fmt::print("[view] could not read poly system '{}'\n", fit_location_aperture.c_str());
       }
     } else {
-      fmt::format("[view] no aperture poly system focal length {}\n", lens_focal_length);
+      fmt::print("[view] no aperture poly system focal length {}\n", lens_focal_length);
     }
   }
 
 
-  lens_svg_path = std::getenv("LENTIL_PATH");
-  lens_svg_path += "/database/lenses/";
-  lens_svg_path += std::to_string(lens_database[id]["year"].get<int>());
-  lens_svg_path += "-";
-  lens_svg_path += lens_database[id]["company"].get<std::string>();
-  lens_svg_path += "-";
-  lens_svg_path += lens_database[id]["product-name"].get<std::string>();
-  lens_svg_path += "/";
-  lens_svg_path += std::to_string(lens_database[id]["year"].get<int>());
-  lens_svg_path += "-";
-  lens_svg_path += lens_database[id]["company"].get<std::string>();
-  lens_svg_path += "-";
-  lens_svg_path += lens_database[id]["product-name"].get<std::string>();
-  lens_svg_path += ".svg";
+  lens_svg_path = fmt::format("{0}/database/lenses/{1}-{2}-{3}/{1}-{2}-{3}.svg", 
+                              std::getenv("LENTIL_PATH"),
+                              lens_database[id]["year"].get<int>(),
+                              lens_database[id]["company"].get<std::string>(),
+                              lens_database[id]["product-name"].get<std::string>()
+  );
 
 
   // calculate lens length

@@ -32,31 +32,26 @@ int main(int argc, char **argv)
   std::string pt_sample_aperture_h_path = lens_id_path + "code/pt_sample_aperture.h";
   std::string lt_sample_aperture_h_path = lens_id_path + "code/lt_sample_aperture.h";
   std::string lens_constants_path = lens_id_path + "code/lens_constants.h";
-  fmt::format("Generating code from fitted files: \n");
-  fmt::format("\t fitfile location: {}\n", fitfile_path.c_str());
-  fmt::format("\t aperture fitfile location: {}\n", ap_fitfile_path.c_str());
-  fmt::format("\t pt_evaluate.h location: {}\n", pt_evaluate_h_path.c_str());
-  fmt::format("\t pt_evaluate_jacobian.h location: {}\n", pt_evaluate_jacobian_h_path.c_str());
-  fmt::format("\t pt_evaluate_aperture.h location: {}\n", pt_evaluate_aperture_h_path.c_str());
-  fmt::format("\t pt_evaluate_aperture_jacobian.h location: {}\n", pt_evaluate_aperture_jacobian_h_path.c_str());
-  fmt::format("\t pt_sample_aperture.h location: {}\n", pt_sample_aperture_h_path.c_str());
-  fmt::format("\t lt_sample_aperture.h location: {}\n", lt_sample_aperture_h_path.c_str());
-  fmt::format("\t init.h location: {}\n", lens_constants_path.c_str());
+  fmt::print("Generating code from fitted files: \n");
+  fmt::print("\t fitfile location: {}\n", fitfile_path);
+  fmt::print("\t aperture fitfile location: {}\n", ap_fitfile_path);
+  fmt::print("\t pt_evaluate.h location: {}\n", pt_evaluate_h_path);
+  fmt::print("\t pt_evaluate_jacobian.h location: {}\n", pt_evaluate_jacobian_h_path);
+  fmt::print("\t pt_evaluate_aperture.h location: {}\n", pt_evaluate_aperture_h_path);
+  fmt::print("\t pt_evaluate_aperture_jacobian.h location: {}\n", pt_evaluate_aperture_jacobian_h_path);
+  fmt::print("\t pt_sample_aperture.h location: {}\n", pt_sample_aperture_h_path);
+  fmt::print("\t lt_sample_aperture.h location: {}\n", lt_sample_aperture_h_path);
+  fmt::print("\t init.h location: {}\n", lens_constants_path);
 
-  std::string json_database_location = "";
-  json_database_location += std::getenv("LENTIL_PATH");
-  json_database_location += "/database/lenses.json";
+  std::string json_database_location = fmt::format("{}/database/lenses.json", std::getenv("LENTIL_PATH"));
   std::ifstream in_json(json_database_location);
   json lens_database = json::parse(in_json);
 
-  std::string case_lens_name = dash_to_underscore(lens_database[id]["company"].get<std::string>());
-  case_lens_name += "_";
-  case_lens_name += dash_to_underscore(lens_database[id]["product-name"].get<std::string>());
-  case_lens_name += "_";
-  case_lens_name += std::to_string(lens_database[id]["year"].get<int>());
-  case_lens_name += "_";
-  case_lens_name += std::to_string(lens_focal_length);
-  case_lens_name += "mm";
+  std::string case_lens_name = fmt::format("{}_{}_{}_{}mm", lens_database[id]["company"].get<std::string>(),
+                                                            dash_to_underscore(lens_database[id]["product-name"].get<std::string>()),
+                                                            lens_database[id]["year"].get<int>(),
+                                                            lens_focal_length
+  );
 
   poly_system_t poly, poly_ap;
   if(poly_system_read(&poly, fitfile_path.c_str()) || poly_system_read(&poly_ap, ap_fitfile_path.c_str()))

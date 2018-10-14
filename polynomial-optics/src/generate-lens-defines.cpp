@@ -21,8 +21,7 @@ std::string dash_to_underscore(std::string text)
 
 int main(int argc, char *argv[])
 {  
-  std::string lens_database_path = std::getenv("LENTIL_PATH");
-  lens_database_path += "/database/lenses.json";
+  std::string lens_database_path = fmt::format("{}/database/lenses.json", std::getenv("LENTIL_PATH"));
   std::ifstream in_json(lens_database_path);
   json lens_database = json::parse(in_json);
 
@@ -44,11 +43,10 @@ int main(int argc, char *argv[])
         focal_length_vector.push_back(focal_length);
       }
 
-      std::string case_lens_name = dash_to_underscore(lens.value()["company"].get<std::string>());
-      case_lens_name += "_";
-      case_lens_name += dash_to_underscore(lens.value()["product-name"].get<std::string>());
-      case_lens_name += "_";
-      case_lens_name += std::to_string(lens.value()["year"].get<int>());
+      std::string case_lens_name = fmt::format("{}_{}_{}", dash_to_underscore(lens.value()["company"].get<std::string>()),
+                                                           dash_to_underscore(lens.value()["product-name"].get<std::string>()),
+                                                           lens.value()["year"].get<int>()
+      );
       
       if (lens.value()["production-ready"] == true){
         if (lens.value()["commercial"] == true){
@@ -64,7 +62,7 @@ int main(int argc, char *argv[])
 
 
   // print lenses
-  fmt::format("\nList of implemented free lenses: \n");
+  fmt::print("\nList of implemented free lenses: \n");
   for (auto it : free_lens_ids) {
     std::cout << "\t" << it.first << " : #";
     std::map<std::string, std::vector<int>> &internal_map = it.second;
@@ -79,16 +77,15 @@ int main(int argc, char *argv[])
         }
     }
   }
-  fmt::format("\n");
+  fmt::print("\n");
 
 
 // =================================================================
 
 
   // pota_h_lenses.h path
-  std::string pota_h_lenses_h_path = std::getenv("LENTIL_PATH");
-  pota_h_lenses_h_path += "/../pota/src/auto_generated_lens_includes/pota_h_lenses.h";
-  fmt::format("pota_h_lenses.h path: %s\n", pota_h_lenses_h_path);
+  std::string pota_h_lenses_h_path = fmt::format("{}/../pota/src/auto_generated_lens_includes/pota_h_lenses.h", std::getenv("LENTIL_PATH")); 
+  fmt::print("pota_h_lenses.h path: %s\n", pota_h_lenses_h_path);
 
 
   // open file
@@ -134,7 +131,7 @@ int main(int argc, char *argv[])
   // pota_cpp_lenses.h path
   std::string pota_cpp_lenses_h_path = std::getenv("LENTIL_PATH");
   pota_cpp_lenses_h_path += "/../pota/src/auto_generated_lens_includes/pota_cpp_lenses.h";
-  fmt::format("pota_cpp_lenses.h path: {}\n", pota_cpp_lenses_h_path);
+  fmt::print("pota_cpp_lenses.h path: {}\n", pota_cpp_lenses_h_path);
 
 
   // open file
@@ -171,7 +168,7 @@ int main(int argc, char *argv[])
   }
 
   fclose (pota_cpp_lenses_h);
-  fmt::format("Written pota_cpp_lenses.h\n");
+  fmt::print("Written pota_cpp_lenses.h\n");
 
 
 // =================================================================
@@ -187,10 +184,8 @@ int main(int argc, char *argv[])
 
   for (auto gencode_filename : gencode_outputs){
     // gencode outputs - path
-    std::string gencode_outputs_path = std::getenv("LENTIL_PATH");
-    gencode_outputs_path += "/../pota/src/auto_generated_lens_includes/load_";
-    gencode_outputs_path += gencode_filename;
-    fmt::format("gencode outputs - path: {}\n", gencode_outputs_path);
+    std::string gencode_outputs_path = fmt::format("{}/../pota/src/auto_generated_lens_includes/load_{}", std::getenv("LENTIL_PATH"), gencode_filename);
+    fmt::print("gencode outputs - path: {}\n", gencode_outputs_path);
 
 
     // open file
@@ -228,11 +223,10 @@ int main(int argc, char *argv[])
         std::vector<int> &internal_vector = iterator_map.second;
         for (auto iterator_vector : internal_vector){
 
-          std::string lens_path = std::to_string(lens_database[iterator_map.first]["year"].get<int>());
-          lens_path += "-";
-          lens_path += lens_database[iterator_map.first]["company"].get<std::string>();
-          lens_path += "-";
-          lens_path += lens_database[iterator_map.first]["product-name"].get<std::string>();
+          std::string lens_path = fmt::format("{}-{}-{}", lens_database[iterator_map.first]["year"].get<int>(),
+                                                          lens_database[iterator_map.first]["company"].get<std::string>(),
+                                                          lens_database[iterator_map.first]["product-name"].get<std::string>()
+          );
 
           fprintf(gencode_output_file,"\t#include \"../../../polynomial-optics/database/lenses/%s/%d/code/%s\"\n", lens_path.c_str(), iterator_vector, gencode_filename.c_str());
         }
@@ -242,6 +236,6 @@ int main(int argc, char *argv[])
 
 
     fclose (gencode_output_file);
-    fmt::format("Written %s\n", gencode_filename);
+    fmt::print("Written %s\n", gencode_filename);
   }
 }
