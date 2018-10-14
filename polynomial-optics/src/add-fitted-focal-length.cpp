@@ -1,4 +1,5 @@
 #include "lenssystem.h"
+#include "../../fmt/include/fmt/format.h"
 
 //json parsing
 #include "../ext/json.hpp"
@@ -19,7 +20,8 @@ int main(int argc, char *argv[])
   // check if focal length already is in list
   for (const auto& i : lens_database[id]["polynomial-optics"]){
     if (i == lens_focal_length){
-      printf("Focal length [%d] is already present in fitted focal length list.\n", lens_focal_length);
+      //printf("Focal length [%d] is already present in fitted focal length list.\n", lens_focal_length);
+      fmt::format("Focal length {0} is already present in fitted focal length list.\n", lens_focal_length);
       return 0;
     }
   }

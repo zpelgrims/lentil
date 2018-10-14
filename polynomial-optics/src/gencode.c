@@ -3,6 +3,7 @@
 #include "gencode.h"
 #include "raytrace.h"
 #include "lenssystem.h"
+#include "../../fmt/include/fmt/format.h"
 
 static lens_element_t lenses[50];
 static int lenses_cnt = 0;
@@ -31,16 +32,16 @@ int main(int argc, char **argv)
   std::string pt_sample_aperture_h_path = lens_id_path + "code/pt_sample_aperture.h";
   std::string lt_sample_aperture_h_path = lens_id_path + "code/lt_sample_aperture.h";
   std::string lens_constants_path = lens_id_path + "code/lens_constants.h";
-  printf("Generating code from fitted files: \n");
-  printf("\t fitfile location: %s\n", fitfile_path.c_str());
-  printf("\t aperture fitfile location: %s\n", ap_fitfile_path.c_str());
-  printf("\t pt_evaluate.h location: %s\n", pt_evaluate_h_path.c_str());
-  printf("\t pt_evaluate_jacobian.h location: %s\n", pt_evaluate_jacobian_h_path.c_str());
-  printf("\t pt_evaluate_aperture.h location: %s\n", pt_evaluate_aperture_h_path.c_str());
-  printf("\t pt_evaluate_aperture_jacobian.h location: %s\n", pt_evaluate_aperture_jacobian_h_path.c_str());
-  printf("\t pt_sample_aperture.h location: %s\n", pt_sample_aperture_h_path.c_str());
-  printf("\t lt_sample_aperture.h location: %s\n", lt_sample_aperture_h_path.c_str());
-  printf("\t init.h location: %s\n", lens_constants_path.c_str());
+  fmt::format("Generating code from fitted files: \n");
+  fmt::format("\t fitfile location: {}\n", fitfile_path.c_str());
+  fmt::format("\t aperture fitfile location: {}\n", ap_fitfile_path.c_str());
+  fmt::format("\t pt_evaluate.h location: {}\n", pt_evaluate_h_path.c_str());
+  fmt::format("\t pt_evaluate_jacobian.h location: {}\n", pt_evaluate_jacobian_h_path.c_str());
+  fmt::format("\t pt_evaluate_aperture.h location: {}\n", pt_evaluate_aperture_h_path.c_str());
+  fmt::format("\t pt_evaluate_aperture_jacobian.h location: {}\n", pt_evaluate_aperture_jacobian_h_path.c_str());
+  fmt::format("\t pt_sample_aperture.h location: {}\n", pt_sample_aperture_h_path.c_str());
+  fmt::format("\t lt_sample_aperture.h location: {}\n", lt_sample_aperture_h_path.c_str());
+  fmt::format("\t init.h location: {}\n", lens_constants_path.c_str());
 
   std::string json_database_location = "";
   json_database_location += std::getenv("LENTIL_PATH");

@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <map>
+#include "../../fmt/include/fmt/format.h"
 
 //json parsing
 #include "../ext/json.hpp"
@@ -63,7 +64,7 @@ int main(int argc, char *argv[])
 
 
   // print lenses
-  printf("\nList of implemented free lenses: \n");
+  fmt::format("\nList of implemented free lenses: \n");
   for (auto it : free_lens_ids) {
     std::cout << "\t" << it.first << " : #";
     std::map<std::string, std::vector<int>> &internal_map = it.second;
@@ -78,7 +79,7 @@ int main(int argc, char *argv[])
         }
     }
   }
-  printf("\n");
+  fmt::format("\n");
 
 
 // =================================================================
@@ -87,7 +88,7 @@ int main(int argc, char *argv[])
   // pota_h_lenses.h path
   std::string pota_h_lenses_h_path = std::getenv("LENTIL_PATH");
   pota_h_lenses_h_path += "/../pota/src/auto_generated_lens_includes/pota_h_lenses.h";
-  printf("pota_h_lenses.h path: %s\n", pota_h_lenses_h_path.c_str());
+  fmt::format("pota_h_lenses.h path: %s\n", pota_h_lenses_h_path);
 
 
   // open file
@@ -133,7 +134,7 @@ int main(int argc, char *argv[])
   // pota_cpp_lenses.h path
   std::string pota_cpp_lenses_h_path = std::getenv("LENTIL_PATH");
   pota_cpp_lenses_h_path += "/../pota/src/auto_generated_lens_includes/pota_cpp_lenses.h";
-  printf("pota_cpp_lenses.h path: %s\n", pota_cpp_lenses_h_path.c_str());
+  fmt::format("pota_cpp_lenses.h path: {}\n", pota_cpp_lenses_h_path);
 
 
   // open file
@@ -170,7 +171,7 @@ int main(int argc, char *argv[])
   }
 
   fclose (pota_cpp_lenses_h);
-  printf("Written pota_cpp_lenses.h\n");
+  fmt::format("Written pota_cpp_lenses.h\n");
 
 
 // =================================================================
@@ -189,7 +190,7 @@ int main(int argc, char *argv[])
     std::string gencode_outputs_path = std::getenv("LENTIL_PATH");
     gencode_outputs_path += "/../pota/src/auto_generated_lens_includes/load_";
     gencode_outputs_path += gencode_filename;
-    printf("gencode outputs - path: %s\n", gencode_outputs_path.c_str());
+    fmt::format("gencode outputs - path: {}\n", gencode_outputs_path);
 
 
     // open file
@@ -241,6 +242,6 @@ int main(int argc, char *argv[])
 
 
     fclose (gencode_output_file);
-    printf("Written %s\n", gencode_filename.c_str());
+    fmt::format("Written %s\n", gencode_filename);
   }
 }

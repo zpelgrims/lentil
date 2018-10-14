@@ -1,5 +1,6 @@
 #include "lenssystem.h"
 #include "raytrace.h"
+#include "../../fmt/include/fmt/format.h"
 
 //json parsing
 #include "../ext/json.hpp"
@@ -50,13 +51,13 @@ int main(int argc, char *argv[]){
   std::ifstream in_json(lens_database_path.c_str());
   json lens_database = json::parse(in_json);
 
-  printf("Focal length supplied by patent: %f\n", lens_database[id]["focal-length-mm-patent"].get<float>());
-  printf("Focal length raytraced: %f\n", raytraced_focal_length);
+  fmt::format("Focal length supplied by patent: {0}\n", lens_database[id]["focal-length-mm-patent"].get<float>());
+  fmt::format("Focal length raytraced: {}\n", raytraced_focal_length);
 
   lens_database[id]["focal-length-mm-raytraced"] = raytraced_focal_length;
 
   std::ofstream out_json(lens_database_path);
   out_json << std::setw(2) << lens_database << std::endl;
 
-  printf("Written raytraced focal length [%f] for id [%s] to database\n", raytraced_focal_length, id);
+  fmt::format("Written raytraced focal length {} for id {} to database\n", raytraced_focal_length, id);
 }

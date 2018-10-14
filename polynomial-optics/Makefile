@@ -8,7 +8,7 @@ endif
 
 
 
-CXXFLAGS=-Wall -D_GNU_SOURCE -fopenmp -std=c++11
+CXXFLAGS=-Wall -D_GNU_SOURCE -fopenmp -std=c++11 -DFMT_HEADER_ONLY
 ifeq ($(OS), Darwin)
 	CXXFLAGS += -I/usr/local/include/cairo/ -L/usr/local/lib
 endif
@@ -22,7 +22,7 @@ ifeq ($(OS), Linux)
 endif
 
 #debug symbols for debugging with gdb
-OPTFLAGS += -g
+#OPTFLAGS += -g
 
 
 LDFLAGS=-lm

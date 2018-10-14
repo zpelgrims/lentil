@@ -19,6 +19,8 @@
 #include <fstream>
 using json = nlohmann::json;
 
+#include "../../fmt/include/fmt/format.h"
+
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
@@ -645,10 +647,10 @@ int main(int argc, char *argv[])
       std::string fit_location_exitpupil = find_lens_id_location(id, lens_focal_length);
       fit_location_exitpupil += "fitted/exitpupil.fit";
       if(poly_system_read(&poly, fit_location_exitpupil.c_str())){
-        printf("[view] could not read poly system `%s'\n", fit_location_exitpupil.c_str());
+        fmt::format("[view] could not read poly system '{}'\n", fit_location_exitpupil.c_str());
       }
     } else {
-      printf("[view] no exitpupil poly system focal length %d\n", lens_focal_length);
+      fmt::format("[view] no exitpupil poly system focal length {}\n", lens_focal_length);
     }
   }
   for (const auto& i : lens_database[id]["polynomial-optics-aperture"]){
@@ -656,10 +658,10 @@ int main(int argc, char *argv[])
       std::string fit_location_aperture = find_lens_id_location(id, lens_focal_length);
       fit_location_aperture += "fitted/aperture.fit";
       if(poly_system_read(&poly_aperture, fit_location_aperture.c_str())){
-        printf("[view] could not read poly system `%s'\n", fit_location_aperture.c_str());
+        fmt::format("[view] could not read poly system '{}'\n", fit_location_aperture.c_str());
       }
     } else {
-      printf("[view] no aperture poly system focal length %d\n", lens_focal_length);
+      fmt::format("[view] no aperture poly system focal length {}\n", lens_focal_length);
     }
   }
 

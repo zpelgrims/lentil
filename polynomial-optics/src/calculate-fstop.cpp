@@ -1,6 +1,7 @@
 #include "lenssystem.h"
 #include "raytrace.h"
 #include <string>
+#include "../../fmt/include/fmt/format.h"
 
 //json parsing
 #include "../ext/json.hpp"
@@ -97,22 +98,22 @@ int main(int argc, char *argv[])
     cnt += 1;
   }
 
-  printf("Last valid exit vertex position: %f, %f\n", positiondata[0], positiondata[1]);
-  printf("Failed at try %d of 1000\n", cnt);
+  fmt::format("Last valid exit vertex position: [{}, {}]\n", positiondata[0], positiondata[1]);
+  fmt::format("Failed at try {} of 1000\n", cnt);
 
   float theta = std::atan(positiondata[1] / positiondata[0]);
   float fstop = 1.0 / (std::sin(theta)* 2.0);
 
   if ((fstop != fstop) || (fstop == 0.0)){
-    printf("fstop is an incorrect value, aborting: fstop %f\n", fstop);
+    fmt::format("f-stop has an incorrect value [{}], aborting\n", fstop);
     return 0;
   }
 
 
   lens_database[id]["fstop"] = fstop;
-  printf("Added calculated f-stop of [%f] to lens database.\n", fstop);
+  fmt::format("Added calculated f-stop [{}] to lens database.\n", fstop);
   lens_database[id]["max-fstop-aperture-radius"] = prev_best_aperture_radius;
-  printf("Added maximum aperture radius of [%f] to lens database.\n", prev_best_aperture_radius);
+  fmt::format("Added maximum aperture radius [{}] to lens database.\n", prev_best_aperture_radius);
 
   std::ofstream out_json(lens_database_path);
   out_json << std::setw(2) << lens_database << std::endl;

@@ -1,5 +1,6 @@
 #include "lenssystem.h"
 #include <string>
+#include "../../fmt/include/fmt/format.h"
 
 //json parsing
 #include "../ext/json.hpp"
@@ -51,7 +52,7 @@ void create_public_json(json lens_database, std::string lens_public_database_pat
   std::ofstream out_json(lens_public_database_path);
   out_json << std::setw(2) << lens_database << std::endl;
 
-  printf("Written public lens database to location: %s\n", lens_public_database_path.c_str());
+  fmt::format("Written public lens database to location: {}\n", lens_public_database_path.c_str());
 }
 
 
