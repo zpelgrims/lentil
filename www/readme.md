@@ -101,4 +101,4 @@ payment popup.
 - [x] Add icons to lenses to mark ownership
 - [x] Add icons to lenses to mark being in cart
 - [ ] Add icons for new lenses
-- [ ] Underline current page in navbar
+- [x] Underline current page in navbar

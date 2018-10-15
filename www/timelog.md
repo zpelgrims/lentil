@@ -108,9 +108,10 @@
   - Allow user to remove a lens from their cart
   - Remove pay page and pay directly from cart page
 
-- 10/15/18 9:15-
+- 10/15/18 9:15-12:00
   - Dynamically display ownership icons
   - Add middleware to prevent user from adding an item 
   to their cart that they already have in their cart or own
   - Re-style flash messages
   - Setup flash messages
+  - Undeline current page in navbar

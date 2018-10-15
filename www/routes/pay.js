@@ -22,7 +22,7 @@ router.get('/cart', middleware.isLoggedIn, (req, res) => {
         });
       });
       let amount = 500 * req.user.cart.length;
-      res.render('cart', {lenses: lensArray, pubkey: keys.stripe.pubkey, amount: amount});
+      res.render('cart', {lenses: lensArray, pubkey: keys.stripe.pubkey, amount: amount, page: 'cart'});
     }
   });
 });
