@@ -101,9 +101,12 @@
 
 - 10/12/18 10:00-10:45
            11:30-12:15
-           1:30-
+           1:30-2:30
   - Setup flash messages
   - Style cart page
   - Update readme
   - Allow user to remove a lens from their cart
   - Remove pay page and pay directly from cart page
+
+- 10/15/18 9:15-
+  - Dynamically display ownership icons

@@ -60,7 +60,7 @@ This is the folder I'd like you to push your work to. Please commit as much as y
 - [x] Remove pay page and simply run through checkout button with 
 payment popup.	
 
-- [ ] Display ownership icons dynamically
+- [x] Display ownership icons dynamically
 
 - [ ] Make git version log dynamic
 
