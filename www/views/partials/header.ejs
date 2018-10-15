@@ -12,5 +12,15 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-
   <% include navbar %>
+
+  <% if(error && error.length > 0) { %>
+    <div class="flash flash--error" role="alert">
+      <%= error %>
+    </div>
+  <% } %>
+  <% if(success && success.length > 0) { %>
+    <div class="flash flash--success" role="alert">
+      <%= success %>
+    </div>
+  <% } %>

@@ -112,3 +112,4 @@
   - Dynamically display ownership icons
   - Add middleware to prevent user from adding an item 
   to their cart that they already have in their cart or own
+  - Re-style flash messages

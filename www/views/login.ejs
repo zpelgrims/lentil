@@ -2,11 +2,6 @@
 
 <div class="container">
   <div class="login">
-    <% if(message && message.length > 0) { %>
-      <div class="alert alert-danger text-center" role="alert">
-        <%= message %>
-      </div>
-    <% } %>
     <form action="/login" method="POST">
       <div class="login__well">
         <h1 class="login__title">login</h1>

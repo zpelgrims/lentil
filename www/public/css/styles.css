@@ -381,3 +381,32 @@ input:-webkit-autofill {
     transform: translateY(0); }
   100% {
     transform: translateY(-2rem); } }
+
+@keyframes slideinout {
+  0% {
+    opacity: 0;
+    transform: translateX(500px); }
+  10% {
+    opacity: 1;
+    transform: translateX(0); }
+  90% {
+    opacity: 1;
+    transform: translateX(0); }
+  100% {
+    opacity: 0;
+    transform: translateX(500px); } }
+
+.flash {
+  position: fixed;
+  top: 3rem;
+  right: 3rem;
+  text-align: center;
+  padding: 2rem 4rem;
+  font-weight: 500;
+  color: white;
+  border-radius: 5px;
+  animation: 10s slideinout forwards; }
+  .flash--error {
+    background: #d85050; }
+  .flash--success {
+    background: #00B233; }

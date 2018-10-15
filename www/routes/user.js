@@ -29,7 +29,7 @@ router.post('/register', (req, res) => {
 
 // Login page
 router.get('/login', (req, res) => {
-  res.render('login', {message: req.flash('error')});
+  res.render('login');
 });
 
 // Login logic

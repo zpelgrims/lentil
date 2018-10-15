@@ -35,3 +35,22 @@
     transform: translateY(-2rem);
   }
 }
+
+@keyframes slideinout {
+  0% {
+    opacity: 0;
+    transform: translateX(500px);
+  }
+  10% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  90% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(500px);
+  }
+}

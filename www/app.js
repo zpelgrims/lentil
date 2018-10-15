@@ -49,6 +49,13 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+// Add flash message handler to all pages
+app.use((req, res, next) => {
+  res.locals.error = req.flash('error');
+  res.locals.success = req.flash('success');
+  next();
+});
+
 // Require route files
 const indexRoutes = require('./routes/index');
 const userRoutes = require('./routes/user');

@@ -1,0 +1,19 @@
+.flash {
+  position: fixed;
+  top: 3rem;
+  right: 3rem;
+  text-align: center;
+  padding: 2rem 4rem;
+  font-weight: 500;
+  color: white;
+  border-radius: 5px;
+  animation: 10s slideinout forwards;
+
+  &--error {
+    background: $lowlight-color;
+  }
+
+  &--success {
+    background: $complimentary-color;
+  }
+}
