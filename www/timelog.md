@@ -110,3 +110,5 @@
 
 - 10/15/18 9:15-
   - Dynamically display ownership icons
+  - Add middleware to prevent user from adding an item 
+  to their cart that they already have in their cart or own

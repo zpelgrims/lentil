@@ -21,4 +21,23 @@ middlewareObj.isValidId = (req, res, next) => {
   });
 }
 
+middlewareObj.isCartable = (req, res, next) => {
+  if(req.isAuthenticated) {
+    Lens.findById(req.params.id, (err, lens) => {
+      if(err) {
+        console.log(err);
+      } else {
+        if(req.user.cart.indexOf(lens._id) > -1 || req.user.lenses.indexOf(lens._id) > -1) {
+          console.log('You either already own this or have it in your cart');
+          res.redirect('/');
+        } else {
+          return next();
+        }
+      }
+    });
+  } else {
+    console.log('User not logged in');
+  }
+}
+
 module.exports = middlewareObj;

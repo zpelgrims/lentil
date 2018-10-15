@@ -53,8 +53,8 @@ This is the folder I'd like you to push your work to. Please commit as much as y
 - [x] Add flash messages for UI
 
 - [ ] Add more middleware
-	- [ ] Must not be able to add the same lens to cart more than once
-	- [ ] Must not add lens to cart if user already owns it
+	- [x] Must not be able to add the same lens to cart more than once
+	- [x] Must not add lens to cart if user already owns it
 	- [ ] 
 
 - [x] Remove pay page and simply run through checkout button with 

@@ -83,18 +83,6 @@
             <img src="<%= lens.image %>" alt="<%= lens.image %>">
           </div>
           <h3 class="lense__card__title"><%= lens.company %> | <%= lens.product_name %> | <%= lens.year %></h3>
-    
-          <% if(user) { %>
-            <% if(user.lenses.indexOf(lens._id) == -1) { %>
-              <% if(user.cart.indexOf(lens._id) == -1) { %>
-                <a href="/<%= lens._id %>/add">Add to cart</a>
-              <% } else { %>
-                <p>Added to cart</p>
-              <% } %>
-            <% } else { %>
-              <p>You own this!</p>
-            <% } %>
-          <% } %>
         </div>
         <div class="exp-lense">
           <div class="exp-lense__card exp-lense__card--<%= [i] %>" id="expcard-<%= [i] %>">
@@ -118,7 +106,17 @@
                   <span class="exp-lense__card__info__prop--key">notes</span>
                   <span class="exp-lenses__card__info__prop--val"><%= lens.notes %></span>
                 </div>
-                <a href="/<%= lens._id %>/add" class="button">add to cart</a>
+                <% if(user) { %>
+                  <% if(user.cart.indexOf(lens._id) > -1) { %>
+                    <button class="button">added to cart</button>
+                  <% } else if(user.lenses.indexOf(lens._id) > -1) { %>
+                    <button class="button">you own this</button>
+                  <% } else { %>
+                    <a href="/<%= lens._id %>/add" class="button">add to cart</a>
+                  <% } %>
+                <% } else { %>
+                  <a href="/<%= lens._id %>/add" class="button">add to cart</a>
+                <% } %>
               </div>
             </div>
             <div class="twentytwenty-container">

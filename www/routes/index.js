@@ -52,7 +52,7 @@ router.get('/', (req, res) => {
   });
 });
 
-router.get('/:id/add', middleware.isLoggedIn, (req, res) => {
+router.get('/:id/add', middleware.isLoggedIn, middleware.isCartable, (req, res) => {
   Lens.findById(req.params.id, (err, lens) => {
     if(err) {
       console.log(err);
