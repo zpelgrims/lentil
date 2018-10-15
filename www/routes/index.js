@@ -60,7 +60,8 @@ router.get('/:id/add', middleware.isLoggedIn, middleware.isCartable, (req, res) 
       req.user.cart.push(lens._id);
       req.user.save();
     }
-    res.redirect('/');
+    req.flash('success', "Lens successfully added to cart.");
+    res.redirect('back');
   });
 });
 

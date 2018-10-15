@@ -13,7 +13,7 @@ middlewareObj.isLoggedIn = (req, res, next) => {
 middlewareObj.isValidId = (req, res, next) => {
   Lens.findById(req.params.id, (err, lens) => {
     if(err) {
-      console.log('Must be a valid lens id');
+      req.flash('error', "This lens doesn't seem to exist.")
       res.redirect('back');
     } else {
       return next();
@@ -28,7 +28,7 @@ middlewareObj.isCartable = (req, res, next) => {
         console.log(err);
       } else {
         if(req.user.cart.indexOf(lens._id) > -1 || req.user.lenses.indexOf(lens._id) > -1) {
-          console.log('You either already own this or have it in your cart');
+          req.flash('error', "It looks like you either own this lens already or it's already in your cart.");
           res.redirect('/');
         } else {
           return next();

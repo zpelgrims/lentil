@@ -405,6 +405,7 @@ input:-webkit-autofill {
   font-weight: 500;
   color: white;
   border-radius: 5px;
+  text-transform: lowercase;
   animation: 10s slideinout forwards; }
   .flash--error {
     background: #d85050; }

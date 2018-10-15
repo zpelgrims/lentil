@@ -32,6 +32,7 @@ router.get('/cart/:id/delete', (req, res) => {
   Lens.findById(req.params.id, (err, lens) => {
     if(err) {
       console.log(err);
+      req.flash('error', "Oops. Something went wrong.");
     } else {
       let i = req.user.cart.indexOf(lens._id);
       console.log(i);
@@ -39,6 +40,7 @@ router.get('/cart/:id/delete', (req, res) => {
         req.user.cart.splice(i, 1);
         req.user.save();
       }
+      req.flash('success', "Lens successfully removed from your cart.");
       res.redirect('back');
     }
   });
@@ -68,7 +70,7 @@ router.post('/charge', middleware.isLoggedIn, (req, res) => {
     req.user.cart = [];
     // Save user model
     req.user.save();
-
+    req.flash('success', "Lens successfully purchased.");
     res.redirect('/');
   });
 });

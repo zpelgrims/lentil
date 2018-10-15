@@ -20,8 +20,11 @@ router.post('/register', (req, res) => {
       console.log(err);
       return res.render('register');
     }
-    passport.authenticate('local')(req, res, () => {
-      console.log('Successfully registered!');
+    passport.authenticate('local', {
+      failureRedirect: '/register',
+      failureFlash: true
+    })(req, res, () => {
+      req.flash('success', "Registration successful.");
       res.redirect('/');
     });
   });
@@ -34,8 +37,10 @@ router.get('/login', (req, res) => {
 
 // Login logic
 router.post('/login', passport.authenticate('local', {
-  failureRedirect: '/login'
+  failureRedirect: '/login',
+  failureFlash: true
   }), (req, res) => {
+    req.flash('success', "Login successful.");
     res.redirect(req.session.returnTo || '/');
     delete req.session.returnTo;
 });
@@ -43,6 +48,7 @@ router.post('/login', passport.authenticate('local', {
 // Logout logic
 router.get('/logout', (req, res, next) => {
   req.logout();
+  req.flash('success', "Logout successful.");
   res.redirect('/');
 });
 
