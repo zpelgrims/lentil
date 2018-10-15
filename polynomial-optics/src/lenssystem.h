@@ -6,6 +6,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "../../fmt/include/fmt/format.h"
 
 
 //json parsing
@@ -64,6 +65,14 @@ float lens_get_aperture_pos(lens_element_t *l, int num, float zoom)
   return pos;
 }
 
+int lens_get_aperture_element(const lens_element_t *l, int lenses_cnt) {
+  for (int k = 0; k < lenses_cnt - 1; k++) {
+    if (!strcasecmp(l[k].material, "iris")) {
+      return k;
+    }
+  }
+}
+
 
 // read json database
 int lens_configuration(lens_element_t *l, const char *id, int target_focal_length)
@@ -71,7 +80,7 @@ int lens_configuration(lens_element_t *l, const char *id, int target_focal_lengt
   std::string lens_database_path = std::getenv("LENTIL_PATH");
   std::string polynomial_optics = "polynomial-optics";
   if (!(lens_database_path.find(polynomial_optics) != std::string::npos)) {
-    printf("LENTIL_PATH has not set correctly! Point it to the polynomial-optics folder. \n");
+    fmt::print("LENTIL_PATH has not set correctly! Point it to the polynomial-optics folder. \n");
     return -1;
   }
 
@@ -116,10 +125,10 @@ int lens_configuration(lens_element_t *l, const char *id, int target_focal_lengt
       }
 
       strcpy(lens.material, json_lens_element["material"].get<std::string>().c_str());
-      if (strcmp(lens.material, "air") == 0){
+      if (!strcasecmp(lens.material, "air")){
         lens.ior = 1.0f;
         lens.vno = 0.0f;
-      } else if (strcmp(lens.material, "iris") == 0){
+      } else if (!strcasecmp(lens.material, "iris")){
         lens.ior = last_ior;
         lens.vno = last_vno;
       } else {

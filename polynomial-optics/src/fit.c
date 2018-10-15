@@ -10,6 +10,8 @@
 #include <float.h>
 #include <assert.h>
 
+#include "../../fmt/include/fmt/format.h"
+
 #include <cstdlib>
 
 #define M_PI 3.14159265358979323846  /* pi */
@@ -51,9 +53,9 @@ int main(int argc, char *argv[])
   std::string lens_id_path = find_lens_id_location(id, lens_focal_length);
   std::string fitfile_path = lens_id_path + "fitted/exitpupil.fit";
   std::string ap_fitfile_path = lens_id_path + "fitted/aperture.fit";
-  printf("Starting fitting: \n");
-  printf("\t exitpupil.fit location: %s\n", fitfile_path.c_str());
-  printf("\t aperture.fit location: %s\n", ap_fitfile_path.c_str());
+  fmt::format("Starting fitting: \n");
+  fmt::format("\t exitpupil.fit location: {}\n", fitfile_path.c_str());
+  fmt::format("\t aperture.fit location: {}\n", ap_fitfile_path.c_str());
 
   // load generic 1233-coefficient degree 9 polynomial template with all zero coeffs:
   poly_system_t poly, poly_ap;

@@ -3,6 +3,7 @@
 #include "gencode.h"
 #include "raytrace.h"
 #include "lenssystem.h"
+#include "../../fmt/include/fmt/format.h"
 
 static lens_element_t lenses[50];
 static int lenses_cnt = 0;
@@ -31,31 +32,26 @@ int main(int argc, char **argv)
   std::string pt_sample_aperture_h_path = lens_id_path + "code/pt_sample_aperture.h";
   std::string lt_sample_aperture_h_path = lens_id_path + "code/lt_sample_aperture.h";
   std::string lens_constants_path = lens_id_path + "code/lens_constants.h";
-  printf("Generating code from fitted files: \n");
-  printf("\t fitfile location: %s\n", fitfile_path.c_str());
-  printf("\t aperture fitfile location: %s\n", ap_fitfile_path.c_str());
-  printf("\t pt_evaluate.h location: %s\n", pt_evaluate_h_path.c_str());
-  printf("\t pt_evaluate_jacobian.h location: %s\n", pt_evaluate_jacobian_h_path.c_str());
-  printf("\t pt_evaluate_aperture.h location: %s\n", pt_evaluate_aperture_h_path.c_str());
-  printf("\t pt_evaluate_aperture_jacobian.h location: %s\n", pt_evaluate_aperture_jacobian_h_path.c_str());
-  printf("\t pt_sample_aperture.h location: %s\n", pt_sample_aperture_h_path.c_str());
-  printf("\t lt_sample_aperture.h location: %s\n", lt_sample_aperture_h_path.c_str());
-  printf("\t init.h location: %s\n", lens_constants_path.c_str());
+  fmt::print("Generating code from fitted files: \n");
+  fmt::print("\t fitfile location: {}\n", fitfile_path);
+  fmt::print("\t aperture fitfile location: {}\n", ap_fitfile_path);
+  fmt::print("\t pt_evaluate.h location: {}\n", pt_evaluate_h_path);
+  fmt::print("\t pt_evaluate_jacobian.h location: {}\n", pt_evaluate_jacobian_h_path);
+  fmt::print("\t pt_evaluate_aperture.h location: {}\n", pt_evaluate_aperture_h_path);
+  fmt::print("\t pt_evaluate_aperture_jacobian.h location: {}\n", pt_evaluate_aperture_jacobian_h_path);
+  fmt::print("\t pt_sample_aperture.h location: {}\n", pt_sample_aperture_h_path);
+  fmt::print("\t lt_sample_aperture.h location: {}\n", lt_sample_aperture_h_path);
+  fmt::print("\t init.h location: {}\n", lens_constants_path);
 
-  std::string json_database_location = "";
-  json_database_location += std::getenv("LENTIL_PATH");
-  json_database_location += "/database/lenses.json";
+  std::string json_database_location = fmt::format("{}/database/lenses.json", std::getenv("LENTIL_PATH"));
   std::ifstream in_json(json_database_location);
   json lens_database = json::parse(in_json);
 
-  std::string case_lens_name = dash_to_underscore(lens_database[id]["company"].get<std::string>());
-  case_lens_name += "_";
-  case_lens_name += dash_to_underscore(lens_database[id]["product-name"].get<std::string>());
-  case_lens_name += "_";
-  case_lens_name += std::to_string(lens_database[id]["year"].get<int>());
-  case_lens_name += "_";
-  case_lens_name += std::to_string(lens_focal_length);
-  case_lens_name += "mm";
+  std::string case_lens_name = fmt::format("{}_{}_{}_{}mm", lens_database[id]["company"].get<std::string>(),
+                                                            dash_to_underscore(lens_database[id]["product-name"].get<std::string>()),
+                                                            lens_database[id]["year"].get<int>(),
+                                                            lens_focal_length
+  );
 
   poly_system_t poly, poly_ap;
   if(poly_system_read(&poly, fitfile_path.c_str()) || poly_system_read(&poly_ap, ap_fitfile_path.c_str()))
@@ -116,23 +112,26 @@ int main(int argc, char **argv)
   fprintf(f, "camera->lens_name = \"%smm\"; // descriptive name of the lens\n", lens_name.c_str());
   fprintf(f, "camera->lens_outer_pupil_radius = %f; // scene facing radius in mm\n", lenses[0].housing_radius);
   fprintf(f, "camera->lens_inner_pupil_radius = %f; // sensor facing radius in mm\n", lenses[lenses_cnt-1].housing_radius);
+  fprintf(f, "camera->lens_inner_pupil_curvature_radius = %f; // radius of curvature of the inner pupil\n", lenses[lenses_cnt-1].lens_radius);
+  fprintf(f, "camera->lens_outer_pupil_curvature_radius = %f; // radius of curvature of the outer pupil\n", lenses[0].lens_radius);
   fprintf(f, "camera->lens_length = %f; // overall lens length in mm\n", lens_length);
   fprintf(f, "camera->lens_back_focal_length = %f; // approximate lens back focal length in mm\n", bfl);
   fprintf(f, "camera->lens_effective_focal_length = %f; // effective focal length in mm\n", static_cast<float>(lens_focal_length));
   fprintf(f, "camera->lens_aperture_pos = %f; // distance aperture -> outer pupil in mm\n", aperture_pos);
   fprintf(f, "camera->lens_aperture_housing_radius = %f; // lens housing radius at the aperture\n", aperture_housing_radius);
-  fprintf(f, "camera->lens_outer_pupil_curvature_radius = %f; // radius of curvature of the outer pupil\n", lenses[0].lens_radius);
   fprintf(f, "camera->lens_outer_pupil_geometry = \"%s\"; // geometry of outer pupil\n", lenses[0].geometry);
+  fprintf(f, "camera->lens_inner_pupil_geometry = \"%s\"; // geometry of inner pupil\n", lenses[lenses_cnt-1].geometry);
   fprintf(f, "camera->lens_fstop = %f; // effective_focal_length/(2*aperture_housing_radius)\n", lens_database[id]["fstop"].get<float>());
-  
+  fprintf(f, "camera->lens_aperture_radius_at_fstop = %f; // aperture radius at smallest fstop\n", lens_database[id]["max-fstop-aperture-radius"].get<float>());
+
   // calculate approximate fov for 35mm sensor
   float sensor[] = {22.f, 0, (lenses[lenses_cnt-1].housing_radius-22.f)/bfl, 0, .55};
   float out[] = {0, 0, 0, 0, 0};
   poly_system_evaluate(&poly, sensor, out, 100);
   float wspos[3], wsdir[3];
 
-  if (strcmp(lenses[0].geometry, "cyl-y") == 0) cylinderToCs(out, out+2, wspos, wsdir, 0, lenses[0].lens_radius, true);
-  else if (strcmp(lenses[0].geometry, "cyl-x") == 0) cylinderToCs(out, out+2, wspos, wsdir, 0, lenses[0].lens_radius, false);
+  if (!strcasecmp(lenses[0].geometry, "cyl-y")) cylinderToCs(out, out+2, wspos, wsdir, 0, lenses[0].lens_radius, true);
+  else if (!strcasecmp(lenses[0].geometry, "cyl-x")) cylinderToCs(out, out+2, wspos, wsdir, 0, lenses[0].lens_radius, false);
   else sphereToCs(out, out+2, wspos, wsdir, 0, lenses[0].lens_radius);
   
   raytrace_normalise(wsdir);

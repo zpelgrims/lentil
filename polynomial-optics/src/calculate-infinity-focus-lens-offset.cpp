@@ -1,5 +1,6 @@
 #include "lenssystem.h"
 #include "raytrace.h"
+#include "../../fmt/include/fmt/format.h"
 
 //json parsing
 #include "../ext/json.hpp"
@@ -79,7 +80,7 @@ int main(int argc, char *argv[]){
   }
 
   if (optimal_thickness <= 0.001f){
-    printf("Raytraced optimal offset is [%f], seems wrong.. aborting.\n", optimal_thickness);
+    fmt::print("Raytraced optimal offset is [{}], seems wrong.. aborting.\n", optimal_thickness);
     return 0;
   }
 
@@ -90,13 +91,13 @@ int main(int argc, char *argv[]){
   std::ifstream in_json(lens_database_path.c_str());
   json lens_database = json::parse(in_json);
 
-  printf("Last lens element thickness supplied by patent: %f\n", lens_database[id]["optical-elements-patent"][lenses_cnt-1]["thickness"].get<float>());
-  printf("Last lens element thickness raytraced: %f\n", optimal_thickness);
+  fmt::print("Last lens element thickness supplied by patent: {}\n", lens_database[id]["optical-elements-patent"][lenses_cnt-1]["thickness"].get<float>());
+  fmt::print("Last lens element thickness raytraced: {}\n", optimal_thickness);
 
   // should i create separate database entry to preserve the original thickness..?
   lens_database[id]["optical-elements-patent"][lenses_cnt-1]["thickness"] = optimal_thickness;
 
   std::ofstream out_json(lens_database_path);
   out_json << std::setw(2) << lens_database << std::endl;
-  printf("Written optimal offset [%f] for id [%s] to database\n", optimal_thickness, id);
+  fmt::print("Written optimal offset [{}] for id [{}] to database\n", optimal_thickness, id);
 }

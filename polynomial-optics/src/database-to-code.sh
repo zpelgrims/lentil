@@ -16,6 +16,9 @@ echo "FOCAL LENGTH: " $LENS_FOCAL_LENGTH
 read LENS_NAME <<< $($LENTIL_PATH/bin/print-lens-path $LENS_ID $LENS_FOCAL_LENGTH $i) &&
 echo "LENS_NAME: " $LENS_NAME &&
 
+# calculate fstop and add it to the database
+$LENTIL_PATH/bin/calculate-fstop $LENS_ID &&
+
 # generate empty polynomial
 mkdir -p -v $LENTIL_PATH/data/tmp/$LENS_ID/$LENS_FOCAL_LENGTH/ &&
 $LENTIL_PATH/bin/genpoly 11 $LENTIL_PATH/data/tmp/$LENS_ID/$LENS_FOCAL_LENGTH/sorted.poly &&
