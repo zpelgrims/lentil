@@ -115,3 +115,6 @@
   - Re-style flash messages
   - Setup flash messages
   - Undeline current page in navbar
+
+- 10/16/18 9:30-
+  - Setup empty cart page

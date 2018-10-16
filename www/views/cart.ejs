@@ -16,15 +16,21 @@
         </div>
       <% }); %>
     </div>
-    <form action="/charge" method="POST">
-      <script
-        src="https://checkout.stripe.com/checkout.js" 
-        class="stripe-button"
-        data-key="<%= pubkey %>"
-        data-amount="<%= amount %>"
-        data-locale="auto">
-      </script>
-    </form>
+    <% if(user.cart.length == 0) { %>
+      <h3>there doesn't appear to be anything here... <br>
+      add some items to your cart <a href="/">here.</a></h3>
+    <% } %>
+    <% if(user.cart.length > 0) { %>
+      <form action="/charge" method="POST">
+        <script
+          src="https://checkout.stripe.com/checkout.js" 
+          class="stripe-button"
+          data-key="<%= pubkey %>"
+          data-amount="<%= amount %>"
+          data-locale="auto">
+        </script>
+      </form>
+    <% } %>
   </div>
 </div>
 
