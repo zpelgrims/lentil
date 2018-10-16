@@ -18,6 +18,7 @@ router.post('/register', (req, res) => {
     }), req.body.password, (err, user) => {
     if(err) {
       console.log(err);
+      req.flash('error', 'A user with the given username or email already exists.');
       return res.render('register');
     }
     passport.authenticate('local', {

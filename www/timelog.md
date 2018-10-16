@@ -118,3 +118,5 @@
 
 - 10/16/18 9:30-
   - Setup empty cart page
+  - Some basic styling
+  - Setup flash message for registration failure

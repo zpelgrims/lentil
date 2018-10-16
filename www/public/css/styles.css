@@ -99,6 +99,10 @@ hr {
   .button:active {
     background-color: #e87979;
     text-decoration: none; }
+  .button--inactive {
+    filter: grayscale(75%); }
+    .button--inactive:hover {
+      background-color: #e87979; }
 
 .content {
   min-height: 100vh; }

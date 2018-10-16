@@ -63,6 +63,14 @@ hr {
     background-color: $highlight-color;
     text-decoration: none;
   }
+
+  &--inactive {
+    filter: grayscale(75%);
+
+    &:hover {
+      background-color: $highlight-color;
+    }
+  }
 }
 
 .content {

@@ -108,9 +108,9 @@
                 </div>
                 <% if(user) { %>
                   <% if(user.cart.indexOf(lens._id) > -1) { %>
-                    <button class="button">added to cart</button>
+                    <button class="button button--inactive">added to cart</button>
                   <% } else if(user.lenses.indexOf(lens._id) > -1) { %>
-                    <button class="button">you own this</button>
+                    <button class="button button--inactive">you own this</button>
                   <% } else { %>
                     <a href="/<%= lens._id %>/add" class="button">add to cart</a>
                   <% } %>

@@ -52,7 +52,7 @@ This is the folder I'd like you to push your work to. Please commit as much as y
 
 - [x] Add flash messages for UI
 
-- [ ] Setup flash message for registration failure
+- [x] Setup flash message for registration failure
 
 - [ ] Add more middleware
 	- [x] Must not be able to add the same lens to cart more than once
