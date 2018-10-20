@@ -103,4 +103,4 @@ payment popup.
 - [x] Add icons to lenses to mark being in cart
 - [ ] Add icons for new lenses
 - [x] Underline current page in navbar
-- [ ] Restyle login and register boxes
+- [x] Restyle login and register boxes

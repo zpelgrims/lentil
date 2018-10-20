@@ -127,3 +127,4 @@
 - 10/20/18 1:30-
   - Save filter options on page reload
   - Add x button to hide flash messages
+  - Restyle login and register pages
