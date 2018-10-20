@@ -400,6 +400,13 @@ input:-webkit-autofill {
     opacity: 0;
     transform: translateX(500px); } }
 
+@keyframes slideout {
+  0% {
+    opacity: 1; }
+  100% {
+    opacity: 0;
+    transform: translateX(500px); } }
+
 .flash {
   position: fixed;
   top: 3rem;
@@ -410,8 +417,14 @@ input:-webkit-autofill {
   color: white;
   border-radius: 5px;
   text-transform: lowercase;
-  animation: 10s slideinout forwards; }
+  animation: 5s slideinout forwards; }
   .flash--error {
-    background: #d85050; }
+    background: #e87979; }
   .flash--success {
     background: #00B233; }
+  .flash__x {
+    position: absolute;
+    right: 5%;
+    top: 15%; }
+    .flash__x:hover {
+      cursor: pointer; }

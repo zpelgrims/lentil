@@ -51,6 +51,7 @@ This is the folder I'd like you to push your work to. Please commit as much as y
 
 
 - [x] Add flash messages for UI
+	- [x] Add x button to hide messages
 
 - [x] Setup flash message for registration failure
 
@@ -102,3 +103,4 @@ payment popup.
 - [x] Add icons to lenses to mark being in cart
 - [ ] Add icons for new lenses
 - [x] Underline current page in navbar
+- [ ] Restyle login and register boxes

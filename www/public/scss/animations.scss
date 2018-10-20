@@ -54,3 +54,13 @@
     transform: translateX(500px);
   }
 }
+
+@keyframes slideout {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(500px);
+  }
+}

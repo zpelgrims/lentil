@@ -16,11 +16,11 @@
 
   <% if(error && error.length > 0) { %>
     <div class="flash flash--error" role="alert">
-      <%= error %>
+      <%= error %><i class="fas fa-times flash__x"></i>
     </div>
   <% } %>
   <% if(success && success.length > 0) { %>
     <div class="flash flash--success" role="alert">
-      <%= success %>
+      <%= success %><i class="fas fa-times flash__x"></i>
     </div>
   <% } %>

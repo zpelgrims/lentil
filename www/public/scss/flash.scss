@@ -8,13 +8,23 @@
   color: white;
   border-radius: 5px;
   text-transform: lowercase;
-  animation: 10s slideinout forwards;
+  animation: 5s slideinout forwards;
 
   &--error {
-    background: $lowlight-color;
+    background: $highlight-color;
   }
 
   &--success {
     background: $complimentary-color;
+  }
+
+  &__x {
+    position: absolute;
+    right: 5%;
+    top: 15%;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 }
