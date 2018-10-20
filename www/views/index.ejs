@@ -37,8 +37,16 @@
     <form action="/">
       <div class="filterOpts">sort by: 
         <select name="filter" class="filter__filter__dropdown">
-          <option value="focal" class="filter__filter__dropdown--option">focal length</option>
-          <option value="year" class="filter__filter__dropdown--option">year</option>
+          <option value="focal" class="filter__filter__dropdown--option"
+            <% if(query.filter == 'focal') { %>
+              selected
+            <% } %>
+          >focal length</option>
+          <option value="year" class="filter__filter__dropdown--option"
+            <% if(query.filter == 'year') { %>
+              selected
+            <% } %>
+          >year</option>
         </select> | 
         <div class="dropdown">
           <span class="dropdown__title">
@@ -47,12 +55,40 @@
           <ul class="dropdown__list" style="display: none;">
             <li class="dropdown__list__item">
               <label for="all">all</label><input type="checkbox" name="company"
-                value="all" class="checkbox" id="all">
+                value="all" class="checkbox" id="all"
+                <% if(query.company) { %>
+                  <% if(Array.isArray(query.company)) { %>
+                    <% query.company.forEach((query) => { %>
+                      <% if(query == 'all') { %>
+                        checked
+                      <% } %>  
+                    <% }); %>
+                  <% } else { %>
+                    <% if(query.company == 'all') { %>
+                      checked
+                    <% } %>  
+                  <% } %>
+                <% } %>
+              >
             </li>
             <% companies.forEach((company) => { %>
               <li class="dropdown__list__item">
                 <label for="<%= company %>"><%= company %> </label><input type="checkbox" name="company"
-                value="<%= company %>" class="checkbox" id="<%= company %>">
+                value="<%= company %>" class="checkbox" id="<%= company %>" 
+                  <% if(query.company) { %>
+                    <% if(Array.isArray(query.company)) { %>
+                      <% query.company.forEach((query) => { %>
+                        <% if(company.indexOf(query) > -1) { %>
+                          checked
+                        <% } %>
+                      <% }); %>
+                    <% } else { %>
+                      <% if(query.company == company) { %>
+                        checked
+                      <% } %>
+                    <% } %>
+                  <% } %>
+                >
               </li>
             <% }); %>
           </ul>

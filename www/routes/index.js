@@ -44,10 +44,10 @@ router.get('/', (req, res) => {
             }
           }
         });
-        return res.render('index', {lenses: lensArray, user: req.user, companies: companies, page: 'lenses'});
+        return res.render('index', {lenses: lensArray, user: req.user, companies: companies, page: 'lenses', query: req.query});
       }
 
-      res.render('index', {lenses: lenses, user: req.user, companies: companies, page: 'lenses'});
+      res.render('index', {lenses: lenses, user: req.user, companies: companies, page: 'lenses', query: req.query});
     }
   });
 });

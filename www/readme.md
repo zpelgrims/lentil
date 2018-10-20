@@ -31,7 +31,7 @@ This is the folder I'd like you to push your work to. Please commit as much as y
 	- [x] Year: from min to max
 	- [x] Focal length: from min to max
 	- [x] Allow for multiple filter queries at once
-	- [ ] Remember the filter options when the page reloads
+	- [x] Remember the filter options when the page reloads
 
 	
 - [x] Payment model

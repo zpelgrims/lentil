@@ -116,7 +116,13 @@
   - Setup flash messages
   - Undeline current page in navbar
 
-- 10/16/18 9:30-
+- 10/16/18 9:30-10:15
   - Setup empty cart page
   - Some basic styling
   - Setup flash message for registration failure
+
+- 10/19/18 8:00-8:30
+  - Work on saving filter options on page reload
+
+- 10/20/18 1:30-
+  - Save filter options on page reload
