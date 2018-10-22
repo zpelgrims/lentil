@@ -124,7 +124,9 @@
 - 10/19/18 8:00-8:30
   - Work on saving filter options on page reload
 
-- 10/20/18 1:30-
+- 10/20/18 1:30-2:45
   - Save filter options on page reload
   - Add x button to hide flash messages
   - Restyle login and register pages
+
+- 10/22/18 4:15-

@@ -10,13 +10,6 @@ router.get('/', (req, res) => {
     if(err) {
       console.log(err);
     } else {
-      // Sort by year
-      if(req.query.filter == 'year') {
-        lenses.sort(sortBy('year'));
-      } else if (req.query.filter == 'focal') {
-        lenses.sort(sortBy('fstop'));
-      }
-
       // Create array of companies for filter options
       let companies = [];
       for(let i = 0; i < lenses.length; i++) {
@@ -24,6 +17,13 @@ router.get('/', (req, res) => {
         } else {
           companies.push(lenses[i].company);
         }
+      }
+
+      // Sort by year
+      if(req.query.filter == 'year') {
+        lenses.sort(sortBy('year'));
+      } else if (req.query.filter == 'focal') {
+        lenses.sort(sortBy('fstop'));
       }
 
       // Display lenses based on company filter query

@@ -30,6 +30,11 @@
     background: none;
     border: none;
     padding-left: .5rem;
+
+    &:focus, 
+    &:active {
+      outline: none;
+    }
   }
 
   span {

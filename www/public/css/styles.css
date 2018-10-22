@@ -148,6 +148,8 @@ hr {
     background: none;
     border: none;
     padding-left: .5rem; }
+    .filter__btn:focus, .filter__btn:active {
+      outline: none; }
   .filter span {
     cursor: pointer;
     font-size: 1.6rem; }
