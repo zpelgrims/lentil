@@ -4,7 +4,6 @@
 #include "poly.h"
 
 #include <gtk/gtk.h>
-#include <gdk/gdkkeysyms.h>
 #include <cairo.h>
 #include <cairo-svg.h>
 #include <math.h>
@@ -67,69 +66,60 @@ float mint[4] = {0.631, 1.0, 0.78, 0.5};
 std::string lens_svg_path = "";
 
 
-gboolean my_keypress_function (GtkWidget *widget, GdkEventKey *event, gpointer data) {
-    if(event->keyval == GDK_KEY_Escape)
-  {
+gboolean on_keypress (GtkWidget *widget, GdkEventKey *event, gpointer data) {
+  if(event->keyval == GDK_KEY_Escape) {
     gtk_main_quit();
     return TRUE;
   }
-  else if(event->keyval == GDK_KEY_p)
-  {
+  else if(event->keyval == GDK_KEY_p) {
     fprintf(stderr, "Saving lens drawing\n");
     screenshot = 1;
     gtk_widget_queue_draw(widget);
     return TRUE;
   }
-  else if(event->keyval == GDK_KEY_a)
-  {
+  else if(event->keyval == GDK_KEY_a) {
     draw_aspheric = !draw_aspheric;
     fprintf(stderr, "using %sspherical lenses\n", draw_aspheric?"a":"");
     gtk_widget_queue_draw(widget);
     return TRUE;
   }
-  else if(event->keyval == GDK_KEY_f)
-  {
+  else if(event->keyval == GDK_KEY_f) {
     if (draw_focallength) draw_focallength = 0;
     else draw_focallength = 1;
     gtk_widget_queue_draw(widget);
     return TRUE;
   }
-  else if(event->keyval == GDK_KEY_plus)
-  {
+  else if(event->keyval == GDK_KEY_plus) {
     global_scale /= 0.95;
     gtk_widget_queue_draw(widget);
     return TRUE;
   }
-  else if(event->keyval == GDK_KEY_minus)
-  {
+  else if(event->keyval == GDK_KEY_minus) {
     global_scale *= 0.95;
     gtk_widget_queue_draw(widget);
     return TRUE;
   }
-  else if(event->keyval == GDK_KEY_m)
-  {
+  else if(event->keyval == GDK_KEY_m) {
     num_rays += 10;
     gtk_widget_queue_draw(widget);
     return TRUE;
   }
-  else if(event->keyval == GDK_KEY_l)
-  {
+  else if(event->keyval == GDK_KEY_l) {
     num_rays -= 10;
     gtk_widget_queue_draw(widget);
     return TRUE;
   }
-  else if(event->keyval == GDK_KEY_s)
-  {
+  else if(event->keyval == GDK_KEY_s) {
     if (dim_up) dim_up = 0;
     else dim_up = 1;
     gtk_widget_queue_draw(widget);
     return TRUE;
   }
+
   return FALSE;
 }
 
-static inline float hue_2_rgb(float v1, float v2, float vH)
-{
+static inline float hue_2_rgb(float v1, float v2, float vH) {
   if (vH < 0.0f) vH += 1.0f;
   if (vH > 1.0f) vH -= 1.0f;
   if ((6.0f * vH) < 1.0f) return (v1 + (v2 - v1) * 6.0f * vH);
@@ -138,20 +128,16 @@ static inline float hue_2_rgb(float v1, float v2, float vH)
   return (v1);
 }
 
-static inline void hsl_2_rgb(const float *HSL, float *RGB)
-{
+static inline void hsl_2_rgb(const float *HSL, float *RGB) {
   float H = HSL[0];
   float S = HSL[1];
   float L = HSL[2];
 
   float var_1, var_2;
 
-  if (S < 1e-6f)
-  {
+  if (S < 1e-6f) {
     RGB[0] = RGB[1] = RGB[2] = L;
-  }
-  else
-  {
+  } else {
     if (L < 0.5f) var_2 = L * (1.0f + S);
     else          var_2 = (L + S) - (S * L);
 
@@ -163,8 +149,7 @@ static inline void hsl_2_rgb(const float *HSL, float *RGB)
   }
 }
 
-static void stroke_with_pencil(cairo_t *cr, float scale, float line_width)
-{
+static void stroke_with_pencil(cairo_t *cr, float scale, float line_width) {
   cairo_save(cr);
   cairo_scale(cr, 1./scale, 1./scale);
   cairo_set_line_width(cr, line_width);
@@ -172,14 +157,12 @@ static void stroke_with_pencil(cairo_t *cr, float scale, float line_width)
   cairo_restore(cr);
 }
 
-gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data)
-{
-
+gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
   GtkStyleContext *context;
   context = gtk_widget_get_style_context(widget);
   width = gtk_widget_get_allocated_width(widget);
   height = gtk_widget_get_allocated_height(widget);
-  gtk_render_background(context,cr,0,0,width,height);
+  gtk_render_background(context, cr, 0, 0, width, height);
   
 
   cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
@@ -305,8 +288,8 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data)
   for(int i=0;i<lenses_cnt;i++)
   {
     float rad = lenses[i].lens_radius;
-    if (strcmp(lenses[i].geometry, "cyl-y") == 0 && dim_up == 1) rad = 99999.0;
-    else if (strcmp(lenses[i].geometry, "cyl-x") == 0 && dim_up == 0) rad = 99999.0;
+    if (!strcmp(lenses[i].geometry, "cyl-y") && dim_up == 1) rad = 99999.0;
+    else if (!strcmp(lenses[i].geometry, "cyl-x") && dim_up == 0) rad = 99999.0;
     
     float hrad = lenses[i].housing_radius;
     float t = lens_get_thickness(lenses+i, zoom);
@@ -393,13 +376,14 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data)
       stroke_with_pencil(cr, scale, 40./width);
 
       cairo_close_path(cr);
-      if (strcmp(lenses[i].geometry, "cyl-y") == 0 || strcmp(lenses[i].geometry, "cyl-x") == 0) cairo_set_source_rgba(cr, mint[0], mint[1], mint[2], mint[3]);
-      else if (strcmp(lenses[i].geometry, "aspherical") == 0) cairo_set_source_rgba(cr, green[0], green[1], green[2], green[3]);
+      if (!strcmp(lenses[i].geometry, "cyl-y") || !strcmp(lenses[i].geometry, "cyl-x")) cairo_set_source_rgba(cr, mint[0], mint[1], mint[2], mint[3]);
+      else if (!strcmp(lenses[i].geometry, "aspherical")) cairo_set_source_rgba(cr, green[0], green[1], green[2], green[3]);
       else cairo_set_source_rgb(cr, grey[0], grey[1], grey[2]);
       cairo_fill(cr);
 
       cairo_restore(cr);
     }
+
     pos -= t;
   }
 
@@ -488,14 +472,14 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data)
       inrt[4] = outrt[4] = in[4] = out[4] = ap[4] = lambda;
       float t, n[3] = {0.0f};
 
-      if (strcmp(lenses[0].geometry, "cyl-y") == 0){
+      if (!strcmp(lenses[0].geometry, "cyl-y")){
         // intersection with first lens element, but seems like a duplicate purpose of the algebra method above..
         cylindrical(cam_pos, cam_dir, &t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n, true);
         for(int i=0;i<3;i++) cam_dir[i] = - cam_dir[i]; // need to point away from surface (dot(n,dir) > 0)
         csToCylinder(cam_pos, cam_dir, in, in+2, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
         cylinderToCs(in, in + 2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
       }
-      else if (strcmp(lenses[0].geometry, "cyl-x") == 0){
+      else if (!strcmp(lenses[0].geometry, "cyl-x")){
         // intersection with first lens element, but seems like a duplicate purpose of the algebra method above..
         cylindrical(cam_pos, cam_dir, &t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n, false);
         for(int i=0;i<3;i++) cam_dir[i] = - cam_dir[i]; // need to point away from surface (dot(n,dir) > 0)
@@ -560,10 +544,10 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data)
 
           // outer pupil
           // need to account for top/side view here?
-          if (strcmp(lenses[0].geometry, "cyl-y") == 0 && dim_up == 0) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
-          else if (strcmp(lenses[0].geometry, "cyl-y") == 0 && dim_up == 1) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - 99999.0, 99999.0, true);
-          else if (strcmp(lenses[0].geometry, "cyl-x") == 0 && dim_up == 0) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - 99999.0, 99999.0, false);
-          else if (strcmp(lenses[0].geometry, "cyl-x") == 0 && dim_up == 1) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
+          if (!strcmp(lenses[0].geometry, "cyl-y")&& dim_up == 0) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
+          else if (!strcmp(lenses[0].geometry, "cyl-y")&& dim_up == 1) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - 99999.0, 99999.0, true);
+          else if (!strcmp(lenses[0].geometry, "cyl-x")&& dim_up == 0) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - 99999.0, 99999.0, false);
+          else if (!strcmp(lenses[0].geometry, "cyl-x")&& dim_up == 1) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
           else sphereToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
           cairo_move_to(cr, cam_pos[2], cam_pos[dim_up]);
           cairo_line_to(cr, cam_pos[2]+len*cam_dir[2], cam_pos[dim_up] + len*cam_dir[dim_up]);
@@ -652,7 +636,7 @@ int main(int argc, char *argv[])
   g_signal_connect(G_OBJECT(drawing_area), "draw", G_CALLBACK(draw_callback), NULL);
 
   gtk_widget_add_events(window, GDK_KEY_PRESS_MASK);
-  g_signal_connect (G_OBJECT (window), "key_press_event", G_CALLBACK (my_keypress_function), NULL);
+  g_signal_connect (G_OBJECT (window), "key_press_event", G_CALLBACK (on_keypress), NULL);
 
   gtk_widget_show_all(window);
   gtk_main();
