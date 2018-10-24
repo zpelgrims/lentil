@@ -2913,5 +2913,211 @@
     "product-name": "rear-anamorph-double-gauss",
     "production-ready": false,
     "year": 2006
+  },
+  
+
+
+
+
+  "2004": {
+    "commercial": false,
+    "company": "Schneider",
+    "focal-length-mm-patent": 31,
+    "focal-length-mm-raytraced": null,
+    "fstop": null,
+    "notes": "anamorphic lens",
+    "optical-elements-patent": [
+      {
+        "abbe": 61.0,
+        "aspherical-equation": null,
+        "housing-radius": 30.0,
+        "ior": 1.591,
+        "lens-geometry": "cyl-y",
+        "material": "abbe",
+        "radius": -101.3,
+        "thickness": 4.0
+      },
+      {
+        "abbe": 27.2,
+        "aspherical-equation": null,
+        "housing-radius": 30.0,
+        "ior": 1.762,
+        "lens-geometry": "cyl-y",
+        "material": "abbe",
+        "radius": 50.0,
+        "thickness": 7.7
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 30.0,
+        "ior": null,
+        "lens-geometry": "cyl-y",
+        "material": "air",
+        "radius": 87.3,
+        "thickness": 71.3
+      },
+      {
+        "abbe": 30.3,
+        "aspherical-equation": null,
+        "housing-radius": 28.0,
+        "ior": 1.711,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 999999.0,
+        "thickness": 4.4
+      },
+      {
+        "abbe": 53.8,
+        "aspherical-equation": null,
+        "housing-radius": 28.0,
+        "ior": 1.716,
+        "lens-geometry": "cyl-y",
+        "material": "abbe",
+        "radius": 122.4,
+        "thickness": 9.5
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 28.0,
+        "ior": null,
+        "lens-geometry": "cyl-y",
+        "material": "air",
+        "radius": -122.4,
+        "thickness": 2.0
+      },
+      {
+        "abbe": 54.9,
+        "aspherical-equation": null,
+        "housing-radius": 18.0,
+        "ior": 1.681,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 38.4,
+        "thickness": 6.0
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 18.0,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": -783.3,
+        "thickness": 0.1
+      },
+      {
+        "abbe": 52.3,
+        "aspherical-equation": null,
+        "housing-radius": 16.0,
+        "ior": 1.758,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 35.9,
+        "thickness": 3.8
+      },
+
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 16.0,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 55.5,
+        "thickness": 2.2
+      },
+      {
+        "abbe": 36.4,
+        "aspherical-equation": null,
+        "housing-radius": 14.0,
+        "ior": 1.624,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": -575.3,
+        "thickness": 9.2
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 10.5,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 18.8,
+        "thickness": 6.1
+      },
+      {
+        "abbe": 30.1,
+        "aspherical-equation": null,
+        "housing-radius": 10.5,
+        "ior": 1.704,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": -18.5,
+        "thickness": 1.5
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 11.0,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 70.7,
+        "thickness": 1.7
+      },
+      {
+        "abbe": 47.5,
+        "aspherical-equation": null,
+        "housing-radius": 12.0,
+        "ior": 1.792,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 99.6,
+        "thickness": 4.4
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 12.0,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": -26.0,
+        "thickness": 0.3
+      },
+      {
+        "abbe": 54.7,
+        "aspherical-equation": null,
+        "housing-radius": 14.0,
+        "ior": 1.732,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 115.2,
+        "thickness": 3.9
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 14.0,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": -53.2,
+        "thickness": 43.0
+      }
+    ],
+    "patent-location": null,
+    "patent-number": "",
+    "polynomial-optics": [],
+    "prime": true,
+    "product-name": "anamorphic",
+    "production-ready": false,
+    "year": 2001
   }
+
+
+
 }

@@ -22,7 +22,7 @@ ifeq ($(OS), Linux)
 endif
 
 #debug symbols for debugging with gdb
-#OPTFLAGS += -g
+OPTFLAGS += -g
 
 
 LDFLAGS=-lm
@@ -50,7 +50,7 @@ endif
 
 ifeq ($(OS), Darwin)
 view: Makefile src/view.c ${HEADERS}
-	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/view.c $(shell pkg-config --cflags --libs gtk+-2.0) ${LDFLAGS} -o bin/view ${LDFLAGS}
+	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/view.c $(shell pkg-config --cflags --libs gtk+-3.0) ${LDFLAGS} -o bin/view ${LDFLAGS}
 endif
 
 print-lens-path: Makefile src/print-lens-path.cpp ${HEADERS}

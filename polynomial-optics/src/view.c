@@ -22,7 +22,7 @@ using json = nlohmann::json;
 #include "../../fmt/include/fmt/format.h"
 
 #ifndef M_PI
-#define M_PI 3.14159265358979323846
+  #define M_PI 3.14159265358979323846
 #endif
 
 
@@ -66,21 +66,9 @@ float mint[4] = {0.631, 1.0, 0.78, 0.5};
 
 std::string lens_svg_path = "";
 
-static gboolean
-motion_notify(GtkWidget *widget, GdkEventMotion *event, gpointer user_data)
-{
-  if(event->state & GDK_BUTTON1_MASK)
-  {
-    gtk_widget_queue_draw(widget);
-    return TRUE;
-  }
-  return FALSE;
-}
 
-static gboolean
-key_press(GtkWidget *widget, GdkEventKey *event, gpointer user_data)
-{
-  if(event->keyval == GDK_KEY_Escape)
+gboolean my_keypress_function (GtkWidget *widget, GdkEventKey *event, gpointer data) {
+    if(event->keyval == GDK_KEY_Escape)
   {
     gtk_main_quit();
     return TRUE;
@@ -140,18 +128,6 @@ key_press(GtkWidget *widget, GdkEventKey *event, gpointer user_data)
   return FALSE;
 }
 
-static gboolean button_press(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
-{
-  if (!GTK_WIDGET_HAS_FOCUS(widget))
-    gtk_widget_grab_focus(widget);
-  if(event->button == 1)// && event->type == GDK_2BUTTON_PRESS)
-  {
-    gtk_widget_queue_draw(widget);
-    return TRUE;
-  }
-  return FALSE;
-}
-
 static inline float hue_2_rgb(float v1, float v2, float vH)
 {
   if (vH < 0.0f) vH += 1.0f;
@@ -196,19 +172,15 @@ static void stroke_with_pencil(cairo_t *cr, float scale, float line_width)
   cairo_restore(cr);
 }
 
-static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_data)
+gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data)
 {
-  cairo_t *cr = 0;
-  cairo_surface_t *cst = 0;
-  if(screenshot)
-  {
-    cst = cairo_svg_surface_create(lens_svg_path.c_str(), width, height);
-    cr = cairo_create(cst);
-  } else {
-    width = widget->allocation.width;
-    height = widget->allocation.height;
-    cr = gdk_cairo_create(gtk_widget_get_window(widget));
-  }
+
+  GtkStyleContext *context;
+  context = gtk_widget_get_style_context(widget);
+  width = gtk_widget_get_allocated_width(widget);
+  height = gtk_widget_get_allocated_height(widget);
+  gtk_render_background(context,cr,0,0,width,height);
+  
 
   cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
   cairo_set_line_join(cr, CAIRO_LINE_JOIN_BEVEL);
@@ -614,14 +586,9 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_d
 
 
 
-  cairo_destroy(cr);
-  if(screenshot)
-  {
-    //cairo_surface_write_to_png(cst, "lens-drawing.png" );
-    cairo_surface_destroy(cst);
-    screenshot = 0;
-  }
-  return TRUE;
+  //cairo_destroy(cr);
+
+  return FALSE;
 }
 
 int main(int argc, char *argv[])
@@ -673,31 +640,22 @@ int main(int argc, char *argv[])
   lens_pupil_rad  = lenses[lenses_cnt-1].housing_radius;
   aperture_rad = lens_get_aperture_radius(lenses, lenses_cnt);
 
-  GtkWidget *window;
+  GtkWidget *window, *drawing_area;
   gtk_init (&argc, &argv);
 
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title(GTK_WINDOW(window), "Lens Validation");
-  gtk_window_resize(GTK_WINDOW(window), width, height);
-  gtk_window_set_resizable(GTK_WINDOW(window), FALSE);
+  g_signal_connect(window,"destroy", G_CALLBACK(gtk_main_quit), NULL);
 
-  GtkWidget *area = gtk_drawing_area_new();
-  gtk_container_add(GTK_CONTAINER(window), area);
-  gtk_drawing_area_size(GTK_DRAWING_AREA(area), width, height);
-  gtk_widget_add_events(GTK_WIDGET(area), GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_LEAVE_NOTIFY_MASK);
+  drawing_area = gtk_drawing_area_new();
+  gtk_container_add(GTK_CONTAINER(window), drawing_area);
+  gtk_widget_set_size_request (drawing_area, width, height);
+  g_signal_connect(G_OBJECT(drawing_area), "draw", G_CALLBACK(draw_callback), NULL);
 
-  g_signal_connect(area, "expose-event", G_CALLBACK(expose), NULL);
-  g_signal_connect(area, "button-press-event", G_CALLBACK (button_press), NULL);
-  g_signal_connect(area, "key-press-event", G_CALLBACK (key_press), NULL);
-  g_signal_connect(area, "motion-notify-event", G_CALLBACK (motion_notify), NULL);
-  g_signal_connect(window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
+  gtk_widget_add_events(window, GDK_KEY_PRESS_MASK);
+  g_signal_connect (G_OBJECT (window), "key_press_event", G_CALLBACK (my_keypress_function), NULL);
 
-  GTK_WIDGET_SET_FLAGS(area, GTK_CAN_FOCUS);
-
-  gtk_widget_show (window);
-  gtk_widget_show_all (window);
-
-  gtk_main ();
+  gtk_widget_show_all(window);
+  gtk_main();
 
   poly_system_destroy(&poly);
   poly_system_destroy(&poly_aperture);
