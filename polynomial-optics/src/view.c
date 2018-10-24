@@ -456,10 +456,10 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
           stroke_with_pencil(cr, scale, aperture_death ? 40./width : 60./width);
 
           // outer pupil
-          if (!strcmp(lenses[0].geometry, "cyl-y")&& dim_up == 0) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
-          else if (!strcmp(lenses[0].geometry, "cyl-y")&& dim_up == 1) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - 99999.0, 99999.0, true);
-          else if (!strcmp(lenses[0].geometry, "cyl-x")&& dim_up == 0) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - 99999.0, 99999.0, false);
-          else if (!strcmp(lenses[0].geometry, "cyl-x")&& dim_up == 1) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
+          if (!strcmp(lenses[0].geometry, "cyl-y") && !dim_up) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
+          else if (!strcmp(lenses[0].geometry, "cyl-y") && dim_up) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - 99999.0, 99999.0, true);
+          else if (!strcmp(lenses[0].geometry, "cyl-x") && !dim_up) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - 99999.0, 99999.0, false);
+          else if (!strcmp(lenses[0].geometry, "cyl-x") && dim_up) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
           else sphereToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
           cairo_move_to(cr, cam_pos[2], cam_pos[dim_up]);
           cairo_line_to(cr, cam_pos[2]+len*cam_dir[2], cam_pos[dim_up] + len*cam_dir[dim_up]);
@@ -528,8 +528,8 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
 
         cairo_close_path(cr);
         
-        if (strcmp(lenses[i+1].geometry, "cyl-y") == 0 || strcmp(lenses[i+1].geometry, "cyl-x") == 0) cairo_set_source_rgba(cr, mint[0], mint[1], mint[2], 0.85);
-        else if (strcmp(lenses[i+1].geometry, "aspherical") == 0) cairo_set_source_rgba(cr, green[0], green[1], green[2], 0.85);
+        if (!strcmp(lenses[i+1].geometry, "cyl-y") || !strcmp(lenses[i+1].geometry, "cyl-x")) cairo_set_source_rgba(cr, mint[0], mint[1], mint[2], 0.85);
+        else if (!strcmp(lenses[i+1].geometry, "aspherical")) cairo_set_source_rgba(cr, green[0], green[1], green[2], 0.85);
         else cairo_set_source_rgba(cr, grey[0], grey[1], grey[2], 0.85);
         cairo_fill_preserve(cr);
 
