@@ -28,8 +28,8 @@ using json = nlohmann::json;
 static float zoom = 0.0f; // zoom, if the lens supports it.
 //static const int degree = 4;  // degree of the polynomial. 1 is thin lens
 //static const float coverage = .5f; // coverage of incoming rays at scene facing pupil (those you point with the mouse)
-static int num_rays = 100;
-static int dim_up = 0; // plot yz (side) or xz (top) of the lens in 2d?
+static int num_rays = 600;
+static int dim_up = 0; // xz (top - 0) or plot yz (side - 1) of the lens in 2d?
 static poly_system_t poly, poly_aperture;
 static float aperture_rad;
 static lens_element_t lenses[50];
@@ -54,7 +54,7 @@ static float extra_space = 0.0f;
 static float global_scale = 20.0f;
 static float window_aspect_ratio = (float)width/(float)height;
 
-float black[4] = {0.05, 0.05, 0.05, 1.0};
+float black[4] = {0.1, 0.1, 0.1, 1.0};
 float darkgrey[4] = {0.15, 0.15, 0.15, 1.0};
 float grey[4] = {0.5, 0.5, 0.5, 1.0};
 float lightgrey[4] = {0.7, 0.7, 0.7, 1.0};
@@ -157,40 +157,30 @@ static void stroke_with_pencil(cairo_t *cr, float scale, float line_width) {
   cairo_restore(cr);
 }
 
-gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
-  GtkStyleContext *context;
-  context = gtk_widget_get_style_context(widget);
-  width = gtk_widget_get_allocated_width(widget);
-  height = gtk_widget_get_allocated_height(widget);
-  gtk_render_background(context, cr, 0, 0, width, height);
-  
-
-  cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
-  cairo_set_line_join(cr, CAIRO_LINE_JOIN_BEVEL);
-  cairo_set_source_rgb(cr, darkgrey[0], darkgrey[1], darkgrey[2]);
-  cairo_paint(cr);
-  cairo_set_line_width(cr, 1.0f);
-
-  // optical axis:
+void draw_optical_axis(cairo_t *cr) {
+  cairo_set_line_width(cr, 40.0/width);
   cairo_set_source_rgb(cr, 0.6, 0.6, 0.6);
   cairo_move_to(cr, 0, height/2.0);
   cairo_line_to(cr, width, height/2.0);
   cairo_stroke(cr);
+}
 
-  cairo_translate(cr, 0, height/2.0);
-  cairo_scale(cr, ((float)width/window_aspect_ratio)/20.0, (float)height/20.0);
-  cairo_set_line_width(cr, 40.0/width);
+void draw_sensor(cairo_t *cr) {
+  float sensor_size = 0.0;
+  if (dim_up) sensor_size = 24.0;
+  else        sensor_size = 35.0;
 
+  cairo_move_to(cr, -1.0, -sensor_size/2.0);
+  cairo_line_to(cr, -1.0,  sensor_size/2.0);
+  cairo_line_to(cr,  0.0,  sensor_size/2.0);
+  cairo_line_to(cr,  0.0, -sensor_size/2.0);
+  cairo_close_path(cr);
+  cairo_set_source_rgb(cr, grey[0], grey[1], grey[2]);
+  cairo_fill(cr);
+}
 
-  // draw lens
-  // scale by arbitrary factor
-  const float scale = global_scale/lens_length;
-  cairo_scale(cr, scale, scale);
-
-  // move 20mm away
-  cairo_translate(cr, 20.0, 0.0);
-
-  // grid
+void draw_grid(cairo_t *cr) {
+  cairo_set_line_width(cr, 200.0/width);
   cairo_set_source_rgb(cr, black[0], black[1], black[2]);
   for (int i = -width; i<width; i += gridsize){
     cairo_move_to(cr, i, -height);
@@ -203,19 +193,10 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
     cairo_line_to(cr, width, i);
     cairo_stroke(cr);
   }
+}
 
-  // rulers
-
-  // find max housing radius
-  float max_housing_radius = 0.0;
-  for (int i=0; i < lenses_cnt; i++){
-    if (lenses[i].housing_radius > max_housing_radius){
-      max_housing_radius = lenses[i].housing_radius;
-    }
-  }
-
+void draw_rulers(cairo_t *cr, float max_housing_radius, float ruler_padding) {
   float ruler_height = 2.5;
-  float ruler_padding = gridsize;
   cairo_set_source_rgb(cr, grey[0], grey[1], grey[2]);
   cairo_set_line_width(cr, 200.0/width);
 
@@ -234,7 +215,6 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
     cairo_set_font_size(cr, 2.5);
     cairo_show_text(cr, pchar);
     cairo_new_path(cr);
-    
   }
 
   // y axis down
@@ -265,9 +245,9 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
     cairo_show_text(cr, pchar);
     cairo_new_path(cr);
   }
+}
 
-
-  // top/side text
+void draw_axis_text(cairo_t *cr, float max_housing_radius, float ruler_padding) {
   cairo_move_to(cr, 0.0 - ruler_padding, max_housing_radius + ruler_padding*2);
   std::string dim_up_text;
   if (dim_up) dim_up_text = "dim_up = 1 [side]";
@@ -276,128 +256,56 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
   cairo_set_font_size(cr, 2.5);
   cairo_show_text(cr, pchar);
   cairo_new_path(cr);
+}
 
 
+gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
+  GtkStyleContext *context;
+  context = gtk_widget_get_style_context(widget);
+  width = gtk_widget_get_allocated_width(widget);
+  height = gtk_widget_get_allocated_height(widget);
+  gtk_render_background(context, cr, 0, 0, width, height);
+  
+
+  cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
+  cairo_set_line_join(cr, CAIRO_LINE_JOIN_BEVEL);
+  cairo_set_source_rgb(cr, darkgrey[0], darkgrey[1], darkgrey[2]);
+  cairo_paint(cr);
+  cairo_set_line_width(cr, 1.0f);
+
+
+  cairo_translate(cr, 0, height/2.0);
+  cairo_scale(cr, ((float)width/window_aspect_ratio)/20.0, (float)height/20.0);
   cairo_set_line_width(cr, 40.0/width);
-  cairo_set_source_rgb(cr, lightgrey[0], lightgrey[1], lightgrey[2]);
+
+
+  const float scale = global_scale/lens_length;
+  cairo_scale(cr, scale, scale); // scale by arbitrary factor
+  cairo_translate(cr, 20.0, 0.0); // move 20mm away
+
+  draw_grid(cr);
+
+  // find max housing radius
+  float max_housing_radius = 0.0;
+  for (int i=0; i < lenses_cnt; i++){
+    if (lenses[i].housing_radius > max_housing_radius){
+      max_housing_radius = lenses[i].housing_radius;
+    }
+  }
+
+  float ruler_padding = gridsize;
+  draw_rulers(cr, max_housing_radius, ruler_padding);
+  draw_axis_text(cr, max_housing_radius, ruler_padding);
+
+
+  cairo_set_line_width(cr, 30.0/width);
+  cairo_set_source_rgba(cr, lightgrey[0], lightgrey[1], lightgrey[2], 0.5);
 
   float pos = lens_length;
   aperture_pos = lens_length/2.0f;
   float hsl[3], rgb[3];
 
-  for(int i=0;i<lenses_cnt;i++)
-  {
-    float rad = lenses[i].lens_radius;
-    if (!strcmp(lenses[i].geometry, "cyl-y") && dim_up == 1) rad = 99999.0;
-    else if (!strcmp(lenses[i].geometry, "cyl-x") && dim_up == 0) rad = 99999.0;
-    
-    float hrad = lenses[i].housing_radius;
-    float t = lens_get_thickness(lenses+i, zoom);
-
-    if(!strcasecmp(lenses[i].material, "iris"))
-      aperture_pos = pos;
-
-    if(lenses[i].ior != 1.0f && i < lenses_cnt-1)
-    {
-      cairo_save(cr);
-
-      float rad2 = lenses[i+1].lens_radius;
-      if (strcmp(lenses[i+1].geometry, "cyl-y") == 0 && dim_up == 1) rad2 = 99999.0;
-      else if (strcmp(lenses[i+1].geometry, "cyl-x") == 0 && dim_up == 0) rad2 = 99999.0;
-    
-
-      float hrad2 = lenses[i+1].housing_radius;
-      float off  = rad  > 0.0f ? 0.0f : M_PI;
-      float off2 = rad2 > 0.0f ? 0.0f : M_PI;
-      float alpha  = asinf(fminf(1.0f, fmaxf(-1.0f, fabsf(hrad/rad))));
-      float alpha2 = asinf(fminf(1.0f, fmaxf(-1.0f, fabsf(hrad2/rad2))));
-
-      if(draw_aspheric)
-      {
-        const int num_steps = 50;
-
-        for(int j = 0; j <= num_steps; j++)
-        {
-          float y[] = {hrad*(2 * j / (float)num_steps - 1), 0};
-          float *coeff = lenses[i].aspheric_correction_coefficients;
-          float x = pos-evaluate_aspherical(y, rad, lenses[i].aspheric, coeff);
-          cairo_line_to(cr, x, y[0]);
-        }
-
-        for(int j = num_steps; j >= 0; j--)
-        {
-          float y[] = {hrad2*(2 * j / (float)num_steps - 1), 0};
-          float *coeff = lenses[i+1].aspheric_correction_coefficients;
-          float x = pos-t-evaluate_aspherical(y, rad2, lenses[i+1].aspheric, coeff);
-          cairo_line_to(cr, x, y[0]);
-        }
-      }
-      else
-      {
-        cairo_arc(cr, pos-rad, 0.0f, fabsf(rad), off-alpha, off+alpha);
-        if(rad * rad2 > 0.0f)
-          cairo_arc_negative(cr, pos-t-rad2, 0.0f, fabsf(rad2), off2+alpha2, off2-alpha2);
-        else
-          cairo_arc(cr, pos-t-rad2, 0.0f, fabsf(rad2), off2-alpha2, off2+alpha2);
-      }
-      cairo_close_path(cr);
-      
-      if (strcmp(lenses[i+1].geometry, "cyl-y") == 0 || strcmp(lenses[i+1].geometry, "cyl-x") == 0) cairo_set_source_rgba(cr, mint[0], mint[1], mint[2], mint[3]);
-      else if (strcmp(lenses[i+1].geometry, "aspherical") == 0) cairo_set_source_rgba(cr, green[0], green[1], green[2], green[3]);
-      else cairo_set_source_rgb(cr, grey[0], grey[1], grey[2]);
-      cairo_fill_preserve(cr);
-
-      cairo_set_source_rgb(cr, lightgrey[0], lightgrey[1], lightgrey[2]);
-      stroke_with_pencil(cr, scale, 40.0/width);
-
-      cairo_restore(cr);
-    }
-    else
-    {
-      // backside (air-facing), actually drawn double most of the time
-      cairo_save(cr);
-      cairo_rectangle(cr, pos-rad-2, -hrad, 2*rad+4, 2*hrad);
-      cairo_clip(cr);
-      if(draw_aspheric)
-      {
-        const int num_steps = 50;
-        for(int j = 0; j <= num_steps; j++)
-        {
-          float y[] = {hrad*(2 * j / (float)num_steps - 1), 0};
-          float *coeff = lenses[i].aspheric_correction_coefficients;
-          float x = pos-evaluate_aspherical(y, rad, lenses[i].aspheric, coeff);
-          cairo_line_to(cr, x, y[0]);
-        }
-      }
-      else
-      {
-        cairo_arc(cr, pos-rad, 0.0f, fabsf(rad), .0f, 2.0f*M_PI);
-      }
-      stroke_with_pencil(cr, scale, 40./width);
-
-      cairo_close_path(cr);
-      if (!strcmp(lenses[i].geometry, "cyl-y") || !strcmp(lenses[i].geometry, "cyl-x")) cairo_set_source_rgba(cr, mint[0], mint[1], mint[2], mint[3]);
-      else if (!strcmp(lenses[i].geometry, "aspherical")) cairo_set_source_rgba(cr, green[0], green[1], green[2], green[3]);
-      else cairo_set_source_rgb(cr, grey[0], grey[1], grey[2]);
-      cairo_fill(cr);
-
-      cairo_restore(cr);
-    }
-
-    pos -= t;
-  }
-
-
-  // draw the sensor (35mm)
-  cairo_move_to(cr, -1.0, -35.0/2.0);
-  cairo_line_to(cr, -1.0,  35.0/2.0);
-  cairo_line_to(cr,  0.0,  35.0/2.0);
-  cairo_line_to(cr,  0.0, -35.0/2.0);
-  cairo_close_path(cr);
-  cairo_set_source_rgb(cr, grey[0], grey[1], grey[2]);
-  cairo_fill(cr);
-
-
+  
   if(draw_focallength)
   {
     // FORWARD TRACING/DRAWING, calculate focal length
@@ -532,6 +440,7 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
           // use transmittance from polynomial evaluation
           float transmittance = out[4];
           cairo_set_source_rgba(cr, rgb[0], rgb[1], rgb[2], 3.0 * transmittance);
+
           // sensor
           cairo_move_to(cr, 0, in[dim_up]);
           cairo_line_to(cr, 0+len, in[dim_up] + len*in[dim_up+2]);
@@ -543,7 +452,6 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
           stroke_with_pencil(cr, scale, aperture_death ? 40./width : 60./width);
 
           // outer pupil
-          // need to account for top/side view here?
           if (!strcmp(lenses[0].geometry, "cyl-y")&& dim_up == 0) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
           else if (!strcmp(lenses[0].geometry, "cyl-y")&& dim_up == 1) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - 99999.0, 99999.0, true);
           else if (!strcmp(lenses[0].geometry, "cyl-x")&& dim_up == 0) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - 99999.0, 99999.0, false);
@@ -555,8 +463,6 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
         }
       }
 
-      
-
       if(0)//!error)
       {
         outrt[2] = -outrt[2];
@@ -566,11 +472,114 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
       }
       
     }
+
+
+  for(int i=0;i<lenses_cnt;i++)
+  {
+    float rad = lenses[i].lens_radius;
+    if (!strcmp(lenses[i].geometry, "cyl-y") && dim_up == 1) rad = 99999.0;
+    else if (!strcmp(lenses[i].geometry, "cyl-x") && dim_up == 0) rad = 99999.0;
+    
+    float hrad = lenses[i].housing_radius;
+    float t = lens_get_thickness(lenses+i, zoom);
+
+    if(!strcasecmp(lenses[i].material, "iris"))
+      aperture_pos = pos;
+
+    if(lenses[i].ior != 1.0f && i < lenses_cnt-1) {
+      cairo_save(cr);
+
+      float rad2 = lenses[i+1].lens_radius;
+      if (strcmp(lenses[i+1].geometry, "cyl-y") == 0 && dim_up == 1) rad2 = 99999.0;
+      else if (strcmp(lenses[i+1].geometry, "cyl-x") == 0 && dim_up == 0) rad2 = 99999.0;
+    
+      float hrad2 = lenses[i+1].housing_radius;
+      float off  = rad  > 0.0f ? 0.0f : M_PI;
+      float off2 = rad2 > 0.0f ? 0.0f : M_PI;
+      float alpha  = asinf(fminf(1.0f, fmaxf(-1.0f, fabsf(hrad/rad))));
+      float alpha2 = asinf(fminf(1.0f, fmaxf(-1.0f, fabsf(hrad2/rad2))));
+
+      if(draw_aspheric) {
+        const int num_steps = 50;
+
+        for(int j = 0; j <= num_steps; j++)
+        {
+          float y[] = {hrad*(2 * j / (float)num_steps - 1), 0};
+          float *coeff = lenses[i].aspheric_correction_coefficients;
+          float x = pos-evaluate_aspherical(y, rad, lenses[i].aspheric, coeff);
+          cairo_line_to(cr, x, y[0]);
+        }
+
+        for(int j = num_steps; j >= 0; j--)
+        {
+          float y[] = {hrad2*(2 * j / (float)num_steps - 1), 0};
+          float *coeff = lenses[i+1].aspheric_correction_coefficients;
+          float x = pos-t-evaluate_aspherical(y, rad2, lenses[i+1].aspheric, coeff);
+          cairo_line_to(cr, x, y[0]);
+        }
+      } else {
+        cairo_arc(cr, pos-rad, 0.0f, fabsf(rad), off-alpha, off+alpha);
+        if(rad * rad2 > 0.0f)
+          cairo_arc_negative(cr, pos-t-rad2, 0.0f, fabsf(rad2), off2+alpha2, off2-alpha2);
+        else
+          cairo_arc(cr, pos-t-rad2, 0.0f, fabsf(rad2), off2-alpha2, off2+alpha2);
+      }
+
+      cairo_close_path(cr);
+      
+      if (strcmp(lenses[i+1].geometry, "cyl-y") == 0 || strcmp(lenses[i+1].geometry, "cyl-x") == 0) cairo_set_source_rgba(cr, mint[0], mint[1], mint[2], 0.85);
+      else if (strcmp(lenses[i+1].geometry, "aspherical") == 0) cairo_set_source_rgba(cr, green[0], green[1], green[2], 0.85);
+      else cairo_set_source_rgba(cr, grey[0], grey[1], grey[2], 0.85);
+      cairo_fill_preserve(cr);
+
+      cairo_set_source_rgba(cr, lightgrey[0], lightgrey[1], lightgrey[2], 1.0);
+      stroke_with_pencil(cr, scale, 40.0/width);
+
+      cairo_restore(cr);
+    }
+    else
+    {
+      // backside (air-facing), actually drawn double most of the time
+      cairo_save(cr);
+      cairo_rectangle(cr, pos-rad-2, -hrad, 2*rad+4, 2*hrad);
+      cairo_clip(cr);
+      if(draw_aspheric)
+      {
+        const int num_steps = 50;
+        for(int j = 0; j <= num_steps; j++)
+        {
+          float y[] = {hrad*(2 * j / (float)num_steps - 1), 0};
+          float *coeff = lenses[i].aspheric_correction_coefficients;
+          float x = pos-evaluate_aspherical(y, rad, lenses[i].aspheric, coeff);
+          cairo_line_to(cr, x, y[0]);
+        }
+
+        
+      }/*
+      else
+      {
+        cairo_arc(cr, pos-rad, 0.0f, fabsf(rad), .0f, 2.0f*M_PI);
+      }*/
+
+      if (!strcmp(lenses[i].geometry, "cyl-y") || !strcmp(lenses[i].geometry, "cyl-x")) cairo_set_source_rgba(cr, mint[0], mint[1], mint[2], 0.85);
+      else if (!strcmp(lenses[i].geometry, "aspherical")) cairo_set_source_rgba(cr, green[0], green[1], green[2], 0.85);
+      else cairo_set_source_rgba(cr, grey[0], grey[1], grey[2], 0.85);
+
+      stroke_with_pencil(cr, scale, 20.0/width);
+      cairo_close_path(cr);
+      cairo_fill(cr);
+
+      cairo_restore(cr);
+    }
+
+    pos -= t;
   }
 
 
 
-  //cairo_destroy(cr);
+    draw_sensor(cr);
+    draw_optical_axis(cr);
+  }
 
   return FALSE;
 }
