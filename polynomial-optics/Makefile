@@ -24,8 +24,7 @@ endif
 #debug symbols for debugging with gdb
 OPTFLAGS += -g
 
-
-LDFLAGS=-lm
+LDFLAGS = -lm
 
 HEADERS=\
 src/lenssystem.h\
@@ -38,14 +37,40 @@ src/spectrum.h
 .PHONY=all clean
 
 
+all: view
 
+
+ifeq ("draw","true")
 ifeq ($(OS), Darwin)
-    all: create-public-json calculate-fstop view calculate-infinity-focus-lens-offset calculate-focal-length fit gencode genpoly printpoly print-lens-path add-fitted-focal-length generate-lens-defines
+    all += \
+	create-public-json \
+	calculate-fstop \
+	calculate-infinity-focus-lens-offset \
+	calculate-focal-length \
+	fit \
+	gencode \
+	genpoly \
+	printpoly \
+	print-lens-path \
+	add-fitted-focal-length \
+	generate-lens-defines \
+
 endif
 ifeq ($(OS), Linux)
-    all: create-public-json calculate-fstop generate-lens-defines calculate-infinity-focus-lens-offset calculate-focal-length fit gencode genpoly printpoly print-lens-path add-fitted-focal-length
+    all += \
+	create-public-json \
+	calculate-fstop \
+	generate-lens-defines \
+	calculate-infinity-focus-lens-offset \
+	calculate-focal-length \
+	fit \
+	gencode \
+	genpoly \
+	printpoly \
+	print-lens-path \
+	add-fitted-focal-length
 endif
-
+endif
 
 
 ifeq ($(OS), Darwin)
@@ -53,6 +78,7 @@ view: Makefile src/view.c ${HEADERS}
 	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/view.c $(shell pkg-config --cflags --libs gtk+-3.0) ${LDFLAGS} -o bin/view ${LDFLAGS}
 endif
 
+ifeq ("draw","true")
 print-lens-path: Makefile src/print-lens-path.cpp ${HEADERS}
 	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/print-lens-path.cpp -o bin/print-lens-path ${LDFLAGS}
 
@@ -88,7 +114,7 @@ printpoly: Makefile src/printpoly.c ${HEADERS}
 
 gencode: Makefile src/gencode.c ${HEADERS}
 	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/gencode.c -o bin/gencode ${LDFLAGS}
-
+endif
 
 #lt-aperture-sampling: Makefile src/sample_ap_lt.c init.h lt_sample_aperture.h ${HEADERS}
 #	${CXX} ${OPTFLAGS} ${CXXFLAGS} -Irender/${lensname} src/sample_ap_lt.c -o bin/lt-aperture-sampling ${LDFLAGS}
@@ -97,9 +123,12 @@ gencode: Makefile src/gencode.c ${HEADERS}
 #	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/render_gl.c ${LDFLAGS} -o bin/glRender -lGLEW -lGL -lGLU -lglfw
 
 
-ifeq ($(OS), Darwin)
-clean: rm -f create-public-json calculate-fstop calculate-focal-length calculate-infinity-focus-lens-offset view fit gencode genpoly printpoly print-lens-path add-fitted-focal-length generate-lens-defines #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
-endif
-ifeq ($(OS), Linux)
-clean: rm -f create-public-json calculate-fstop calculate-focal-length calculate-infinity-focus-lens-offset fit gencode genpoly printpoly print-lens-path add-fitted-focal-length generate-lens-defines #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
+clean: rm -f view
+ifeq ("draw","true")
+	ifeq ($(OS), Darwin)
+	clean += create-public-json calculate-fstop calculate-focal-length calculate-infinity-focus-lens-offset fit gencode genpoly printpoly print-lens-path add-fitted-focal-length generate-lens-defines #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
+	endif
+	ifeq ($(OS), Linux)
+	clean += create-public-json calculate-fstop calculate-focal-length calculate-infinity-focus-lens-offset fit gencode genpoly printpoly print-lens-path add-fitted-focal-length generate-lens-defines #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
+	endif
 endif

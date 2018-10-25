@@ -20,6 +20,11 @@ using json = nlohmann::json;
   #define M_PI 3.14159265358979323846
 #endif
 
+#ifndef MODE_PRESENTATION
+  #define MODE_PRESENTATION
+#endif
+
+
 
 static float zoom = 0.0f; // zoom, if the lens supports it.
 //static const int degree = 4;  // degree of the polynomial. 1 is thin lens
@@ -53,11 +58,13 @@ static float window_aspect_ratio = (float)width/(float)height;
 float black[4] = {0.1, 0.1, 0.1, 1.0};
 float darkgrey[4] = {0.15, 0.15, 0.15, 1.0};
 float grey[4] = {0.5, 0.5, 0.5, 1.0};
-float lightgrey[4] = {0.7, 0.7, 0.7, 1.0};
+float lightgrey[4] = {0.825, 0.825, 0.825, 1.0};
 float yellow[4] = {0.949, 0.882, 0.749, 0.65};
 float green[4] = {0.749, 0.949, 0.874, 1.0};
 float white50[4] = {1.0, 1.0, 1.0, 0.5};
+float white[4] = {1.0, 1.0, 1.0, 1.0};
 float mint[4] = {0.631, 1.0, 0.78, 0.5};
+float salmon[4] = {232.0/255.0, 121.0/255.0, 121.0/255.0, 1.0};
 
 std::string lens_svg_path = "";
 
@@ -68,8 +75,7 @@ gboolean on_keypress (GtkWidget *widget, GdkEventKey *event, gpointer data) {
     return TRUE;
   }
   else if(event->keyval == GDK_KEY_p) {
-    fmt::print("Saving lens drawing to {}\n", lens_svg_path);
-    screenshot = 1;
+    screenshot = !screenshot;
     gtk_widget_queue_draw(widget);
     return TRUE;
   }
@@ -252,21 +258,31 @@ void draw_axis_text(cairo_t *cr, float max_housing_radius, float ruler_padding) 
   cairo_new_path(cr);
 }
 
+void draw_aperture(cairo_t *cr) {
+  int aperture_element = lens_get_aperture_element(lenses, lenses_cnt-1);
+  float aperture_pos = lens_get_aperture_pos_reverse(lenses, lenses_cnt-1, 0.0f);
+  float housing_radius = lenses[aperture_element].housing_radius;
+  float radius = lenses[aperture_element].housing_radius;
+
+  cairo_set_source_rgba(cr, lightgrey[0], lightgrey[1], lightgrey[2], lightgrey[3]);
+  cairo_set_line_width(cr, 500.0/width);
+
+  cairo_move_to(cr, aperture_pos, housing_radius+10);
+  cairo_line_to(cr, aperture_pos, housing_radius);
+  cairo_stroke(cr);
+  cairo_move_to(cr, aperture_pos, -housing_radius-10);
+  cairo_line_to(cr, aperture_pos, -housing_radius);
+  cairo_stroke(cr);
+}
+
+
 
 gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
-  GtkStyleContext *context;
-  context = gtk_widget_get_style_context(widget);
-  width = gtk_widget_get_allocated_width(widget);
-  height = gtk_widget_get_allocated_height(widget);
-  gtk_render_background(context, cr, 0, 0, width, height);
-
-
-  if(screenshot) {
-    cairo_surface_t *cst = 0;
+  cairo_surface_t *cst = 0;
+  if(screenshot) { 
     cst = cairo_svg_surface_create(lens_svg_path.c_str(), width, height);
     cr = cairo_create(cst);
-  }
-  
+  } 
 
   cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
   cairo_set_line_join(cr, CAIRO_LINE_JOIN_BEVEL);
@@ -274,14 +290,20 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
   cairo_paint(cr);
   cairo_set_line_width(cr, 1.0f);
 
-
   cairo_translate(cr, 0, height/2.0);
+  cairo_translate(cr, width/2.0, 0);
   cairo_scale(cr, ((float)width/window_aspect_ratio)/20.0, (float)height/20.0);
   cairo_set_line_width(cr, 40.0/width);
 
-
   const float scale = global_scale/lens_length;
   cairo_scale(cr, scale, scale); // scale by arbitrary factor
+
+#ifdef MODE_PRESENTATION
+  draw_polynomials = 0;
+  float center_shift = -((lens_length + lenses[lenses_cnt-1].thickness_short) / 2.0);
+  cairo_translate(cr, center_shift, 0);
+#endif
+#ifndef MODE_PRESENTATION
   cairo_translate(cr, 20.0, 0.0); // move 20mm away
 
   draw_grid(cr);
@@ -297,13 +319,13 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
   float ruler_padding = gridsize;
   draw_rulers(cr, max_housing_radius, ruler_padding);
   draw_axis_text(cr, max_housing_radius, ruler_padding);
-
+#endif
 
   cairo_set_line_width(cr, 30.0/width);
   cairo_set_source_rgba(cr, lightgrey[0], lightgrey[1], lightgrey[2], 0.5);
 
   float pos = lens_length;
-  aperture_pos = lens_length/2.0f;
+  aperture_pos = lens_length/2.0f; // why is this so arbitrary..?
   float hsl[3], rgb[3];
 
   
@@ -479,6 +501,12 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
       float hrad = lenses[i].housing_radius;
       float t = lens_get_thickness(lenses+i, zoom);
 
+      // skip aperture drawing
+      if(!strcasecmp(lenses[i].material, "iris")) {
+        pos -= t;
+        continue;
+      }
+
       if(!strcasecmp(lenses[i].material, "iris")) aperture_pos = pos;
 
       if(lenses[i].ior != 1.0f && i < lenses_cnt-1) {
@@ -527,8 +555,8 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
         else cairo_set_source_rgba(cr, grey[0], grey[1], grey[2], 0.85);
         cairo_fill_preserve(cr);
 
-        cairo_set_source_rgba(cr, lightgrey[0], lightgrey[1], lightgrey[2], 1.0);
-        stroke_with_pencil(cr, scale, 40.0/width);
+        cairo_set_source_rgba(cr, lightgrey[0], lightgrey[1], lightgrey[2], lightgrey[3]);
+        stroke_with_pencil(cr, scale, 70.0/width);
 
         cairo_restore(cr);
 
@@ -555,7 +583,8 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
         else if (!strcmp(lenses[i].geometry, "aspherical")) cairo_set_source_rgba(cr, green[0], green[1], green[2], 0.85);
         else cairo_set_source_rgba(cr, grey[0], grey[1], grey[2], 0.85);
 
-        stroke_with_pencil(cr, scale, 20.0/width);
+        cairo_set_source_rgba(cr, lightgrey[0], lightgrey[1], lightgrey[2], lightgrey[3]);
+        stroke_with_pencil(cr, scale, 70.0/width);
         cairo_close_path(cr);
         cairo_fill(cr);
 
@@ -568,14 +597,15 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
 
   draw_sensor(cr);
   draw_optical_axis(cr);
+  draw_aperture(cr);
   
   if(screenshot) {
     cairo_surface_destroy(cst);
-    screenshot = 0;
   }
 
   return FALSE;
 }
+
 
 int main(int argc, char *argv[])
 {

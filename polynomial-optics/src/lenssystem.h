@@ -65,6 +65,19 @@ float lens_get_aperture_pos(lens_element_t *l, int num, float zoom)
   return pos;
 }
 
+
+float lens_get_aperture_pos_reverse(lens_element_t *lenses, int num, float zoom)
+{
+  float pos = 0.0;
+  for(int i = num; i>0; i--) {
+    pos += lens_get_thickness(lenses+i, zoom);
+    if(!strcasecmp(lenses[i].material, "iris")) {
+      return pos;
+    }
+  }
+}
+
+
 int lens_get_aperture_element(const lens_element_t *l, int lenses_cnt) {
   for (int k = 0; k < lenses_cnt - 1; k++) {
     if (!strcasecmp(l[k].material, "iris")) {
