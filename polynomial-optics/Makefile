@@ -40,7 +40,7 @@ src/spectrum.h
 all: view
 
 
-ifeq ("draw","true")
+#ifeq ("draw","true")
 ifeq ($(OS), Darwin)
     all += \
 	create-public-json \
@@ -70,7 +70,7 @@ ifeq ($(OS), Linux)
 	print-lens-path \
 	add-fitted-focal-length
 endif
-endif
+#endif
 
 
 ifeq ($(OS), Darwin)
@@ -78,7 +78,7 @@ view: Makefile src/view.c ${HEADERS}
 	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/view.c $(shell pkg-config --cflags --libs gtk+-3.0) ${LDFLAGS} -o bin/view ${LDFLAGS}
 endif
 
-ifeq ("draw","true")
+#ifeq ("draw","true")
 print-lens-path: Makefile src/print-lens-path.cpp ${HEADERS}
 	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/print-lens-path.cpp -o bin/print-lens-path ${LDFLAGS}
 
@@ -114,7 +114,7 @@ printpoly: Makefile src/printpoly.c ${HEADERS}
 
 gencode: Makefile src/gencode.c ${HEADERS}
 	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/gencode.c -o bin/gencode ${LDFLAGS}
-endif
+#endif
 
 #lt-aperture-sampling: Makefile src/sample_ap_lt.c init.h lt_sample_aperture.h ${HEADERS}
 #	${CXX} ${OPTFLAGS} ${CXXFLAGS} -Irender/${lensname} src/sample_ap_lt.c -o bin/lt-aperture-sampling ${LDFLAGS}
@@ -124,11 +124,11 @@ endif
 
 
 clean: rm -f view
-ifeq ("draw","true")
-	ifeq ($(OS), Darwin)
-	clean += create-public-json calculate-fstop calculate-focal-length calculate-infinity-focus-lens-offset fit gencode genpoly printpoly print-lens-path add-fitted-focal-length generate-lens-defines #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
-	endif
-	ifeq ($(OS), Linux)
-	clean += create-public-json calculate-fstop calculate-focal-length calculate-infinity-focus-lens-offset fit gencode genpoly printpoly print-lens-path add-fitted-focal-length generate-lens-defines #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
-	endif
+#ifeq ("draw","true")
+ifeq ($(OS), Darwin)
+clean += create-public-json calculate-fstop calculate-focal-length calculate-infinity-focus-lens-offset fit gencode genpoly printpoly print-lens-path add-fitted-focal-length generate-lens-defines #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
 endif
+ifeq ($(OS), Linux)
+clean += create-public-json calculate-fstop calculate-focal-length calculate-infinity-focus-lens-offset fit gencode genpoly printpoly print-lens-path add-fitted-focal-length generate-lens-defines #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
+endif
+#endif

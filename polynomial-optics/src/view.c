@@ -29,7 +29,7 @@ using json = nlohmann::json;
 static float zoom = 0.0f; // zoom, if the lens supports it.
 //static const int degree = 4;  // degree of the polynomial. 1 is thin lens
 //static const float coverage = .5f; // coverage of incoming rays at scene facing pupil (those you point with the mouse)
-static int num_rays = 600;
+static int num_rays = 500;
 static int dim_up = 0; // xz (top - 0) or plot yz (side - 1) of the lens in 2d?
 static poly_system_t poly, poly_aperture;
 static float aperture_rad;
@@ -51,7 +51,6 @@ static int width = 900;
 static int height = 550;
 static int gridsize = 10; //10 mm
 
-static float extra_space = 0.0f;
 static float global_scale = 20.0f;
 static float window_aspect_ratio = (float)width/(float)height;
 
@@ -158,8 +157,8 @@ static void stroke_with_pencil(cairo_t *cr, float scale, float line_width) {
 }
 
 void draw_optical_axis(cairo_t *cr) {
-  cairo_set_line_width(cr, 40.0/width);
-  cairo_set_source_rgb(cr, 0.6, 0.6, 0.6);
+  cairo_set_line_width(cr, 4.0f);
+  cairo_set_source_rgba(cr, lightgrey[0], lightgrey[1], lightgrey[2], 0.5);
   cairo_move_to(cr, 0, height/2.0);
   cairo_line_to(cr, width, height/2.0);
   cairo_stroke(cr);
@@ -278,10 +277,11 @@ void draw_aperture(cairo_t *cr) {
 
 
 gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
-  cairo_surface_t *cst = 0;
+  cairo_surface_t *svg_surface = 0;
   if(screenshot) { 
-    cst = cairo_svg_surface_create(lens_svg_path.c_str(), width, height);
-    cr = cairo_create(cst);
+    svg_surface = cairo_svg_surface_create(lens_svg_path.c_str(), width, height);
+    cairo_svg_surface_restrict_to_version (svg_surface, CAIRO_SVG_VERSION_1_2);
+    cr = cairo_create(svg_surface);
   } 
 
   cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
@@ -290,8 +290,13 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
   cairo_paint(cr);
   cairo_set_line_width(cr, 1.0f);
 
+  draw_optical_axis(cr);
+
   cairo_translate(cr, 0, height/2.0);
+#ifdef MODE_PRESENTATION
   cairo_translate(cr, width/2.0, 0);
+#endif
+
   cairo_scale(cr, ((float)width/window_aspect_ratio)/20.0, (float)height/20.0);
   cairo_set_line_width(cr, 40.0/width);
 
@@ -305,7 +310,6 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
 #endif
 #ifndef MODE_PRESENTATION
   cairo_translate(cr, 20.0, 0.0); // move 20mm away
-
   draw_grid(cr);
 
   // find max housing radius
@@ -321,7 +325,9 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
   draw_axis_text(cr, max_housing_radius, ruler_padding);
 #endif
 
-  cairo_set_line_width(cr, 30.0/width);
+
+
+  cairo_set_line_width(cr, 90.0/width);
   cairo_set_source_rgba(cr, lightgrey[0], lightgrey[1], lightgrey[2], 0.5);
 
   float pos = lens_length;
@@ -596,11 +602,13 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
   }
 
   draw_sensor(cr);
-  draw_optical_axis(cr);
   draw_aperture(cr);
+
   
   if(screenshot) {
-    cairo_surface_destroy(cst);
+    cairo_surface_finish(svg_surface);
+    cairo_surface_destroy(svg_surface);
+    fmt::print("Saved lens drawing to '{}'\n", lens_svg_path);
   }
 
   return FALSE;
