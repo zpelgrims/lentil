@@ -6,11 +6,7 @@
 #include <gtk/gtk.h>
 #include <cairo.h>
 #include <cairo-svg.h>
-#include <math.h>
-#include <strings.h>
-#include <string.h>
-#include <sys/time.h>
-#include <fenv.h>
+#include <cmath>
 
 //json parsing
 #include "../ext/json.hpp"
@@ -79,13 +75,12 @@ gboolean on_keypress (GtkWidget *widget, GdkEventKey *event, gpointer data) {
   }
   else if(event->keyval == GDK_KEY_a) {
     draw_aspheric = !draw_aspheric;
-    fmt::print("using {}spherical lenses\n", draw_aspheric ? "a":"");
+    fmt::print("Using {}spherical lenses\n", draw_aspheric ? "a" : "");
     gtk_widget_queue_draw(widget);
     return TRUE;
   }
   else if(event->keyval == GDK_KEY_f) {
-    if (draw_focallength) draw_focallength = 0;
-    else draw_focallength = 1;
+    draw_focallength = !draw_focallength;
     gtk_widget_queue_draw(widget);
     return TRUE;
   }
@@ -110,8 +105,7 @@ gboolean on_keypress (GtkWidget *widget, GdkEventKey *event, gpointer data) {
     return TRUE;
   }
   else if(event->keyval == GDK_KEY_s) {
-    if (dim_up) dim_up = 0;
-    else dim_up = 1;
+    dim_up = !dim_up;
     gtk_widget_queue_draw(widget);
     return TRUE;
   }
