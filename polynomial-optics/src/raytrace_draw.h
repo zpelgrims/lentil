@@ -97,7 +97,6 @@ static inline int evaluate_draw(const lens_element_t *lenses,
   if (calculate_focal_length){
     // after last lens element:
     float ray_origin[3] = {pos[0], pos[1], pos[2]};
-    float ray_direction[3] = {dir[0], dir[1], dir[2]};
     float pp_line1start[3] = {0.0};
     float pp_line1end[3] = {0.0, 0.0, 99999.0};
     float pp_line2end[3] = {0.0, 0.0, static_cast<float>(pos[2] + (dir[2] * 1000.0))};

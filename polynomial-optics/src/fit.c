@@ -14,7 +14,9 @@
 
 #include <cstdlib>
 
-#define M_PI 3.14159265358979323846  /* pi */
+#ifndef M_PI
+  #define M_PI 3.14159265358979323846
+#endif
 
 #define MATCHING_PURSUIT
 #define OMP_ALLOW_REPLACING
@@ -75,7 +77,6 @@ int main(int argc, char *argv[])
   const int sample_cnt = 15000;
   float *sample = (float *)malloc(sample_cnt*sizeof(float)*5);
   float *sample_in = (float *)malloc(sample_cnt*sizeof(float)*5);
-  const int oversample = 10; // only do this x coeff count many ray tracing samples
 
   int valid = 0;
   while(1)
@@ -102,8 +103,7 @@ int main(int argc, char *argv[])
       for(int k=0;k<5;k++) sample[valid + k*sample_cnt] = out[k];
       valid++;
     }
-    // only need to be able to determine the dimensionality of our problem, not much more:
-    //if(valid >= oversample*coeff_size) break;
+
     if(valid >= sample_cnt) break;
   }
   fprintf(stderr, "[ sensor->outer pp ] optimising %d coeffs by %d/%d valid sample points\n", coeff_size, valid, sample_cnt);

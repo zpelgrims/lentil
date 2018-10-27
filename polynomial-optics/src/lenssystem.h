@@ -75,6 +75,9 @@ float lens_get_aperture_pos_reverse(lens_element_t *lenses, int num, float zoom)
       return pos;
     }
   }
+
+  fmt::print("Couldn't find aperture element!");
+  return 0.0f;
 }
 
 
@@ -84,6 +87,9 @@ int lens_get_aperture_element(const lens_element_t *l, int lenses_cnt) {
       return k;
     }
   }
+
+  fmt::print("Couldn't find aperture element!");
+  return 0;
 }
 
 

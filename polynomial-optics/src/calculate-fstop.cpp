@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
   int lenses_cnt = lens_configuration(lenses, id, 0);
 
   float zoom = 0.0f;
-  int dim_up = 1;
+  int dim_up = 0;
   const float lambda = 0.55f;
   std::vector<float> positiondata = {0.0, 0.0};
   float lens_length = 0.0;

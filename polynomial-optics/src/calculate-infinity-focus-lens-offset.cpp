@@ -28,7 +28,6 @@ int main(int argc, char *argv[]){
     lenses[lenses_cnt-1].thickness_short = original_last_element_thickness + extra_thickness;
     float lens_length = 0;
     for(int i=0;i<lenses_cnt;i++) lens_length += lens_get_thickness(lenses+i, zoom);
-    const float len = lens_length/10.0f;
 
     float cam_pos[3] = {0.0f};
     float cam_dir[3] = {0.0f};

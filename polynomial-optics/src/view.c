@@ -41,7 +41,6 @@ static float lens_length = 0;
 static float aperture_pos = 0;
 
 static int screenshot = 0;
-static int draw_solve_omega = 0;
 static int draw_raytraced = 1;
 static int draw_polynomials = 1;
 static int draw_aspheric = 1;
@@ -261,7 +260,6 @@ void draw_aperture(cairo_t *cr) {
   int aperture_element = lens_get_aperture_element(lenses, lenses_cnt-1);
   float aperture_pos = lens_get_aperture_pos_reverse(lenses, lenses_cnt-1, 0.0f);
   float housing_radius = lenses[aperture_element].housing_radius;
-  float radius = lenses[aperture_element].housing_radius;
 
   cairo_set_source_rgba(cr, lightgrey[0], lightgrey[1], lightgrey[2], lightgrey[3]);
   cairo_set_line_width(cr, 500.0/width);
@@ -342,19 +340,14 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
     cam_pos[dim_up] = lenses[lenses_cnt-1].housing_radius * 0.5f;
     cam_dir[2] = cam_pos[2] + 99999;
     cam_dir[dim_up] = cam_pos[dim_up];
-    //raytrace_normalise(cam_dir);
 
     const float lambda = 0.5f;
     float in[5] = {0.0f};
     float out[5] = {0.0f};
     float ap[5] = {0.0f};
-    float inrt[5] = {0.0f};
-    float outrt[5] = {0.0f};
-    inrt[4] = outrt[4] = in[4] = out[4] = ap[4] = lambda;
-    float t, n[3] = {0.0f};
-
-    inrt[0] = cam_pos[0]; inrt[1] = cam_pos[1]; inrt[2] = cam_pos[2];
-    outrt[0] = cam_dir[0]; outrt[1] = cam_dir[1]; outrt[2] = cam_dir[2];
+    in[4] = out[4] = ap[4] = lambda;
+    float inrt[5] = {cam_pos[0], cam_pos[1], cam_pos[2], 0.0f, lambda};
+    float outrt[5] = {cam_dir[0], cam_dir[1], cam_dir[2], 0.0f, lambda};
 
     int error = 0;
     if(draw_raytraced)
