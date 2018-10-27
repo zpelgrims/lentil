@@ -39,19 +39,8 @@ static inline int evaluate_draw(const lens_element_t *lenses,
 
     //normal at intersection
     float n[3];
-
-    if (strcmp(lenses[k].geometry, "cyl-y") == 0){
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
-    }
-    else if (strcmp(lenses[k].geometry, "cyl-x") == 0){
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
-    }
-    else if (draw_aspherical){
-      error |= aspherical(pos, dir, &t, R, distsum + R, lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
-    }
-    else {
-      error |= spherical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n);
-    }
+    
+    error |= intersect(lenses, k, pos, dir, t, n, R, distsum, true);
 
     // index of refraction and ratio current/next:
     const float n2 = k ? spectrum_eta_from_abbe_um(lenses[k-1].ior, lenses[k-1].vno, in[4]) : 1.0f; // outside the lens there is vacuum
@@ -78,8 +67,8 @@ static inline int evaluate_draw(const lens_element_t *lenses,
   }
 
   // return [x,y,dx,dy,lambda]
-  if (strcmp(lenses[0].geometry, "cyl-y") == 0) csToCylinder(pos, dir, out, out + 2, distsum-fabs(lenses[0].lens_radius), lenses[0].lens_radius, true);
-  else if (strcmp(lenses[0].geometry, "cyl-x") == 0) csToCylinder(pos, dir, out, out + 2, distsum-fabs(lenses[0].lens_radius), lenses[0].lens_radius, false);
+  if (!strcmp(lenses[0].geometry, "cyl-y")) csToCylinder(pos, dir, out, out + 2, distsum-fabs(lenses[0].lens_radius), lenses[0].lens_radius, true);
+  else if (!strcmp(lenses[0].geometry, "cyl-x")) csToCylinder(pos, dir, out, out + 2, distsum-fabs(lenses[0].lens_radius), lenses[0].lens_radius, false);
   else csToSphere(pos, dir, out, out + 2, distsum-fabs(lenses[0].lens_radius), lenses[0].lens_radius);
 
   out[4] = intensity;
@@ -141,7 +130,6 @@ static inline int evaluate_draw(const lens_element_t *lenses,
     }
   }
 
-
   return error;
 }
 
@@ -156,8 +144,8 @@ static inline int evaluate_reverse_draw(const lens_element_t *lenses, const int 
   float lens_length = 0;
   for(int i=0;i<lenses_cnt;i++) lens_length += lens_get_thickness(lenses+i, zoom);
 
-  if (strcmp(lenses[0].geometry, "cyl-y") == 0) cylinderToCs(in, in + 2, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
-  else if (strcmp(lenses[0].geometry, "cyl-x") == 0) cylinderToCs(in, in + 2, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
+  if (!strcmp(lenses[0].geometry, "cyl-y")) cylinderToCs(in, in + 2, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
+  else if (!strcmp(lenses[0].geometry, "cyl-x")) cylinderToCs(in, in + 2, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
   else sphereToCs(in, in + 2, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
 
   // sphere param only knows about directions facing /away/ from outer pupil, so
@@ -177,19 +165,7 @@ static inline int evaluate_reverse_draw(const lens_element_t *lenses, const int 
 
     //normal at intersection
     float n[3] = {0.0f};
-    
-    if (strcmp(lenses[k].geometry, "cyl-y") == 0){
-      error |= cylindrical(pos, dir, &t, R, distsum - R, lenses[k].housing_radius, n, true);
-    }
-    else if (strcmp(lenses[k].geometry, "cyl-x") == 0){
-      error |= cylindrical(pos, dir, &t, R, distsum - R, lenses[k].housing_radius, n, false);
-    }
-    else if (draw_aspherical){
-      error |= aspherical(pos, dir, &t, R, distsum - R, lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
-    }
-    else {
-      error |= spherical(pos, dir, &t, R, distsum - R, lenses[k].housing_radius, n);
-    }
+    error |= intersect(lenses, k, pos, dir, t, n, R, distsum, false);
 
     if(n[2] < 0.0) error |= 16;
 
@@ -223,9 +199,6 @@ static inline int evaluate_reverse_draw(const lens_element_t *lenses, const int 
 
   cairo_line_to(cr, pos[2], pos[dim_up]);
   cairo_line_to(cr, 0.0f, pos[dim_up] - pos[2]*dir[dim_up]/dir[2]);
-  
-  // print y=0 intersection
-  // printf("pos[dim_up] - pos[2]*dir[dim_up]/dir[2]: %f\n", pos[dim_up] - pos[2]*dir[dim_up]/dir[2]);
   
   cairo_save(cr);
   cairo_scale(cr, 1/scale, 1/scale);

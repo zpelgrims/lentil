@@ -10,44 +10,37 @@
 
 #define INTENSITY_EPS 1e-5
 
-static inline float raytrace_dot(const float *u, const float *v)
-{
+static inline float raytrace_dot(const float *u, const float *v) {
   return ((u)[0]*(v)[0] + (u)[1]*(v)[1] + (u)[2]*(v)[2]);
 }
 
-static inline void raytrace_cross(float *r, const float *u, const float *v)
-{
+static inline void raytrace_cross(float *r, const float *u, const float *v) {
   r[0] = u[1]*v[2]-u[2]*v[1];
   r[1] = u[2]*v[0]-u[0]*v[2];
   r[2] = u[0]*v[1]-u[1]*v[0];
 }
 
-static inline void raytrace_normalise(float *v)
-{
+static inline void raytrace_normalise(float *v) {
   const float ilen = 1.0f/sqrtf(raytrace_dot(v,v));
   for(int k=0;k<3;k++) v[k] *= ilen;
 }
 
 //u = u - v
-static inline void raytrace_substract(float *u, const float *v)
-{
+static inline void raytrace_substract(float *u, const float *v) {
   for(int k = 0; k < 3; k++) u[k] -= v[k];
 }
 
 //v = s * v
-static inline void raytrace_multiply(float *v, const float s)
-{
+static inline void raytrace_multiply(float *v, const float s) {
   for(int k = 0; k < 3; k++) v[k] *= s;
 }
 
-static inline void propagate(float *pos, const float *dir, const float dist)
-{
+static inline void propagate(float *pos, const float *dir, const float dist) {
   for(int i=0;i<3;i++) pos[i] += dir[i] * dist;
 }
 
 
-static inline int spherical(float *pos, float *dir, float *dist, float R, float center, float housing_rad, float *normal)
-{
+static inline int spherical(float *pos, float *dir, float *dist, float R, float center, float housing_rad, float *normal) {
   const float scv[3] = {pos[0], pos[1], pos[2] - center};
   const float a = raytrace_dot(dir, dir);
   const float b = 2 * raytrace_dot(dir, scv);
@@ -73,8 +66,7 @@ static inline int spherical(float *pos, float *dir, float *dist, float R, float 
   return error;
 }
 
-static inline float evaluate_aspherical(const float *pos, const float R, const int k, const float *correction)
-{
+static inline float evaluate_aspherical(const float *pos, const float R, const int k, const float *correction) {
   float h = sqrtf(pos[0]*pos[0]+pos[1]*pos[1]);
   float hr = h / R;
   float h2 = h*h;
@@ -86,8 +78,7 @@ static inline float evaluate_aspherical(const float *pos, const float R, const i
   return z;
 }
 
-static inline float evaluate_aspherical_derivative(const float *pos, const float R, const int k, const float *correction)
-{
+static inline float evaluate_aspherical_derivative(const float *pos, const float R, const int k, const float *correction) {
   float h = sqrtf(pos[0]*pos[0]+pos[1]*pos[1]);
   float hr = h / R;
   float h2 = h*h;
@@ -101,8 +92,7 @@ static inline float evaluate_aspherical_derivative(const float *pos, const float
   return z;
 }
 
-static inline int aspherical(float *pos, float *dir, float *dist, const float R, const float center, const int k, const float *correction, const float housing_rad, float *normal)
-{
+static inline int aspherical(float *pos, float *dir, float *dist, const float R, const float center, const int k, const float *correction, const float housing_rad, float *normal) {
   //first intersect sphere, then do correction iteratively
   float t = 0;
   int error = spherical(pos, dir, &t, R, center, housing_rad, normal);
@@ -143,25 +133,18 @@ static inline int aspherical(float *pos, float *dir, float *dist, const float R,
 }
 
 
-static inline int cylindrical(float *pos, float *dir, float *dist, float R, float center, float housing_rad, float *normal, bool cyl_y)
-{
-  float scv[3] = {0.0, 0.0, 0.0};
-
-  if (cyl_y){
-    scv[0] = pos[0];
-    scv[1] = 0.0f;
-    scv[2] = pos[2] - center;
-  } else {
-    scv[0] = 0.0f;
-    scv[1] = pos[1];
-    scv[2] = pos[2] - center;
-  }
+static inline int cylindrical(float *pos, float *dir, float *dist, float R, float center, float housing_rad, float *normal, bool cyl_y) {
+  float scv[3] = {
+    cyl_y ? pos[0] : 0.0f, 
+    cyl_y ? 0.0f : pos[1],
+    pos[2] - center
+  };
 
   const float a = raytrace_dot(dir, dir);
   const float b = 2 * raytrace_dot(dir, scv);
   const float c = raytrace_dot(scv, scv) - R*R;
   
-  const float discr = b*b-4*a*c;
+  const float discr = b*b - 4*a*c;
   if(discr < 0.0f) return 4;
   int error = 0;
 
@@ -172,42 +155,34 @@ static inline int cylindrical(float *pos, float *dir, float *dist, float R, floa
   propagate(pos, dir, t);
   error |= (int)(pos[0]*pos[0] + pos[1]*pos[1] > housing_rad*housing_rad)<<4;
 
-  if (cyl_y){
-    normal[0] = pos[0]/R;
-    normal[1] = 0.0f;
-    normal[2] = (pos[2] - center)/R;
-  } else {
-    normal[0] = 0.0f;
-    normal[1] = pos[1]/R;
-    normal[2] = (pos[2] - center)/R;
-  }
+  normal[0] = cyl_y ? pos[0]/R : 0.0f;
+  normal[1] = cyl_y ? 0.0f : pos[1]/R;
+  normal[2] = (pos[2] - center)/R;
 
   *dist = t;
   return error;
 }
 
 
-static inline float fresnel(const float n1, const float n2, const float cosr, const float cost)
-{
+static inline float fresnel(const float n1, const float n2, const float cosr, const float cost) {
   if(cost <= 0.0f) return 1.0f; // total inner reflection
+
   // fresnel for unpolarized light:
   const float Rs = (n1*cosr - n2*cost)/(n1*cosr + n2*cost);
   const float Rp = (n1*cost - n2*cosr)/(n1*cost + n2*cosr);
   return fminf(1.0f, (Rs*Rs + Rp*Rp)*.5f);
 }
 
-static inline float refract(const float n1, const float n2, const float *n, float *dir)
-{
-  if(n1 == n2)
-    return 1;
+static inline float refract(const float n1, const float n2, const float *n, float *dir) {
+  if(n1 == n2) return 1;
   const float eta = n1/n2;
 
   const float norm = sqrtf(raytrace_dot(dir,dir));
   const float cos1 = - raytrace_dot(n, dir)/norm;
   const float cos2_2 = 1.0f-eta*eta*(1.0f-cos1*cos1);
+
   // total (inner) reflection?
-  if(cos2_2 < 0.0f)
-    return 0;
+  if(cos2_2 < 0.0f) return 0;
   const float cos2 = sqrtf(cos2_2);
 
   for(int i=0;i<3;i++) dir[i] = dir[i]*eta/norm + (eta*cos1-cos2)*n[i];
@@ -215,8 +190,7 @@ static inline float refract(const float n1, const float n2, const float *n, floa
   return 1.0f-fresnel(n1, n2, cos1, cos2);
 }
 
-static inline void planeToCs(const float *inpos, const float *indir, float *outpos, float *outdir, const float planepos)
-{
+static inline void planeToCs(const float *inpos, const float *indir, float *outpos, float *outdir, const float planepos) {
   outpos[0] = inpos[0];
   outpos[1] = inpos[1];
   outpos[2] = planepos;
@@ -289,19 +263,14 @@ static inline void csToSphere(const float *inpos, const float *indir, float *out
   outpos[1] = inpos[1];
 }
 
-// untested and probably wrong
-static inline void csToCylinder(const float *inpos, const float *indir, float *outpos, float *outdir, const float center, const float R, bool cyl_y)
-{
-  float normal[3] = {0.0f};
-  if (cyl_y){
-    normal[0] = inpos[0]/R;
-    normal[1] = 0.0f;
-    normal[2] = fabsf((inpos[2] - center)/R);
-  } else {
-    normal[0] = 0.0f;
-    normal[1] = inpos[1]/R;
-    normal[2] = fabsf((inpos[2] - center)/R);
-  }
+
+static inline void csToCylinder(const float *inpos, const float *indir, float *outpos, float *outdir, const float center, const float R, bool cyl_y) {
+  float normal[3] = {
+    cyl_y ? inpos[0]/R : 0.0f,
+    cyl_y ? 0.0f : inpos[1]/R,
+    fabsf((inpos[2] - center)/R)
+  };
+
   float tempDir[3] = {indir[0], indir[1], indir[2]};
   raytrace_normalise(tempDir);
 
@@ -320,21 +289,19 @@ static inline void csToCylinder(const float *inpos, const float *indir, float *o
   outpos[1] = inpos[1];
 }
 
-// untested and probably wrong
-static inline void cylinderToCs(const float *inpos, const float *indir, float *outpos, float *outdir, const float center, const float R, bool cyl_y)
-{
-  float normal[3] = {0.0f};
-  if (cyl_y){
-    normal[0] = inpos[0]/R;
-    normal[1] = 0.0f;
-    normal[2] = sqrtf(max(0, R*R-inpos[0]*inpos[0]-inpos[1]*inpos[1]))/fabsf(R);
-  } else {
-    normal[0] = 0.0f;
-    normal[1] = inpos[1]/R;
-    normal[2] = sqrtf(max(0, R*R-inpos[0]*inpos[0]-inpos[1]*inpos[1]))/fabsf(R);
-  }
 
-  const float tempDir[3] = {indir[0], indir[1], sqrtf(max(0.0, 1.0f-indir[0]*indir[0]-indir[1]*indir[1]))};
+static inline void cylinderToCs(const float *inpos, const float *indir, float *outpos, float *outdir, const float center, const float R, bool cyl_y) {
+  float normal[3] = {
+    cyl_y ? inpos[0]/R : 0.0f,
+    cyl_y ? 0.0f : inpos[1]/R,
+    sqrtf(max(0, R*R-inpos[0]*inpos[0]-inpos[1]*inpos[1]))/fabsf(R)
+  };
+
+  const float tempDir[3] = {
+    indir[0], 
+    indir[1], 
+    sqrtf(max(0.0, 1.0f-indir[0]*indir[0]-indir[1]*indir[1]))
+  };
 
   float ex[3] = {normal[2], 0, -normal[0]};
   raytrace_normalise(ex);
@@ -350,17 +317,43 @@ static inline void cylinderToCs(const float *inpos, const float *indir, float *o
 }
 
 
+inline int intersect(const lens_element_t *lenses, 
+                    const int k,
+                    float *pos, float *dir, 
+                    float &t, float *n,
+                    const float R, const float distsum,
+                    const bool tracing_forward) {
+
+  float sign = tracing_forward ? 1.0f : -1.0f;
+
+  if(!strcasecmp(lenses[k].geometry, "cyl-y")){
+    return cylindrical(pos, dir, &t, R, distsum + (R * sign), lenses[k].housing_radius, n, true);
+  }
+  
+  else if (!strcasecmp(lenses[k].geometry, "cyl-x")){
+    return cylindrical(pos, dir, &t, R, distsum + (R * sign), lenses[k].housing_radius, n, false);
+  }
+  
+  else if(!strcasecmp(lenses[k].geometry, "aspherical")){
+    return aspherical(pos, dir, &t, R, distsum + (R * sign), lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
+  }
+  
+  else {
+    return spherical(pos, dir, &t, R, distsum + (R * sign), lenses[k].housing_radius, n);
+  }
+}
+
+
 // evalute sensor to outer pupil acounting for fresnel:
 static inline int evaluate(const lens_element_t *lenses, const int lenses_cnt, const float zoom, const float *in, float *out, int aspheric)
 {
   int error = 0;
+  float distsum = 0;
   float n1 = spectrum_eta_from_abbe_um(lenses[lenses_cnt-1].ior, lenses[lenses_cnt-1].vno, in[4]);
   float pos[3], dir[3];
   float intensity = 1.0f;
 
   planeToCs(in, in + 2, pos, dir, 0);
-
-  float distsum = 0;
 
   for(int k=lenses_cnt-1;k>=0;k--)
   {
@@ -373,18 +366,7 @@ static inline int evaluate(const lens_element_t *lenses, const int lenses_cnt, c
     //normal at intersection
     float n[3] = {0.0f};
 
-    if(!strcasecmp(lenses[k].geometry, "cyl-y")){
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
-    }
-    else if (!strcasecmp(lenses[k].geometry, "cyl-x")){
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
-    }
-    else if(!strcasecmp(lenses[k].geometry, "aspherical")){
-      error |= aspherical(pos, dir, &t, R, distsum + R, lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
-    }
-    else {
-      error |= spherical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n);
-    }
+    error |= intersect(lenses, k, pos, dir, t, n, R, distsum, true);
 
     // index of refraction and ratio current/next:
     const float n2 = k ? spectrum_eta_from_abbe_um(lenses[k-1].ior, lenses[k-1].vno, in[4]) : 1.0f; // outside the lens there is vacuum
@@ -428,18 +410,7 @@ static inline int evaluate_for_pos_dir(const lens_element_t *lenses, const int l
     //normal at intersection
     float n[3] = {0.0f};
 
-    if(!strcasecmp(lenses[k].geometry, "cyl-y")){
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
-    }
-    else if (!strcasecmp(lenses[k].geometry, "cyl-x")){
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
-    }
-    else if(!strcasecmp(lenses[k].geometry, "aspherical")){
-      error |= aspherical(pos, dir, &t, R, distsum + R, lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
-    }
-    else {
-      error |= spherical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n);
-    }
+    error |= intersect(lenses, k, pos, dir, t, n, R, distsum, true);
 
     // index of refraction and ratio current/next:
     const float n2 = k ? spectrum_eta_from_abbe_um(lenses[k-1].ior, lenses[k-1].vno, in[4]) : 1.0f; // outside the lens there is vacuum
@@ -452,13 +423,6 @@ static inline int evaluate_for_pos_dir(const lens_element_t *lenses, const int l
 
     n1 = n2;
   }
-
-  /*
-  // return [x,y,dx,dy,lambda]
-  if (!strcasecmp(lenses[0].geometry, "cyl-y")) csToCylinder(pos, dir, out, out + 2, distsum-fabs(lenses[0].lens_radius), lenses[0].lens_radius, true);
-  else if (!strcasecmp(lenses[0].geometry, "cyl-x")) csToCylinder(pos, dir, out, out + 2, distsum-fabs(lenses[0].lens_radius), lenses[0].lens_radius, false);
-  else csToSphere(pos, dir, out, out + 2, distsum-fabs(lenses[0].lens_radius), lenses[0].lens_radius);
-  */
  
   //out[4] = intensity;
   return error;
@@ -490,18 +454,7 @@ static inline int evaluate_reverse(const lens_element_t *lenses, const int lense
     //normal at intersection
     float n[3] = {0.0};
 
-    if (!strcasecmp(lenses[k].geometry, "cyl-y")){
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
-    }
-    else if (!strcasecmp(lenses[k].geometry, "cyl-x")){
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
-    }
-    else if (aspheric){
-      error |= aspherical(pos, dir, &t, R, distsum + R, lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
-    }
-    else {
-      error |= spherical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n);
-    }
+    error |= intersect(lenses, k, pos, dir, t, n, R, distsum, true);
 
     // index of refraction and ratio current/next:
     const float n2 = spectrum_eta_from_abbe_um(lenses[k].ior, lenses[k].vno, in[4]);
@@ -548,18 +501,7 @@ static inline int evaluate_aperture(const lens_element_t *lenses, const int lens
     //normal at intersection
     float n[3] = {0.0f};
 
-    if (!strcasecmp(lenses[k].geometry, "cyl-y")){
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
-    }
-    else if (!strcasecmp(lenses[k].geometry, "cyl-x")){
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
-    }
-    else if(aspheric) {
-      error |= aspherical(pos, dir, &t, R, distsum + R, lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
-    }
-    else {
-      error |= spherical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n);
-    }
+    error |= intersect(lenses, k, pos, dir, t, n, R, distsum, true);
 
     // index of refraction and ratio current/next:
     const float n2 = k ? spectrum_eta_from_abbe_um(lenses[k-1].ior, lenses[k-1].vno, in[4]) : 1.0f; // outside the lens there is vacuum
@@ -605,18 +547,7 @@ static inline int evaluate_aperture_reverse(const lens_element_t *lenses, const 
     //normal at intersection
     float n[3];
 
-    if (!strcasecmp(lenses[k].geometry, "cyl-y")){
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
-    }
-    else if (!strcasecmp(lenses[k].geometry, "cyl-x")){
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
-    }
-    else if (aspheric){
-      error |= aspherical(pos, dir, &t, R, distsum + R, lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
-    }
-    else {
-      error |= spherical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n);
-    }
+    error |= intersect(lenses, k, pos, dir, t, n, R, distsum, true);
 
     // index of refraction and ratio current/next:
     const float n2 = spectrum_eta_from_abbe_um(lenses[k].ior, lenses[k].vno, in[4]);
@@ -687,19 +618,7 @@ float calculate_focal_length(
 
     //normal at intersection
     float n[3];
-    
-    if (!strcasecmp(lenses[k].geometry, "cyl-y")){
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, true);
-    }
-    else if (!strcasecmp(lenses[k].geometry, "cyl-x")){
-      error |= cylindrical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n, false);
-    }
-    else if (draw_aspherical){
-      error |= aspherical(pos, dir, &t, R, distsum + R, lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
-    }
-    else {
-      error |= spherical(pos, dir, &t, R, distsum + R, lenses[k].housing_radius, n);
-    }
+    error |= intersect(lenses, k, pos, dir, t, n, R, distsum, true);
 
     // index of refraction and ratio current/next:
     const float n2 = k ? spectrum_eta_from_abbe_um(lenses[k-1].ior, lenses[k-1].vno, in[4]) : 1.0f; // outside the lens there is vacuum
@@ -763,18 +682,7 @@ static inline float evaluate_reverse_intersection_y0(
     //normal at intersection
     float n[3] = {0.0f};
     
-    if (!strcasecmp(lenses[k].geometry, "cyl-y")){
-      error |= cylindrical(pos, dir, &t, R, distsum - R, lenses[k].housing_radius, n, true);
-    }
-    else if (!strcasecmp(lenses[k].geometry, "cyl-x")){
-      error |= cylindrical(pos, dir, &t, R, distsum - R, lenses[k].housing_radius, n, false);
-    }
-    else if (draw_aspherical){
-      error |= aspherical(pos, dir, &t, R, distsum - R, lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
-    }
-    else {
-      error |= spherical(pos, dir, &t, R, distsum - R, lenses[k].housing_radius, n);
-    }
+    error |= intersect(lenses, k, pos, dir, t, n, R, distsum, false);
 
     if(n[2] < 0.0) error |= 16;
 
@@ -836,18 +744,7 @@ static inline bool evaluate_reverse_fstop(
     //normal at intersection
     float n[3] = {0.0f};
     
-    if (!strcasecmp(lenses[k].geometry, "cyl-y")){
-      error |= cylindrical(pos, dir, &t, R, distsum - R, lenses[k].housing_radius, n, true);
-    }
-    else if (!strcasecmp(lenses[k].geometry, "cyl-x")){
-      error |= cylindrical(pos, dir, &t, R, distsum - R, lenses[k].housing_radius, n, false);
-    }
-    else if (draw_aspherical){
-      error |= aspherical(pos, dir, &t, R, distsum - R, lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
-    }
-    else {
-      error |= spherical(pos, dir, &t, R, distsum - R, lenses[k].housing_radius, n);
-    }
+    error |= intersect(lenses, k, pos, dir, t, n, R, distsum, false);
 
     if (k == aperture_element) max_aperture_radius = pos[1];
 
