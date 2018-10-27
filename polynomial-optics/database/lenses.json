@@ -2914,18 +2914,14 @@
     "production-ready": false,
     "year": 2006
   },
-  
-
-
-
-
   "2004": {
-    "commercial": false,
+    "commercial": true,
     "company": "Schneider",
     "focal-length-mm-patent": 31,
-    "focal-length-mm-raytraced": null,
+    "focal-length-mm-raytraced": 30.38483428955078,
     "fstop": null,
-    "notes": "anamorphic lens",
+    "max-fstop-aperture-radius": null,
+    "notes": "",
     "optical-elements-patent": [
       {
         "abbe": 61.0,
@@ -3017,7 +3013,6 @@
         "radius": 35.9,
         "thickness": 3.8
       },
-
       {
         "abbe": null,
         "aspherical-equation": null,
@@ -3046,7 +3041,17 @@
         "lens-geometry": "spherical",
         "material": "air",
         "radius": 18.8,
-        "thickness": 6.1
+        "thickness": 3.05
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 10.5,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "iris",
+        "radius": 999999.0,
+        "thickness": 3.05
       },
       {
         "abbe": 30.1,
@@ -3106,18 +3111,15 @@
         "lens-geometry": "spherical",
         "material": "air",
         "radius": -53.2,
-        "thickness": 43.0
+        "thickness": 43.38145065307617
       }
     ],
-    "patent-location": null,
-    "patent-number": "",
+    "patent-location": "https://worldwide.espacenet.com/publicationDetails/originalDocument?CC=US&NR=6310731B1&KC=B1&FT=D&ND=7&date=20011030&DB=&locale=en_EP",
+    "patent-number": "US6310731",
     "polynomial-optics": [],
     "prime": true,
     "product-name": "anamorphic",
     "production-ready": false,
     "year": 2001
   }
-
-
-
 }

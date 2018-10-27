@@ -37,12 +37,13 @@ src/spectrum.h
 .PHONY=all clean
 
 
-all: view
+#all: view
 
 
 #ifeq ("draw","true")
 ifeq ($(OS), Darwin)
-    all += \
+    all: \
+	view \
 	create-public-json \
 	calculate-fstop \
 	calculate-infinity-focus-lens-offset \
@@ -53,11 +54,10 @@ ifeq ($(OS), Darwin)
 	printpoly \
 	print-lens-path \
 	add-fitted-focal-length \
-	generate-lens-defines \
-
+	generate-lens-defines
 endif
 ifeq ($(OS), Linux)
-    all += \
+    all: \
 	create-public-json \
 	calculate-fstop \
 	generate-lens-defines \
@@ -123,12 +123,12 @@ gencode: Makefile src/gencode.c ${HEADERS}
 #	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/render_gl.c ${LDFLAGS} -o bin/glRender -lGLEW -lGL -lGLU -lglfw
 
 
-clean: rm -f view
+#clean: rm -f view
 #ifeq ("draw","true")
 ifeq ($(OS), Darwin)
-clean += create-public-json calculate-fstop calculate-focal-length calculate-infinity-focus-lens-offset fit gencode genpoly printpoly print-lens-path add-fitted-focal-length generate-lens-defines #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
+clean: rm -f view view create-public-json calculate-fstop calculate-focal-length calculate-infinity-focus-lens-offset fit gencode genpoly printpoly print-lens-path add-fitted-focal-length generate-lens-defines #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
 endif
 ifeq ($(OS), Linux)
-clean += create-public-json calculate-fstop calculate-focal-length calculate-infinity-focus-lens-offset fit gencode genpoly printpoly print-lens-path add-fitted-focal-length generate-lens-defines #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
+clean: rm -f view create-public-json calculate-fstop calculate-focal-length calculate-infinity-focus-lens-offset fit gencode genpoly printpoly print-lens-path add-fitted-focal-length generate-lens-defines #lt_convergence.dat lt_convergence_profile.dat lt-aperture-sampling
 endif
 #endif
