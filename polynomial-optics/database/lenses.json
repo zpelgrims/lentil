@@ -1987,7 +1987,7 @@
         "housing-radius": 32.0,
         "ior": 1.0,
         "lens-geometry": "spherical",
-        "material": "air",
+        "material": "iris",
         "radius": 99999.0,
         "thickness": 6.85
       },
@@ -2245,7 +2245,7 @@
     "focal-length-mm-raytraced": 9.555700302124023,
     "fstop": null,
     "notes": "Anamorphic 2x stretch",
-    "notes-to-self": "Not in working order.. The raytraced focal length is vastly different.. Standardized to 1inch.",
+    "notes-to-self": "Not in working order.. The raytraced focal length is vastly different.. Standardized to 1inch. Quite strange how the light travels through the elements.. Think I must have made a translation mistake",
     "optical-elements-patent": [
       {
         "abbe": 45.6,

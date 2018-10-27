@@ -602,6 +602,7 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
     cairo_surface_finish(svg_surface);
     cairo_surface_destroy(svg_surface);
     fmt::print("Saved lens drawing to '{}'\n", lens_svg_path);
+    screenshot = !screenshot;
   }
 
   return FALSE;
