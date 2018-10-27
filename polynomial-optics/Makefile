@@ -1,3 +1,5 @@
+# it is assumed linux doesn't have cairomm installed, so src/view cannot be compiled
+
 OS := $(shell uname)
 ifeq ($(OS), Darwin)
 	CXX=clang++
@@ -16,7 +18,7 @@ endif
 # OPTFLAGS=-I. -ggdb3 -Isrc/
 
 #OPTFLAGS= -ffast-math -mfpmath=sse -march=native -fexpensive-optimizations -fno-finite-math-only -I. -Isrc/
-OPTFLAGS= -O3 -DNDEBUG -ffast-math -mfpmath=sse -march=native -fexpensive-optimizations -fno-finite-math-only -I. -Isrc/
+OPTFLAGS= -O3 -DNDEBUG -ffast-math -mfpmath=sse -march=native -fno-finite-math-only -I. -Isrc/
 ifeq ($(OS), Linux)
 	OPTFLAGS += -Wno-ignored-attributes -Wno-misleading-indentation
 endif
@@ -74,8 +76,8 @@ endif
 
 
 ifeq ($(OS), Darwin)
-view: Makefile src/view.c ${HEADERS}
-	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/view.c $(shell pkg-config --cflags --libs gtk+-3.0) ${LDFLAGS} -o bin/view ${LDFLAGS}
+view: Makefile src/view.cpp ${HEADERS}
+	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/view.cpp $(shell pkg-config --cflags --libs gtk+-3.0) ${LDFLAGS} -o bin/view ${LDFLAGS}
 endif
 
 #ifeq ("draw","true")
