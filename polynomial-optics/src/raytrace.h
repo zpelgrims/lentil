@@ -389,7 +389,14 @@ static inline int evaluate(const lens_element_t *lenses, const int lenses_cnt, c
 
 
 // evalute sensor to outer pupil acounting for fresnel:
-static inline int evaluate_for_pos_dir(const lens_element_t *lenses, const int lenses_cnt, const float zoom, const float *in, int aspheric, float *pos, float *dir, const float total_lens_length)
+static inline int evaluate_for_pos_dir(
+                  const lens_element_t *lenses, const int lenses_cnt, 
+                  const float zoom, 
+                  const float *in, 
+                  int aspheric, 
+                  float *pos, 
+                  float *dir, 
+                  const float total_lens_length)
 {
   int error = 0;
   float n1 = spectrum_eta_from_abbe_um(lenses[lenses_cnt-1].ior, lenses[lenses_cnt-1].vno, in[4]);
@@ -584,11 +591,6 @@ float lineLineIntersection_x(float line1_origin[3], float line1_direction[3], fl
     float B2 = line2_origin[2] - line2_direction[2];
     float C2 = A2 * line2_origin[2] + B2 * line2_origin[dim_up];
     float delta = A1 * B2 - A2 * B1;
-    
-    /*
-    Eigen::Vector2d rv((B2 * C1 - B1 * C2) / delta, (A1 * C2 - A2 * C1) / delta);
-    return rv;
-    */
 
     return (B2 * C1 - B1 * C2) / delta;
 }
@@ -597,7 +599,10 @@ float lineLineIntersection_x(float line1_origin[3], float line1_direction[3], fl
 
 // evalute sensor to outer pupil:
 float calculate_focal_length(
-  const lens_element_t *lenses, const int lenses_cnt, const float zoom, const float *in, float *out, int dim_up, bool draw_aspherical)
+      const lens_element_t *lenses, const int lenses_cnt, 
+      const float zoom, 
+      const float *in, float *out, 
+      int dim_up, bool draw_aspherical)
 {
   int error = 0;
   float n1 = spectrum_eta_from_abbe_um(lenses[lenses_cnt-1].ior, lenses[lenses_cnt-1].vno, in[4]);
