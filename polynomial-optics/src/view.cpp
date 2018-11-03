@@ -277,6 +277,112 @@ void draw_aperture(cairo_t *cr) {
 }
 
 
+void draw_lenses(cairo_t *cr, float scale){
+  float pos = lens_length;
+  float line_width = 70.0/static_cast<float>(width);
+
+  for(int i=0; i<lenses_cnt; i++){
+    float rad = lenses[i].lens_radius;
+    if (!strcmp(lenses[i].geometry, "cyl-y") && dim_up) rad = 99999.0;
+    else if (!strcmp(lenses[i].geometry, "cyl-x") && !dim_up) rad = 99999.0;
+    
+    float hrad = lenses[i].housing_radius;
+    float t = lens_get_thickness(lenses+i, zoom);
+
+    // skip aperture drawing
+    if(!strcasecmp(lenses[i].material, "iris")) {
+      pos -= t;
+      continue;
+    }
+
+    if(!strcasecmp(lenses[i].material, "iris")) aperture_pos = pos;
+
+    if(lenses[i].ior != 1.0f && i < lenses_cnt-1) {
+      cairo_save(cr);
+
+      float rad2 = lenses[i+1].lens_radius;
+      if (!strcmp(lenses[i+1].geometry, "cyl-y") && dim_up) rad2 = 99999.0;
+      else if (!strcmp(lenses[i+1].geometry, "cyl-x") && !dim_up) rad2 = 99999.0;
+    
+      float hrad2 = lenses[i+1].housing_radius;
+      float off  = rad  > 0.0f ? 0.0f : M_PI;
+      float off2 = rad2 > 0.0f ? 0.0f : M_PI;
+      float alpha  = asinf(fminf(1.0f, fmaxf(-1.0f, fabsf(hrad/rad))));
+      float alpha2 = asinf(fminf(1.0f, fmaxf(-1.0f, fabsf(hrad2/rad2))));
+
+      if(draw_aspheric) {
+        const int num_steps = 50;
+
+        for(int j = 0; j <= num_steps; j++)
+        {
+          float y[] = {hrad*(2 * j / (float)num_steps - 1), 0};
+          float *coeff = lenses[i].aspheric_correction_coefficients;
+          float x = pos-evaluate_aspherical(y, rad, lenses[i].aspheric, coeff);
+          cairo_line_to(cr, x, y[0]);
+        }
+
+        for(int j = num_steps; j >= 0; j--)
+        {
+          float y[] = {hrad2*(2 * j / (float)num_steps - 1), 0};
+          float *coeff = lenses[i+1].aspheric_correction_coefficients;
+          float x = pos-t-evaluate_aspherical(y, rad2, lenses[i+1].aspheric, coeff);
+          cairo_line_to(cr, x, y[0]);
+        }
+      } else {
+        cairo_arc(cr, pos-rad, 0.0f, fabsf(rad), off-alpha, off+alpha);
+        if(rad * rad2 > 0.0f)
+          cairo_arc_negative(cr, pos-t-rad2, 0.0f, fabsf(rad2), off2+alpha2, off2-alpha2);
+        else
+          cairo_arc(cr, pos-t-rad2, 0.0f, fabsf(rad2), off2-alpha2, off2+alpha2);
+      }
+
+      cairo_close_path(cr);
+      
+      if (!strcmp(lenses[i+1].geometry, "cyl-y") || !strcmp(lenses[i+1].geometry, "cyl-x")) cairo_set_source_rgba(cr, mint[0], mint[1], mint[2], 0.85);
+      else if (!strcmp(lenses[i+1].geometry, "aspherical")) cairo_set_source_rgba(cr, green[0], green[1], green[2], 0.85);
+      else cairo_set_source_rgba(cr, grey[0], grey[1], grey[2], 0.85);
+      cairo_fill_preserve(cr);
+
+      cairo_set_source_rgba(cr, lightgrey[0], lightgrey[1], lightgrey[2], lightgrey[3]);
+      stroke_with_pencil(cr, scale, line_width);
+
+      cairo_restore(cr);
+
+    } else {
+      // backside (air-facing), actually drawn double most of the time
+      cairo_save(cr);
+      cairo_rectangle(cr, pos-rad-2, -hrad, 2*rad+4, 2*hrad);
+      cairo_clip(cr);
+      
+      if(draw_aspheric) {
+        const int num_steps = 50;
+
+        for(int j = 0; j <= num_steps; j++) {
+          float y[] = {hrad*(2 * j / (float)num_steps - 1), 0};
+          float *coeff = lenses[i].aspheric_correction_coefficients;
+          float x = pos-evaluate_aspherical(y, rad, lenses[i].aspheric, coeff);
+          cairo_line_to(cr, x, y[0]);
+        }
+      } else {
+        cairo_arc(cr, pos-rad, 0.0f, fabsf(rad), .0f, 2.0f*M_PI);
+      }
+
+      if (!strcmp(lenses[i].geometry, "cyl-y") || !strcmp(lenses[i].geometry, "cyl-x")) cairo_set_source_rgba(cr, mint[0], mint[1], mint[2], 0.85);
+      else if (!strcmp(lenses[i].geometry, "aspherical")) cairo_set_source_rgba(cr, green[0], green[1], green[2], 0.85);
+      else cairo_set_source_rgba(cr, grey[0], grey[1], grey[2], 0.85);
+
+      cairo_set_source_rgba(cr, lightgrey[0], lightgrey[1], lightgrey[2], lightgrey[3]);
+      stroke_with_pencil(cr, scale, line_width);
+      cairo_close_path(cr);
+      cairo_fill(cr);
+
+      cairo_restore(cr);
+    }
+
+    pos -= t;
+  }
+}
+
 
 gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
   cairo_surface_t *svg_surface = 0;
@@ -460,110 +566,8 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
       }  
     }
   }
-
-  float pos = lens_length;
-
-  for(int i=0; i<lenses_cnt; i++){
-    float rad = lenses[i].lens_radius;
-    if (!strcmp(lenses[i].geometry, "cyl-y") && dim_up) rad = 99999.0;
-    else if (!strcmp(lenses[i].geometry, "cyl-x") && !dim_up) rad = 99999.0;
-    
-    float hrad = lenses[i].housing_radius;
-    float t = lens_get_thickness(lenses+i, zoom);
-
-    // skip aperture drawing
-    if(!strcasecmp(lenses[i].material, "iris")) {
-      pos -= t;
-      continue;
-    }
-
-    if(!strcasecmp(lenses[i].material, "iris")) aperture_pos = pos;
-
-    if(lenses[i].ior != 1.0f && i < lenses_cnt-1) {
-      cairo_save(cr);
-
-      float rad2 = lenses[i+1].lens_radius;
-      if (!strcmp(lenses[i+1].geometry, "cyl-y") && dim_up) rad2 = 99999.0;
-      else if (!strcmp(lenses[i+1].geometry, "cyl-x") && !dim_up) rad2 = 99999.0;
-    
-      float hrad2 = lenses[i+1].housing_radius;
-      float off  = rad  > 0.0f ? 0.0f : M_PI;
-      float off2 = rad2 > 0.0f ? 0.0f : M_PI;
-      float alpha  = asinf(fminf(1.0f, fmaxf(-1.0f, fabsf(hrad/rad))));
-      float alpha2 = asinf(fminf(1.0f, fmaxf(-1.0f, fabsf(hrad2/rad2))));
-
-      if(draw_aspheric) {
-        const int num_steps = 50;
-
-        for(int j = 0; j <= num_steps; j++)
-        {
-          float y[] = {hrad*(2 * j / (float)num_steps - 1), 0};
-          float *coeff = lenses[i].aspheric_correction_coefficients;
-          float x = pos-evaluate_aspherical(y, rad, lenses[i].aspheric, coeff);
-          cairo_line_to(cr, x, y[0]);
-        }
-
-        for(int j = num_steps; j >= 0; j--)
-        {
-          float y[] = {hrad2*(2 * j / (float)num_steps - 1), 0};
-          float *coeff = lenses[i+1].aspheric_correction_coefficients;
-          float x = pos-t-evaluate_aspherical(y, rad2, lenses[i+1].aspheric, coeff);
-          cairo_line_to(cr, x, y[0]);
-        }
-      } else {
-        cairo_arc(cr, pos-rad, 0.0f, fabsf(rad), off-alpha, off+alpha);
-        if(rad * rad2 > 0.0f)
-          cairo_arc_negative(cr, pos-t-rad2, 0.0f, fabsf(rad2), off2+alpha2, off2-alpha2);
-        else
-          cairo_arc(cr, pos-t-rad2, 0.0f, fabsf(rad2), off2-alpha2, off2+alpha2);
-      }
-
-      cairo_close_path(cr);
-      
-      if (!strcmp(lenses[i+1].geometry, "cyl-y") || !strcmp(lenses[i+1].geometry, "cyl-x")) cairo_set_source_rgba(cr, mint[0], mint[1], mint[2], 0.85);
-      else if (!strcmp(lenses[i+1].geometry, "aspherical")) cairo_set_source_rgba(cr, green[0], green[1], green[2], 0.85);
-      else cairo_set_source_rgba(cr, grey[0], grey[1], grey[2], 0.85);
-      cairo_fill_preserve(cr);
-
-      cairo_set_source_rgba(cr, lightgrey[0], lightgrey[1], lightgrey[2], lightgrey[3]);
-      stroke_with_pencil(cr, scale, 70.0/width);
-
-      cairo_restore(cr);
-
-    } else {
-      // backside (air-facing), actually drawn double most of the time
-      cairo_save(cr);
-      cairo_rectangle(cr, pos-rad-2, -hrad, 2*rad+4, 2*hrad);
-      cairo_clip(cr);
-      
-      if(draw_aspheric) {
-        const int num_steps = 50;
-
-        for(int j = 0; j <= num_steps; j++) {
-          float y[] = {hrad*(2 * j / (float)num_steps - 1), 0};
-          float *coeff = lenses[i].aspheric_correction_coefficients;
-          float x = pos-evaluate_aspherical(y, rad, lenses[i].aspheric, coeff);
-          cairo_line_to(cr, x, y[0]);
-        }
-      } else {
-        cairo_arc(cr, pos-rad, 0.0f, fabsf(rad), .0f, 2.0f*M_PI);
-      }
-
-      if (!strcmp(lenses[i].geometry, "cyl-y") || !strcmp(lenses[i].geometry, "cyl-x")) cairo_set_source_rgba(cr, mint[0], mint[1], mint[2], 0.85);
-      else if (!strcmp(lenses[i].geometry, "aspherical")) cairo_set_source_rgba(cr, green[0], green[1], green[2], 0.85);
-      else cairo_set_source_rgba(cr, grey[0], grey[1], grey[2], 0.85);
-
-      cairo_set_source_rgba(cr, lightgrey[0], lightgrey[1], lightgrey[2], lightgrey[3]);
-      stroke_with_pencil(cr, scale, 70.0/width);
-      cairo_close_path(cr);
-      cairo_fill(cr);
-
-      cairo_restore(cr);
-    }
-
-    pos -= t;
-  }
-
+  
+  draw_lenses(cr, scale);
   draw_sensor(cr);
   draw_aperture(cr);
 
