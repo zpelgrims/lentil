@@ -49,11 +49,10 @@ int main(int argc, char *argv[])
     float in[5] = {0.0f};
     float out[5] = {0.0f};
     float ap[5] = {0.0f};
-    float inrt[5] = {0.0f};
-    float outrt[5] = {0.0f};
-    inrt[4] = outrt[4] = in[4] = out[4] = ap[4] = lambda;
+    in[4] = out[4] = ap[4] = lambda;
     float t, n[3] = {0.0f};
 
+    // intersection on first lens element
     if (!strcasecmp(lenses[0].geometry, "cyl-y")){
       cylindrical(cam_pos, cam_dir, &t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n, true);
       for(int i=0;i<3;i++) cam_dir[i] = - cam_dir[i]; // need to point away from surface (dot(n,dir) > 0)
@@ -69,15 +68,11 @@ int main(int argc, char *argv[])
       for(int i=0;i<3;i++) cam_dir[i] = - cam_dir[i]; // need to point away from surface (dot(n,dir) > 0)
       csToSphere(cam_pos, cam_dir, in, in+2, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
     }
-
-    for(int i=0;i<5;i++) inrt[i] = in[i];
     
     // evaluate until ray is blocked, positiondata will still have value of previous ray
-    if (!evaluate_reverse_fstop(lenses, lenses_cnt, zoom, inrt, outrt, dim_up, draw_aspheric, positiondata, max_aperture_radius)){
-      break;
-    } else {
+    if (evaluate_reverse_fstop(lenses, lenses_cnt, zoom, in, out, dim_up, draw_aspheric, positiondata, max_aperture_radius)){
       prev_best_aperture_radius = max_aperture_radius;
-    }
+    } else break;
 
     cnt += 1;
   }
