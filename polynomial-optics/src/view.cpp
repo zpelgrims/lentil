@@ -333,9 +333,7 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
   cairo_set_source_rgba(cr, lightgrey[0], lightgrey[1], lightgrey[2], 0.5);
 
   float pos = lens_length;
-  aperture_pos = lens_length/2.0f; // why is this so arbitrary..?
 
-  
   if(draw_focallength){
     fmt::print("Drawing in forward direction. \n");
 
@@ -440,7 +438,8 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
           cairo_line_to(cr, 0+polynomial_length, in[dim_up] + polynomial_length*in[dim_up+2]);
           stroke_with_pencil(cr, scale, 90.0/width);
 
-          // aperture --> this isn't working atm! 
+          // aperture
+          float aperture_pos = lens_get_aperture_pos_reverse(lenses, lenses_cnt-1, 0.0f);
           cairo_move_to(cr, aperture_pos, ap[dim_up]);
           cairo_line_to(cr, aperture_pos + .2*polynomial_length, ap[dim_up] + .2*polynomial_length*ap[dim_up+2]);
           stroke_with_pencil(cr, scale, 90.0/width);
