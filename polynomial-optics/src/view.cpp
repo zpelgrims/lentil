@@ -340,7 +340,7 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
     cam_dir[2] = cam_pos[2] + 99999;
     cam_dir[dim_up] = cam_pos[dim_up];
 
-    const float lambda = 0.5f;
+    const float lambda = 0.55f;
     float in[5] = {0.0f};
     float out[5] = {0.0f};
     float ap[5] = {0.0f};

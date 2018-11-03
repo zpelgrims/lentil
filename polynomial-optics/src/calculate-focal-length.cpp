@@ -29,7 +29,7 @@ int main(int argc, char *argv[]){
   cam_dir[2] = cam_pos[2] + 99999;
   cam_dir[dim_up] = cam_pos[dim_up];
 
-  const float lambda = 0.5f;
+  const float lambda = 0.55f;
   float inrt[5] = {cam_pos[0], cam_pos[1], cam_pos[2], 0.0, lambda};
   float outrt[5] = {cam_dir[0], cam_dir[1], cam_dir[2], 0.0, lambda};
   float raytraced_focal_length = calculate_focal_length(lenses, lenses_cnt, zoom, inrt, outrt, dim_up, true);

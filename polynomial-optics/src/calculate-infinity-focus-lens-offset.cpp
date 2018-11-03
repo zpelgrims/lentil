@@ -20,7 +20,7 @@ int main(int argc, char *argv[]){
   float err = 99999.0;
   float original_last_element_thickness = lenses[lenses_cnt-1].thickness_short;
   float optimal_thickness = 0.0f;
-  const float lambda = 0.5f;
+  const float lambda = 0.55f;
 
   for(float extra_thickness = 500.0; extra_thickness > -500.0; extra_thickness -= 0.001){
 
