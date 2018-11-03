@@ -2919,8 +2919,8 @@
     "company": "Schneider",
     "focal-length-mm-patent": 31,
     "focal-length-mm-raytraced": 30.38483428955078,
-    "fstop": null,
-    "max-fstop-aperture-radius": null,
+    "fstop": 1.953548550605774,
+    "max-fstop-aperture-radius": 9.804742813110352,
     "notes": "",
     "optical-elements-patent": [
       {
