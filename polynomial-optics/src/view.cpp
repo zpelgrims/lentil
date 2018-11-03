@@ -43,9 +43,9 @@ static int draw_aspheric = 1;
 static int draw_focallength = 0;
 static int mode_visual_debug = 0;
 
-static int width = 900;
-static int height = 550;
-static int gridsize = 10; //10 mm
+const int width = 900;
+const int height = 550;
+const int gridsize = 10; //10 mm
 
 static float global_scale = 20.0f;
 static float window_aspect_ratio = (float)width/(float)height;
@@ -334,7 +334,6 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
 
   float pos = lens_length;
   aperture_pos = lens_length/2.0f; // why is this so arbitrary..?
-  float hsl[3], rgb[3];
 
   
   if(draw_focallength){
@@ -363,7 +362,6 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
 
     fmt::print("Drawing in backward direction. \n");
 
-    const float len = lens_length/10.0f;
     for(int k=0; k<num_rays; k++){
 
       float cam_pos[3] = {0.0, 0.0, 9999.0f};
@@ -412,14 +410,16 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
         error = evaluate_reverse(lenses, lenses_cnt, zoom, inrt, outrt, draw_aspheric);
       }
     
-      // ray color:
-      hsl[0] = k/(num_rays+1.);
-      hsl[1] = .7f;
-      hsl[2] = .5f;
-      hsl_2_rgb(hsl, rgb);
 
-      if(!error)
+      if(!error && draw_polynomials)
       {
+        // ray color
+        float hsl[3] = {k/(num_rays+1.f), .7f, .5f};
+        float rgb[3] = {0.0f};
+        hsl_2_rgb(hsl, rgb);
+
+        const float polynomial_length = lens_length/5.0f;
+
         // evaluate sensor -> light
         for(int i=0;i<5;i++) in[i] = outrt[i];
         in[2] = -in[2];
@@ -427,28 +427,23 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
         //outrt[4] equals transmittance
         in[4] = lambda;
         poly_system_evaluate(&poly, in, out, 15);
-      }
-
-      if(!error && draw_polynomials)
-      {
-        // draw everything grayed out in case it got killed on the aperture
         poly_system_evaluate(&poly_aperture, in, ap, 15);
+
         const int aperture_death = (ap[0]*ap[0] + ap[1]*ap[1] > aperture_rad*aperture_rad);
-        if(!aperture_death)
-        {
-          // use transmittance from polynomial evaluation
+        
+        if(!aperture_death) {
           float transmittance = out[4];
           cairo_set_source_rgba(cr, rgb[0], rgb[1], rgb[2], 6.0 * transmittance);
 
           // sensor
           cairo_move_to(cr, 0, in[dim_up]);
-          cairo_line_to(cr, 0+len, in[dim_up] + len*in[dim_up+2]);
-          stroke_with_pencil(cr, scale, aperture_death ? 40./width : 60./width);
+          cairo_line_to(cr, 0+polynomial_length, in[dim_up] + polynomial_length*in[dim_up+2]);
+          stroke_with_pencil(cr, scale, 90.0/width);
 
-          // aperture
+          // aperture --> this isn't working atm! 
           cairo_move_to(cr, aperture_pos, ap[dim_up]);
-          cairo_line_to(cr, aperture_pos+.2*len, ap[dim_up] + .2*len*ap[dim_up+2]);
-          stroke_with_pencil(cr, scale, aperture_death ? 40./width : 60./width);
+          cairo_line_to(cr, aperture_pos + .2*polynomial_length, ap[dim_up] + .2*polynomial_length*ap[dim_up+2]);
+          stroke_with_pencil(cr, scale, 90.0/width);
 
           // outer pupil
           if (!strcmp(lenses[0].geometry, "cyl-y") && !dim_up) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
@@ -457,8 +452,8 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
           else if (!strcmp(lenses[0].geometry, "cyl-x") && dim_up) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
           else sphereToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
           cairo_move_to(cr, cam_pos[2], cam_pos[dim_up]);
-          cairo_line_to(cr, cam_pos[2]+len*cam_dir[2], cam_pos[dim_up] + len*cam_dir[dim_up]);
-          stroke_with_pencil(cr, scale, aperture_death ? 40./width : 60./width);
+          cairo_line_to(cr, cam_pos[2] + polynomial_length*cam_dir[2], cam_pos[dim_up] + polynomial_length*cam_dir[dim_up]);
+          stroke_with_pencil(cr, scale, 90.0/width);
         }
       }
 
@@ -598,27 +593,28 @@ int main(int argc, char *argv[])
   std::ifstream in_json(lens_database_path.c_str());
   json lens_database = json::parse(in_json);
 
+  // read polynomial systems
   for (const auto& i : lens_database[id]["polynomial-optics"]){
     if (i == lens_focal_length){
       std::string fit_location_exitpupil = fmt::format("{}/fitted/exitpupil.fit", find_lens_id_location(id, lens_focal_length));
+      std::string fit_location_aperture = fmt::format("{}/fitted/aperture.fit", find_lens_id_location(id, lens_focal_length));
+      
       if(poly_system_read(&poly, fit_location_exitpupil.c_str())){
         fmt::print("[view] could not read poly system '{}'\n", fit_location_exitpupil.c_str());
+      } else {
+        fmt::print("[view] read poly system '{}'\n", fit_location_exitpupil.c_str());
       }
-    } else {
-      fmt::print("[view] no exitpupil poly system focal length {}\n", lens_focal_length);
-    }
-  }
-  for (const auto& i : lens_database[id]["polynomial-optics-aperture"]){
-    if (i == lens_focal_length){
-      std::string fit_location_aperture = fmt::format("{}/fitted/aperture.fit", find_lens_id_location(id, lens_focal_length));
+
       if(poly_system_read(&poly_aperture, fit_location_aperture.c_str())){
         fmt::print("[view] could not read poly system '{}'\n", fit_location_aperture.c_str());
+      } else {
+        fmt::print("[view] read poly system '{}'\n", fit_location_aperture.c_str());
       }
+
     } else {
-      fmt::print("[view] no aperture poly system focal length {}\n", lens_focal_length);
+      fmt::print("[view] no polynomial system focal length {}\n", lens_focal_length);
     }
   }
-
 
   lens_svg_path = fmt::format("{0}/database/lenses/{1}-{2}-{3}/{1}-{2}-{3}.svg", 
                               std::getenv("LENTIL_PATH"),
