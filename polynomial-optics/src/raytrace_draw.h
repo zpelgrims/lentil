@@ -171,21 +171,19 @@ static inline int evaluate_reverse_draw(const lens_element_t *lenses, const int 
 
     cairo_line_to(cr, pos[2], pos[dim_up]);
     
-
     // index of refraction and ratio current/next:
     const float n2 = spectrum_eta_from_abbe_um(lenses[k].ior, lenses[k].vno, in[4]);
     intensity *= refract(n1, n2, n, dir);
     if(intensity < INTENSITY_EPS) error |= 8;
 
-    if(error)
-    {
-      cairo_save(cr);
-      cairo_scale(cr, 1/scale, 1/scale);
-      cairo_set_line_width(cr, 1.0f/20.0f);
-      cairo_set_source_rgba(cr, 0.5, 0.5, 0.5, 0.05);
+    if(error) { // uncomment to draw vignetted rays
+      // cairo_save(cr);
+      // cairo_scale(cr, 1/scale, 1/scale);
+      // cairo_set_line_width(cr, 1.0f/20.0f);
+      // cairo_set_source_rgba(cr, 0.5, 0.5, 0.5, 0.15);
       // cairo_stroke(cr);
       cairo_new_path(cr);
-      cairo_restore(cr);
+      // cairo_restore(cr);
       return error;
     }
 

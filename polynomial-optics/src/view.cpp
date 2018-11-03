@@ -20,10 +20,6 @@ using json = nlohmann::json;
   #define M_PI 3.14159265358979323846
 #endif
 
-#ifndef MODE_PRESENTATION
-  #define MODE_PRESENTATION
-#endif
-
 
 
 static float zoom = 0.0f; // zoom, if the lens supports it.
@@ -42,9 +38,10 @@ static float aperture_pos = 0;
 
 static int screenshot = 0;
 static int draw_raytraced = 1;
-static int draw_polynomials = 1;
+static int draw_polynomials = 0;
 static int draw_aspheric = 1;
 static int draw_focallength = 0;
+static int mode_visual_debug = 0;
 
 static int width = 900;
 static int height = 550;
@@ -72,7 +69,7 @@ gboolean on_keypress (GtkWidget *widget, GdkEventKey *event, gpointer data) {
     gtk_main_quit();
     return TRUE;
   }
-  else if(event->keyval == GDK_KEY_p) {
+  else if(event->keyval == GDK_KEY_s) {
     screenshot = !screenshot;
     gtk_widget_queue_draw(widget);
     return TRUE;
@@ -108,8 +105,18 @@ gboolean on_keypress (GtkWidget *widget, GdkEventKey *event, gpointer data) {
     gtk_widget_queue_draw(widget);
     return TRUE;
   }
-  else if(event->keyval == GDK_KEY_s) {
+  else if(event->keyval == GDK_KEY_x) {
     dim_up = !dim_up;
+    gtk_widget_queue_draw(widget);
+    return TRUE;
+  }
+  else if(event->keyval == GDK_KEY_p) {
+    draw_polynomials = !draw_polynomials;
+    gtk_widget_queue_draw(widget);
+    return TRUE;
+  }  
+  else if(event->keyval == GDK_KEY_v) {
+    mode_visual_debug = !mode_visual_debug;
     gtk_widget_queue_draw(widget);
     return TRUE;
   }
@@ -291,9 +298,9 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
   draw_optical_axis(cr);
 
   cairo_translate(cr, 0, height/2.0);
-#ifdef MODE_PRESENTATION
-  cairo_translate(cr, width/2.0, 0);
-#endif
+  if (!mode_visual_debug){
+    cairo_translate(cr, width/2.0, 0);
+  }
 
   cairo_scale(cr, ((float)width/window_aspect_ratio)/20.0, (float)height/20.0);
   cairo_set_line_width(cr, 40.0/width);
@@ -301,28 +308,25 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
   const float scale = global_scale/lens_length;
   cairo_scale(cr, scale, scale); // scale by arbitrary factor
 
-#ifdef MODE_PRESENTATION
-  draw_polynomials = 0;
-  float center_shift = -((lens_length + lenses[lenses_cnt-1].thickness_short) / 2.0);
-  cairo_translate(cr, center_shift, 0);
-#endif
-#ifndef MODE_PRESENTATION
-  cairo_translate(cr, 20.0, 0.0); // move 20mm away
-  draw_grid(cr);
+  if (!mode_visual_debug){
+    float center_shift = -((lens_length + lenses[lenses_cnt-1].thickness_short) / 2.0);
+    cairo_translate(cr, center_shift, 0);
+  } else {
+    cairo_translate(cr, 20.0, 0.0); // move 20mm away
+    draw_grid(cr);
 
-  // find max housing radius
-  float max_housing_radius = 0.0;
-  for (int i=0; i < lenses_cnt; i++){
-    if (lenses[i].housing_radius > max_housing_radius){
-      max_housing_radius = lenses[i].housing_radius;
+    // find max housing radius
+    float max_housing_radius = 0.0;
+    for (int i=0; i < lenses_cnt; i++){
+      if (lenses[i].housing_radius > max_housing_radius){
+        max_housing_radius = lenses[i].housing_radius;
+      }
     }
+
+    float ruler_padding = gridsize;
+    draw_rulers(cr, max_housing_radius, ruler_padding);
+    draw_axis_text(cr, max_housing_radius, ruler_padding);
   }
-
-  float ruler_padding = gridsize;
-  draw_rulers(cr, max_housing_radius, ruler_padding);
-  draw_axis_text(cr, max_housing_radius, ruler_padding);
-#endif
-
 
 
   cairo_set_line_width(cr, 90.0/width);
@@ -357,9 +361,8 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
 
   } else {
 
-    fmt::print("Drawing in reverse direction. \n");
+    fmt::print("Drawing in backward direction. \n");
 
-    //REVERSE DRAWING
     const float len = lens_length/10.0f;
     for(int k=0; k<num_rays; k++){
 
@@ -435,7 +438,7 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
         {
           // use transmittance from polynomial evaluation
           float transmittance = out[4];
-          cairo_set_source_rgba(cr, rgb[0], rgb[1], rgb[2], 3.0 * transmittance);
+          cairo_set_source_rgba(cr, rgb[0], rgb[1], rgb[2], 6.0 * transmittance);
 
           // sensor
           cairo_move_to(cr, 0, in[dim_up]);
