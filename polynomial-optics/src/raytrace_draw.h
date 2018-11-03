@@ -152,7 +152,7 @@ static inline int evaluate_reverse_draw(const lens_element_t *lenses, const int 
   // need to flip this if we're tracing into the lens towards the sensor:
   for(int i = 0; i < 3; i++) dir[i] = -dir[i];
 
-  cairo_move_to(cr, pos[2]-100.0*dir[2], pos[dim_up] - 100.0*dir[dim_up]); 
+  cairo_move_to(cr, pos[2]-9999.0*dir[2], pos[dim_up] - 9999.0*dir[dim_up]); 
   cairo_line_to(cr, pos[2], pos[dim_up]);
 
   float distsum = lens_length;

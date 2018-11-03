@@ -4,9 +4,12 @@ Fork of "Sparse high-degree polynomials for wide-angle lenses (2016)" paper
 Added features:
 
 - Support for anamorphic lens elements in both axes
-- Exit pupil is not assumed to be spherical
-- Read lens descriptions from JSON database
-- Calculation of raytraced focal length/infinity focus
+- Support for anamorphic exit pupil (cylindrical projection to unit disk)
+- Read lens descriptions from `.json` database
+- Calculation of raytraced:
+    - focal length
+    - fstop
+    - infinity focus
 
 1. Build the code by running ```. ./build.sh```.
 2. View a lens description

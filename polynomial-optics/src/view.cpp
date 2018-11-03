@@ -53,16 +53,16 @@ static int gridsize = 10; //10 mm
 static float global_scale = 20.0f;
 static float window_aspect_ratio = (float)width/(float)height;
 
-float black[4] = {0.1, 0.1, 0.1, 1.0};
-float darkgrey[4] = {0.15, 0.15, 0.15, 1.0};
-float grey[4] = {0.5, 0.5, 0.5, 1.0};
-float lightgrey[4] = {0.825, 0.825, 0.825, 1.0};
-float yellow[4] = {0.949, 0.882, 0.749, 0.65};
-float green[4] = {0.749, 0.949, 0.874, 1.0};
-float white50[4] = {1.0, 1.0, 1.0, 0.5};
-float white[4] = {1.0, 1.0, 1.0, 1.0};
-float mint[4] = {0.631, 1.0, 0.78, 0.5};
-float salmon[4] = {232.0/255.0, 121.0/255.0, 121.0/255.0, 1.0};
+const float black[4] = {0.1, 0.1, 0.1, 1.0};
+const float darkgrey[4] = {0.15, 0.15, 0.15, 1.0};
+const float grey[4] = {0.5, 0.5, 0.5, 1.0};
+const float lightgrey[4] = {0.825, 0.825, 0.825, 1.0};
+const float yellow[4] = {0.949, 0.882, 0.749, 0.65};
+const float green[4] = {0.749, 0.949, 0.874, 1.0};
+const float white50[4] = {1.0, 1.0, 1.0, 0.5};
+const float white[4] = {1.0, 1.0, 1.0, 1.0};
+const float mint[4] = {0.631, 1.0, 0.78, 0.5};
+const float salmon[4] = {232.0/255.0, 121.0/255.0, 121.0/255.0, 1.0};
 
 std::string lens_svg_path = "";
 
@@ -334,6 +334,8 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
 
   
   if(draw_focallength){
+    fmt::print("Drawing in forward direction. \n");
+
     // FORWARD TRACING/DRAWING, calculate focal length
     float cam_pos[3] = {0.0f};
     float cam_dir[3] = {0.0f};
@@ -354,41 +356,20 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
       error = evaluate_draw(lenses, lenses_cnt, zoom, inrt, outrt, cr, scale, dim_up, draw_aspheric, true, true);
 
   } else {
+
+    fmt::print("Drawing in reverse direction. \n");
+
     //REVERSE DRAWING
     const float len = lens_length/10.0f;
     for(int k=0; k<num_rays; k++){
-      /*      
-      float cam_pos[3] = {0.0f};
-      float cam_dir[3] = {0.0f};
 
-      // y wedge
+      float cam_pos[3] = {0.0, 0.0, 9999.0f};
       const float y = 2.0f * (num_rays/2-k)/(float)num_rays * lenses[0].housing_radius;
       cam_pos[dim_up] = y;
 
-
-      cam_dir[2] = cam_pos[2] - 99999;
+      float cam_dir[3] = {0.0, 0.0, -cam_pos[2]*10.0f};
       cam_dir[dim_up] = cam_pos[dim_up];
       raytrace_normalise(cam_dir);
-      */
-
-
-      const float y = 2.0f * (num_rays/2-k)/(float)num_rays * lenses[0].housing_radius;
-
-      float cam_pos[3] = {0.0f};
-      cam_pos[dim_up] = y;
-      cam_pos[2] = sqrtf(lenses[0].lens_radius*lenses[0].lens_radius - lenses[0].housing_radius*lenses[0].housing_radius);
-      const float s = lenses[0].lens_radius / sqrtf(cam_pos[2]*cam_pos[2] + y*y);
-      cam_pos[2] *= s;
-      cam_pos[dim_up] *= s;
-      cam_pos[2] += lens_length - lenses[0].lens_radius;
-
-
-      float cam_dir[3] = {0.0f};
-      cam_dir[2] = cam_pos[2] - 99999.0;
-      cam_dir[dim_up] = cam_pos[dim_up];
-      raytrace_normalise(cam_dir);
-      for(int i=0;i<3;i++) cam_pos[i] -= 0.1f * cam_dir[i];
-
 
       const float lambda = 0.5f;
       float in[5] = {0.0f};
@@ -399,38 +380,34 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
       inrt[4] = outrt[4] = in[4] = out[4] = ap[4] = lambda;
       float t, n[3] = {0.0f};
 
+      // intersection with first lens element
       if (!strcmp(lenses[0].geometry, "cyl-y")){
-        // intersection with first lens element, but seems like a duplicate purpose of the algebra method above..
         cylindrical(cam_pos, cam_dir, &t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n, true);
         for(int i=0;i<3;i++) cam_dir[i] = - cam_dir[i]; // need to point away from surface (dot(n,dir) > 0)
         csToCylinder(cam_pos, cam_dir, in, in+2, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
-        cylinderToCs(in, in + 2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
+        // cylinderToCs(in, in + 2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
       }
       else if (!strcmp(lenses[0].geometry, "cyl-x")){
-        // intersection with first lens element, but seems like a duplicate purpose of the algebra method above..
         cylindrical(cam_pos, cam_dir, &t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n, false);
         for(int i=0;i<3;i++) cam_dir[i] = - cam_dir[i]; // need to point away from surface (dot(n,dir) > 0)
         csToCylinder(cam_pos, cam_dir, in, in+2, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
-        cylinderToCs(in, in + 2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
+        // cylinderToCs(in, in + 2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
       }
       else {
-        // intersection with first lens element, but seems like a duplicate purpose of the algebra method above..
         spherical(cam_pos, cam_dir, &t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n);
         for(int i=0;i<3;i++) cam_dir[i] = - cam_dir[i]; // need to point away from surface (dot(n,dir) > 0)
         csToSphere(cam_pos, cam_dir, in, in+2, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
-        sphereToCs(in, in + 2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
+        // sphereToCs(in, in + 2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
       }
-
 
       for(int i=0;i<5;i++) inrt[i] = in[i];
 
-      
       int error = 0;
-      if(draw_raytraced)
+      if(draw_raytraced) {
         error = evaluate_reverse_draw(lenses, lenses_cnt, zoom, inrt, outrt, cr, scale, dim_up, draw_aspheric);
-      else
+      } else {
         error = evaluate_reverse(lenses, lenses_cnt, zoom, inrt, outrt, draw_aspheric);
-      
+      }
     
       // ray color:
       hsl[0] = k/(num_rays+1.);
