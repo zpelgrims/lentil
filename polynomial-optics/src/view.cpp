@@ -21,10 +21,7 @@ using json = nlohmann::json;
 #endif
 
 
-
 static float zoom = 0.0f; // zoom, if the lens supports it.
-//static const int degree = 4;  // degree of the polynomial. 1 is thin lens
-//static const float coverage = .5f; // coverage of incoming rays at scene facing pupil (those you point with the mouse)
 static int num_rays = 500;
 static int dim_up = 0; // xz (top - 0) or plot yz (side - 1) of the lens in 2d?
 static poly_system_t poly, poly_aperture;
@@ -48,7 +45,7 @@ const int height = 550;
 const int gridsize = 10; //10 mm
 
 static float global_scale = 20.0f;
-static float window_aspect_ratio = (float)width/(float)height;
+static float window_aspect_ratio = static_cast<float>(width)/static_cast<float>(height);
 
 const float black[4] = {0.1, 0.1, 0.1, 1.0};
 const float darkgrey[4] = {0.15, 0.15, 0.15, 1.0};
@@ -332,7 +329,6 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
   cairo_set_line_width(cr, 90.0/width);
   cairo_set_source_rgba(cr, lightgrey[0], lightgrey[1], lightgrey[2], 0.5);
 
-  float pos = lens_length;
 
   if(draw_focallength){
     fmt::print("Drawing in forward direction. \n");
@@ -422,7 +418,6 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
         for(int i=0;i<5;i++) in[i] = outrt[i];
         in[2] = -in[2];
         in[3] = -in[3];
-        //outrt[4] equals transmittance
         in[4] = lambda;
         poly_system_evaluate(&poly, in, out, 15);
         poly_system_evaluate(&poly_aperture, in, ap, 15);
@@ -465,6 +460,8 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
       }  
     }
   }
+
+  float pos = lens_length;
 
   for(int i=0; i<lenses_cnt; i++){
     float rad = lenses[i].lens_radius;
