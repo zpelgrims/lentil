@@ -316,7 +316,7 @@ static inline void cylinderToCs(const float *inpos, const float *indir, float *o
   outpos[2] = normal[2] * R + center;
 }
 
-
+// think there is a problem passing back the pos attr...
 inline int intersect(const lens_element_t *lenses, 
                     const int k,
                     float *pos, float *dir, 
@@ -725,7 +725,7 @@ static inline bool evaluate_reverse_fstop(
   float n1 = 1.0f;
   float pos[3] = {0.0f}, dir[3] = {0.0f};
   float intensity = 1.0f;
-  int aperture_element = lens_get_aperture_element(lenses, lenses_cnt);
+  const int aperture_element = lens_get_aperture_element(lenses, lenses_cnt);
   float lens_length = 0;
   for(int i=0;i<lenses_cnt;i++) lens_length += lens_get_thickness(lenses+i, zoom);
 
@@ -746,18 +746,17 @@ static inline bool evaluate_reverse_fstop(
     float t = 0.0f;
     const float dist = lens_get_thickness(lenses+k, zoom);
 
-    //normal at intersection
-    float n[3] = {0.0f};
-    
-    error |= intersect(lenses, k, pos, dir, t, n, R, distsum, false);
+    float normal[3] = {0.0f};
 
-    if (k == aperture_element) max_aperture_radius = pos[1];
+    error |= intersect(lenses, k, pos, dir, t, normal, R, distsum, false);
 
-    if(n[2] < 0.0) error |= 16;
+    if (k == aperture_element) max_aperture_radius = pos[dim_up];
+
+    if(normal[2] < 0.0) error |= 16;
 
     // index of refraction and ratio current/next:
     const float n2 = spectrum_eta_from_abbe_um(lenses[k].ior, lenses[k].vno, in[4]);
-    intensity *= refract(n1, n2, n, dir);
+    intensity *= refract(n1, n2, normal, dir);
     if(intensity < INTENSITY_EPS) error |= 8;
 
     if(error) return false;

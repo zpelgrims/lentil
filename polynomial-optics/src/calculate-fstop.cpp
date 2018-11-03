@@ -32,26 +32,19 @@ int main(int argc, char *argv[])
   float max_aperture_radius = 0.0f;
   float prev_best_aperture_radius = 0.0f;
   int cnt = 0;
+  const int max_tries = 1000;
 
   for(int i=0;i<lenses_cnt;i++) lens_length += lens_get_thickness(lenses+i, zoom);
 
-  for(int wedge = 1; wedge < 1000; wedge++){
+  for(int wedge = 1; wedge < max_tries; wedge++){
 
-    float y_wedge = lenses[0].housing_radius / (1000.0/static_cast<float>(wedge));
-
-    float cam_pos[3] = {0.0f};
+    float cam_pos[3] = {0.0, 0.0, 9999.0f};
+    float y_wedge = lenses[0].housing_radius / (static_cast<float>(max_tries)/static_cast<float>(wedge));
     cam_pos[dim_up] = y_wedge;
-    cam_pos[2] = sqrtf(lenses[0].lens_radius*lenses[0].lens_radius - lenses[0].housing_radius*lenses[0].housing_radius);
-    const float s = lenses[0].lens_radius / sqrtf(cam_pos[2]*cam_pos[2] + y_wedge*y_wedge);
-    cam_pos[2] *= s;
-    cam_pos[dim_up] *= s;
-    cam_pos[2] += lens_length - lenses[0].lens_radius;
 
-    float cam_dir[3] = {0.0f};
-    cam_dir[2] = cam_pos[2] - 99999.0;
+    float cam_dir[3] = {0.0, 0.0, -cam_pos[2]*10.0f};
     cam_dir[dim_up] = cam_pos[dim_up];
     raytrace_normalise(cam_dir);
-    for(int i=0;i<3;i++) cam_pos[i] -= 0.1f * cam_dir[i];
     
     float in[5] = {0.0f};
     float out[5] = {0.0f};
@@ -62,25 +55,19 @@ int main(int argc, char *argv[])
     float t, n[3] = {0.0f};
 
     if (!strcasecmp(lenses[0].geometry, "cyl-y")){
-      // intersection with first lens element, but seems like a duplicate purpose of the algebra method above..
       cylindrical(cam_pos, cam_dir, &t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n, true);
       for(int i=0;i<3;i++) cam_dir[i] = - cam_dir[i]; // need to point away from surface (dot(n,dir) > 0)
       csToCylinder(cam_pos, cam_dir, in, in+2, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
-      cylinderToCs(in, in + 2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
     }
     else if (!strcasecmp(lenses[0].geometry, "cyl-x")){
-      // intersection with first lens element, but seems like a duplicate purpose of the algebra method above..
       cylindrical(cam_pos, cam_dir, &t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n, false);
       for(int i=0;i<3;i++) cam_dir[i] = - cam_dir[i]; // need to point away from surface (dot(n,dir) > 0)
       csToCylinder(cam_pos, cam_dir, in, in+2, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
-      cylinderToCs(in, in + 2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
     }
     else {
-      // intersection with first lens element, but seems like a duplicate purpose of the algebra method above..
       spherical(cam_pos, cam_dir, &t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n);
       for(int i=0;i<3;i++) cam_dir[i] = - cam_dir[i]; // need to point away from surface (dot(n,dir) > 0)
       csToSphere(cam_pos, cam_dir, in, in+2, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
-      sphereToCs(in, in + 2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
     }
 
     for(int i=0;i<5;i++) inrt[i] = in[i];
@@ -96,7 +83,7 @@ int main(int argc, char *argv[])
   }
 
   fmt::print("Last valid exit vertex position: [{}, {}]\n", positiondata[0], positiondata[1]);
-  fmt::print("Failed at try {} of 1000\n", cnt);
+  fmt::print("Failed at try {} of {}\n", cnt, max_tries);
 
   float theta = std::atan(positiondata[1] / positiondata[0]);
   float fstop = 1.0 / (std::sin(theta)* 2.0);
