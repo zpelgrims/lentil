@@ -2915,7 +2915,7 @@
     "year": 2006
   },
   "2004": {
-    "commercial": true,
+    "commercial": false,
     "company": "Schneider",
     "focal-length-mm-patent": 31,
     "focal-length-mm-raytraced": 30.410140991210938,
@@ -3121,7 +3121,7 @@
     ],
     "prime": true,
     "product-name": "anamorphic",
-    "production-ready": false,
+    "production-ready": true,
     "year": 2001
   }
 }

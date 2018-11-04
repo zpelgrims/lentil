@@ -3,7 +3,8 @@
     "commercial": false,
     "company": "angenieux",
     "focal-length-mm-raytraced": 99.67037200927734,
-    "fstop": 1.104755163192749,
+    "fstop": 1.107980489730835,
+    "max-fstop-aperture-radius": 25.48064613342285,
     "notes": "large aperture six element objective, nice swirly bokeh",
     "patent-number": "US2701982",
     "polynomial-optics": [
@@ -170,5 +171,22 @@
     "production-ready": true,
     "www-svg-location": "/imgs/lenses/0013/1954-zeiss-flektagon.svg",
     "year": 1954
+  },
+  "2004": {
+    "commercial": false,
+    "company": "Schneider",
+    "focal-length-mm-raytraced": 30.410140991210938,
+    "fstop": 1.9540375471115112,
+    "max-fstop-aperture-radius": 9.802763938903809,
+    "notes": "",
+    "patent-number": "US6310731",
+    "polynomial-optics": [
+      31
+    ],
+    "prime": true,
+    "product-name": "anamorphic",
+    "production-ready": true,
+    "www-svg-location": "/imgs/lenses/2004/2001-Schneider-anamorphic.svg",
+    "year": 2001
   }
 }

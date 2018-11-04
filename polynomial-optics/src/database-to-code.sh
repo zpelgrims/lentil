@@ -19,6 +19,9 @@ echo "LENS_NAME: " $LENS_NAME &&
 # calculate fstop and add it to the database
 $LENTIL_PATH/bin/calculate-fstop $LENS_ID &&
 
+# add raytraced focal length and fstop
+$LENTIL_PATH/bin/calculate-focal-length $LENS_ID &&
+
 # generate empty polynomial
 mkdir -p -v $LENTIL_PATH/data/tmp/$LENS_ID/$LENS_FOCAL_LENGTH/ &&
 $LENTIL_PATH/bin/genpoly 11 $LENTIL_PATH/data/tmp/$LENS_ID/$LENS_FOCAL_LENGTH/sorted.poly &&
@@ -35,9 +38,7 @@ $LENTIL_PATH/bin/gencode $LENS_ID $LENS_FOCAL_LENGTH &&
 $LENTIL_PATH/bin/add-fitted-focal-length $LENS_ID $LENS_FOCAL_LENGTH &&
 echo "Added " $LENS_FOCAL_LENGTH " to list of fitted focal lengths." &&
 
-# add raytraced focal length and fstop
-$LENTIL_PATH/bin/calculate-focal-length $LENS_ID &&
-$LENTIL_PATH/bin/add-fstop-to-database $LENS_ID &&
+# needs to be flagged production-ready after tests
 
 # auto-generate lens defines
 $LENTIL_PATH/bin/generate-lens-defines &&
