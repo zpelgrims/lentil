@@ -2918,9 +2918,9 @@
     "commercial": true,
     "company": "Schneider",
     "focal-length-mm-patent": 31,
-    "focal-length-mm-raytraced": 30.38483428955078,
-    "fstop": 1.953548550605774,
-    "max-fstop-aperture-radius": 9.804742813110352,
+    "focal-length-mm-raytraced": 30.410140991210938,
+    "fstop": 1.9540375471115112,
+    "max-fstop-aperture-radius": 9.802763938903809,
     "notes": "",
     "optical-elements-patent": [
       {
@@ -3116,7 +3116,9 @@
     ],
     "patent-location": "https://worldwide.espacenet.com/publicationDetails/originalDocument?CC=US&NR=6310731B1&KC=B1&FT=D&ND=7&date=20011030&DB=&locale=en_EP",
     "patent-number": "US6310731",
-    "polynomial-optics": [],
+    "polynomial-optics": [
+      31
+    ],
     "prime": true,
     "product-name": "anamorphic",
     "production-ready": false,
