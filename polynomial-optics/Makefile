@@ -102,7 +102,7 @@ calculate-infinity-focus-lens-offset: Makefile src/calculate-infinity-focus-lens
 calculate-focal-length: Makefile src/calculate-focal-length.cpp ${HEADERS}
 	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/calculate-focal-length.cpp -o bin/calculate-focal-length ${LDFLAGS}
 
-fit: Makefile src/fit.c ${HEADERS}
+fit: Makefile src/fit.c ${HEADERS} ext/ProgressBar.hpp
 	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/fit.c -o bin/fit ${LDFLAGS}
 
 genpoly: Makefile src/genpoly.c ${HEADERS}

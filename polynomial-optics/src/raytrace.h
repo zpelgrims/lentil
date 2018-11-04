@@ -316,7 +316,7 @@ static inline void cylinderToCs(const float *inpos, const float *indir, float *o
   outpos[2] = normal[2] * R + center;
 }
 
-// think there is a problem passing back the pos attr...
+
 inline int intersect(const lens_element_t *lenses, 
                     const int k,
                     float *pos, float *dir, 

@@ -11,6 +11,7 @@
 #include <assert.h>
 
 #include "../../fmt/include/fmt/format.h"
+#include "../ext/ProgressBar.hpp"
 
 #include <cstdlib>
 
@@ -55,15 +56,15 @@ int main(int argc, char *argv[])
   std::string lens_id_path = find_lens_id_location(id, lens_focal_length);
   std::string fitfile_path = lens_id_path + "fitted/exitpupil.fit";
   std::string ap_fitfile_path = lens_id_path + "fitted/aperture.fit";
-  fmt::format("Starting fitting: \n");
-  fmt::format("\t exitpupil.fit location: {}\n", fitfile_path.c_str());
-  fmt::format("\t aperture.fit location: {}\n", ap_fitfile_path.c_str());
+  fmt::print("Starting fitting: \n");
+  fmt::print("\t exitpupil.fit location: {}\n", fitfile_path.c_str());
+  fmt::print("\t aperture.fit location: {}\n", ap_fitfile_path.c_str());
 
   // load generic 1233-coefficient degree 9 polynomial template with all zero coeffs:
   poly_system_t poly, poly_ap;
   if(poly_system_read(&poly, sorted_poly_path) || poly_system_read(&poly_ap, sorted_poly_path))
   {
-    fprintf(stderr, "[fit] could not read `sorted.poly' template!\n");
+    fmt::print("[fit] could not read `sorted.poly' template!\n");
     exit(1);
   }
   // already storing sorted:
@@ -106,7 +107,7 @@ int main(int argc, char *argv[])
 
     if(valid >= sample_cnt) break;
   }
-  fprintf(stderr, "[ sensor->outer pp ] optimising %d coeffs by %d/%d valid sample points\n", coeff_size, valid, sample_cnt);
+  fmt::print("[ sensor->outer pp ] optimising {0} coeffs by {1}/{2} valid sample points\n", coeff_size, valid, sample_cnt);
   const char *outvname[] = {"x", "y", "dx", "dy", "transmittance"};
 
   // ===================================================================================================
@@ -162,12 +163,18 @@ int main(int argc, char *argv[])
       double preverror = 1e30;
       Eigen::VectorXd prod(degree_coeff_size);
       prod.setZero();
+
+      ProgressBar progressBarSensorOuterPP(degree_coeff_size, 70, '#', '-');
+      
       #ifndef OMP_ALLOW_REPLACING
       for(int i = 0; coeff_cnt < max_coeffs; i++)
       #else
       for(int i = 0; coeff_cnt < degree_coeff_size; i++)
       #endif
       {
+        ++progressBarSensorOuterPP;
+        progressBarSensorOuterPP.display();
+
         int maxidx = 0;
 
         #ifndef OMP_CALCULATE_EXACT_ERROR
@@ -226,7 +233,7 @@ int main(int argc, char *argv[])
             used(permutation[minidx]) = 0;
             permutation[minidx] = maxidx;
             #ifdef OMP_DEBUG_OUTPUT
-            fprintf(stderr, "[%d] %g\n", i, minerror);
+            fmt::print("[{}] {}\n", i, minerror);
             #endif
             i=0;
             //reset used for new residual:
@@ -237,7 +244,7 @@ int main(int argc, char *argv[])
           }
           #ifdef OMP_DEBUG_OUTPUT
           else
-            fprintf(stderr, " %d ", i);
+            fmt::print(" {} ", i);
           #endif
         }
 
@@ -249,6 +256,8 @@ int main(int argc, char *argv[])
         if(residual.squaredNorm() < eps[j] * degree_num_samples) break;
         preverror = residual.squaredNorm();
       }
+
+      progressBarSensorOuterPP.done();
 
       Eigen::VectorXd coeffs = Eigen::ArrayXd::Zero(degree_coeff_size);
       for(int k = 0; k < coeff_cnt; k++)
@@ -266,15 +275,15 @@ int main(int argc, char *argv[])
       for(int i = 0; i < degree_coeff_size; i++) coeff[i] = result[i];
       poly_set_coeffs(poly.poly + j, max_degree, coeff);
 
-      fprintf(stderr, "%s: %.4f ", outvname[j], error);
+      fmt::print("{}: {}\n", outvname[j], error);
       errorSum += error;
     }
 
-    fprintf(stderr, "\ndegree %d has %d/%d coeffs, fitting error %g\n", max_degree, sumCoeffs, maxSumCoeffs, errorSum);
+    fmt::print("\ndegree {} has {}/{} coeffs, fitting error {}\n", max_degree, sumCoeffs, maxSumCoeffs, errorSum);
   }
 
   // write optimised poly
-  fprintf(stderr, "output poly has %d coeffs.\n", poly_system_get_coeffs(&poly, max_degree, 0));
+  fmt::print("output poly has {} coeffs.\n", poly_system_get_coeffs(&poly, max_degree, 0));
   poly_system_write(&poly, fitfile_path.c_str());
 
   // ===================================================================================================
@@ -291,7 +300,7 @@ int main(int argc, char *argv[])
     for(int k=0;k<5;k++)
       sample[i+k*sample_cnt] = out[k];
   }
-  fprintf(stderr, "[ sensor->aperture ] optimising %d coeffs by %d/%d valid sample points\n", coeff_size, valid, sample_cnt);
+  fmt::print("[ sensor->aperture ] optimising %d coeffs by %d/%d valid sample points\n", coeff_size, valid, sample_cnt);
 
   {
     int sumCoeffs = 0;
@@ -347,12 +356,18 @@ int main(int argc, char *argv[])
       double preverror = 1e30;
       Eigen::VectorXd prod(degree_coeff_size);
       prod.setZero();
+
+      ProgressBar progressBarSensorAperture(degree_coeff_size, 70, '#', '-');
+
       #ifndef OMP_ALLOW_REPLACING
       for(int i = 0; coeff_cnt < max_coeffs; i++)
       #else
       for(int i = 0; coeff_cnt < degree_coeff_size; i++)
       #endif
       {
+        ++progressBarSensorAperture;
+        progressBarSensorAperture.display();
+
         int maxidx = 0;
 
         #ifndef OMP_CALCULATE_EXACT_ERROR
@@ -411,7 +426,7 @@ int main(int argc, char *argv[])
             used(permutation[minidx]) = 0;
             permutation[minidx] = maxidx;
             #ifdef OMP_DEBUG_OUTPUT
-            fprintf(stderr, "[%d] %g\n", i, minerror);
+            fmt::print("[{}] {}\n", i, minerror);
             #endif
             i=0;
             //reset used for new residual:
@@ -422,7 +437,7 @@ int main(int argc, char *argv[])
           }
           #ifdef OMP_DEBUG_OUTPUT
           else
-            fprintf(stderr, " %d ", i);
+            fmt::print(" {} ", i);
           #endif
         }
 
@@ -434,6 +449,8 @@ int main(int argc, char *argv[])
         if(residual.squaredNorm() < eps[j] * degree_num_samples) break;
         preverror = residual.squaredNorm();
       }
+
+      progressBarSensorAperture.done();
 
       Eigen::VectorXd coeffs = Eigen::ArrayXd::Zero(degree_coeff_size);
       for(int k = 0; k < coeff_cnt; k++)
@@ -451,13 +468,13 @@ int main(int argc, char *argv[])
       for(int i = 0; i < degree_coeff_size; i++) coeff[i] = result[i];
       poly_set_coeffs(poly_ap.poly + j, max_degree, coeff);
 
-      fprintf(stderr, "%s: %.4f ", outvname[j], error);
+      fmt::print("{}: {}\n", outvname[j], error);
       errorSum += error;
     }
-    fprintf(stderr, "\ndegree %d has %d/%d coeffs, fitting error %g\n", max_degree, sumCoeffs, maxSumCoeffs, errorSum);
+    fmt::print("\ndegree {} has {}/{} coeffs, fitting error {}\n", max_degree, sumCoeffs, maxSumCoeffs, errorSum);
   }
 
-  fprintf(stderr, "output aperture poly has %d coeffs.\n", poly_system_get_coeffs(&poly_ap, max_degree, 0));
+  fmt::print("output aperture poly has {} coeffs.\n", poly_system_get_coeffs(&poly_ap, max_degree, 0));
   poly_system_write(&poly_ap, ap_fitfile_path.c_str());
   exit(0);
 }
