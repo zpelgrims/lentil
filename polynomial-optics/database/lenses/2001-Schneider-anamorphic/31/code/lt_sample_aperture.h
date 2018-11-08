@@ -1,4 +1,4 @@
-case Schneider_anamorphic_2001_31mm:
+case schneider_anamorphic_2001_31mm:
 {
 //input: scene_[x,y,z] - point in scene, ap_[x,y] - point on aperture
 //output: [x,y,dx,dy] point and direction on sensor

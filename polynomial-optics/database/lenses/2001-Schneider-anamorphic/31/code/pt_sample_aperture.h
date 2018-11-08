@@ -1,4 +1,4 @@
-case Schneider_anamorphic_2001_31mm:
+case schneider_anamorphic_2001_31mm:
 {
 float pred_x;
 float pred_y;

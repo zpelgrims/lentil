@@ -174,7 +174,7 @@
   },
   "2004": {
     "commercial": false,
-    "company": "Schneider",
+    "company": "schneider",
     "focal-length-mm-raytraced": 30.410140991210938,
     "fstop": 1.9540375471115112,
     "max-fstop-aperture-radius": 9.802763938903809,
@@ -186,7 +186,7 @@
     "prime": true,
     "product-name": "anamorphic",
     "production-ready": true,
-    "www-svg-location": "/imgs/lenses/2004/2001-Schneider-anamorphic.svg",
+    "www-svg-location": "/imgs/lenses/2004/2001-schneider-anamorphic.svg",
     "year": 2001
   }
 }
