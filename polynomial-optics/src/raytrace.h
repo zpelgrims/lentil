@@ -11,7 +11,7 @@
 #define INTENSITY_EPS 1e-5
 
 static inline float raytrace_dot(const float *u, const float *v) {
-  return ((u)[0]*(v)[0] + (u)[1]*(v)[1] + (u)[2]*(v)[2]);
+  return u[0]*v[0] + u[1]*v[1] + u[2]*v[2];
 }
 
 static inline void raytrace_cross(float *r, const float *u, const float *v) {
@@ -265,52 +265,66 @@ static inline void csToSphere(const float *inpos, const float *indir, float *out
 
 
 static inline void csToCylinder(const float *inpos, const float *indir, float *outpos, float *outdir, const float center, const float R, bool cyl_y) {
-  float normal[3] = {
-    cyl_y ? inpos[0]/R : 0.0f,
-    cyl_y ? 0.0f : inpos[1]/R,
-    fabsf((inpos[2] - center)/R)
-  };
 
-  float tempDir[3] = {indir[0], indir[1], indir[2]};
-  raytrace_normalise(tempDir);
+  float normal[3] = {0.0f};
+  if (cyl_y){
+    normal[0] = inpos[0]/R;
+    normal[2] = fabsf((inpos[2] - center)/R);
+  } else {
+    normal[1] = inpos[1]/R;
+    normal[2] = fabsf((inpos[2] - center)/R);
+  }
+
+  const float tempDir[3] = {indir[0], indir[1], indir[2]};
 
   // tangent
   float ex[3] = {normal[2], 0, -normal[0]};
-  raytrace_normalise(ex);
   
   // bitangent
   float ey[3];
   raytrace_cross(ey, normal, ex);
+  raytrace_normalise(ey); // not sure if this is necessary
   
-  // store ray direction as projected position on unit disk perpendicular to the normal
+  // encode ray direction as projected position on unit disk perpendicular to the normal
   outdir[0] = raytrace_dot(tempDir, ex);
   outdir[1] = raytrace_dot(tempDir, ey);
+
+  // outpos is unchanged, z term omitted
   outpos[0] = inpos[0];
   outpos[1] = inpos[1];
 }
 
 
 static inline void cylinderToCs(const float *inpos, const float *indir, float *outpos, float *outdir, const float center, const float R, bool cyl_y) {
-  float normal[3] = {
-    cyl_y ? inpos[0]/R : 0.0f,
-    cyl_y ? 0.0f : inpos[1]/R,
-    sqrtf(max(0, R*R-inpos[0]*inpos[0]-inpos[1]*inpos[1]))/fabsf(R)
-  };
+
+  float normal[3] = {0.0};
+  if (cyl_y){
+    normal[0] = inpos[0]/R;
+    normal[2] = sqrtf(MAX(0.0, R*R-inpos[0]*inpos[0]))/fabsf(R);
+  } else {
+    normal[1] = inpos[1]/R;
+    normal[2] = sqrtf(MAX(0.0, R*R-inpos[1]*inpos[1]))/fabsf(R);
+  }
 
   const float tempDir[3] = {
     indir[0], 
     indir[1], 
-    sqrtf(max(0.0, 1.0f-indir[0]*indir[0]-indir[1]*indir[1]))
+    sqrtf(MAX(0.0, 1.0f-indir[0]*indir[0]-indir[1]*indir[1]))
   };
 
+  // tangent
   float ex[3] = {normal[2], 0, -normal[0]};
-  raytrace_normalise(ex);
+  raytrace_normalise(ex); // not sure if this is necessary
+  
+  // bitangent
   float ey[3];
   raytrace_cross(ey, normal, ex);
-
+  raytrace_normalise(ey); // not sure if this is necessary
+  
   outdir[0] = tempDir[0] * ex[0] + tempDir[1] * ey[0] + tempDir[2] * normal[0];
   outdir[1] = tempDir[0] * ex[1] + tempDir[1] * ey[1] + tempDir[2] * normal[1];
   outdir[2] = tempDir[0] * ex[2] + tempDir[1] * ey[2] + tempDir[2] * normal[2];
+
   outpos[0] = inpos[0];
   outpos[1] = inpos[1];
   outpos[2] = normal[2] * R + center;
