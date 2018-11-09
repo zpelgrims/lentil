@@ -119,8 +119,8 @@ int main(int argc, char **argv)
   fprintf(f, "camera->lens_effective_focal_length = %f; // effective focal length in mm\n", static_cast<float>(lens_focal_length));
   fprintf(f, "camera->lens_aperture_pos = %f; // distance aperture -> outer pupil in mm\n", aperture_pos);
   fprintf(f, "camera->lens_aperture_housing_radius = %f; // lens housing radius at the aperture\n", aperture_housing_radius);
-  fprintf(f, "camera->lens_outer_pupil_geometry = \"%s\"; // geometry of outer pupil\n", lenses[0].geometry);
-  fprintf(f, "camera->lens_inner_pupil_geometry = \"%s\"; // geometry of inner pupil\n", lenses[lenses_cnt-1].geometry);
+  fprintf(f, "camera->lens_outer_pupil_geometry = \"%s\"; // geometry of outer pupil\n", lenses[0].geometry.c_str());
+  fprintf(f, "camera->lens_inner_pupil_geometry = \"%s\"; // geometry of inner pupil\n", lenses[lenses_cnt-1].geometry.c_str());
   fprintf(f, "camera->lens_fstop = %f; // effective_focal_length/(2*aperture_housing_radius)\n", lens_database[id]["fstop"].get<float>());
   fprintf(f, "camera->lens_aperture_radius_at_fstop = %f; // aperture radius at smallest fstop\n", lens_database[id]["max-fstop-aperture-radius"].get<float>());
 
@@ -130,8 +130,8 @@ int main(int argc, char **argv)
   poly_system_evaluate(&poly, sensor, out, 100);
   float wspos[3], wsdir[3];
 
-  if (!strcasecmp(lenses[0].geometry, "cyl-y")) cylinderToCs(out, out+2, wspos, wsdir, 0, lenses[0].lens_radius, true);
-  else if (!strcasecmp(lenses[0].geometry, "cyl-x")) cylinderToCs(out, out+2, wspos, wsdir, 0, lenses[0].lens_radius, false);
+  if (iequals(lenses[0].geometry, "cyl-y")) cylinderToCs(out, out+2, wspos, wsdir, 0, lenses[0].lens_radius, true);
+  else if (iequals(lenses[0].geometry, "cyl-x")) cylinderToCs(out, out+2, wspos, wsdir, 0, lenses[0].lens_radius, false);
   else sphereToCs(out, out+2, wspos, wsdir, 0, lenses[0].lens_radius);
   
   raytrace_normalise(wsdir);

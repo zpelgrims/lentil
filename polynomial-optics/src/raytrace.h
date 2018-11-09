@@ -300,16 +300,16 @@ static inline void cylinderToCs(const float *inpos, const float *indir, float *o
   float normal[3] = {0.0};
   if (cyl_y){
     normal[0] = inpos[0]/R;
-    normal[2] = sqrtf(MAX(0.0, R*R-inpos[0]*inpos[0]))/fabsf(R);
+    normal[2] = sqrtf(max(0.0, R*R-inpos[0]*inpos[0]))/fabsf(R);
   } else {
     normal[1] = inpos[1]/R;
-    normal[2] = sqrtf(MAX(0.0, R*R-inpos[1]*inpos[1]))/fabsf(R);
+    normal[2] = sqrtf(max(0.0, R*R-inpos[1]*inpos[1]))/fabsf(R);
   }
 
   const float tempDir[3] = {
     indir[0], 
     indir[1], 
-    sqrtf(MAX(0.0, 1.0f-indir[0]*indir[0]-indir[1]*indir[1]))
+    sqrtf(max(0.0, 1.0f-indir[0]*indir[0]-indir[1]*indir[1]))
   };
 
   // tangent
@@ -330,7 +330,7 @@ static inline void cylinderToCs(const float *inpos, const float *indir, float *o
   outpos[2] = normal[2] * R + center;
 }
 
-
+// for some reason lens element 0 is spherical while it shouldn't be...
 inline int intersect(const lens_element_t *lenses, 
                     const int k,
                     float *pos, float *dir, 
@@ -340,15 +340,15 @@ inline int intersect(const lens_element_t *lenses,
 
   float sign = tracing_forward ? 1.0f : -1.0f;
 
-  if(!strcasecmp(lenses[k].geometry, "cyl-y")){
+  if(iequals(lenses[k].geometry, "cyl-y")){
     return cylindrical(pos, dir, &t, R, distsum + (R * sign), lenses[k].housing_radius, n, true);
   }
   
-  else if (!strcasecmp(lenses[k].geometry, "cyl-x")){
+  else if (iequals(lenses[k].geometry, "cyl-x")){
     return cylindrical(pos, dir, &t, R, distsum + (R * sign), lenses[k].housing_radius, n, false);
   }
   
-  else if(!strcasecmp(lenses[k].geometry, "aspherical")){
+  else if(iequals(lenses[k].geometry, "aspherical")){
     return aspherical(pos, dir, &t, R, distsum + (R * sign), lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
   }
   
@@ -394,8 +394,8 @@ static inline int evaluate(const lens_element_t *lenses, const int lenses_cnt, c
     n1 = n2;
   }
   // return [x,y,dx,dy,lambda]
-  if (!strcasecmp(lenses[0].geometry, "cyl-y")) csToCylinder(pos, dir, out, out + 2, distsum-fabs(lenses[0].lens_radius), lenses[0].lens_radius, true);
-  else if (!strcasecmp(lenses[0].geometry, "cyl-x")) csToCylinder(pos, dir, out, out + 2, distsum-fabs(lenses[0].lens_radius), lenses[0].lens_radius, false);
+  if (iequals(lenses[0].geometry, "cyl-y")) csToCylinder(pos, dir, out, out + 2, distsum-fabs(lenses[0].lens_radius), lenses[0].lens_radius, true);
+  else if (iequals(lenses[0].geometry, "cyl-x")) csToCylinder(pos, dir, out, out + 2, distsum-fabs(lenses[0].lens_radius), lenses[0].lens_radius, false);
   else csToSphere(pos, dir, out, out + 2, distsum-fabs(lenses[0].lens_radius), lenses[0].lens_radius);
   out[4] = intensity;
   return error;
@@ -458,8 +458,8 @@ static inline int evaluate_reverse(const lens_element_t *lenses, const int lense
   float pos[3], dir[3];
   float intensity = 1.0f;
 
-  if (!strcasecmp(lenses[0].geometry, "cyl-y")) cylinderToCs(in, in + 2, pos, dir, 0, lenses[0].lens_radius, true);
-  else if (!strcasecmp(lenses[0].geometry, "cyl-x")) cylinderToCs(in, in + 2, pos, dir, 0, lenses[0].lens_radius, false);
+  if (iequals(lenses[0].geometry, "cyl-y")) cylinderToCs(in, in + 2, pos, dir, 0, lenses[0].lens_radius, true);
+  else if (iequals(lenses[0].geometry, "cyl-x")) cylinderToCs(in, in + 2, pos, dir, 0, lenses[0].lens_radius, false);
   else sphereToCs(in, in + 2, pos, dir, 0, lenses[0].lens_radius);
 
   for(int i = 0; i < 2; i++) dir[i] = -dir[i];
@@ -517,7 +517,7 @@ static inline int evaluate_aperture(const lens_element_t *lenses, const int lens
     distsum += dist;
 
     // stop after moving to aperture.
-    if(!strcasecmp(lenses[k].material, "iris")) break;
+    if(iequals(lenses[k].material, "iris")) break;
 
     //normal at intersection
     float n[3] = {0.0f};
@@ -552,8 +552,8 @@ static inline int evaluate_aperture_reverse(const lens_element_t *lenses, const 
   float pos[3], dir[3];
   float intensity = 1.0f;
 
-  if (!strcasecmp(lenses[0].geometry, "cyl-y")) cylinderToCs(in, in + 2, pos, dir, 0, lenses[0].lens_radius, true);
-  else if (!strcasecmp(lenses[0].geometry, "cyl-x")) cylinderToCs(in, in + 2, pos, dir, 0, lenses[0].lens_radius, false);
+  if (iequals(lenses[0].geometry, "cyl-y")) cylinderToCs(in, in + 2, pos, dir, 0, lenses[0].lens_radius, true);
+  else if (iequals(lenses[0].geometry, "cyl-x")) cylinderToCs(in, in + 2, pos, dir, 0, lenses[0].lens_radius, false);
   else sphereToCs(in, in + 2, pos, dir, 0, lenses[0].lens_radius);
 
   for(int i = 0; i < 2; i++) dir[i] = -dir[i];
@@ -584,7 +584,7 @@ static inline int evaluate_aperture_reverse(const lens_element_t *lenses, const 
     distsum += dist;
 
     // stop after processing aperture but before moving to next element
-    if(k < lenses_cnt-1 && !strcasecmp(lenses[k+1].material, "iris")) break;
+    if(k < lenses_cnt-1 && iequals(lenses[k+1].material, "iris")) break;
 
     n1 = n2;
   }
@@ -681,8 +681,8 @@ static inline float evaluate_reverse_intersection_y0(
   float lens_length = 0;
   for(int i=0;i<lenses_cnt;i++) lens_length += lens_get_thickness(lenses+i, zoom);
 
-  if (!strcasecmp(lenses[0].geometry, "cyl-y")) cylinderToCs(in, in + 2, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
-  else if (!strcasecmp(lenses[0].geometry, "cyl-x")) cylinderToCs(in, in + 2, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
+  if (iequals(lenses[0].geometry, "cyl-y")) cylinderToCs(in, in + 2, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
+  else if (iequals(lenses[0].geometry, "cyl-x")) cylinderToCs(in, in + 2, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
   else sphereToCs(in, in + 2, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
 
 
@@ -743,8 +743,8 @@ static inline bool evaluate_reverse_fstop(
   float lens_length = 0;
   for(int i=0;i<lenses_cnt;i++) lens_length += lens_get_thickness(lenses+i, zoom);
 
-  if (!strcasecmp(lenses[0].geometry, "cyl-y")) cylinderToCs(in, in + 2, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
-  else if (!strcasecmp(lenses[0].geometry, "cyl-x")) cylinderToCs(in, in + 2, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
+  if (iequals(lenses[0].geometry, "cyl-y")) cylinderToCs(in, in + 2, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
+  else if (iequals(lenses[0].geometry, "cyl-x")) cylinderToCs(in, in + 2, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
   else sphereToCs(in, in + 2, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
 
 

@@ -26,10 +26,25 @@ typedef struct lens_element_t
   float housing_radius;
   float aspheric_correction_coefficients[4];
   int aspheric;
-  char material[32];
-  char geometry[50];
+  std::string material;
+  std::string geometry;
 } lens_element_t;
 
+
+// case insensitive string comparison
+inline bool iequals(const std::string& a, const std::string& b) {
+  unsigned int sz = a.size();
+  if (b.size() != sz) {
+    return false;
+  }
+  for (unsigned int i = 0; i < sz; ++i){
+    if (std::tolower(a[i]) != std::tolower(b[i])) {
+      return false;
+    }
+  }
+
+  return true;
+}
 
 static inline float lens_get_thickness(const lens_element_t *lens, float zoom)
 {
@@ -46,7 +61,7 @@ float lens_get_aperture_radius(lens_element_t *l, int num)
 {
   for(int k=0;k<num;k++)
   {
-    if(!strcasecmp(l[k].material, "iris"))
+    if (iequals(l[k].material, "iris"))
       return l[k].housing_radius;
   }
   return 0.0f;
@@ -57,7 +72,7 @@ float lens_get_aperture_pos(lens_element_t *l, int num, float zoom)
 {
   float pos = 0;
   int k = 0;
-  while(strcasecmp(l[k].material, "iris") && k < num)
+  while(!iequals(l[k].material, "iris") && k < num)
   {
       pos += lens_get_thickness(l+k, zoom);
       k++;
@@ -66,12 +81,12 @@ float lens_get_aperture_pos(lens_element_t *l, int num, float zoom)
 }
 
 
-float lens_get_aperture_pos_reverse(lens_element_t *lenses, int num, float zoom)
+float lens_get_aperture_pos_reverse(lens_element_t *l, int num, float zoom)
 {
   float pos = 0.0;
   for(int i = num; i>0; i--) {
-    pos += lens_get_thickness(lenses+i, zoom);
-    if(!strcasecmp(lenses[i].material, "iris")) {
+    pos += lens_get_thickness(l+i, zoom);
+    if(iequals(l[i].material, "iris")) {
       return pos;
     }
   }
@@ -83,7 +98,7 @@ float lens_get_aperture_pos_reverse(lens_element_t *lenses, int num, float zoom)
 
 int lens_get_aperture_element(const lens_element_t *l, int lenses_cnt) {
   for (int k = 0; k < lenses_cnt - 1; k++) {
-    if (!strcasecmp(l[k].material, "iris")) {
+    if (iequals(l[k].material, "iris")) {
       return k;
     }
   }
@@ -96,7 +111,10 @@ int lens_get_aperture_element(const lens_element_t *l, int lenses_cnt) {
 // read json database
 int lens_configuration(lens_element_t *l, const char *id, int target_focal_length)
 {
+  // need to put this in a try except block, it segfaults without any information when LENTIL_PATH is not set...
   std::string lens_database_path = std::getenv("LENTIL_PATH");
+  fmt::print("LENTIL_PATH: {}\n", lens_database_path);
+
   std::string polynomial_optics = "polynomial-optics";
   if (!(lens_database_path.find(polynomial_optics) != std::string::npos)) {
     fmt::print("LENTIL_PATH has not set correctly! Point it to the polynomial-optics folder. \n");
@@ -143,11 +161,11 @@ int lens_configuration(lens_element_t *l, const char *id, int target_focal_lengt
         lens.thickness_short = scale * json_lens_element["thickness"].get<float>();
       }
 
-      strcpy(lens.material, json_lens_element["material"].get<std::string>().c_str());
-      if (!strcasecmp(lens.material, "air")){
+      lens.material = json_lens_element["material"].get<std::string>();
+      if (iequals(lens.material, "air")){
         lens.ior = 1.0f;
         lens.vno = 0.0f;
-      } else if (!strcasecmp(lens.material, "iris")){
+      } else if (iequals(lens.material, "iris")){
         lens.ior = last_ior;
         lens.vno = last_vno;
       } else {
@@ -160,17 +178,17 @@ int lens_configuration(lens_element_t *l, const char *id, int target_focal_lengt
       // anamorphic
       std::string lens_geometry = json_lens_element["lens-geometry"].get<std::string>();
       if (lens_geometry == "cyl-y"){
-        strcpy(lens.geometry, "cyl-y");
+        lens.geometry = "cyl-y";
       } else if (lens_geometry == "cyl-x"){
-        strcpy(lens.geometry, "cyl-x");
+        lens.geometry = "cyl-x";
       } else {
-        strcpy(lens.geometry, "spherical");
+        lens.geometry = "spherical";
       }
 
       // aspherical
       if (json_lens_element["aspherical-equation"].is_array()){
         lens.aspheric = 1;
-        strcpy(lens.geometry, "aspherical");
+        lens.geometry = "aspherical";
         for(int i = 0; i < 4; i++, i++){
           lens.aspheric_correction_coefficients[i] = json_lens_element["aspherical-equation"][i].get<float>();
         }

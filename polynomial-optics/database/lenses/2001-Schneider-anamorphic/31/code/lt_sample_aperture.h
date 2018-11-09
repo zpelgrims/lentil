@@ -8,7 +8,7 @@ float view[3] =
   scene_y,
   scene_z + camera->lens_outer_pupil_curvature_radius
 };
-normalise(view);
+raytrace_normalise(view);
 int error = 0;
 if(1 || view[2] >= camera->lens_field_of_view)
 {
@@ -50,20 +50,20 @@ if(1 || view[2] >= camera->lens_field_of_view)
     out[2] =  + 0.293479 *begin_dx + -0.0433309 *begin_x + -0.000738011 *lens_ipow(begin_x, 2)*begin_dx + 2.10863e-05 *lens_ipow(begin_x, 3)*begin_lambda + 0.0292307 *begin_x*lens_ipow(begin_dx, 2)*lens_ipow(begin_lambda, 2) + 0.00162677 *lens_ipow(begin_x, 2)*begin_dx*lens_ipow(begin_lambda, 2) + -8.60128e-08 *lens_ipow(begin_x, 5) + -7.58294e-05 *begin_x*lens_ipow(begin_y, 3)*lens_ipow(begin_dx, 2)*begin_dy + -2.02014e-06 *begin_x*lens_ipow(begin_y, 4)*lens_ipow(begin_dx, 2) + -4.40985e-06 *lens_ipow(begin_x, 2)*lens_ipow(begin_y, 3)*begin_dx*begin_dy + -9.87928e-08 *lens_ipow(begin_x, 2)*lens_ipow(begin_y, 4)*begin_dx + -0.00230272 *lens_ipow(begin_x, 3)*lens_ipow(begin_dx, 4) + -9.08377e-08 *lens_ipow(begin_x, 3)*lens_ipow(begin_y, 3)*begin_dy + -1.47038e-09 *lens_ipow(begin_x, 3)*lens_ipow(begin_y, 4) + -0.000177774 *lens_ipow(begin_x, 4)*lens_ipow(begin_dx, 3) + -5.21531e-06 *lens_ipow(begin_x, 5)*lens_ipow(begin_dx, 2) + -4.07573e-10 *lens_ipow(begin_x, 5)*lens_ipow(begin_y, 2) + -6.91901e-08 *lens_ipow(begin_x, 6)*begin_dx + 5.17608e-10 *lens_ipow(begin_x, 3)*lens_ipow(begin_y, 4)*begin_lambda + -1.76835e-07 *lens_ipow(begin_y, 6)*lens_ipow(begin_dx, 3) + -8.4765e-13 *begin_x*lens_ipow(begin_y, 8) + -9.2759e-11 *lens_ipow(begin_x, 6)*lens_ipow(begin_y, 2)*begin_dx + -5.45227e-13 *lens_ipow(begin_x, 9) + 7.55821e-07 *lens_ipow(begin_x, 3)*lens_ipow(begin_y, 3)*lens_ipow(begin_dy, 3)*begin_lambda + -4.26747e-08 *lens_ipow(begin_y, 7)*lens_ipow(begin_dx, 3)*begin_dy + -2.83241e-13 *begin_x*lens_ipow(begin_y, 9)*begin_dy + 1.07121e-09 *lens_ipow(begin_x, 2)*lens_ipow(begin_y, 6)*lens_ipow(begin_dx, 3) + -1.40982e-13 *lens_ipow(begin_x, 9)*begin_y*begin_dy;
     out[3] =  + -0.0161861 *begin_y + -0.00360374 *begin_dy*begin_lambda + -0.00258321 *begin_y*lens_ipow(begin_dx, 2) + -2.89929e-06 *lens_ipow(begin_y, 3) + -0.00319904 *begin_x*begin_dx*begin_dy + -4.43202e-05 *lens_ipow(begin_x, 2)*begin_dy + -2.6502e-06 *lens_ipow(begin_x, 2)*begin_y + -0.000715848 *lens_ipow(begin_y, 2)*begin_dy*begin_lambda + 7.67678e-06 *lens_ipow(begin_y, 3)*begin_lambda + -0.0345408 *begin_y*lens_ipow(begin_dy, 4) + 0.00123768 *lens_ipow(begin_y, 2)*begin_dy*lens_ipow(begin_lambda, 2) + -2.77182e-05 *lens_ipow(begin_y, 4)*lens_ipow(begin_dy, 3) + -1.25742e-06 *lens_ipow(begin_y, 5)*lens_ipow(begin_dy, 2) + -1.93824e-08 *lens_ipow(begin_y, 6)*begin_dy + -1.07784e-10 *lens_ipow(begin_y, 7) + -2.29357e-08 *lens_ipow(begin_x, 3)*lens_ipow(begin_y, 3)*begin_dx*begin_lambda + -3.03255e-09 *begin_x*lens_ipow(begin_y, 6)*begin_dx*begin_dy + -4.49879e-11 *begin_x*lens_ipow(begin_y, 7)*begin_dx + -1.1516e-06 *lens_ipow(begin_x, 2)*lens_ipow(begin_y, 3)*lens_ipow(begin_dx, 2)*lens_ipow(begin_lambda, 2) + -1.20758e-12 *lens_ipow(begin_x, 2)*lens_ipow(begin_y, 7) + -1.99146e-12 *lens_ipow(begin_x, 6)*lens_ipow(begin_y, 3) + -0.0117512 *lens_ipow(begin_y, 2)*lens_ipow(begin_dy, 3)*lens_ipow(begin_lambda, 6) + -8.96345e-13 *lens_ipow(begin_y, 9)*lens_ipow(begin_dx, 2) + -0.000543455 *begin_x*lens_ipow(begin_y, 3)*lens_ipow(begin_dx, 3)*lens_ipow(begin_dy, 2)*lens_ipow(begin_lambda, 2) + -3.27775e-13 *lens_ipow(begin_x, 2)*lens_ipow(begin_y, 8)*begin_dy + 1.4906e-09 *lens_ipow(begin_x, 5)*lens_ipow(begin_y, 3)*begin_dx*lens_ipow(begin_dy, 2) + -7.576e-13 *lens_ipow(begin_x, 6)*lens_ipow(begin_y, 4)*begin_dy + -3.61168e-13 *lens_ipow(begin_x, 7)*lens_ipow(begin_y, 3)*begin_dx;
     float pred_out_cs[7] = {0.0f};
-    if (camera->lens_outer_pupil_geometry == "cyl-y") lens_cylinderToCs(out, out+2, pred_out_cs, pred_out_cs+3, - camera->lens_outer_pupil_curvature_radius, camera->lens_outer_pupil_curvature_radius, true);
-    else if (camera->lens_outer_pupil_geometry == "cyl-x") lens_cylinderToCs(out, out+2, pred_out_cs, pred_out_cs+3, - camera->lens_outer_pupil_curvature_radius, camera->lens_outer_pupil_curvature_radius, false);
-    else lens_sphereToCs(out, out+2, pred_out_cs, pred_out_cs+3, - camera->lens_outer_pupil_curvature_radius, camera->lens_outer_pupil_curvature_radius);
+    if (camera->lens_outer_pupil_geometry == "cyl-y") cylinderToCs(out, out+2, pred_out_cs, pred_out_cs+3, - camera->lens_outer_pupil_curvature_radius, camera->lens_outer_pupil_curvature_radius, true);
+    else if (camera->lens_outer_pupil_geometry == "cyl-x") cylinderToCs(out, out+2, pred_out_cs, pred_out_cs+3, - camera->lens_outer_pupil_curvature_radius, camera->lens_outer_pupil_curvature_radius, false);
+    else sphereToCs(out, out+2, pred_out_cs, pred_out_cs+3, - camera->lens_outer_pupil_curvature_radius, camera->lens_outer_pupil_curvature_radius);
     float view[3] =
     {
       scene_x - pred_out_cs[0],
       scene_y - pred_out_cs[1],
       scene_z - pred_out_cs[2]
     };
-    normalise(view);
+    raytrace_normalise(view);
     float out_new[5];
-    if (camera->lens_outer_pupil_geometry == "cyl-y") lens_csToCylinder(pred_out_cs, view, out_new, out_new+2, - camera->lens_outer_pupil_curvature_radius, camera->lens_outer_pupil_curvature_radius, true);
-    else if (camera->lens_outer_pupil_geometry == "cyl-x") lens_csToCylinder(pred_out_cs, view, out_new, out_new+2, - camera->lens_outer_pupil_curvature_radius, camera->lens_outer_pupil_curvature_radius, false);
-    else lens_csToSphere(pred_out_cs, view, out_new, out_new+2, - camera->lens_outer_pupil_curvature_radius, camera->lens_outer_pupil_curvature_radius);
+    if (camera->lens_outer_pupil_geometry == "cyl-y") csToCylinder(pred_out_cs, view, out_new, out_new+2, - camera->lens_outer_pupil_curvature_radius, camera->lens_outer_pupil_curvature_radius, true);
+    else if (camera->lens_outer_pupil_geometry == "cyl-x") csToCylinder(pred_out_cs, view, out_new, out_new+2, - camera->lens_outer_pupil_curvature_radius, camera->lens_outer_pupil_curvature_radius, false);
+    else csToSphere(pred_out_cs, view, out_new, out_new+2, - camera->lens_outer_pupil_curvature_radius, camera->lens_outer_pupil_curvature_radius);
     const float delta_out[] = {out_new[2] - out[2], out_new[3] - out[3]};
     sqr_err = delta_out[0]*delta_out[0]+delta_out[1]*delta_out[1];
     float domega2_dx0[2][2];

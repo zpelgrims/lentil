@@ -12,7 +12,7 @@ camera->lens_aperture_pos = 64.301956; // distance aperture -> outer pupil in mm
 camera->lens_aperture_housing_radius = 25.584333; // lens housing radius at the aperture
 camera->lens_outer_pupil_geometry = "spherical"; // geometry of outer pupil
 camera->lens_inner_pupil_geometry = "spherical"; // geometry of inner pupil
-camera->lens_fstop = 1.107058; // effective_focal_length/(2*aperture_housing_radius)
-camera->lens_aperture_radius_at_fstop = 25.494236; // aperture radius at smallest fstop
+camera->lens_fstop = 1.107980; // effective_focal_length/(2*aperture_housing_radius)
+camera->lens_aperture_radius_at_fstop = 25.480646; // aperture radius at smallest fstop
 camera->lens_field_of_view = 0.976427; // cosine of the approximate field of view assuming a 35mm image
 } break;

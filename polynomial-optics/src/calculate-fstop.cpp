@@ -53,12 +53,12 @@ int main(int argc, char *argv[])
     float t, n[3] = {0.0f};
 
     // intersection on first lens element
-    if (!strcasecmp(lenses[0].geometry, "cyl-y")){
+    if (iequals(lenses[0].geometry, "cyl-y")){
       cylindrical(cam_pos, cam_dir, &t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n, true);
       for(int i=0;i<3;i++) cam_dir[i] = - cam_dir[i]; // need to point away from surface (dot(n,dir) > 0)
       csToCylinder(cam_pos, cam_dir, in, in+2, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
     }
-    else if (!strcasecmp(lenses[0].geometry, "cyl-x")){
+    else if (iequals(lenses[0].geometry, "cyl-x")){
       cylindrical(cam_pos, cam_dir, &t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n, false);
       for(int i=0;i<3;i++) cam_dir[i] = - cam_dir[i]; // need to point away from surface (dot(n,dir) > 0)
       csToCylinder(cam_pos, cam_dir, in, in+2, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);

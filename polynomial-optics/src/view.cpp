@@ -283,26 +283,27 @@ void draw_lenses(cairo_t *cr, float scale){
 
   for(int i=0; i<lenses_cnt; i++){
     float rad = lenses[i].lens_radius;
-    if (!strcmp(lenses[i].geometry, "cyl-y") && dim_up) rad = 99999.0;
-    else if (!strcmp(lenses[i].geometry, "cyl-x") && !dim_up) rad = 99999.0;
+    if (iequals(lenses[i].geometry, "cyl-y") && dim_up) rad = 99999.0;
+    else if (iequals(lenses[i].geometry, "cyl-x") && !dim_up) rad = 99999.0;
     
     float hrad = lenses[i].housing_radius;
     float t = lens_get_thickness(lenses+i, zoom);
 
     // skip aperture drawing
-    if(!strcasecmp(lenses[i].material, "iris")) {
+    if(iequals(lenses[i].material, "iris")) {
+      
       pos -= t;
       continue;
     }
 
-    if(!strcasecmp(lenses[i].material, "iris")) aperture_pos = pos;
+    if(iequals(lenses[i].material, "iris")) aperture_pos = pos;
 
     if(lenses[i].ior != 1.0f && i < lenses_cnt-1) {
       cairo_save(cr);
 
       float rad2 = lenses[i+1].lens_radius;
-      if (!strcmp(lenses[i+1].geometry, "cyl-y") && dim_up) rad2 = 99999.0;
-      else if (!strcmp(lenses[i+1].geometry, "cyl-x") && !dim_up) rad2 = 99999.0;
+      if (iequals(lenses[i+1].geometry, "cyl-y") && dim_up) rad2 = 99999.0;
+      else if (iequals(lenses[i+1].geometry, "cyl-x") && !dim_up) rad2 = 99999.0;
     
       float hrad2 = lenses[i+1].housing_radius;
       float off  = rad  > 0.0f ? 0.0f : M_PI;
@@ -338,8 +339,8 @@ void draw_lenses(cairo_t *cr, float scale){
 
       cairo_close_path(cr);
       
-      if (!strcmp(lenses[i+1].geometry, "cyl-y") || !strcmp(lenses[i+1].geometry, "cyl-x")) cairo_set_source_rgba(cr, mint[0], mint[1], mint[2], 0.85);
-      else if (!strcmp(lenses[i+1].geometry, "aspherical")) cairo_set_source_rgba(cr, green[0], green[1], green[2], 0.85);
+      if (iequals(lenses[i+1].geometry, "cyl-y") || iequals(lenses[i+1].geometry, "cyl-x")) cairo_set_source_rgba(cr, mint[0], mint[1], mint[2], 0.85);
+      else if (iequals(lenses[i+1].geometry, "aspherical")) cairo_set_source_rgba(cr, green[0], green[1], green[2], 0.85);
       else cairo_set_source_rgba(cr, grey[0], grey[1], grey[2], 0.85);
       cairo_fill_preserve(cr);
 
@@ -367,8 +368,8 @@ void draw_lenses(cairo_t *cr, float scale){
         cairo_arc(cr, pos-rad, 0.0f, fabsf(rad), .0f, 2.0f*M_PI);
       }
 
-      if (!strcmp(lenses[i].geometry, "cyl-y") || !strcmp(lenses[i].geometry, "cyl-x")) cairo_set_source_rgba(cr, mint[0], mint[1], mint[2], 0.85);
-      else if (!strcmp(lenses[i].geometry, "aspherical")) cairo_set_source_rgba(cr, green[0], green[1], green[2], 0.85);
+      if (iequals(lenses[i].geometry, "cyl-y") || iequals(lenses[i].geometry, "cyl-x")) cairo_set_source_rgba(cr, mint[0], mint[1], mint[2], 0.85);
+      else if (iequals(lenses[i].geometry, "aspherical")) cairo_set_source_rgba(cr, green[0], green[1], green[2], 0.85);
       else cairo_set_source_rgba(cr, grey[0], grey[1], grey[2], 0.85);
 
       cairo_set_source_rgba(cr, lightgrey[0], lightgrey[1], lightgrey[2], lightgrey[3]);
@@ -482,13 +483,13 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
       float t, n[3] = {0.0f};
 
       // intersection with first lens element
-      if (!strcmp(lenses[0].geometry, "cyl-y")){
+      if (iequals(lenses[0].geometry, "cyl-y")){
         cylindrical(cam_pos, cam_dir, &t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n, true);
         for(int i=0;i<3;i++) cam_dir[i] = - cam_dir[i]; // need to point away from surface (dot(n,dir) > 0)
         csToCylinder(cam_pos, cam_dir, in, in+2, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
         // cylinderToCs(in, in + 2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
       }
-      else if (!strcmp(lenses[0].geometry, "cyl-x")){
+      else if (iequals(lenses[0].geometry, "cyl-x")){
         cylindrical(cam_pos, cam_dir, &t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n, false);
         for(int i=0;i<3;i++) cam_dir[i] = - cam_dir[i]; // need to point away from surface (dot(n,dir) > 0)
         csToCylinder(cam_pos, cam_dir, in, in+2, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
@@ -546,10 +547,10 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
           stroke_with_pencil(cr, scale, 90.0/width);
 
           // outer pupil
-          if (!strcmp(lenses[0].geometry, "cyl-y") && !dim_up) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
-          else if (!strcmp(lenses[0].geometry, "cyl-y") && dim_up) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - 99999.0, 99999.0, true);
-          else if (!strcmp(lenses[0].geometry, "cyl-x") && !dim_up) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - 99999.0, 99999.0, false);
-          else if (!strcmp(lenses[0].geometry, "cyl-x") && dim_up) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
+          if (iequals(lenses[0].geometry, "cyl-y") && !dim_up) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
+          else if (iequals(lenses[0].geometry, "cyl-y") && dim_up) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - 99999.0, 99999.0, true);
+          else if (iequals(lenses[0].geometry, "cyl-x") && !dim_up) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - 99999.0, 99999.0, false);
+          else if (iequals(lenses[0].geometry, "cyl-x") && dim_up) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
           else sphereToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
           cairo_move_to(cr, cam_pos[2], cam_pos[dim_up]);
           cairo_line_to(cr, cam_pos[2] + polynomial_length*cam_dir[2], cam_pos[dim_up] + polynomial_length*cam_dir[dim_up]);
