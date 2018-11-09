@@ -130,8 +130,8 @@ int main(int argc, char **argv)
   poly_system_evaluate(&poly, sensor, out, 100);
   float wspos[3], wsdir[3];
 
-  if (iequals(lenses[0].geometry, "cyl-y")) cylinderToCs(out, out+2, wspos, wsdir, 0, lenses[0].lens_radius, true);
-  else if (iequals(lenses[0].geometry, "cyl-x")) cylinderToCs(out, out+2, wspos, wsdir, 0, lenses[0].lens_radius, false);
+  if (stringcmp(lenses[0].geometry, "cyl-y")) cylinderToCs(out, out+2, wspos, wsdir, 0, lenses[0].lens_radius, true);
+  else if (stringcmp(lenses[0].geometry, "cyl-x")) cylinderToCs(out, out+2, wspos, wsdir, 0, lenses[0].lens_radius, false);
   else sphereToCs(out, out+2, wspos, wsdir, 0, lenses[0].lens_radius);
   
   raytrace_normalise(wsdir);

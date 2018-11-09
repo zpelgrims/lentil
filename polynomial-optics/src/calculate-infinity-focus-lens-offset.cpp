@@ -46,14 +46,14 @@ int main(int argc, char *argv[]){
     inrt[4] = outrt[4] = in[4] = out[4] = ap[4] = lambda;
     float t, n[3] = {0.0f};
     
-    if (iequals(lenses[0].geometry, "cyl-y")){
+    if (stringcmp(lenses[0].geometry, "cyl-y")){
       // intersection with first lens element, but seems like a duplicate purpose of the algebra method above..
       cylindrical(cam_pos, cam_dir, &t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n, true);
       for(int i=0;i<3;i++) cam_dir[i] = - cam_dir[i]; // need to point away from surface (dot(n,dir) > 0)
       csToCylinder(cam_pos, cam_dir, in, in+2, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
       cylinderToCs(in, in + 2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
     }
-    else if (iequals(lenses[0].geometry, "cyl-x")){
+    else if (stringcmp(lenses[0].geometry, "cyl-x")){
       // intersection with first lens element, but seems like a duplicate purpose of the algebra method above..
       cylindrical(cam_pos, cam_dir, &t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n, false);
       for(int i=0;i<3;i++) cam_dir[i] = - cam_dir[i]; // need to point away from surface (dot(n,dir) > 0)

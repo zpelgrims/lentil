@@ -32,7 +32,7 @@ typedef struct lens_element_t
 
 
 // case insensitive string comparison
-inline bool iequals(const std::string& a, const std::string& b) {
+inline bool stringcmp(const std::string& a, const std::string& b) {
   unsigned int sz = a.size();
   if (b.size() != sz) {
     return false;
@@ -61,7 +61,7 @@ float lens_get_aperture_radius(lens_element_t *l, int num)
 {
   for(int k=0;k<num;k++)
   {
-    if (iequals(l[k].material, "iris"))
+    if (stringcmp(l[k].material, "iris"))
       return l[k].housing_radius;
   }
   return 0.0f;
@@ -72,7 +72,7 @@ float lens_get_aperture_pos(lens_element_t *l, int num, float zoom)
 {
   float pos = 0;
   int k = 0;
-  while(!iequals(l[k].material, "iris") && k < num)
+  while(!stringcmp(l[k].material, "iris") && k < num)
   {
       pos += lens_get_thickness(l+k, zoom);
       k++;
@@ -86,7 +86,7 @@ float lens_get_aperture_pos_reverse(lens_element_t *l, int num, float zoom)
   float pos = 0.0;
   for(int i = num; i>0; i--) {
     pos += lens_get_thickness(l+i, zoom);
-    if(iequals(l[i].material, "iris")) {
+    if(stringcmp(l[i].material, "iris")) {
       return pos;
     }
   }
@@ -98,7 +98,7 @@ float lens_get_aperture_pos_reverse(lens_element_t *l, int num, float zoom)
 
 int lens_get_aperture_element(const lens_element_t *l, int lenses_cnt) {
   for (int k = 0; k < lenses_cnt - 1; k++) {
-    if (iequals(l[k].material, "iris")) {
+    if (stringcmp(l[k].material, "iris")) {
       return k;
     }
   }
@@ -162,10 +162,10 @@ int lens_configuration(lens_element_t *l, const char *id, int target_focal_lengt
       }
 
       lens.material = json_lens_element["material"].get<std::string>();
-      if (iequals(lens.material, "air")){
+      if (stringcmp(lens.material, "air")){
         lens.ior = 1.0f;
         lens.vno = 0.0f;
-      } else if (iequals(lens.material, "iris")){
+      } else if (stringcmp(lens.material, "iris")){
         lens.ior = last_ior;
         lens.vno = last_vno;
       } else {
