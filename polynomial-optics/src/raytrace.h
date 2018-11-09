@@ -7,7 +7,6 @@
 #include <vector>
 
 #define max(a, b) ((a)>(b)?(a):(b))
-
 #define INTENSITY_EPS 1e-5
 
 static inline float raytrace_dot(const float *u, const float *v) {
@@ -25,12 +24,10 @@ static inline void raytrace_normalise(float *v) {
   for(int k=0;k<3;k++) v[k] *= ilen;
 }
 
-//u = u - v
 static inline void raytrace_substract(float *u, const float *v) {
   for(int k = 0; k < 3; k++) u[k] -= v[k];
 }
 
-//v = s * v
 static inline void raytrace_multiply(float *v, const float s) {
   for(int k = 0; k < 3; k++) v[k] *= s;
 }
@@ -256,9 +253,11 @@ static inline void csToSphere(const float *inpos, const float *indir, float *out
   float ey[3];
   raytrace_cross(ey, normal, ex);
   
-  // store ray direction as projected position on unit disk perpendicular to the normal
+  // encode ray direction as projected position on unit disk perpendicular to the normal
   outdir[0] = raytrace_dot(tempDir, ex);
   outdir[1] = raytrace_dot(tempDir, ey);
+
+  // outpos is unchanged, z term omitted
   outpos[0] = inpos[0];
   outpos[1] = inpos[1];
 }
@@ -276,6 +275,7 @@ static inline void csToCylinder(const float *inpos, const float *indir, float *o
   }
 
   const float tempDir[3] = {indir[0], indir[1], indir[2]};
+  raytrace_normalise(tempDir); //untested
 
   // tangent
   float ex[3] = {normal[2], 0, -normal[0]};
