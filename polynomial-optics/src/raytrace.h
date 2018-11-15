@@ -381,11 +381,14 @@ static inline int evaluate(const lens_element_t *lenses, const int lenses_cnt, c
 
     n1 = n2;
   }
+
   // return [x,y,dx,dy,lambda]
   if (stringcmp(lenses[0].geometry, "cyl-y")) csToCylinder(pos, dir, out, out + 2, distsum-fabs(lenses[0].lens_radius), lenses[0].lens_radius, true);
   else if (stringcmp(lenses[0].geometry, "cyl-x")) csToCylinder(pos, dir, out, out + 2, distsum-fabs(lenses[0].lens_radius), lenses[0].lens_radius, false);
   else csToSphere(pos, dir, out, out + 2, distsum-fabs(lenses[0].lens_radius), lenses[0].lens_radius);
+  
   out[4] = intensity;
+  
   return error;
 }
 

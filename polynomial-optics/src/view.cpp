@@ -39,6 +39,7 @@ static int draw_polynomials = 0;
 static int draw_aspheric = 1;
 static int draw_focallength = 0;
 static int mode_visual_debug = 0;
+static int trace_forward = 0;
 
 const int width = 900;
 const int height = 550;
@@ -114,6 +115,11 @@ gboolean on_keypress (GtkWidget *widget, GdkEventKey *event, gpointer data) {
   }  
   else if(event->keyval == GDK_KEY_v) {
     mode_visual_debug = !mode_visual_debug;
+    gtk_widget_queue_draw(widget);
+    return TRUE;
+  }
+  else if(event->keyval == GDK_KEY_equal) {
+    trace_forward = !trace_forward;
     gtk_widget_queue_draw(widget);
     return TRUE;
   }
@@ -276,6 +282,70 @@ void draw_aperture(cairo_t *cr) {
   cairo_stroke(cr);
 }
 
+void draw_focallength(cairo_t *cr) {
+
+  // FORWARD TRACING/DRAWING, calculate focal length
+  float cam_pos[3] = {0.0f};
+  float cam_dir[3] = {0.0f};
+  cam_pos[dim_up] = lenses[lenses_cnt-1].housing_radius * 0.5f;
+  cam_dir[2] = cam_pos[2] + 99999;
+  cam_dir[dim_up] = cam_pos[dim_up];
+
+  const float lambda = 0.55f;
+  float in[5] = {0.0f};
+  float out[5] = {0.0f};
+  float ap[5] = {0.0f};
+  in[4] = out[4] = ap[4] = lambda;
+  float inrt[5] = {cam_pos[0], cam_pos[1], cam_pos[2], 0.0f, lambda};
+  float outrt[5] = {cam_dir[0], cam_dir[1], cam_dir[2], 0.0f, lambda};
+
+  int error = 0;
+  float pos[3], dir[3] = {0.0};
+  error = evaluate_draw(lenses, lenses_cnt, zoom, inrt, outrt, cr, scale, dim_up, draw_aspheric, pos, dir);
+
+
+  float ray_origin[3] = {pos[0], pos[1], pos[2]};
+  float pp_line1start[3] = {0.0};
+  float pp_line1end[3] = {0.0, 0.0, 99999.0};
+  float pp_line2end[3] = {0.0, 0.0, static_cast<float>(pos[2] + (dir[2] * 1000.0))};
+  pp_line1start[dim_up] = inrt[dim_up];
+  pp_line1end[dim_up] = inrt[dim_up];
+  pp_line2end[dim_up] = pos[dim_up] + (dir[dim_up] * 1000.0);
+  float principlePlaneDistance = lineLineIntersection_x(pp_line1start, pp_line1end, ray_origin, pp_line2end, dim_up);
+
+  float focalPointLineStart[3] = {0.0};
+  float focalPointLineEnd[3] = {0.0, 0.0, 99999.0};
+  float focalPointDistance = lineLineIntersection_x(focalPointLineStart, focalPointLineEnd, ray_origin, pp_line2end, dim_up);
+  
+  float tracedFocalLength = focalPointDistance - principlePlaneDistance;
+  fmt::print("Traced Focal Length = {}\n", tracedFocalLength);
+  
+  cairo_new_path(cr);
+  cairo_set_source_rgba(cr, 0.2, 1.0, 0.2, 1.0);
+  cairo_arc(cr, principlePlaneDistance, 0.0, 1, 0, 2 * M_PI);
+  cairo_fill(cr);
+  
+  cairo_new_path(cr);
+  cairo_set_source_rgba(cr, 0.2, 1.0, 1.0, 1.0);
+  cairo_arc(cr, focalPointDistance, 0.0, 1, 0, 2 * M_PI);
+  cairo_fill(cr);
+
+  float max_housing_radius = 70;
+  cairo_set_source_rgba(cr, 0.5, 0.5, 0.5, 1.0);
+  cairo_set_line_width(cr, 0.75);
+  cairo_move_to(cr, principlePlaneDistance, max_housing_radius);
+  cairo_line_to(cr, principlePlaneDistance + tracedFocalLength, max_housing_radius);
+  cairo_stroke(cr);
+
+  cairo_move_to(cr, principlePlaneDistance + tracedFocalLength/2.0, max_housing_radius+5);
+  std::string number = fmt::format("f = {}", tracedFocalLength);
+  char const *pchar = number.c_str();
+  cairo_set_font_size(cr, 2.5);
+  cairo_show_text(cr, pchar);
+  cairo_new_path(cr);
+  cairo_stroke(cr);
+}
+
 
 void draw_lenses(cairo_t *cr, float scale){
   float pos = lens_length;
@@ -291,7 +361,6 @@ void draw_lenses(cairo_t *cr, float scale){
 
     // skip aperture drawing
     if(stringcmp(lenses[i].material, "iris")) {
-      
       pos -= t;
       continue;
     }
@@ -437,28 +506,33 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
   cairo_set_source_rgba(cr, lightgrey[0], lightgrey[1], lightgrey[2], 0.5);
 
 
-  if(draw_focallength){
+  if (trace_forward) {
+    
     fmt::print("Drawing in forward direction. \n");
 
-    // FORWARD TRACING/DRAWING, calculate focal length
-    float cam_pos[3] = {0.0f};
-    float cam_dir[3] = {0.0f};
-    cam_pos[dim_up] = lenses[lenses_cnt-1].housing_radius * 0.5f;
-    cam_dir[2] = cam_pos[2] + 99999;
-    cam_dir[dim_up] = cam_pos[dim_up];
+    for(int k=0; k<num_rays; k++){
 
-    const float lambda = 0.55f;
-    float in[5] = {0.0f};
-    float out[5] = {0.0f};
-    float ap[5] = {0.0f};
-    in[4] = out[4] = ap[4] = lambda;
-    float inrt[5] = {cam_pos[0], cam_pos[1], cam_pos[2], 0.0f, lambda};
-    float outrt[5] = {cam_dir[0], cam_dir[1], cam_dir[2], 0.0f, lambda};
+      const float y = 2.0f * (num_rays/2-k)/(float)num_rays * lenses[0].housing_radius;
 
-    int error = 0;
-    if(draw_raytraced)
-      error = evaluate_draw(lenses, lenses_cnt, zoom, inrt, outrt, cr, scale, dim_up, draw_aspheric, true, true);
+      float cam_pos[3] = {0.0f};
+      float cam_dir[3] = {0.0f};
+      cam_dir[dim_up] = y;
+      cam_dir[2] = cam_pos[2] + 99999;
+      
+      const float lambda = 0.55f;
+      float in[5] = {0.0f};
+      float out[5] = {0.0f};
+      float ap[5] = {0.0f};
+      in[4] = out[4] = ap[4] = lambda;
+      float inrt[5] = {cam_pos[0], cam_pos[1], cam_pos[2], 0.0f, lambda};
+      float outrt[5] = {cam_dir[0], cam_dir[1], cam_dir[2], 0.0f, lambda};
 
+      int error = 0;
+      if(draw_raytraced) {
+        float pos_out[3], dir_out[3] = {0.0};
+        error = evaluate_draw(lenses, lenses_cnt, zoom, inrt, outrt, cr, scale, dim_up, draw_aspheric, pos_out, dir_out);
+      }
+    }
   } else {
 
     fmt::print("Drawing in backward direction. \n");
@@ -572,7 +646,9 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
   draw_sensor(cr);
   draw_aperture(cr);
 
-  
+  if (draw_focallength) draw_focallength(cr);
+
+
   if(screenshot) {
     cairo_surface_finish(svg_surface);
     cairo_surface_destroy(svg_surface);

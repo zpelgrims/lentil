@@ -14,8 +14,8 @@ static inline int evaluate_draw(const lens_element_t *lenses,
                                 float scale, 
                                 int dim_up, 
                                 int draw_aspherical,
-                                bool calculate_focal_length,
-                                bool draw_focal_length)
+                                float *pos_out,
+                                float *dir_out)
 {
   int error = 0;
   float n1 = spectrum_eta_from_abbe_um(lenses[lenses_cnt-1].ior, lenses[lenses_cnt-1].vno, in[4]);
@@ -81,55 +81,12 @@ static inline int evaluate_draw(const lens_element_t *lenses,
   cairo_stroke(cr);
   cairo_restore(cr);
 
-
-// trying to do the focallength visualisation, this will need to be moved out of this function!!
-  if (calculate_focal_length){
-    // after last lens element:
-    float ray_origin[3] = {pos[0], pos[1], pos[2]};
-    float pp_line1start[3] = {0.0};
-    float pp_line1end[3] = {0.0, 0.0, 99999.0};
-    float pp_line2end[3] = {0.0, 0.0, static_cast<float>(pos[2] + (dir[2] * 1000.0))};
-    pp_line1start[dim_up] = in[dim_up];
-    pp_line1end[dim_up] = in[dim_up];
-    pp_line2end[dim_up] = pos[dim_up] + (dir[dim_up] * 1000.0);
-    float principlePlaneDistance = lineLineIntersection_x(pp_line1start, pp_line1end, ray_origin, pp_line2end, dim_up);
-
-    float focalPointLineStart[3] = {0.0};
-    float focalPointLineEnd[3] = {0.0, 0.0, 99999.0};
-    float focalPointDistance = lineLineIntersection_x(focalPointLineStart, focalPointLineEnd, ray_origin, pp_line2end, dim_up);
-    
-    float tracedFocalLength = focalPointDistance - principlePlaneDistance;
-    printf("Traced Focal Length = %f\n", tracedFocalLength);
-    
-    if (draw_focal_length){
-      cairo_new_path(cr);
-      cairo_set_source_rgba(cr, 0.2, 1.0, 0.2, 1.0);
-      cairo_arc(cr, principlePlaneDistance, 0.0, 1, 0, 2 * M_PI);
-      cairo_fill(cr);
-      
-      cairo_new_path(cr);
-      cairo_set_source_rgba(cr, 0.2, 1.0, 1.0, 1.0);
-      cairo_arc(cr, focalPointDistance, 0.0, 1, 0, 2 * M_PI);
-      cairo_fill(cr);
-
-      float max_housing_radius = 70;
-      cairo_set_source_rgba(cr, 0.5, 0.5, 0.5, 1.0);
-      cairo_set_line_width(cr, 0.75);
-      cairo_move_to(cr, principlePlaneDistance, max_housing_radius);
-      cairo_line_to(cr, principlePlaneDistance + tracedFocalLength, max_housing_radius);
-      cairo_stroke(cr);
-
-      cairo_move_to(cr, principlePlaneDistance + tracedFocalLength/2.0, max_housing_radius+5);
-      std::string number = "f = ";
-      number += std::to_string(tracedFocalLength);
-      char const *pchar = number.c_str();
-      cairo_set_font_size(cr, 2.5);
-      cairo_show_text(cr, pchar);
-      cairo_new_path(cr);
-      cairo_stroke(cr);
-    }
-  }
-
+  pos_out[0] = pos[0];
+  pos_out[1] = pos[1];
+  pos_out[2] = pos[2];
+  dir_out[0] = dir[0];
+  dir_out[1] = dir[1];
+  dir_out[2] = dir[2];
   return error;
 }
 
