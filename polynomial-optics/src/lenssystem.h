@@ -175,15 +175,7 @@ int lens_configuration(lens_element_t *l, const char *id, int target_focal_lengt
       last_ior = lens.ior;
       last_vno = lens.vno;
 
-      // anamorphic
-      std::string lens_geometry = json_lens_element["lens-geometry"].get<std::string>();
-      if (lens_geometry == "cyl-y"){
-        lens.geometry = "cyl-y";
-      } else if (lens_geometry == "cyl-x"){
-        lens.geometry = "cyl-x";
-      } else {
-        lens.geometry = "spherical";
-      }
+      lens.geometry = json_lens_element["lens-geometry"].get<std::string>();
 
       // aspherical
       if (json_lens_element["aspherical-equation"].is_array()){
