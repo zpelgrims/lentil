@@ -2959,7 +2959,7 @@
         "housing-radius": 28.0,
         "ior": 1.711,
         "lens-geometry": "spherical",
-        "material": "iris",
+        "material": "abbe",
         "radius": 999999.0,
         "thickness": 4.4
       },
