@@ -3,10 +3,9 @@
 #include "spectrum.h"
 #include "lenssystem.h"
 #include <stdio.h>
-#include <strings.h>
 #include <vector>
+#include <algorithm>
 
-#define max(a, b) ((a)>(b)?(a):(b))
 #define INTENSITY_EPS 1e-5
 
 static inline float raytrace_dot(const float *u, const float *v) {
@@ -20,7 +19,7 @@ static inline void raytrace_cross(float *r, const float *u, const float *v) {
 }
 
 static inline void raytrace_normalise(float *v) {
-  const float ilen = 1.0f/sqrtf(raytrace_dot(v,v));
+  const float ilen = 1.0f/std::sqrt(raytrace_dot(v,v));
   for(int k=0;k<3;k++) v[k] *= ilen;
 }
 
@@ -46,8 +45,8 @@ static inline int spherical(float *pos, float *dir, float *dist, float R, float 
   if(discr < 0.0f) return 4;
   int error = 0;
   float t = 0.0f;
-  const float t0 = (-b-sqrtf(discr))/(2*a);
-  const float t1 = (-b+sqrtf(discr))/(2*a);
+  const float t0 = (-b-std::sqrt(discr))/(2*a);
+  const float t1 = (-b+std::sqrt(discr))/(2*a);
   if(t0 < -1e-4f) t = t1;
   else t = fminf(t0, t1);
   if(t < -1e-4f) return 16;
@@ -64,27 +63,27 @@ static inline int spherical(float *pos, float *dir, float *dist, float R, float 
 }
 
 static inline float evaluate_aspherical(const float *pos, const float R, const int k, const float *correction) {
-  float h = sqrtf(pos[0]*pos[0]+pos[1]*pos[1]);
+  float h = std::sqrt(pos[0]*pos[0]+pos[1]*pos[1]);
   float hr = h / R;
   float h2 = h*h;
   float h4 = h2*h2;
   float h6 = h4*h2;
   float h8 = h4*h4;
   float h10 = h8*h2;
-  float z = h*hr/(1+sqrtf(max(0.0,1-(1+k)*hr*hr)))+correction[0]*h4+correction[1]*h6+correction[2]*h8+correction[3]*h10;
+  float z = h*hr/(1+std::sqrt(std::max(0.0f, 1-(1+k)*hr*hr)))+correction[0]*h4+correction[1]*h6+correction[2]*h8+correction[3]*h10;
   return z;
 }
 
 static inline float evaluate_aspherical_derivative(const float *pos, const float R, const int k, const float *correction) {
-  float h = sqrtf(pos[0]*pos[0]+pos[1]*pos[1]);
+  float h = std::sqrt(pos[0]*pos[0]+pos[1]*pos[1]);
   float hr = h / R;
   float h2 = h*h;
   float h3 = h2*h;
   float h5 = h3*h2;
   float h7 = h5*h2;
   float h9 = h7*h2;
-  float z = 2*hr/(1+sqrtf(max(0.0,1-(1+k)*hr*hr)))+
-    hr*hr*hr*(k+1)/(sqrtf(max(0.0,1-(1+k)*hr*hr))*powf(sqrtf(max(0.0,1-(1+k)*hr*hr))+1, 2))+
+  float z = 2*hr/(1+std::sqrt(std::max(0.0f, 1-(1+k)*hr*hr)))+
+    hr*hr*hr*(k+1)/(std::sqrt(std::max(0.0f, 1-(1+k)*hr*hr))*powf(std::sqrt(std::max(0.0f, 1-(1+k)*hr*hr))+1, 2))+
     4*correction[0]*h3+6*correction[1]*h5+8*correction[2]*h7+10*correction[3]*h9;
   return z;
 }
@@ -146,8 +145,8 @@ static inline int cylindrical(float *pos, float *dir, float *dist, float R, floa
   int error = 0;
 
   float t = 0.0f;
-  if(R > 0.0f)      t = (-b-sqrtf(discr))/(2*a);
-  else if(R < 0.0f) t = (-b+sqrtf(discr))/(2*a);
+  if(R > 0.0f)      t = (-b-std::sqrt(discr))/(2*a);
+  else if(R < 0.0f) t = (-b+std::sqrt(discr))/(2*a);
 
   propagate(pos, dir, t);
   error |= (int)(pos[0]*pos[0] + pos[1]*pos[1] > housing_rad*housing_rad)<<4;
@@ -174,13 +173,13 @@ static inline float refract(const float n1, const float n2, const float *n, floa
   if(n1 == n2) return 1;
   const float eta = n1/n2;
 
-  const float norm = sqrtf(raytrace_dot(dir,dir));
+  const float norm = std::sqrt(raytrace_dot(dir,dir));
   const float cos1 = - raytrace_dot(n, dir)/norm;
   const float cos2_2 = 1.0f-eta*eta*(1.0f-cos1*cos1);
 
   // total (inner) reflection?
   if(cos2_2 < 0.0f) return 0;
-  const float cos2 = sqrtf(cos2_2);
+  const float cos2 = std::sqrt(cos2_2);
 
   for(int i=0;i<3;i++) dir[i] = dir[i]*eta/norm + (eta*cos1-cos2)*n[i];
 
@@ -217,9 +216,9 @@ static inline void sphereToCs(const float *inpos, const float *indir, float *out
   {
     inpos[0]/sphereRad,
     inpos[1]/sphereRad,
-    sqrtf(max(0, sphereRad*sphereRad-inpos[0]*inpos[0]-inpos[1]*inpos[1]))/fabsf(sphereRad)
+    std::sqrt(std::max(0.0f, sphereRad*sphereRad-inpos[0]*inpos[0]-inpos[1]*inpos[1]))/fabsf(sphereRad)
   };
-  const float tempDir[3] = {indir[0], indir[1], sqrtf(max(0.0, 1.0f-indir[0]*indir[0]-indir[1]*indir[1]))};
+  const float tempDir[3] = {indir[0], indir[1], std::sqrt(std::max(0.0f, 1.0f-indir[0]*indir[0]-indir[1]*indir[1]))};
 
   float ex[3] = {normal[2], 0, -normal[0]};
   raytrace_normalise(ex);
@@ -274,7 +273,7 @@ static inline void csToCylinder(const float *inpos, const float *indir, float *o
     normal[2] = fabsf((inpos[2] - center)/R);
   }
 
-  const float tempDir[3] = {indir[0], indir[1], indir[2]};
+  float tempDir[3] = {indir[0], indir[1], indir[2]};
   raytrace_normalise(tempDir); //untested
 
   // tangent
@@ -300,16 +299,16 @@ static inline void cylinderToCs(const float *inpos, const float *indir, float *o
   float normal[3] = {0.0};
   if (cyl_y){
     normal[0] = inpos[0]/R;
-    normal[2] = sqrtf(max(0.0, R*R-inpos[0]*inpos[0]))/fabsf(R);
+    normal[2] = std::sqrt(std::max(0.0f, R*R-inpos[0]*inpos[0]))/fabsf(R);
   } else {
     normal[1] = inpos[1]/R;
-    normal[2] = sqrtf(max(0.0, R*R-inpos[1]*inpos[1]))/fabsf(R);
+    normal[2] = std::sqrt(std::max(0.0f, R*R-inpos[1]*inpos[1]))/fabsf(R);
   }
 
   const float tempDir[3] = {
     indir[0], 
     indir[1], 
-    sqrtf(max(0.0, 1.0f-indir[0]*indir[0]-indir[1]*indir[1]))
+    std::sqrt(std::max(0.0f, 1.0f-indir[0]*indir[0]-indir[1]*indir[1]))
   };
 
   // tangent

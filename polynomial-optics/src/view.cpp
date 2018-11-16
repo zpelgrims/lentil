@@ -284,7 +284,6 @@ void draw_aperture(cairo_t *cr) {
 
 void draw_focallength(cairo_t *cr) {
 
-  // FORWARD TRACING/DRAWING, calculate focal length
   float cam_pos[3] = {0.0f};
   float cam_dir[3] = {0.0f};
   cam_pos[dim_up] = lenses[lenses_cnt-1].housing_radius * 0.5f;
