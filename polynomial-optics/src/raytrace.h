@@ -421,6 +421,7 @@ static inline int evaluate_for_pos_dir(
     float n[3] = {0.0f};
 
     error |= intersect(lenses, k, pos, dir, t, n, R, distsum, true);
+    if(error) return error;
 
     // index of refraction and ratio current/next:
     const float n2 = k ? spectrum_eta_from_abbe_um(lenses[k-1].ior, lenses[k-1].vno, in[4]) : 1.0f; // outside the lens there is vacuum
@@ -428,10 +429,11 @@ static inline int evaluate_for_pos_dir(
     intensity *= refract(n1, n2, n, dir);
     if(intensity < INTENSITY_EPS) error |= 8;
     if(error) return error;
-
     raytrace_normalise(dir);
 
     n1 = n2;
+
+    //printf("[%f, %f, %f],", pos[0], pos[1], pos[2]);
   }
  
   return error;
