@@ -175,9 +175,9 @@
   "2004": {
     "commercial": false,
     "company": "schneider",
-    "focal-length-mm-raytraced": 30.410140991210938,
-    "fstop": 1.9540375471115112,
-    "max-fstop-aperture-radius": 9.802763938903809,
+    "focal-length-mm-raytraced": 30.41015625,
+    "fstop": 1.9532511234283447,
+    "max-fstop-aperture-radius": 9.80594253540039,
     "notes": "",
     "patent-number": "US6310731",
     "polynomial-optics": [
