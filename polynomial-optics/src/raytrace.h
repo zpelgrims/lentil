@@ -399,7 +399,10 @@ static inline int evaluate_for_pos_dir(
                   const float *in, 
                   int aspheric, 
                   float *pos, float *dir, 
-                  const float total_lens_length)
+                  const float total_lens_length,
+                  std::vector<std::vector<float>> &pos_list,
+                  std::vector<std::vector<float>> &dir_list
+                  )
 {
   int error = 0;
   float n1 = spectrum_eta_from_abbe_um(lenses[lenses_cnt-1].ior, lenses[lenses_cnt-1].vno, in[4]);
@@ -414,8 +417,7 @@ static inline int evaluate_for_pos_dir(
     // propagate the ray reverse to the plane of intersection optical axis/lens element:
     const float R = -lenses[k].lens_radius; // negative, evaluate() is the adjoint case
     float t = 0.0f;
-    const float dist = lens_get_thickness(lenses+k, zoom);
-    distsum += dist;
+    distsum += lens_get_thickness(lenses+k, zoom);
 
     //normal at intersection
     float n[3] = {0.0f};
@@ -433,7 +435,23 @@ static inline int evaluate_for_pos_dir(
 
     n1 = n2;
 
-    //printf("[%f, %f, %f],", pos[0], pos[1], pos[2]);
+    // tmp remove
+    // std::vector<float> position;
+    // position.push_back(pos[0]);
+    // position.push_back(pos[1]);
+    // position.push_back(pos[2]);
+    // std::vector<float> direction;
+    // direction.push_back(pos[0]);
+    // direction.push_back(pos[1]);
+    // direction.push_back(pos[2]);
+    // direction.push_back(dir[0]);
+    // direction.push_back(dir[1]);
+    // direction.push_back(dir[2]);
+
+    // pos_list.push_back(position);
+    // dir_list.push_back(direction);
+
+    printf("[%f, %f, %f, %f, %f, %f],", pos[0], pos[1], pos[2], dir[0], dir[1], dir[2]);
   }
  
   return error;
