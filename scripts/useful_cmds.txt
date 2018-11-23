@@ -1,0 +1,1 @@
+$LENTIL_ARNOLD_SDKS/Arnold-5.2.1.0-linux/bin/kick -l ~/lentil/pota/bin -i ~/lentil/pota/tests/lens_empty_testscene.ass -o ~/lentil/pota/tests/lens_empty_testscene.png -dp -t 1

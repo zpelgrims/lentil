@@ -1,3 +1,4 @@
+#include <vector>
 #include "lenssystem.h"
 #include "raytrace.h"
 #include "../../fmt/include/fmt/format.h"
@@ -12,26 +13,25 @@ using json = nlohmann::json;
 int main(int argc, char *argv[]){
   const char *id = argv[1];
 
-  static lens_element_t lenses[50];
-  float zoom = 0.0f;
+  std::vector<lens_element_t> lenses;
+  const float zoom = 0.0f;
 
-  int lenses_cnt = lens_configuration(lenses, id, 0);
+  const int lenses_cnt = lens_configuration(lenses, id, 0);
   float lens_length = 0;
-  for(int i=0;i<lenses_cnt;i++) lens_length += lens_get_thickness(lenses+i, zoom);
+  for(int i=0;i<lenses_cnt;i++) lens_length += lens_get_thickness(lenses[i], zoom);
   
+  const int dim_up = 0; // needed to calculate the vertical FOV since that's the standard for anamorphic lenses
 
-  int dim_up = 0; // needed to calculate the vertical FOV since that's the standard for anamorphic lenses
-
-  float cam_pos[3] = {0.0f};
+  std::vector<float> cam_pos = {0.0f, 0.0f, 0.0f};
   cam_pos[dim_up] = lenses[lenses_cnt-1].housing_radius * 0.5f;
 
-  float cam_dir[3] = {0.0f};
+  std::vector<float> cam_dir = {0.0f, 0.0f, 0.0f};
   cam_dir[2] = cam_pos[2] + 99999;
   cam_dir[dim_up] = cam_pos[dim_up];
 
   const float lambda = 0.55f;
-  float inrt[5] = {cam_pos[0], cam_pos[1], cam_pos[2], 0.0, lambda};
-  float outrt[5] = {cam_dir[0], cam_dir[1], cam_dir[2], 0.0, lambda};
+  std::vector<float> inrt = {cam_pos[0], cam_pos[1], cam_pos[2], 0.0, lambda};
+  std::vector<float> outrt = {cam_dir[0], cam_dir[1], cam_dir[2], 0.0, lambda};
   float raytraced_focal_length = calculate_focal_length(lenses, lenses_cnt, zoom, inrt, outrt, dim_up, true);
 
 

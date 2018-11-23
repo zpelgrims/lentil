@@ -128,11 +128,15 @@ int main(int argc, char **argv)
   float sensor[] = {22.f, 0, (lenses[lenses_cnt-1].housing_radius-22.f)/bfl, 0, .55};
   float out[] = {0, 0, 0, 0, 0};
   poly_system_evaluate(&poly, sensor, out, 100);
-  float wspos[3], wsdir[3];
+ 
+  const std::vector<float> inpos = {out[0], out[1]};
+  const std::vector<float> indir = {out[2], out[3]};
+  std::vector<float> wspos(3);
+  std::vector<float> wsdir(3);
 
-  if (stringcmp(lenses[0].geometry, "cyl-y")) cylinderToCs(out, out+2, wspos, wsdir, 0, lenses[0].lens_radius, true);
-  else if (stringcmp(lenses[0].geometry, "cyl-x")) cylinderToCs(out, out+2, wspos, wsdir, 0, lenses[0].lens_radius, false);
-  else sphereToCs(out, out+2, wspos, wsdir, 0, lenses[0].lens_radius);
+  if (stringcmp(lenses[0].geometry, "cyl-y")) cylinderToCs(inpos, indir, wspos, wsdir, 0, lenses[0].lens_radius, true);
+  else if (stringcmp(lenses[0].geometry, "cyl-x")) cylinderToCs(inpos, indir, wspos, wsdir, 0, lenses[0].lens_radius, false);
+  else sphereToCs(inpos, indir, wspos, wsdir, 0, lenses[0].lens_radius);
   
   raytrace_normalise(wsdir);
   wsdir[2] = wsdir[2]<-1?-1:wsdir[2]>1?1:wsdir[2];

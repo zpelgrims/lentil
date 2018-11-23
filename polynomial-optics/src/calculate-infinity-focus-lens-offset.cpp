@@ -12,11 +12,11 @@ using json = nlohmann::json;
 
 int main(int argc, char *argv[]){
   const char *id = argv[1];
-  static lens_element_t lenses[50];
-  float zoom = 0.0f;
-  int lenses_cnt = lens_configuration(lenses, id, 0);
-  int dim_up = 1;
-  int draw_aspheric = 1;
+  std::vector<lens_element_t> lenses;
+  const float zoom = 0.0f;
+  const int lenses_cnt = lens_configuration(lenses, id, 0);
+  const int dim_up = 1;
+  const int draw_aspheric = 1;
   float err = 99999.0;
   float original_last_element_thickness = lenses[lenses_cnt-1].thickness_short;
   float optimal_thickness = 0.0f;
@@ -27,10 +27,10 @@ int main(int argc, char *argv[]){
     // change last element thickness
     lenses[lenses_cnt-1].thickness_short = original_last_element_thickness + extra_thickness;
     float lens_length = 0;
-    for(int i=0;i<lenses_cnt;i++) lens_length += lens_get_thickness(lenses+i, zoom);
+    for(int i=0;i<lenses_cnt;i++) lens_length += lens_get_thickness(lenses[i], zoom);
 
-    float cam_pos[3] = {0.0f};
-    float cam_dir[3] = {0.0f};
+    std::vector<float> cam_pos(3);
+    std::vector<float> cam_dir(3);
     cam_pos[dim_up] = 0.1*lenses[lenses_cnt-1].housing_radius;
 
     cam_dir[2] = cam_pos[2] - 99999;
@@ -38,36 +38,45 @@ int main(int argc, char *argv[]){
     raytrace_normalise(cam_dir);
     for(int i=0;i<3;i++) cam_pos[i] -= 0.1f * cam_dir[i];
     
-    float in[5] = {0.0f};
-    float out[5] = {0.0f};
-    float ap[5] = {0.0f};
-    float inrt[5] = {0.0f};
-    float outrt[5] = {0.0f};
+    std::vector<float> in(5);
+    std::vector<float> out(5);
+    std::vector<float> ap(5);
+    std::vector<float> inrt(5);
+    std::vector<float> outrt(5);
     inrt[4] = outrt[4] = in[4] = out[4] = ap[4] = lambda;
-    float t, n[3] = {0.0f};
+    float t = 0.0f;
+    std::vector<float> n(3);
+
+    std::vector<float> outpos(2);
+    std::vector<float> outdir(2);
     
     if (stringcmp(lenses[0].geometry, "cyl-y")){
       // intersection with first lens element, but seems like a duplicate purpose of the algebra method above..
-      cylindrical(cam_pos, cam_dir, &t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n, true);
+      cylindrical(cam_pos, cam_dir, t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n, true);
       for(int i=0;i<3;i++) cam_dir[i] = - cam_dir[i]; // need to point away from surface (dot(n,dir) > 0)
-      csToCylinder(cam_pos, cam_dir, in, in+2, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
-      cylinderToCs(in, in + 2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
+      csToCylinder(cam_pos, cam_dir, outpos, outdir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
+      cylinderToCs(outpos, outdir, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
     }
     else if (stringcmp(lenses[0].geometry, "cyl-x")){
       // intersection with first lens element, but seems like a duplicate purpose of the algebra method above..
-      cylindrical(cam_pos, cam_dir, &t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n, false);
+      cylindrical(cam_pos, cam_dir, t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n, false);
       for(int i=0;i<3;i++) cam_dir[i] = - cam_dir[i]; // need to point away from surface (dot(n,dir) > 0)
-      csToCylinder(cam_pos, cam_dir, in, in+2, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
-      cylinderToCs(in, in + 2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
+      csToCylinder(cam_pos, cam_dir, outpos, outdir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
+      cylinderToCs(outpos, outdir, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
     }
     else {
       // intersection with first lens element, but seems like a duplicate purpose of the algebra method above..
-      spherical(cam_pos, cam_dir, &t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n);
+      spherical(cam_pos, cam_dir, t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n);
       for(int i=0;i<3;i++) cam_dir[i] = - cam_dir[i]; // need to point away from surface (dot(n,dir) > 0)
-      csToSphere(cam_pos, cam_dir, in, in+2, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
-      sphereToCs(in, in + 2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
+      csToSphere(cam_pos, cam_dir, outpos, outdir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
+      sphereToCs(outpos, outdir, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
     }
 
+    in[0] = outpos[0];
+    in[1] = outpos[1];
+    in[2] = outdir[0];
+    in[3] = outdir[1];
+    
     for(int i=0;i<5;i++) inrt[i] = in[i];
     
     float distance = evaluate_reverse_intersection_y0(lenses, lenses_cnt, zoom, inrt, outrt, dim_up, draw_aspheric);

@@ -8,36 +8,38 @@
 
 #define INTENSITY_EPS 1e-5
 
-static inline float raytrace_dot(const float *u, const float *v) {
+static inline float raytrace_dot(std::vector<float> u, std::vector<float> v) {
   return u[0]*v[0] + u[1]*v[1] + u[2]*v[2];
 }
 
-static inline void raytrace_cross(float *r, const float *u, const float *v) {
+static inline void raytrace_cross(std::vector<float> &r, const std::vector<float> u, const std::vector<float> v) {
   r[0] = u[1]*v[2]-u[2]*v[1];
   r[1] = u[2]*v[0]-u[0]*v[2];
   r[2] = u[0]*v[1]-u[1]*v[0];
 }
 
-static inline void raytrace_normalise(float *v) {
+static inline void raytrace_normalise(std::vector<float> &v) {
   const float ilen = 1.0f/std::sqrt(raytrace_dot(v,v));
   for(int k=0;k<3;k++) v[k] *= ilen;
 }
 
-static inline void raytrace_substract(float *u, const float *v) {
+static inline void raytrace_substract(std::vector<float> &u, const std::vector<float> v) {
   for(int k = 0; k < 3; k++) u[k] -= v[k];
 }
 
-static inline void raytrace_multiply(float *v, const float s) {
+static inline void raytrace_multiply(std::vector<float> &v, const float s) {
   for(int k = 0; k < 3; k++) v[k] *= s;
 }
 
-static inline void propagate(float *pos, const float *dir, const float dist) {
+static inline void propagate(std::vector<float> &pos, const std::vector<float> dir, const float dist) {
   for(int i=0;i<3;i++) pos[i] += dir[i] * dist;
 }
 
 
-static inline int spherical(float *pos, float *dir, float *dist, float R, float center, float housing_rad, float *normal) {
-  const float scv[3] = {pos[0], pos[1], pos[2] - center};
+static inline int spherical(
+  std::vector<float> &pos, std::vector<float> dir, float &dist, const float R, const float center, const float housing_rad, std::vector<float> &normal
+) {
+  const std::vector<float> scv = {pos[0], pos[1], pos[2] - center};
   const float a = raytrace_dot(dir, dir);
   const float b = 2 * raytrace_dot(dir, scv);
   const float c = raytrace_dot(scv, scv) - R*R;
@@ -58,11 +60,11 @@ static inline int spherical(float *pos, float *dir, float *dist, float R, float 
   normal[1] = pos[1]/R;
   normal[2] = (pos[2] - center)/R;
 
-  *dist = t;
+  dist = t;
   return error;
 }
 
-static inline float evaluate_aspherical(const float *pos, const float R, const int k, const float *correction) {
+static inline float evaluate_aspherical(const std::vector<float> pos, const float R, const int k, const std::vector<float> correction) {
   float h = std::sqrt(pos[0]*pos[0]+pos[1]*pos[1]);
   float hr = h / R;
   float h2 = h*h;
@@ -74,7 +76,7 @@ static inline float evaluate_aspherical(const float *pos, const float R, const i
   return z;
 }
 
-static inline float evaluate_aspherical_derivative(const float *pos, const float R, const int k, const float *correction) {
+static inline float evaluate_aspherical_derivative(const std::vector<float> pos, const float R, const int k, const std::vector<float> correction) {
   float h = std::sqrt(pos[0]*pos[0]+pos[1]*pos[1]);
   float hr = h / R;
   float h2 = h*h;
@@ -88,10 +90,12 @@ static inline float evaluate_aspherical_derivative(const float *pos, const float
   return z;
 }
 
-static inline int aspherical(float *pos, float *dir, float *dist, const float R, const float center, const int k, const float *correction, const float housing_rad, float *normal) {
+static inline int aspherical(
+  std::vector<float> &pos, std::vector<float> dir, float &dist, const float R, const float center, const int k, const std::vector<float> correction, const float housing_rad, std::vector<float> &normal
+) {
   //first intersect sphere, then do correction iteratively
   float t = 0;
-  int error = spherical(pos, dir, &t, R, center, housing_rad, normal);
+  int error = spherical(pos, dir, t, R, center, housing_rad, normal);
 
   float rad = R;
   float corr[4] = {correction[0], correction[1], correction[2], correction[3]};
@@ -124,13 +128,13 @@ static inline int aspherical(float *pos, float *dir, float *dist, const float R,
 
   raytrace_normalise(normal);
 
-  *dist = t;
+  dist = t;
   return error;
 }
 
 
-static inline int cylindrical(float *pos, float *dir, float *dist, float R, float center, float housing_rad, float *normal, bool cyl_y) {
-  float scv[3] = {
+static inline int cylindrical(std::vector<float> &pos, std::vector<float> dir, float &dist, const float R, const float center, const float housing_rad, std::vector<float> &normal, const bool cyl_y) {
+  std::vector<float> scv = {
     cyl_y ? pos[0] : 0.0f, 
     cyl_y ? 0.0f : pos[1],
     pos[2] - center
@@ -155,7 +159,7 @@ static inline int cylindrical(float *pos, float *dir, float *dist, float R, floa
   normal[1] = cyl_y ? 0.0f : pos[1]/R;
   normal[2] = (pos[2] - center)/R;
 
-  *dist = t;
+  dist = t;
   return error;
 }
 
@@ -169,7 +173,7 @@ static inline float fresnel(const float n1, const float n2, const float cosr, co
   return fminf(1.0f, (Rs*Rs + Rp*Rp)*.5f);
 }
 
-static inline float refract(const float n1, const float n2, const float *n, float *dir) {
+static inline float refract(const float n1, const float n2, const std::vector<float> n, std::vector<float> &dir) {
   if(n1 == n2) return 1;
   const float eta = n1/n2;
 
@@ -186,7 +190,7 @@ static inline float refract(const float n1, const float n2, const float *n, floa
   return 1.0f-fresnel(n1, n2, cos1, cos2);
 }
 
-static inline void planeToCs(const float *inpos, const float *indir, float *outpos, float *outdir, const float planepos) {
+static inline void planeToCs(const std::vector<float> inpos, const std::vector<float> indir, std::vector<float> &outpos, std::vector<float> &outdir, const float planepos) {
   outpos[0] = inpos[0];
   outpos[1] = inpos[1];
   outpos[2] = planepos;
@@ -198,7 +202,7 @@ static inline void planeToCs(const float *inpos, const float *indir, float *outp
   raytrace_normalise(outdir);
 }
 
-static inline void csToPlane(const float *inpos, const float *indir, float *outpos, float *outdir, const float planepos)
+static inline void csToPlane(const std::vector<float> inpos, const std::vector<float> indir, std::vector<float> &outpos, std::vector<float> &outdir, const float planepos)
 {
   //intersection with plane at z = planepos
   const double t = (planepos - inpos[2]) / indir[2];
@@ -210,19 +214,19 @@ static inline void csToPlane(const float *inpos, const float *indir, float *outp
   outdir[1] = indir[1] / fabsf(indir[2]);
 }
 
-static inline void sphereToCs(const float *inpos, const float *indir, float *outpos, float *outdir, const float sphereCenter, const float sphereRad)
+static inline void sphereToCs(const std::vector<float> inpos, const std::vector<float> indir, std::vector<float> &outpos, std::vector<float> &outdir, const float center, const float sphereRad)
 {
-  const float normal[3] =
+  const std::vector<float> normal =
   {
     inpos[0]/sphereRad,
     inpos[1]/sphereRad,
     std::sqrt(std::max(0.0f, sphereRad*sphereRad-inpos[0]*inpos[0]-inpos[1]*inpos[1]))/fabsf(sphereRad)
   };
-  const float tempDir[3] = {indir[0], indir[1], std::sqrt(std::max(0.0f, 1.0f-indir[0]*indir[0]-indir[1]*indir[1]))};
+  const std::vector<float> tempDir = {indir[0], indir[1], std::sqrt(std::max(0.0f, 1.0f-indir[0]*indir[0]-indir[1]*indir[1]))};
 
-  float ex[3] = {normal[2], 0, -normal[0]};
+  std::vector<float> ex = {normal[2], 0, -normal[0]};
   raytrace_normalise(ex);
-  float ey[3];
+  std::vector<float> ey(3);
   raytrace_cross(ey, normal, ex);
 
   outdir[0] = tempDir[0] * ex[0] + tempDir[1] * ey[0] + tempDir[2] * normal[0];
@@ -230,26 +234,26 @@ static inline void sphereToCs(const float *inpos, const float *indir, float *out
   outdir[2] = tempDir[0] * ex[2] + tempDir[1] * ey[2] + tempDir[2] * normal[2];
   outpos[0] = inpos[0];
   outpos[1] = inpos[1];
-  outpos[2] = normal[2] * sphereRad + sphereCenter;
+  outpos[2] = normal[2] * sphereRad + center;
 }
 
-static inline void csToSphere(const float *inpos, const float *indir, float *outpos, float *outdir, const float sphereCenter, const float sphereRad)
+static inline void csToSphere(const std::vector<float> inpos, const std::vector<float> indir, std::vector<float> &outpos, std::vector<float> &outdir, const float sphereCenter, const float sphereRad)
 {
-  const float normal[3] =
+  const std::vector<float> normal =
   {
     inpos[0]/sphereRad,
     inpos[1]/sphereRad,
     fabsf((inpos[2]-sphereCenter)/sphereRad)
   };
-  float tempDir[3] = {indir[0], indir[1], indir[2]};
+  std::vector<float> tempDir = {indir[0], indir[1], indir[2]};
   raytrace_normalise(tempDir);
 
   // tangent
-  float ex[3] = {normal[2], 0, -normal[0]};
+  std::vector<float> ex = {normal[2], 0, -normal[0]};
   raytrace_normalise(ex);
   
   // bitangent
-  float ey[3];
+  std::vector<float> ey(3);
   raytrace_cross(ey, normal, ex);
   
   // encode ray direction as projected position on unit disk perpendicular to the normal
@@ -262,9 +266,9 @@ static inline void csToSphere(const float *inpos, const float *indir, float *out
 }
 
 
-static inline void csToCylinder(const float *inpos, const float *indir, float *outpos, float *outdir, const float center, const float R, bool cyl_y) {
+static inline void csToCylinder(const std::vector<float> inpos, const std::vector<float> indir, std::vector<float> &outpos, std::vector<float> &outdir, const float center, const float R, const bool cyl_y) {
 
-  float normal[3] = {0.0f};
+  std::vector<float> normal(3);
   if (cyl_y){
     normal[0] = inpos[0]/R;
     normal[2] = fabsf((inpos[2] - center)/R);
@@ -273,14 +277,14 @@ static inline void csToCylinder(const float *inpos, const float *indir, float *o
     normal[2] = fabsf((inpos[2] - center)/R);
   }
 
-  float tempDir[3] = {indir[0], indir[1], indir[2]};
+  std::vector<float> tempDir = {indir[0], indir[1], indir[2]};
   raytrace_normalise(tempDir); //untested
 
   // tangent
-  float ex[3] = {normal[2], 0, -normal[0]};
+  std::vector<float> ex = {normal[2], 0, -normal[0]};
   
   // bitangent
-  float ey[3];
+  std::vector<float> ey(3);
   raytrace_cross(ey, normal, ex);
   raytrace_normalise(ey); // not sure if this is necessary
   
@@ -294,9 +298,9 @@ static inline void csToCylinder(const float *inpos, const float *indir, float *o
 }
 
 
-static inline void cylinderToCs(const float *inpos, const float *indir, float *outpos, float *outdir, const float center, const float R, bool cyl_y) {
+static inline void cylinderToCs(const std::vector<float> inpos, const std::vector<float> indir, std::vector<float> &outpos, std::vector<float> &outdir, const float center, const float R, const bool cyl_y) {
 
-  float normal[3] = {0.0};
+  std::vector<float> normal(3);
   if (cyl_y){
     normal[0] = inpos[0]/R;
     normal[2] = std::sqrt(std::max(0.0f, R*R-inpos[0]*inpos[0]))/fabsf(R);
@@ -305,18 +309,18 @@ static inline void cylinderToCs(const float *inpos, const float *indir, float *o
     normal[2] = std::sqrt(std::max(0.0f, R*R-inpos[1]*inpos[1]))/fabsf(R);
   }
 
-  const float tempDir[3] = {
+  const std::vector<float> tempDir = {
     indir[0], 
     indir[1], 
     std::sqrt(std::max(0.0f, 1.0f-indir[0]*indir[0]-indir[1]*indir[1]))
   };
 
   // tangent
-  float ex[3] = {normal[2], 0, -normal[0]};
+  std::vector<float> ex = {normal[2], 0, -normal[0]};
   raytrace_normalise(ex); // not sure if this is necessary
   
   // bitangent
-  float ey[3];
+  std::vector<float> ey(3);
   raytrace_cross(ey, normal, ex);
   raytrace_normalise(ey); // not sure if this is necessary
   
@@ -330,42 +334,44 @@ static inline void cylinderToCs(const float *inpos, const float *indir, float *o
 }
 
 
-inline int intersect(const lens_element_t *lenses, const int k,
-                    float *pos, float *dir, 
-                    float &t, float *n,
+inline int intersect(const std::vector<lens_element_t> lenses, const int k,
+                    std::vector<float> &pos, std::vector<float> dir, 
+                    float &t, std::vector<float> &n,
                     const float R, const float distsum,
                     const bool tracing_forward) {
 
   float sign = tracing_forward ? 1.0f : -1.0f;
 
-  if(stringcmp(lenses[k].geometry, "cyl-y")) return cylindrical(pos, dir, &t, R, distsum + (R * sign), lenses[k].housing_radius, n, true);
-  else if (stringcmp(lenses[k].geometry, "cyl-x")) return cylindrical(pos, dir, &t, R, distsum + (R * sign), lenses[k].housing_radius, n, false);
-  else if(stringcmp(lenses[k].geometry, "aspherical")) return aspherical(pos, dir, &t, R, distsum + (R * sign), lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
-  else return spherical(pos, dir, &t, R, distsum + (R * sign), lenses[k].housing_radius, n);
+  if(stringcmp(lenses[k].geometry, "cyl-y")) return cylindrical(pos, dir, t, R, distsum + (R * sign), lenses[k].housing_radius, n, true);
+  else if (stringcmp(lenses[k].geometry, "cyl-x")) return cylindrical(pos, dir, t, R, distsum + (R * sign), lenses[k].housing_radius, n, false);
+  else if(stringcmp(lenses[k].geometry, "aspherical")) return aspherical(pos, dir, t, R, distsum + (R * sign), lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
+  else return spherical(pos, dir, t, R, distsum + (R * sign), lenses[k].housing_radius, n);
 }
 
 
 // evalute sensor to outer pupil acounting for fresnel:
-static inline int evaluate(const lens_element_t *lenses, const int lenses_cnt, const float zoom, const float *in, float *out, int aspheric)
+static inline int evaluate(const std::vector<lens_element_t> lenses, const int lenses_cnt, const float zoom, const std::vector<float> in, std::vector<float> &out, const int aspheric)
 {
   int error = 0;
   float distsum = 0;
   float n1 = spectrum_eta_from_abbe_um(lenses[lenses_cnt-1].ior, lenses[lenses_cnt-1].vno, in[4]);
-  float pos[3], dir[3];
+  std::vector<float> pos = {0.0f, 0.0f, 0.0f};
+  std::vector<float> dir = {0.0f, 0.0f, 0.0f};
   float intensity = 1.0f;
 
-  planeToCs(in, in + 2, pos, dir, 0);
+  std::vector<float> inpos = {in[0], in[1]};
+  std::vector<float> indir = {in[2], in[3]};
+  planeToCs(inpos, indir, pos, dir, 0);
 
   for(int k=lenses_cnt-1;k>=0;k--)
   {
     // propagate the ray reverse to the plane of intersection optical axis/lens element:
     const float R = -lenses[k].lens_radius; // negative, evaluate() is the adjoint case
     float t = 0.0f;
-    const float dist = lens_get_thickness(lenses+k, zoom);
-    distsum += dist;
+    distsum += lens_get_thickness(lenses[k], zoom);
 
     //normal at intersection
-    float n[3] = {0.0f};
+    std::vector<float> n = {0.0f, 0.0f, 0.0f};
 
     error |= intersect(lenses, k, pos, dir, t, n, R, distsum, true);
 
@@ -382,10 +388,15 @@ static inline int evaluate(const lens_element_t *lenses, const int lenses_cnt, c
   }
 
   // return [x,y,dx,dy,lambda]
-  if (stringcmp(lenses[0].geometry, "cyl-y")) csToCylinder(pos, dir, out, out + 2, distsum-fabs(lenses[0].lens_radius), lenses[0].lens_radius, true);
-  else if (stringcmp(lenses[0].geometry, "cyl-x")) csToCylinder(pos, dir, out, out + 2, distsum-fabs(lenses[0].lens_radius), lenses[0].lens_radius, false);
-  else csToSphere(pos, dir, out, out + 2, distsum-fabs(lenses[0].lens_radius), lenses[0].lens_radius);
-  
+  std::vector<float> outpos = {0.0f, 0.0f};
+  std::vector<float> outdir = {0.0f, 0.0f};
+  if (stringcmp(lenses[0].geometry, "cyl-y")) csToCylinder(pos, dir, outpos, outdir, distsum-std::abs(lenses[0].lens_radius), lenses[0].lens_radius, true);
+  else if (stringcmp(lenses[0].geometry, "cyl-x")) csToCylinder(pos, dir, outpos, outdir, distsum-std::abs(lenses[0].lens_radius), lenses[0].lens_radius, false);
+  else csToSphere(pos, dir, outpos, outdir, distsum-std::abs(lenses[0].lens_radius), lenses[0].lens_radius);
+  out[0] = outpos[0];
+  out[1] = outpos[1];
+  out[2] = outdir[0];
+  out[3] = outdir[1];
   out[4] = intensity;
   
   return error;
@@ -394,11 +405,11 @@ static inline int evaluate(const lens_element_t *lenses, const int lenses_cnt, c
 
 // evalute sensor to outer pupil acounting for fresnel:
 static inline int evaluate_for_pos_dir(
-                  const lens_element_t *lenses, const int lenses_cnt, 
+                  const std::vector<lens_element_t> lenses, const int lenses_cnt, 
                   const float zoom, 
-                  const float *in, 
+                  const std::vector<float> in, 
                   int aspheric, 
-                  float *pos, float *dir, 
+                  std::vector<float> &pos, std::vector<float> &dir, 
                   const float total_lens_length,
                   std::vector<std::vector<float>> &pos_list,
                   std::vector<std::vector<float>> &dir_list
@@ -408,7 +419,9 @@ static inline int evaluate_for_pos_dir(
   float n1 = spectrum_eta_from_abbe_um(lenses[lenses_cnt-1].ior, lenses[lenses_cnt-1].vno, in[4]);
   float intensity = 1.0f;
 
-  planeToCs(in, in + 2, pos, dir, -total_lens_length);
+  std::vector<float> inpos = {in[0], in[1]};
+  std::vector<float> indir = {in[2], in[3]};
+  planeToCs(inpos, indir, pos, dir, -total_lens_length);
 
   float distsum = 0;
 
@@ -417,10 +430,10 @@ static inline int evaluate_for_pos_dir(
     // propagate the ray reverse to the plane of intersection optical axis/lens element:
     const float R = -lenses[k].lens_radius; // negative, evaluate() is the adjoint case
     float t = 0.0f;
-    distsum += lens_get_thickness(lenses+k, zoom);
+    distsum += lens_get_thickness(lenses[k], zoom);
 
     //normal at intersection
-    float n[3] = {0.0f};
+    std::vector<float> n = {0.0f, 0.0f, 0.0f};
 
     error |= intersect(lenses, k, pos, dir, t, n, R, distsum, true);
     if(error) return error;
@@ -459,16 +472,19 @@ static inline int evaluate_for_pos_dir(
 
 
 // evaluate scene to sensor:
-static inline int evaluate_reverse(const lens_element_t *lenses, const int lenses_cnt, const float zoom, const float *in, float *out, int aspheric)
+static inline int evaluate_reverse(const std::vector<lens_element_t> lenses, const int lenses_cnt, const float zoom, const std::vector<float> in, std::vector<float> &out, const int aspheric)
 {
   int error = 0;
   float n1 = 1.0f;
-  float pos[3], dir[3];
+  std::vector<float> pos = {0.0f, 0.0f, 0.0f};
+  std::vector<float> dir = {0.0f, 0.0f, 0.0f};
   float intensity = 1.0f;
 
-  if (stringcmp(lenses[0].geometry, "cyl-y")) cylinderToCs(in, in + 2, pos, dir, 0, lenses[0].lens_radius, true);
-  else if (stringcmp(lenses[0].geometry, "cyl-x")) cylinderToCs(in, in + 2, pos, dir, 0, lenses[0].lens_radius, false);
-  else sphereToCs(in, in + 2, pos, dir, 0, lenses[0].lens_radius);
+  std::vector<float> inpos = {in[0], in[1]};
+  std::vector<float> indir = {in[2], in[3]};
+  if (stringcmp(lenses[0].geometry, "cyl-y")) cylinderToCs(inpos, indir, pos, dir, 0, lenses[0].lens_radius, true);
+  else if (stringcmp(lenses[0].geometry, "cyl-x")) cylinderToCs(inpos, indir, pos, dir, 0, lenses[0].lens_radius, false);
+  else sphereToCs(inpos, indir, pos, dir, 0, lenses[0].lens_radius);
 
   for(int i = 0; i < 2; i++) dir[i] = -dir[i];
 
@@ -478,10 +494,10 @@ static inline int evaluate_reverse(const lens_element_t *lenses, const int lense
   {
     const float R = lenses[k].lens_radius;
     float t = 0.0f;
-    const float dist = lens_get_thickness(lenses+k, zoom);
+    const float dist = lens_get_thickness(lenses[k], zoom);
 
     //normal at intersection
-    float n[3] = {0.0};
+    std::vector<float> n = {0.0f, 0.0f, 0.0f};
 
     error |= intersect(lenses, k, pos, dir, t, n, R, distsum, true);
 
@@ -489,9 +505,7 @@ static inline int evaluate_reverse(const lens_element_t *lenses, const int lense
     const float n2 = spectrum_eta_from_abbe_um(lenses[k].ior, lenses[k].vno, in[4]);
     intensity *= refract(n1, n2, n, dir);
     if(intensity < INTENSITY_EPS) error |= 8;
-
-    if(error)
-      return error;
+    if(error) return error;
 
     // and renormalise:
     raytrace_normalise(dir);
@@ -499,20 +513,31 @@ static inline int evaluate_reverse(const lens_element_t *lenses, const int lense
     distsum += dist;
     n1 = n2;
   }
+
   // return [x,y,dx,dy,lambda]
-  csToPlane(pos, dir, out, out + 2, distsum);
+  std::vector<float> outpos = {out[0], out[1]};
+  std::vector<float> outdir = {out[2], out[3]};
+  csToPlane(pos, dir, outpos, outdir, distsum);
+  out[0] = outpos[0];
+  out[1] = outpos[1];
+  out[2] = outdir[0];
+  out[3] = outdir[1];
   out[4] = intensity;
+
   return error;
 }
 
-static inline int evaluate_aperture(const lens_element_t *lenses, const int lenses_cnt, const float zoom, const float *in, float *out, int aspheric)
+static inline int evaluate_aperture(const std::vector<lens_element_t> lenses, const int lenses_cnt, const float zoom, const std::vector<float> in, std::vector<float> &out, const int aspheric)
 {
   int error = 0;
   float n1 = spectrum_eta_from_abbe_um(lenses[lenses_cnt-1].ior, lenses[lenses_cnt-1].vno, in[4]);
-  float pos[3], dir[3];
+  std::vector<float> pos = {0.0f, 0.0f, 0.0f};
+  std::vector<float> dir = {0.0f, 0.0f, 0.0f};
   float intensity = 1.0f;
 
-  planeToCs(in, in + 2, pos, dir, 0);
+  std::vector<float> inpos = {in[0], in[1]};
+  std::vector<float> indir = {in[2], in[3]};
+  planeToCs(inpos, indir, pos, dir, 0);
 
   float distsum = 0;
 
@@ -521,14 +546,13 @@ static inline int evaluate_aperture(const lens_element_t *lenses, const int lens
     // propagate the ray reverse to the plane of intersection optical axis/lens element:
     const float R = -lenses[k].lens_radius; // negative, evaluate() is the adjoint case
     float t = 0.0f;
-    const float dist = lens_get_thickness(lenses+k, zoom);
-    distsum += dist;
+    distsum += lens_get_thickness(lenses[k], zoom);
 
     // stop after moving to aperture.
     if(stringcmp(lenses[k].material, "iris")) break;
 
     //normal at intersection
-    float n[3] = {0.0f};
+    std::vector<float> n = {0.0f, 0.0f, 0.0f};
 
     error |= intersect(lenses, k, pos, dir, t, n, R, distsum, true);
 
@@ -536,8 +560,7 @@ static inline int evaluate_aperture(const lens_element_t *lenses, const int lens
     const float n2 = k ? spectrum_eta_from_abbe_um(lenses[k-1].ior, lenses[k-1].vno, in[4]) : 1.0f; // outside the lens there is vacuum
     intensity *= refract(n1, n2, n, dir);
     if(intensity < INTENSITY_EPS) error |= 8;
-    if(error)
-      return error;
+    if(error) return error;
 
     // mark this ray as theoretically dead:
     //if(dir[2] <= 0.0f) return error |= 2;
@@ -546,23 +569,34 @@ static inline int evaluate_aperture(const lens_element_t *lenses, const int lens
 
     n1 = n2;
   }
+
   // return [x,y,dx,dy,lambda]
-  csToPlane(pos, dir, out, out + 2, distsum);
+  std::vector<float> outpos = {out[0], out[1]};
+  std::vector<float> outdir = {out[2], out[3]};
+  csToPlane(pos, dir, outpos, outdir, distsum);
+  out[0] = outpos[0];
+  out[1] = outpos[1];
+  out[2] = outdir[0];
+  out[3] = outdir[1];
   out[4] = intensity;
+  
   return error;
 }
 
 // evaluate scene to sensor:
-static inline int evaluate_aperture_reverse(const lens_element_t *lenses, const int lenses_cnt, const float zoom, const float *in, float *out, int aspheric)
+static inline int evaluate_aperture_reverse(const std::vector<lens_element_t> lenses, const int lenses_cnt, const float zoom, const std::vector<float> in, std::vector<float> &out, const int aspheric)
 {
   int error = 0;
   float n1 = 1.0f;
-  float pos[3], dir[3];
+  std::vector<float> pos = {0.0f, 0.0f, 0.0f};
+  std::vector<float> dir = {0.0f, 0.0f, 0.0f};
   float intensity = 1.0f;
 
-  if (stringcmp(lenses[0].geometry, "cyl-y")) cylinderToCs(in, in + 2, pos, dir, 0, lenses[0].lens_radius, true);
-  else if (stringcmp(lenses[0].geometry, "cyl-x")) cylinderToCs(in, in + 2, pos, dir, 0, lenses[0].lens_radius, false);
-  else sphereToCs(in, in + 2, pos, dir, 0, lenses[0].lens_radius);
+  std::vector<float> inpos = {in[0], in[1]};
+  std::vector<float> indir = {in[2], in[3]};
+  if (stringcmp(lenses[0].geometry, "cyl-y")) cylinderToCs(inpos, indir, pos, dir, 0, lenses[0].lens_radius, true);
+  else if (stringcmp(lenses[0].geometry, "cyl-x")) cylinderToCs(inpos, indir, pos, dir, 0, lenses[0].lens_radius, false);
+  else sphereToCs(inpos, indir, pos, dir, 0, lenses[0].lens_radius);
 
   for(int i = 0; i < 2; i++) dir[i] = -dir[i];
 
@@ -571,10 +605,10 @@ static inline int evaluate_aperture_reverse(const lens_element_t *lenses, const 
   {
     const float R = lenses[k].lens_radius;
     float t = 0.0f;
-    const float dist = lens_get_thickness(lenses+k, zoom);
+    const float dist = lens_get_thickness(lenses[k], zoom);
 
     //normal at intersection
-    float n[3];
+    std::vector<float> n = {0.0f, 0.0f, 0.0f};
 
     error |= intersect(lenses, k, pos, dir, t, n, R, distsum, true);
 
@@ -582,8 +616,7 @@ static inline int evaluate_aperture_reverse(const lens_element_t *lenses, const 
     const float n2 = spectrum_eta_from_abbe_um(lenses[k].ior, lenses[k].vno, in[4]);
     intensity *= refract(n1, n2, n, dir);
     if(intensity < INTENSITY_EPS) error |= 8;
-    if(error)
-      return error;
+    if(error) return error;
 
     // and renormalise:
     raytrace_normalise(dir);
@@ -596,16 +629,24 @@ static inline int evaluate_aperture_reverse(const lens_element_t *lenses, const 
 
     n1 = n2;
   }
+
   // return [x,y,dx,dy,lambda]
-  csToPlane(pos, dir, out, out + 2, distsum);
+  std::vector<float> outpos = {out[0], out[1]};
+  std::vector<float> outdir = {out[2], out[3]};
+  csToPlane(pos, dir, outpos, outdir, distsum);
+  out[0] = outpos[0];
+  out[1] = outpos[1];
+  out[2] = outdir[0];
+  out[3] = outdir[1];
   out[4] = intensity;
+
   return error;
 }
 
 
 
 // line line intersection for finding the principle plane
-float lineLineIntersection_x(float line1_origin[3], float line1_direction[3], float line2_origin[3], float line2_direction[3], int dim_up){
+float lineLineIntersection_x(const std::vector<float> line1_origin, const std::vector<float> line1_direction, const std::vector<float> line2_origin, const std::vector<float> line2_direction, const int dim_up){
     float A1 = line1_direction[dim_up] - line1_origin[dim_up];
     float B1 = line1_origin[2] - line1_direction[2];
     float C1 = A1 * line1_origin[2] + B1 * line1_origin[dim_up];
@@ -621,17 +662,20 @@ float lineLineIntersection_x(float line1_origin[3], float line1_direction[3], fl
 
 // evalute sensor to outer pupil:
 float calculate_focal_length(
-      const lens_element_t *lenses, const int lenses_cnt, 
+      const std::vector<lens_element_t> lenses, const int lenses_cnt, 
       const float zoom, 
-      const float *in, float *out, 
-      int dim_up, bool draw_aspherical)
+      const std::vector<float> in, std::vector<float> &out, 
+      const int dim_up, const bool draw_aspherical)
 {
   int error = 0;
   float n1 = spectrum_eta_from_abbe_um(lenses[lenses_cnt-1].ior, lenses[lenses_cnt-1].vno, in[4]);
-  float pos[3], dir[3];
+  std::vector<float> pos = {0.0f, 0.0f, 0.0f};
+  std::vector<float> dir = {0.0f, 0.0f, 0.0f};
   float intensity = 1.0f;
 
-  planeToCs(in, in + 2, pos, dir, 0);
+  const std::vector<float> inpos = {in[0], in[1]};
+  const std::vector<float> indir = {in[2], in[3]};
+  planeToCs(inpos, indir, pos, dir, 0);
 
   float distsum = 0;
 
@@ -640,11 +684,10 @@ float calculate_focal_length(
     // propagate the ray reverse to the plane of intersection optical axis/lens element:
     const float R = -lenses[k].lens_radius; // negative, evaluate() is the adjoint case
     float t = 0.0f;
-    const float dist = lens_get_thickness(lenses+k, zoom);
-    distsum += dist;
+    distsum += lens_get_thickness(lenses[k], zoom);
 
     //normal at intersection
-    float n[3];
+    std::vector<float> n = {0.0f, 0.0f, 0.0f};
     error |= intersect(lenses, k, pos, dir, t, n, R, distsum, true);
 
     // index of refraction and ratio current/next:
@@ -661,16 +704,16 @@ float calculate_focal_length(
   }
   
   // calculate focal length using principal planes
-  float pp_line1start[3] = {0.0};
-  float pp_line1end[3] = {0.0, 0.0, 99999.0};
-  float pp_line2end[3] = {0.0, 0.0, static_cast<float>(pos[2] + (dir[2] * 1000.0))};
+  std::vector<float> pp_line1start = {0.0f, 0.0f, 0.0f};
+  std::vector<float> pp_line1end = {0.0f, 0.0f, 99999.0f};
+  std::vector<float> pp_line2end = {0.0f, 0.0f, static_cast<float>(pos[2] + (dir[2] * 1000.0f))};
   pp_line1start[dim_up] = in[dim_up];
   pp_line1end[dim_up] = in[dim_up];
   pp_line2end[dim_up] = pos[dim_up] + (dir[dim_up] * 1000.0);
   float principlePlaneDistance = lineLineIntersection_x(pp_line1start, pp_line1end, pos, pp_line2end, dim_up);
 
-  float focalPointLineStart[3] = {0.0};
-  float focalPointLineEnd[3] = {0.0, 0.0, 99999.0};
+  std::vector<float> focalPointLineStart = {0.0f, 0.0f, 0.0f};
+  std::vector<float> focalPointLineEnd = {0.0f, 0.0f, 99999.0f};
   float focalPointDistance = lineLineIntersection_x(focalPointLineStart, focalPointLineEnd, pos, pp_line2end, dim_up);
 
   return focalPointDistance - principlePlaneDistance;
@@ -679,19 +722,22 @@ float calculate_focal_length(
 
 
 static inline float evaluate_reverse_intersection_y0(
-  const lens_element_t *lenses, const int lenses_cnt, const float zoom, const float *in, float *out, int dim_up, int draw_aspherical)
+  const std::vector<lens_element_t> lenses, const int lenses_cnt, const float zoom, const std::vector<float> in, std::vector<float> &out, const int dim_up, const int draw_aspherical)
 {
   int error = 0;
   float n1 = 1.0f;
-  float pos[3] = {0.0f}, dir[3] = {0.0f};
   float intensity = 1.0f;
 
   float lens_length = 0;
-  for(int i=0;i<lenses_cnt;i++) lens_length += lens_get_thickness(lenses+i, zoom);
+  for(int i=0;i<lenses_cnt;i++) lens_length += lens_get_thickness(lenses[i], zoom);
 
-  if (stringcmp(lenses[0].geometry, "cyl-y")) cylinderToCs(in, in + 2, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
-  else if (stringcmp(lenses[0].geometry, "cyl-x")) cylinderToCs(in, in + 2, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
-  else sphereToCs(in, in + 2, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
+  std::vector<float> pos = {0.0f, 0.0f, 0.0f};
+  std::vector<float> dir = {0.0f, 0.0f, 0.0f};
+  std::vector<float> inpos = {in[0], in[1]};
+  std::vector<float> indir = {in[2], in[3]};
+  if (stringcmp(lenses[0].geometry, "cyl-y")) cylinderToCs(inpos, indir, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
+  else if (stringcmp(lenses[0].geometry, "cyl-x")) cylinderToCs(inpos, indir, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
+  else sphereToCs(inpos, indir, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
 
 
   // sphere param only knows about directions facing /away/ from outer pupil, so
@@ -704,10 +750,10 @@ static inline float evaluate_reverse_intersection_y0(
   {
     const float R = lenses[k].lens_radius;
     float t = 0.0f;
-    const float dist = lens_get_thickness(lenses+k, zoom);
+    const float dist = lens_get_thickness(lenses[k], zoom);
 
     //normal at intersection
-    float n[3] = {0.0f};
+    std::vector<float> n = {0.0f, 0.0f, 0.0f};
     
     error |= intersect(lenses, k, pos, dir, t, n, R, distsum, false);
 
@@ -733,27 +779,30 @@ static inline float evaluate_reverse_intersection_y0(
 
 
 static inline bool evaluate_reverse_fstop(
-  const lens_element_t *lenses, 
+  const std::vector<lens_element_t> lenses, 
   const int lenses_cnt, 
   const float zoom, 
-  const float *in, 
-  float *out, 
-  int dim_up, 
-  int draw_aspherical, 
+  const std::vector<float> in, 
+  std::vector<float> &out, 
+  const int dim_up, 
+  const int draw_aspherical, 
   std::vector<float> &positiondata,
   float &max_aperture_radius)
 {
   int error = 0;
   float n1 = 1.0f;
-  float pos[3] = {0.0f}, dir[3] = {0.0f};
+  std::vector<float> pos = {0.0f, 0.0f, 0.0f};
+  std::vector<float> dir = {0.0f, 0.0f, 0.0f};
   float intensity = 1.0f;
   const int aperture_element = lens_get_aperture_element(lenses, lenses_cnt);
   float lens_length = 0;
-  for(int i=0;i<lenses_cnt;i++) lens_length += lens_get_thickness(lenses+i, zoom);
+  for(int i=0;i<lenses_cnt;i++) lens_length += lens_get_thickness(lenses[i], zoom);
 
-  if (stringcmp(lenses[0].geometry, "cyl-y")) cylinderToCs(in, in + 2, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
-  else if (stringcmp(lenses[0].geometry, "cyl-x")) cylinderToCs(in, in + 2, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
-  else sphereToCs(in, in + 2, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
+  std::vector<float> inpos = {in[0], in[1]};
+  std::vector<float> indir = {in[2], in[3]};
+  if (stringcmp(lenses[0].geometry, "cyl-y")) cylinderToCs(inpos, indir, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
+  else if (stringcmp(lenses[0].geometry, "cyl-x")) cylinderToCs(inpos, indir, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
+  else sphereToCs(inpos, indir, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
 
 
   // sphere param only knows about directions facing /away/ from outer pupil, so
@@ -766,9 +815,9 @@ static inline bool evaluate_reverse_fstop(
   {
     const float R = lenses[k].lens_radius;
     float t = 0.0f;
-    const float dist = lens_get_thickness(lenses+k, zoom);
+    const float dist = lens_get_thickness(lenses[k], zoom);
 
-    float normal[3] = {0.0f};
+    std::vector<float> normal = {0.0f, 0.0f, 0.0f};
 
     error |= intersect(lenses, k, pos, dir, t, normal, R, distsum, false);
 

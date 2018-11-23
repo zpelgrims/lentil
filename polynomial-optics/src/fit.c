@@ -9,6 +9,7 @@
 #include <math.h>
 #include <float.h>
 #include <assert.h>
+#include <vector>
 
 #include "../../fmt/include/fmt/format.h"
 #include "../ext/ProgressBar.hpp"
@@ -27,7 +28,7 @@
 //#define ONLY_OUTER_POLY
 //#define WITHOUT_TRANSMITTANCE
 
-static lens_element_t lenses[50];
+std::vector<lens_element_t> lenses;
 static int lenses_cnt = 0;
 static const float zoom = 0.0f;
 static int max_degree = 15;
@@ -50,7 +51,7 @@ int main(int argc, char *argv[])
   const char *sorted_poly_path = argv[5];
 
   lenses_cnt = lens_configuration(lenses, id, lens_focal_length);
-  const float p_dist = lens_get_thickness(lenses + lenses_cnt-1, zoom);
+  const float p_dist = lens_get_thickness(lenses[lenses_cnt-1], zoom);
   const float p_rad = lenses[lenses_cnt-1].housing_radius;
 
   std::string lens_id_path = find_lens_id_location(id, lens_focal_length);
@@ -85,7 +86,7 @@ int main(int argc, char *argv[])
     const float u = drand48(), v = drand48(), w = drand48(), x = drand48(), y = drand48();
 
     // zeno: what are all these arbitrary values..?
-    float ray_in[] = {
+    std::vector<float> ray_in = {
       // p_rad * 4.0f * (x-0.5f),
       // p_rad * 4.0f * (y-0.5f),
       35.0f/2.0f - x*35.0f, // 35mm film, isotropic
@@ -96,7 +97,7 @@ int main(int argc, char *argv[])
     };
     ray_in[2] -= ray_in[0] / p_dist;
     ray_in[3] -= ray_in[1] / p_dist;
-    float out[5];
+    std::vector<float> out(5);
     int error = evaluate(lenses, lenses_cnt, zoom, ray_in, out, aspheric_elements);
     if(!error)
     {
@@ -292,8 +293,9 @@ int main(int argc, char *argv[])
   memset(sample, 0, sizeof(float)*sample_cnt*5);
   for(int i=0;i<valid;i++)
   {
-    float *ray_in = sample_in+5*i;
-    float out[5] = {0.0f};
+    //float *ray_in = sample_in+5*i;
+    std::vector<float> ray_in = {sample_in[5*i], sample_in[(5*i)+1], sample_in[(5*i)+2], sample_in[(5*i)+3], sample_in[(5*i)+4]}; //not sure about this, could be wrong
+    std::vector<float> out(5);
     int error = evaluate_aperture(lenses, lenses_cnt, zoom, ray_in, out, aspheric_elements);
     (void)error; // silence non-debug build warning
     assert(error == 0);

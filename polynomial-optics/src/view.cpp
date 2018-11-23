@@ -2,6 +2,7 @@
 #include "raytrace.h"
 #include "raytrace_draw.h"
 #include "poly.h"
+#include <vector>
 
 #include <gtk/gtk.h>
 #include <cairo.h>
@@ -26,7 +27,7 @@ static int num_rays = 500;
 static int dim_up = 0; // xz (top - 0) or plot yz (side - 1) of the lens in 2d?
 static poly_system_t poly, poly_aperture;
 static float aperture_rad;
-static lens_element_t lenses[50];
+static std::vector<lens_element_t> lenses;
 static int lenses_cnt = 0;
 static float lens_pupil_dist = 0.0f;
 static float lens_pupil_rad = 0.0f;
@@ -48,16 +49,16 @@ const int gridsize = 10; //10 mm
 static float global_scale = 20.0f;
 static float window_aspect_ratio = static_cast<float>(width)/static_cast<float>(height);
 
-const float black[4] = {0.1, 0.1, 0.1, 1.0};
-const float darkgrey[4] = {0.15, 0.15, 0.15, 1.0};
-const float grey[4] = {0.5, 0.5, 0.5, 1.0};
-const float lightgrey[4] = {0.825, 0.825, 0.825, 1.0};
-const float yellow[4] = {0.949, 0.882, 0.749, 0.65};
-const float green[4] = {0.749, 0.949, 0.874, 1.0};
-const float white50[4] = {1.0, 1.0, 1.0, 0.5};
-const float white[4] = {1.0, 1.0, 1.0, 1.0};
-const float mint[4] = {0.631, 1.0, 0.78, 0.5};
-const float salmon[4] = {232.0/255.0, 121.0/255.0, 121.0/255.0, 1.0};
+const std::vector<float> black = {0.1, 0.1, 0.1, 1.0};
+const std::vector<float> darkgrey = {0.15, 0.15, 0.15, 1.0};
+const std::vector<float> grey = {0.5, 0.5, 0.5, 1.0};
+const std::vector<float> lightgrey = {0.825, 0.825, 0.825, 1.0};
+const std::vector<float> yellow = {0.949, 0.882, 0.749, 0.65};
+const std::vector<float> green = {0.749, 0.949, 0.874, 1.0};
+const std::vector<float> white50 = {1.0, 1.0, 1.0, 0.5};
+const std::vector<float> white = {1.0, 1.0, 1.0, 1.0};
+const std::vector<float> mint = {0.631, 1.0, 0.78, 0.5};
+const std::vector<float> salmon = {232.0/255.0, 121.0/255.0, 121.0/255.0, 1.0};
 
 std::string lens_svg_path = "";
 
@@ -136,7 +137,7 @@ static inline float hue_2_rgb(float v1, float v2, float vH) {
   return (v1);
 }
 
-static inline void hsl_2_rgb(const float *HSL, float *RGB) {
+static inline void hsl_2_rgb(const std::vector<float> HSL, std::vector<float> &RGB) {
   float H = HSL[0];
   float S = HSL[1];
   float L = HSL[2];
@@ -157,7 +158,7 @@ static inline void hsl_2_rgb(const float *HSL, float *RGB) {
   }
 }
 
-static void stroke_with_pencil(cairo_t *cr, float scale, float line_width) {
+static void stroke_with_pencil(cairo_t *cr, const float scale, const float line_width) {
   cairo_save(cr);
   cairo_scale(cr, 1./scale, 1./scale);
   cairo_set_line_width(cr, line_width);
@@ -203,7 +204,7 @@ void draw_grid(cairo_t *cr) {
   }
 }
 
-void draw_rulers(cairo_t *cr, float max_housing_radius, float ruler_padding) {
+void draw_rulers(cairo_t *cr, const float max_housing_radius, const float ruler_padding) {
   float ruler_height = 2.5;
   cairo_set_source_rgb(cr, grey[0], grey[1], grey[2]);
   cairo_set_line_width(cr, 200.0/width);
@@ -255,7 +256,7 @@ void draw_rulers(cairo_t *cr, float max_housing_radius, float ruler_padding) {
   }
 }
 
-void draw_axis_text(cairo_t *cr, float max_housing_radius, float ruler_padding) {
+void draw_axis_text(cairo_t *cr, const float max_housing_radius, const float ruler_padding) {
   cairo_move_to(cr, 0.0 - ruler_padding, max_housing_radius + ruler_padding*2);
   std::string dim_up_text;
   if (dim_up) dim_up_text = "dim_up = 1 [side]";
@@ -284,36 +285,37 @@ void draw_aperture(cairo_t *cr) {
 
 void draw_focallength(cairo_t *cr) {
 
-  float cam_pos[3] = {0.0f};
-  float cam_dir[3] = {0.0f};
+  std::vector<float> cam_pos(3);
+  std::vector<float> cam_dir(3);
   cam_pos[dim_up] = lenses[lenses_cnt-1].housing_radius * 0.5f;
   cam_dir[2] = cam_pos[2] + 99999;
   cam_dir[dim_up] = cam_pos[dim_up];
 
   const float lambda = 0.55f;
-  float in[5] = {0.0f};
-  float out[5] = {0.0f};
-  float ap[5] = {0.0f};
+  std::vector<float> in(5);
+  std::vector<float> out(5);
+  std::vector<float> ap(5);
   in[4] = out[4] = ap[4] = lambda;
-  float inrt[5] = {cam_pos[0], cam_pos[1], cam_pos[2], 0.0f, lambda};
-  float outrt[5] = {cam_dir[0], cam_dir[1], cam_dir[2], 0.0f, lambda};
+  std::vector<float> inrt = {cam_pos[0], cam_pos[1], cam_pos[2], 0.0f, lambda};
+  std::vector<float> outrt = {cam_dir[0], cam_dir[1], cam_dir[2], 0.0f, lambda};
 
   int error = 0;
-  float pos[3], dir[3] = {0.0};
+  std::vector<float> pos(3);
+  std::vector<float> dir(3);
   error = evaluate_draw(lenses, lenses_cnt, zoom, inrt, outrt, cr, scale, dim_up, draw_aspheric, pos, dir);
 
 
-  float ray_origin[3] = {pos[0], pos[1], pos[2]};
-  float pp_line1start[3] = {0.0};
-  float pp_line1end[3] = {0.0, 0.0, 99999.0};
-  float pp_line2end[3] = {0.0, 0.0, static_cast<float>(pos[2] + (dir[2] * 1000.0))};
+  std::vector<float> ray_origin = {pos[0], pos[1], pos[2]};
+  std::vector<float> pp_line1start(3);
+  std::vector<float> pp_line1end = {0.0, 0.0, 99999.0};
+  std::vector<float> pp_line2end = {0.0, 0.0, static_cast<float>(pos[2] + (dir[2] * 1000.0))};
   pp_line1start[dim_up] = inrt[dim_up];
   pp_line1end[dim_up] = inrt[dim_up];
   pp_line2end[dim_up] = pos[dim_up] + (dir[dim_up] * 1000.0);
   float principlePlaneDistance = lineLineIntersection_x(pp_line1start, pp_line1end, ray_origin, pp_line2end, dim_up);
 
-  float focalPointLineStart[3] = {0.0};
-  float focalPointLineEnd[3] = {0.0, 0.0, 99999.0};
+  std::vector<float> focalPointLineStart(3);
+  std::vector<float> focalPointLineEnd = {0.0, 0.0, 99999.0};
   float focalPointDistance = lineLineIntersection_x(focalPointLineStart, focalPointLineEnd, ray_origin, pp_line2end, dim_up);
   
   float tracedFocalLength = focalPointDistance - principlePlaneDistance;
@@ -356,7 +358,7 @@ void draw_lenses(cairo_t *cr, float scale){
     else if (stringcmp(lenses[i].geometry, "cyl-x") && !dim_up) rad = 99999.0;
     
     float hrad = lenses[i].housing_radius;
-    float t = lens_get_thickness(lenses+i, zoom);
+    float t = lens_get_thickness(lenses[i], zoom);
 
     // skip aperture drawing
     if(stringcmp(lenses[i].material, "iris")) {
@@ -384,16 +386,16 @@ void draw_lenses(cairo_t *cr, float scale){
 
         for(int j = 0; j <= num_steps; j++)
         {
-          float y[] = {hrad*(2 * j / (float)num_steps - 1), 0};
-          float *coeff = lenses[i].aspheric_correction_coefficients;
+          std::vector<float> y = {hrad*(2 * j / (float)num_steps - 1), 0}; //float y[] = {hrad*(2 * j / (float)num_steps - 1), 0};
+          std::vector<float> coeff = lenses[i].aspheric_correction_coefficients;
           float x = pos-evaluate_aspherical(y, rad, lenses[i].aspheric, coeff);
           cairo_line_to(cr, x, y[0]);
         }
 
         for(int j = num_steps; j >= 0; j--)
         {
-          float y[] = {hrad2*(2 * j / (float)num_steps - 1), 0};
-          float *coeff = lenses[i+1].aspheric_correction_coefficients;
+          std::vector<float> y = {hrad2*(2 * j / (float)num_steps - 1), 0}; //float y[] = {hrad2*(2 * j / (float)num_steps - 1), 0};
+          std::vector<float> coeff = lenses[i+1].aspheric_correction_coefficients;
           float x = pos-t-evaluate_aspherical(y, rad2, lenses[i+1].aspheric, coeff);
           cairo_line_to(cr, x, y[0]);
         }
@@ -427,8 +429,8 @@ void draw_lenses(cairo_t *cr, float scale){
         const int num_steps = 50;
 
         for(int j = 0; j <= num_steps; j++) {
-          float y[] = {hrad*(2 * j / (float)num_steps - 1), 0};
-          float *coeff = lenses[i].aspheric_correction_coefficients;
+          std::vector<float> y = {hrad*(2 * j / (float)num_steps - 1), 0}; //float y[] = {hrad*(2 * j / (float)num_steps - 1), 0};
+          std::vector<float> coeff = lenses[i].aspheric_correction_coefficients;
           float x = pos-evaluate_aspherical(y, rad, lenses[i].aspheric, coeff);
           cairo_line_to(cr, x, y[0]);
         }
@@ -513,22 +515,23 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
 
       const float y = 2.0f * (num_rays/2-k)/(float)num_rays * lenses[0].housing_radius;
 
-      float cam_pos[3] = {0.0f};
-      float cam_dir[3] = {0.0f};
+      std::vector<float> cam_pos(3);
+      std::vector<float> cam_dir(3);
       cam_dir[dim_up] = y;
       cam_dir[2] = cam_pos[2] + 99999;
       
       const float lambda = 0.55f;
-      float in[5] = {0.0f};
-      float out[5] = {0.0f};
-      float ap[5] = {0.0f};
+      std::vector<float> in(5);
+      std::vector<float> out(5);
+      std::vector<float> ap(5);
       in[4] = out[4] = ap[4] = lambda;
-      float inrt[5] = {cam_pos[0], cam_pos[1], cam_pos[2], 0.0f, lambda};
-      float outrt[5] = {cam_dir[0], cam_dir[1], cam_dir[2], 0.0f, lambda};
+      std::vector<float> inrt = {cam_pos[0], cam_pos[1], cam_pos[2], 0.0f, lambda};
+      std::vector<float> outrt = {cam_dir[0], cam_dir[1], cam_dir[2], 0.0f, lambda};
 
       int error = 0;
       if(draw_raytraced) {
-        float pos_out[3], dir_out[3] = {0.0};
+        std::vector<float> pos_out(3);
+        std::vector<float> dir_out(3);
         error = evaluate_draw(lenses, lenses_cnt, zoom, inrt, outrt, cr, scale, dim_up, draw_aspheric, pos_out, dir_out);
       }
     }
@@ -538,42 +541,53 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
 
     for(int k=0; k<num_rays; k++){
 
-      float cam_pos[3] = {0.0, 0.0, 9999.0f};
+      std::vector<float> cam_pos = {0.0, 0.0, 9999.0f};
       const float y = 2.0f * (num_rays/2-k)/(float)num_rays * lenses[0].housing_radius;
       cam_pos[dim_up] = y;
 
-      float cam_dir[3] = {0.0, 0.0, -cam_pos[2]*10.0f};
+      std::vector<float> cam_dir = {0.0, 0.0, -cam_pos[2]*10.0f};
       cam_dir[dim_up] = cam_pos[dim_up];
       raytrace_normalise(cam_dir);
 
       const float lambda = 0.5f;
-      float in[5] = {0.0f};
-      float out[5] = {0.0f};
-      float ap[5] = {0.0f};
-      float inrt[5] = {0.0f};
-      float outrt[5] = {0.0f};
+
+      std::vector<float> in(5);
+      std::vector<float> out(5);
+      std::vector<float> ap(5);
+      std::vector<float> inrt(5);
+      std::vector<float> outrt(5);
       inrt[4] = outrt[4] = in[4] = out[4] = ap[4] = lambda;
-      float t, n[3] = {0.0f};
+
+      float t = 0.0f;
+      std::vector<float> n(3);
+
+      std::vector<float> outpos(2);
+      std::vector<float> outdir(2);
 
       // intersection with first lens element
       if (stringcmp(lenses[0].geometry, "cyl-y")){
-        cylindrical(cam_pos, cam_dir, &t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n, true);
+        cylindrical(cam_pos, cam_dir, t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n, true);
         for(int i=0;i<3;i++) cam_dir[i] = - cam_dir[i]; // need to point away from surface (dot(n,dir) > 0)
-        csToCylinder(cam_pos, cam_dir, in, in+2, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
+        csToCylinder(cam_pos, cam_dir, outpos, outdir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
         // cylinderToCs(in, in + 2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
       }
       else if (stringcmp(lenses[0].geometry, "cyl-x")){
-        cylindrical(cam_pos, cam_dir, &t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n, false);
+        cylindrical(cam_pos, cam_dir, t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n, false);
         for(int i=0;i<3;i++) cam_dir[i] = - cam_dir[i]; // need to point away from surface (dot(n,dir) > 0)
-        csToCylinder(cam_pos, cam_dir, in, in+2, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
+        csToCylinder(cam_pos, cam_dir, outpos, outdir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
         // cylinderToCs(in, in + 2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
       }
       else {
-        spherical(cam_pos, cam_dir, &t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n);
+        spherical(cam_pos, cam_dir, t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n);
         for(int i=0;i<3;i++) cam_dir[i] = - cam_dir[i]; // need to point away from surface (dot(n,dir) > 0)
-        csToSphere(cam_pos, cam_dir, in, in+2, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
+        csToSphere(cam_pos, cam_dir, outpos, outdir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
         // sphereToCs(in, in + 2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
       }
+
+      in[0] = outpos[0];
+      in[1] = outpos[1];
+      in[2] = outdir[0];
+      in[3] = outdir[1];
 
       for(int i=0;i<5;i++) inrt[i] = in[i];
 
@@ -588,8 +602,8 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
       if(!error && draw_polynomials)
       {
         // ray color
-        float hsl[3] = {k/(num_rays+1.f), .7f, .5f};
-        float rgb[3] = {0.0f};
+        const std::vector<float> hsl = {k/(num_rays+1.f), .7f, .5f};
+        std::vector<float> rgb(3);
         hsl_2_rgb(hsl, rgb);
 
         const float polynomial_length = lens_length/5.0f;
@@ -620,11 +634,13 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
           stroke_with_pencil(cr, scale, 90.0/width);
 
           // outer pupil
-          if (stringcmp(lenses[0].geometry, "cyl-y") && !dim_up) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
-          else if (stringcmp(lenses[0].geometry, "cyl-y") && dim_up) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - 99999.0, 99999.0, true);
-          else if (stringcmp(lenses[0].geometry, "cyl-x") && !dim_up) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - 99999.0, 99999.0, false);
-          else if (stringcmp(lenses[0].geometry, "cyl-x") && dim_up) cylinderToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
-          else sphereToCs(out, out+2, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
+          std::vector<float> outpos = {out[0], out[1]};
+          std::vector<float> outdir = {out[2], out[3]};
+          if (stringcmp(lenses[0].geometry, "cyl-y") && !dim_up) cylinderToCs(outpos, outdir, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
+          else if (stringcmp(lenses[0].geometry, "cyl-y") && dim_up) cylinderToCs(outpos, outdir, cam_pos, cam_dir, lens_length - 99999.0, 99999.0, true);
+          else if (stringcmp(lenses[0].geometry, "cyl-x") && !dim_up) cylinderToCs(outpos, outdir, cam_pos, cam_dir, lens_length - 99999.0, 99999.0, false);
+          else if (stringcmp(lenses[0].geometry, "cyl-x") && dim_up) cylinderToCs(outpos, outdir, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
+          else sphereToCs(outpos, outdir, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
           cairo_move_to(cr, cam_pos[2], cam_pos[dim_up]);
           cairo_line_to(cr, cam_pos[2] + polynomial_length*cam_dir[2], cam_pos[dim_up] + polynomial_length*cam_dir[dim_up]);
           stroke_with_pencil(cr, scale, 90.0/width);
@@ -702,9 +718,9 @@ int main(int argc, char *argv[])
 
   lenses_cnt = lens_configuration(lenses, id, lens_focal_length);
   lens_length = 0;
-  for(int i=0;i<lenses_cnt;i++) lens_length += lens_get_thickness(lenses+i, zoom);
+  for(int i=0;i<lenses_cnt;i++) lens_length += lens_get_thickness(lenses[i], zoom);
 
-  lens_pupil_dist = lens_get_thickness(lenses + lenses_cnt-1, zoom);
+  lens_pupil_dist = lens_get_thickness(lenses[lenses_cnt-1], zoom);
   lens_pupil_rad  = lenses[lenses_cnt-1].housing_radius;
   aperture_rad = lens_get_aperture_radius(lenses, lenses_cnt);
 

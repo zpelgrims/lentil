@@ -1,6 +1,7 @@
 #include "lenssystem.h"
 #include "raytrace.h"
 #include <string>
+#include <vector>
 #include "../../fmt/include/fmt/format.h"
 
 //json parsing
@@ -18,56 +19,65 @@ int main(int argc, char *argv[])
   json lens_database = json::parse(in_json);
 
 
-  static lens_element_t lenses[50];
+  std::vector<lens_element_t> lenses;
 
   // loading lens config with focallength=0, which means no scale transform on the lens
-  int lenses_cnt = lens_configuration(lenses, id, 0);
+  const int lenses_cnt = lens_configuration(lenses, id, 0);
 
-  float zoom = 0.0f;
-  int dim_up = 0;
+  const float zoom = 0.0f;
+  const int dim_up = 0;
   const float lambda = 0.55f;
   std::vector<float> positiondata = {0.0, 0.0};
   float lens_length = 0.0;
-  int draw_aspheric = 1;
+  const int draw_aspheric = 1;
   float max_aperture_radius = 0.0f;
   float prev_best_aperture_radius = 0.0f;
   int cnt = 0;
   const int max_tries = 1000;
 
-  for(int i=0;i<lenses_cnt;i++) lens_length += lens_get_thickness(lenses+i, zoom);
+  for(int i=0;i<lenses_cnt;i++) lens_length += lens_get_thickness(lenses[i], zoom);
 
   for(int wedge = 1; wedge < max_tries; wedge++){
 
-    float cam_pos[3] = {0.0, 0.0, 9999.0f};
+    std::vector<float> cam_pos = {0.0, 0.0, 9999.0f};
     float y_wedge = lenses[0].housing_radius / (static_cast<float>(max_tries)/static_cast<float>(wedge));
     cam_pos[dim_up] = y_wedge;
 
-    float cam_dir[3] = {0.0, 0.0, -cam_pos[2]*10.0f};
+    std::vector<float> cam_dir = {0.0, 0.0, -cam_pos[2]*10.0f};
     cam_dir[dim_up] = cam_pos[dim_up];
     raytrace_normalise(cam_dir);
     
-    float in[5] = {0.0f};
-    float out[5] = {0.0f};
-    float ap[5] = {0.0f};
+    std::vector<float> in(5);
+    std::vector<float> out(5);
+    std::vector<float> ap(5);
     in[4] = out[4] = ap[4] = lambda;
-    float t, n[3] = {0.0f};
-
+    float t = 0.0;
+    std::vector<float> n(3);
+    
+    std::vector<float> outpos(2);
+    std::vector<float> outdir(2);
+    
     // intersection on first lens element
     if (stringcmp(lenses[0].geometry, "cyl-y")){
-      cylindrical(cam_pos, cam_dir, &t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n, true);
+      cylindrical(cam_pos, cam_dir, t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n, true);
       for(int i=0;i<3;i++) cam_dir[i] = - cam_dir[i]; // need to point away from surface (dot(n,dir) > 0)
-      csToCylinder(cam_pos, cam_dir, in, in+2, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
+      csToCylinder(cam_pos, cam_dir, outpos, outdir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
     }
     else if (stringcmp(lenses[0].geometry, "cyl-x")){
-      cylindrical(cam_pos, cam_dir, &t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n, false);
+      cylindrical(cam_pos, cam_dir, t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n, false);
       for(int i=0;i<3;i++) cam_dir[i] = - cam_dir[i]; // need to point away from surface (dot(n,dir) > 0)
-      csToCylinder(cam_pos, cam_dir, in, in+2, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
+      csToCylinder(cam_pos, cam_dir, outpos, outdir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
     }
     else {
-      spherical(cam_pos, cam_dir, &t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n);
+      spherical(cam_pos, cam_dir, t, lenses[0].lens_radius, lens_length - lenses[0].lens_radius, lenses[0].housing_radius, n);
       for(int i=0;i<3;i++) cam_dir[i] = - cam_dir[i]; // need to point away from surface (dot(n,dir) > 0)
-      csToSphere(cam_pos, cam_dir, in, in+2, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
+      csToSphere(cam_pos, cam_dir, outpos, outdir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
     }
+
+    in[0] = outpos[0];
+    in[1] = outpos[1];
+    in[2] = outdir[0];
+    in[3] = outdir[1];
     
     // evaluate until ray is blocked, positiondata will still have value of previous ray
     if (evaluate_reverse_fstop(lenses, lenses_cnt, zoom, in, out, dim_up, draw_aspheric, positiondata, max_aperture_radius)){
