@@ -10,6 +10,7 @@
 #include <float.h>
 #include <assert.h>
 #include <vector>
+#include <algorithm>
 
 #include "../../fmt/include/fmt/format.h"
 #include "../ext/ProgressBar.hpp"
@@ -72,7 +73,7 @@ int main(int argc, char *argv[])
   // poly_system_sort(&poly);
   // poly_system_sort(&poly_ap);
 
-  const int coeff_size = max(poly_system_get_coeffs(&poly, max_degree, 0),
+  const int coeff_size = std::max(poly_system_get_coeffs(&poly, max_degree, 0),
                              poly_system_get_coeffs(&poly_ap, max_degree, 0));
   float *coeff = (float *)malloc(sizeof(float)*coeff_size);
 

@@ -10,7 +10,7 @@ endif
 
 
 
-CXXFLAGS=-Wall -D_GNU_SOURCE -fopenmp -std=c++11 -DFMT_HEADER_ONLY
+CXXFLAGS=-Wall -D_GNU_SOURCE -fopenmp -std=c++14 -DFMT_HEADER_ONLY
 ifeq ($(OS), Darwin)
 	CXXFLAGS += -I/usr/local/include/cairo/ -L/usr/local/lib
 endif

@@ -1,5 +1,6 @@
 #include "lenssystem.h"
 #include <string>
+#include <iomanip>
 #include "../../fmt/include/fmt/format.h"
 
 //json parsing

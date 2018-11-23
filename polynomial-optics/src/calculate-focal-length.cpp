@@ -1,4 +1,5 @@
 #include <vector>
+#include <iomanip>
 #include "lenssystem.h"
 #include "raytrace.h"
 #include "../../fmt/include/fmt/format.h"

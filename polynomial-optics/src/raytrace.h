@@ -412,7 +412,8 @@ static inline int evaluate_for_pos_dir(
                   std::vector<float> &pos, std::vector<float> &dir, 
                   const float total_lens_length,
                   std::vector<std::vector<float>> &pos_list,
-                  std::vector<std::vector<float>> &dir_list
+                  std::vector<std::vector<float>> &dir_list,
+                  bool print_debug
                   )
 {
   int error = 0;
@@ -464,7 +465,7 @@ static inline int evaluate_for_pos_dir(
     // pos_list.push_back(position);
     // dir_list.push_back(direction);
 
-    printf("[%f, %f, %f, %f, %f, %f],", pos[0], pos[1], pos[2], dir[0], dir[1], dir[2]);
+    if(print_debug) printf("[%f, %f, %f],", pos[0], pos[1], pos[2]);
   }
  
   return error;

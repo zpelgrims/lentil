@@ -5,7 +5,8 @@
 #include "lenssystem.h"
 #include "../../fmt/include/fmt/format.h"
 
-static lens_element_t lenses[50];
+//static lens_element_t lenses[50];
+static std::vector<lens_element_t> lenses;
 static int lenses_cnt = 0;
 static float zoom = 0;
 
@@ -92,10 +93,10 @@ int main(int argc, char **argv)
 
   lenses_cnt = lens_configuration(lenses, id, lens_focal_length);
   float lens_length = 0;
-  for(int i = 0; i < lenses_cnt; i++) lens_length += lens_get_thickness(lenses + i, zoom);
+  for(int i = 0; i < lenses_cnt; i++) lens_length += lens_get_thickness(lenses[i], zoom);
   const float aperture_housing_radius = lens_get_aperture_radius(lenses, lenses_cnt);
   const float aperture_pos = lens_get_aperture_pos(lenses, lenses_cnt, zoom);
-  const float bfl = lens_get_thickness(lenses + lenses_cnt-1, zoom);
+  const float bfl = lens_get_thickness(lenses[lenses_cnt-1], zoom);
 
   // construct lens name
   std::string lens_name = lens_database[id]["company"].get<std::string>();
