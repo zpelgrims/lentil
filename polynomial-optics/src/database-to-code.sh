@@ -8,6 +8,9 @@
 args=("$@")
 LENS_ID=${args[0]}
 LENS_FOCAL_LENGTH=${args[1]}
+MAX_DEGREE=${args[2]} #default = 11
+MAX_COEFFICIENTS=${args[3]} #default = 28
+
 
 echo "LENS ID: " $LENS_ID
 echo "FOCAL LENGTH: " $LENS_FOCAL_LENGTH
@@ -24,11 +27,11 @@ $LENTIL_PATH/bin/calculate-focal-length $LENS_ID &&
 
 # generate empty polynomial
 mkdir -p -v $LENTIL_PATH/data/tmp/$LENS_ID/$LENS_FOCAL_LENGTH/ &&
-$LENTIL_PATH/bin/genpoly 11 $LENTIL_PATH/data/tmp/$LENS_ID/$LENS_FOCAL_LENGTH/sorted.poly &&
+$LENTIL_PATH/bin/genpoly $MAX_DEGREE $LENTIL_PATH/data/tmp/$LENS_ID/$LENS_FOCAL_LENGTH/sorted.poly &&
 
 # compute polynomials
 mkdir -p -v $LENTIL_PATH/database/lenses/$LENS_NAME/$LENS_FOCAL_LENGTH/fitted/ &&
-$LENTIL_PATH/bin/fit $LENS_ID $LENS_FOCAL_LENGTH 11 28 $LENTIL_PATH/data/tmp/$LENS_ID/$LENS_FOCAL_LENGTH/sorted.poly &&
+$LENTIL_PATH/bin/fit $LENS_ID $LENS_FOCAL_LENGTH $MAX_DEGREE $MAX_COEFFICIENTS $LENTIL_PATH/data/tmp/$LENS_ID/$LENS_FOCAL_LENGTH/sorted.poly &&
 
 # generate code from .fit files
 mkdir -p -v $LENTIL_PATH/database/lenses/$LENS_NAME/$LENS_FOCAL_LENGTH/code/ &&

@@ -188,5 +188,39 @@
     "production-ready": true,
     "www-svg-location": "/imgs/lenses/2004/2001-schneider-anamorphic.svg",
     "year": 2001
+  },
+  "9992": {
+    "commercial": false,
+    "company": "angenieux",
+    "focal-length-mm-raytraced": 99.44563293457031,
+    "fstop": 1.1079870462417603,
+    "max-fstop-aperture-radius": 25.480609893798828,
+    "notes": "DUPLICATE large aperture six element objective, nice swirly bokeh",
+    "patent-number": "US2701982",
+    "polynomial-optics": [
+      50
+    ],
+    "prime": true,
+    "product-name": "double-gauss",
+    "production-ready": true,
+    "www-svg-location": "/imgs/lenses/9992/9999-angenieux-double-gauss.svg",
+    "year": 9999
+  },
+  "9993": {
+    "commercial": false,
+    "company": "angenieux",
+    "focal-length-mm-raytraced": 99.44563293457031,
+    "fstop": 1.1079870462417603,
+    "max-fstop-aperture-radius": 25.480609893798828,
+    "notes": "DUPLICATE, test for lower degree/coefficients. large aperture six element objective, nice swirly bokeh",
+    "patent-number": "US2701982",
+    "polynomial-optics": [
+      50
+    ],
+    "prime": true,
+    "product-name": "double-gauss-test-low-degree-low-coefficients",
+    "production-ready": true,
+    "www-svg-location": "/imgs/lenses/9993/9999-angenieux-double-gauss-test-low-degree-low-coefficients.svg",
+    "year": 9999
   }
 }
