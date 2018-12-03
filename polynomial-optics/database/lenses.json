@@ -3519,8 +3519,14 @@
     "company": "angenieux",
     "focal-length-mm-patent": 100.0,
     "focal-length-mm-raytraced": 99.44563293457031,
-    "fstop": 1.1079870462417603,
-    "max-fstop-aperture-radius": 25.480609893798828,
+    "fstop": {
+      "50": 1.1092119216918945,
+      "unscaled": 1.1079870462417603
+    },
+    "max-fstop-aperture-radius": {
+      "50": 12.814361572265625,
+      "unscaled": 25.480609893798828
+    },
     "notes": "DUPLICATE, test for lower degree/coefficients. large aperture six element objective, nice swirly bokeh",
     "optical-elements-adjusted": [
       {

@@ -14,6 +14,7 @@ using json = nlohmann::json;
 int main(int argc, char *argv[])
 {
   const char *id = argv[1];
+  const int focallength = std::atoi(argv[2]);
 
   std::string lens_database_path = fmt::format("{}/database/lenses.json", std::getenv("LENTIL_PATH"));
   std::ifstream in_json(lens_database_path);
@@ -23,7 +24,7 @@ int main(int argc, char *argv[])
   std::vector<lens_element_t> lenses;
 
   // loading lens config with focallength=0, which means no scale transform on the lens
-  const int lenses_cnt = lens_configuration(lenses, id, 0);
+  const int lenses_cnt = lens_configuration(lenses, id, focallength);
 
   const float zoom = 0.0f;
   const int dim_up = 0;
@@ -100,10 +101,12 @@ int main(int argc, char *argv[])
   }
 
 
-  lens_database[id]["fstop"] = fstop;
-  fmt::print("Added calculated f-stop [{}] to lens database.\n", fstop);
-  lens_database[id]["max-fstop-aperture-radius"] = prev_best_aperture_radius;
-  fmt::print("Added maximum aperture radius [{}] to lens database.\n", prev_best_aperture_radius);
+  std::string focallength_str = (focallength == 0) ? "unscaled" : std::to_string(focallength);
+  lens_database[id]["fstop"][focallength_str] = fstop;
+  fmt::print("Added calculated f-stop [{}] for focallength [{}] to lens database.\n", fstop, focallength);
+  lens_database[id]["max-fstop-aperture-radius"][focallength_str] = prev_best_aperture_radius;
+  fmt::print("Added maximum aperture radius [{}] for focallength [{}] to lens database.\n", prev_best_aperture_radius, focallength);
+
 
   std::ofstream out_json(lens_database_path);
   out_json << std::setw(2) << lens_database << std::endl;

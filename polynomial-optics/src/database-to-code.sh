@@ -20,9 +20,11 @@ read LENS_NAME <<< $($LENTIL_PATH/bin/print-lens-path $LENS_ID $LENS_FOCAL_LENGT
 echo "LENS_NAME: " $LENS_NAME &&
 
 # calculate fstop and add it to the database
-$LENTIL_PATH/bin/calculate-fstop $LENS_ID &&
+# special 0 case first, which takes unscaled lens data to calculate the fstop
+$LENTIL_PATH/bin/calculate-fstop $LENS_ID 0 &&
+$LENTIL_PATH/bin/calculate-fstop $LENS_ID $LENS_FOCAL_LENGTH &&
 
-# add raytraced focal length and fstop
+# add raytraced focal length
 $LENTIL_PATH/bin/calculate-focal-length $LENS_ID &&
 
 # generate empty polynomial

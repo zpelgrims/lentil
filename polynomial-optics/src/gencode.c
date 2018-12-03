@@ -21,7 +21,7 @@ int main(int argc, char **argv)
   FILE *f = 0;
 
   const char *id = argv[1];
-  int lens_focal_length = atol(argv[2]);
+  const int lens_focal_length = std::atoi(argv[2]);
 
   std::string lens_id_path = find_lens_id_location(id, lens_focal_length);
   std::string fitfile_path = lens_id_path + "fitted/exitpupil.fit";
@@ -124,8 +124,10 @@ int main(int argc, char **argv)
   fprintf(f, "camera->lens_inner_pupil_geometry = \"%s\"; // geometry of inner pupil\n", lenses[lenses_cnt-1].geometry.c_str());
 
   // these seem wrong, should be relative to the focal length, not a constant for all focal lengths
-  fprintf(f, "camera->lens_fstop = %f; // effective_focal_length/(2*aperture_housing_radius)\n", lens_database[id]["fstop"].get<float>());
-  fprintf(f, "camera->lens_aperture_radius_at_fstop = %f; // aperture radius at smallest fstop\n", lens_database[id]["max-fstop-aperture-radius"].get<float>());
+  // fprintf(f, "camera->lens_fstop = %f; // effective_focal_length/(2*aperture_housing_radius)\n", lens_database[id]["fstop"].get<float>());
+  // fprintf(f, "camera->lens_aperture_radius_at_fstop = %f; // aperture radius at smallest fstop\n", lens_database[id]["max-fstop-aperture-radius"].get<float>());
+  fprintf(f, "camera->lens_fstop = %f; // effective_focal_length/(2*aperture_housing_radius)\n", lens_database[id]["fstop"][std::to_string(lens_focal_length)].get<float>());
+  fprintf(f, "camera->lens_aperture_radius_at_fstop = %f; // aperture radius at smallest fstop\n", lens_database[id]["max-fstop-aperture-radius"][std::to_string(lens_focal_length)].get<float>());
 
   // calculate approximate fov for 35mm sensor
   float sensor[] = {22.f, 0, (lenses[lenses_cnt-1].housing_radius-22.f)/bfl, 0, .55};
