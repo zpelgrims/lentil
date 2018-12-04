@@ -9,7 +9,6 @@
 // and lambda is wavelength in micrometers
 #define poly_num_vars 5
 #define poly_coeff_eps 1e-35f
-#define real double
 
 typedef struct poly_term_t
 {
@@ -38,7 +37,7 @@ typedef struct poly_jacobian_t
 poly_jacobian_t;
 
 // optimised integer powers of x
-real poly_pow(const real x, const int32_t exp)
+double poly_pow(const double x, const int32_t exp)
 {
   if(exp == 0) return 1.0f;
   if(exp == 1) return x;
@@ -49,19 +48,19 @@ real poly_pow(const real x, const int32_t exp)
 }
 
 // evaluate the term at point x.
-real poly_term_evaluate(const poly_term_t *t, const float *x)
+double poly_term_evaluate(const poly_term_t *t, const float *x)
 {
   if(fabsf(t->coeff) < poly_coeff_eps) return 0.0f;
-  real out = t->coeff;
+  double out = t->coeff;
   for(int k=0;k<poly_num_vars;k++)
     out *= poly_pow(x[k], t->exp[k]);
   return out;
 }
 
 // return the evaluated polynomial at the given point x.
-real poly_evaluate(const poly_t *poly, const float *x, int max_degree)
+double poly_evaluate(const poly_t *poly, const float *x, int max_degree)
 {
-  real out = 0.0;
+  double out = 0.0;
   for(int t=0;t<poly->num_terms;t++)
   {
     int degree = 0;

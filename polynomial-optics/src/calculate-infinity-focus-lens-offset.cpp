@@ -39,11 +39,11 @@ int main(int argc, char *argv[]){
     raytrace_normalise(cam_dir);
     for(int i=0;i<3;i++) cam_pos(i) -= 0.1f * cam_dir(i);
     
-    Eigen::VectorXf in(0,0,0,0,lambda);
-    Eigen::VectorXf out(0,0,0,0,lambda);
-    Eigen::VectorXf ap(0,0,0,0,lambda);
-    Eigen::VectorXf inrt(0,0,0,0,lambda);
-    Eigen::VectorXf outrt(0,0,0,0,lambda);
+    Eigen::VectorXf in(5); in << 0,0,0,0,lambda;
+    Eigen::VectorXf out(5); out << 0,0,0,0,lambda;
+    Eigen::VectorXf ap(5); ap << 0,0,0,0,lambda;
+    Eigen::VectorXf inrt(5); inrt << 0,0,0,0,lambda;
+    Eigen::VectorXf outrt(5); outrt << 0,0,0,0,lambda;
     float t = 0.0f;
     Eigen::Vector3f n(0,0,0);
 

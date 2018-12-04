@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
     const float u = drand48(), v = drand48(), w = drand48(), x = drand48(), y = drand48();
 
     // zeno: what are all these arbitrary values..?
-    Eigen::VectorXf ray_in(
+    Eigen::VectorXf ray_in(5); ray_in <<
       // p_rad * 4.0f * (x-0.5f),
       // p_rad * 4.0f * (y-0.5f),
       35.0f/2.0f - x*35.0f, // 35mm film, isotropic
@@ -95,10 +95,10 @@ int main(int argc, char *argv[])
       p_rad/p_dist * cosf(2.0f*M_PI*u)*sqrtf(v),
       p_rad/p_dist * sinf(2.0f*M_PI*u)*sqrtf(v),
       0.4f + 0.3f*w //random wavelength between 400 and 700
-    );
+    ;
     ray_in[2] -= ray_in[0] / p_dist;
     ray_in[3] -= ray_in[1] / p_dist;
-    Eigen::VectorXf out(0,0,0,0,0);
+    Eigen::VectorXf out(5); out.setZero();
     int error = evaluate(lenses, lenses_cnt, zoom, ray_in, out, aspheric_elements);
     if(!error)
     {
@@ -295,8 +295,8 @@ int main(int argc, char *argv[])
   for(int i=0;i<valid;i++)
   {
     //float *ray_in = sample_in+5*i;
-    Eigen::VectorXf ray_in(sample_in[5*i], sample_in[(5*i)+1], sample_in[(5*i)+2], sample_in[(5*i)+3], sample_in[(5*i)+4]); //not sure about this, could be wrong
-    Eigen::VectorXf out(0,0,0,0,0);
+    Eigen::VectorXf ray_in(5); ray_in << sample_in[5*i], sample_in[(5*i)+1], sample_in[(5*i)+2], sample_in[(5*i)+3], sample_in[(5*i)+4]; //not sure about this, could be wrong
+    Eigen::VectorXf out(5); out.setZero();
     int error = evaluate_aperture(lenses, lenses_cnt, zoom, ray_in, out, aspheric_elements);
     (void)error; // silence non-debug build warning
     assert(error == 0);

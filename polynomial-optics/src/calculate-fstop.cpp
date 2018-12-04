@@ -50,12 +50,12 @@ int main(int argc, char *argv[])
     cam_dir(dim_up) = cam_pos(dim_up);
     raytrace_normalise(cam_dir);
     
-    Eigen::VectorXf in(0,0,0,0,0);
-    Eigen::VectorXf out(0,0,0,0,0);
-    Eigen::VectorXf ap(0,0,0,0,0);
+    Eigen::VectorXf in(5); in.setZero();
+    Eigen::VectorXf out(5); out.setZero();
+    Eigen::VectorXf ap(5); ap.setZero();
     in(4) = out(4) = ap(4) = lambda;
     float t = 0.0;
-    Eigen::VectorXf n(0,0,0);
+    Eigen::Vector3f n(0,0,0);
     
     Eigen::Vector2f outpos(0,0);
     Eigen::Vector2f outdir(0,0);

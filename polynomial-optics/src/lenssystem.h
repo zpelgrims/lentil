@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 #include "../../fmt/include/fmt/format.h"
-
+#include "../../Eigen/Eigen/Dense"
 
 //json parsing
 #include "../ext/json.hpp"
@@ -21,7 +21,7 @@ typedef struct lens_element_t
   float ior;
   float vno;
   float housing_radius;
-  std::vector<float> aspheric_correction_coefficients;
+  Eigen::Vector4f aspheric_correction_coefficients;
   int aspheric;
   std::string material;
   std::string geometry;
@@ -165,13 +165,11 @@ int lens_configuration(std::vector<lens_element_t> &l, const char *id, const int
         lens->aspheric = 1;
         lens->geometry = "aspherical";
         for(int i = 0; i < 4; i++, i++){
-          lens->aspheric_correction_coefficients.push_back(json_lens_element["aspherical-equation"][i].get<float>());
+          lens->aspheric_correction_coefficients(i) = json_lens_element["aspherical-equation"][i].get<float>();
         }
       } else {
         lens->aspheric = 0;
-        for(int i = 0; i < 4; i++){
-          lens->aspheric_correction_coefficients.push_back(0.0);
-        }
+        lens->aspheric_correction_coefficients.setZero();
       }
 
       // add lens to lens struct

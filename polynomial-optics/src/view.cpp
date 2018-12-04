@@ -292,11 +292,11 @@ void draw_focallength(cairo_t *cr) {
   cam_dir[dim_up] = cam_pos[dim_up];
 
   const float lambda = 0.55f;
-  Eigen::VectorXf in(0,0,0,0,lambda);
-  Eigen::VectorXf out(0,0,0,0,lambda);
-  Eigen::VectorXf ap(0,0,0,0,lambda);
-  Eigen::VectorXf inrt(cam_pos[0], cam_pos[1], cam_pos[2], 0.0f, lambda);
-  Eigen::VectorXf outrt(cam_dir[0], cam_dir[1], cam_dir[2], 0.0f, lambda);
+  Eigen::VectorXf in(5); in << 0,0,0,0,lambda;
+  Eigen::VectorXf out(5); out << 0,0,0,0,lambda;
+  Eigen::VectorXf ap(5); ap <<  0,0,0,0,lambda;
+  Eigen::VectorXf inrt(5); inrt << cam_pos[0], cam_pos[1], cam_pos[2], 0.0f, lambda;
+  Eigen::VectorXf outrt(5); outrt << cam_dir[0], cam_dir[1], cam_dir[2], 0.0f, lambda;
 
   int error = 0;
   Eigen::Vector3f pos(0,0,0);
@@ -522,11 +522,11 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
       cam_dir[2] = cam_pos[2] + 99999;
       
       const float lambda = 0.55f;
-      Eigen::VectorXf in(0,0,0,0,lambda);
-      Eigen::VectorXf out(0,0,0,0,lambda);
-      Eigen::VectorXf ap(0,0,0,0,lambda);
-      Eigen::VectorXf inrt(cam_pos[0], cam_pos[1], cam_pos[2], 0.0f, lambda);
-      Eigen::VectorXf outrt(cam_dir[0], cam_dir[1], cam_dir[2], 0.0f, lambda);
+      Eigen::VectorXf in(5); in << 0,0,0,0,lambda;
+      Eigen::VectorXf out(5); out <<  0,0,0,0,lambda;
+      Eigen::VectorXf ap(5); ap << 0,0,0,0,lambda;
+      Eigen::VectorXf inrt(5); inrt << cam_pos[0], cam_pos[1], cam_pos[2], 0.0f, lambda;
+      Eigen::VectorXf outrt(5); outrt << cam_dir[0], cam_dir[1], cam_dir[2], 0.0f, lambda;
 
       int error = 0;
       if(draw_raytraced) {
@@ -551,11 +551,11 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
 
       const float lambda = 0.5f;
 
-      Eigen::VectorXf in(0,0,0,0,lambda);
-      Eigen::VectorXf out(0,0,0,0,lambda);
-      Eigen::VectorXf ap(0,0,0,0,lambda);
-      Eigen::VectorXf inrt(0,0,0,0,lambda);
-      Eigen::VectorXf outrt(0,0,0,0,lambda);
+      Eigen::VectorXf in(5); in << 0,0,0,0,lambda;
+      Eigen::VectorXf out(5); out << 0,0,0,0,lambda;
+      Eigen::VectorXf ap(5); ap << 0,0,0,0,lambda;
+      Eigen::VectorXf inrt(5); inrt << 0,0,0,0,lambda;
+      Eigen::VectorXf outrt(5); outrt << 0,0,0,0,lambda;
 
       float t = 0.0f;
       Eigen::Vector3f n(0,0,0);

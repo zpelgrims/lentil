@@ -3,7 +3,6 @@
 #include "spectrum.h"
 #include "lenssystem.h"
 #include <stdio.h>
-#include <vector>
 #include <algorithm>
 
 #define INTENSITY_EPS 1e-5
@@ -64,7 +63,7 @@ static inline int spherical(
   return error;
 }
 
-static inline float evaluate_aspherical(const Eigen::Vector2f pos, const float R, const int k, const Eigen::Vector4f correction) {
+static inline float evaluate_aspherical(const Eigen::Vector3f pos, const float R, const int k, const Eigen::Vector4f correction) {
   float h = std::sqrt(pos(0)*pos(0) + pos(1)*pos(1));
   float hr = h / R;
   float h2 = h*h;
@@ -76,7 +75,7 @@ static inline float evaluate_aspherical(const Eigen::Vector2f pos, const float R
   return z;
 }
 
-static inline float evaluate_aspherical_derivative(const Eigen::Vector2f pos, const float R, const int k, const Eigen::Vector4f correction) {
+static inline float evaluate_aspherical_derivative(const Eigen::Vector3f pos, const float R, const int k, const Eigen::Vector4f correction) {
   float h = std::sqrt(pos(0)*pos(0)+pos(1)*pos(1));
   float hr = h / R;
   float h2 = h*h;
@@ -242,7 +241,7 @@ static inline void sphereToCs(const Eigen::Vector2f inpos, const Eigen::Vector2f
   outpos(2) = normal(2) * sphereRad + center;
 }
 
-static inline void csToSphere(const std::vector3f inpos, const std::vector3f indir, Eigen::Vector2f &outpos, Eigen::Vector2f &outdir, const float sphereCenter, const float sphereRad)
+static inline void csToSphere(const Eigen::Vector3f inpos, const Eigen::Vector3f indir, Eigen::Vector2f &outpos, Eigen::Vector2f &outdir, const float sphereCenter, const float sphereRad)
 {
   const Eigen::Vector3f normal(
     inpos(0)/sphereRad,
@@ -418,7 +417,7 @@ static inline int evaluate_for_pos_dir(
                   )
 {
   int error = 0;
-  float n1 = spectrum_eta_from_abbe_um(lenses[lenses_cnt-1].ior, lenses[lenses_cnt-1].vno, in(4);
+  float n1 = spectrum_eta_from_abbe_um(lenses[lenses_cnt-1].ior, lenses[lenses_cnt-1].vno, in(4));
   float intensity = 1.0f;
 
   planeToCs(Eigen::Vector2f(in(0), in(1)), Eigen::Vector2f(in(2), in(3)), pos, dir, -total_lens_length);

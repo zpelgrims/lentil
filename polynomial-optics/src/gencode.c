@@ -5,7 +5,6 @@
 #include "lenssystem.h"
 #include "../../fmt/include/fmt/format.h"
 
-//static lens_element_t lenses[50];
 static std::vector<lens_element_t> lenses;
 static int lenses_cnt = 0;
 static float zoom = 0;
@@ -122,10 +121,6 @@ int main(int argc, char **argv)
   fprintf(f, "camera->lens_aperture_housing_radius = %f; // lens housing radius at the aperture\n", aperture_housing_radius);
   fprintf(f, "camera->lens_outer_pupil_geometry = \"%s\"; // geometry of outer pupil\n", lenses[0].geometry.c_str());
   fprintf(f, "camera->lens_inner_pupil_geometry = \"%s\"; // geometry of inner pupil\n", lenses[lenses_cnt-1].geometry.c_str());
-
-  // these seem wrong, should be relative to the focal length, not a constant for all focal lengths
-  // fprintf(f, "camera->lens_fstop = %f; // effective_focal_length/(2*aperture_housing_radius)\n", lens_database[id]["fstop"].get<float>());
-  // fprintf(f, "camera->lens_aperture_radius_at_fstop = %f; // aperture radius at smallest fstop\n", lens_database[id]["max-fstop-aperture-radius"].get<float>());
   fprintf(f, "camera->lens_fstop = %f; // effective_focal_length/(2*aperture_housing_radius)\n", lens_database[id]["fstop"][std::to_string(lens_focal_length)].get<float>());
   fprintf(f, "camera->lens_aperture_radius_at_fstop = %f; // aperture radius at smallest fstop\n", lens_database[id]["max-fstop-aperture-radius"][std::to_string(lens_focal_length)].get<float>());
 
