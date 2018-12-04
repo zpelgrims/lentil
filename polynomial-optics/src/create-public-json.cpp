@@ -31,7 +31,7 @@ void create_public_json(json lens_database, std::string lens_public_database_pat
     }
     element.erase("optical-elements-patent");
     element.erase("patent-location");
-    element.erase("focal-length-mm-raytraced");
+    element.erase("focal-length-mm-raytraced");
     element.erase("focal-length-mm-patent");
     
     element.emplace("www-svg-location", construct_lens_image_www_location(it.key(), it.value()));

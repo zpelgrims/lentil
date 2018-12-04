@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
     const float u = drand48(), v = drand48(), w = drand48(), x = drand48(), y = drand48();
 
     // zeno: what are all these arbitrary values..?
-    std::vector<float> ray_in = {
+    Eigen::VectorXf ray_in(
       // p_rad * 4.0f * (x-0.5f),
       // p_rad * 4.0f * (y-0.5f),
       35.0f/2.0f - x*35.0f, // 35mm film, isotropic
@@ -95,15 +95,15 @@ int main(int argc, char *argv[])
       p_rad/p_dist * cosf(2.0f*M_PI*u)*sqrtf(v),
       p_rad/p_dist * sinf(2.0f*M_PI*u)*sqrtf(v),
       0.4f + 0.3f*w //random wavelength between 400 and 700
-    };
+    );
     ray_in[2] -= ray_in[0] / p_dist;
     ray_in[3] -= ray_in[1] / p_dist;
-    std::vector<float> out(5);
+    Eigen::VectorXf out(0,0,0,0,0);
     int error = evaluate(lenses, lenses_cnt, zoom, ray_in, out, aspheric_elements);
     if(!error)
     {
       for(int k=0;k<5;k++) sample_in[5*valid + k] = ray_in[k];
-      for(int k=0;k<5;k++) sample[valid + k*sample_cnt] = out[k];
+      for(int k=0;k<5;k++) sample[valid + k*sample_cnt] = out(k);
       valid++;
     }
 
@@ -295,13 +295,13 @@ int main(int argc, char *argv[])
   for(int i=0;i<valid;i++)
   {
     //float *ray_in = sample_in+5*i;
-    std::vector<float> ray_in = {sample_in[5*i], sample_in[(5*i)+1], sample_in[(5*i)+2], sample_in[(5*i)+3], sample_in[(5*i)+4]}; //not sure about this, could be wrong
-    std::vector<float> out(5);
+    Eigen::VectorXf ray_in(sample_in[5*i], sample_in[(5*i)+1], sample_in[(5*i)+2], sample_in[(5*i)+3], sample_in[(5*i)+4]); //not sure about this, could be wrong
+    Eigen::VectorXf out(0,0,0,0,0);
     int error = evaluate_aperture(lenses, lenses_cnt, zoom, ray_in, out, aspheric_elements);
     (void)error; // silence non-debug build warning
     assert(error == 0);
     for(int k=0;k<5;k++)
-      sample[i+k*sample_cnt] = out[k];
+      sample[i+k*sample_cnt] = out(k);
   }
   fmt::print("[ sensor->aperture ] optimising %d coeffs by %d/%d valid sample points\n", coeff_size, valid, sample_cnt);
 

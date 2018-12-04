@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <vector>
 #include "../../fmt/include/fmt/format.h"
+#include "../../Eigen/Eigen/Dense"
 
 //json parsing
 #include "../ext/json.hpp"
@@ -29,7 +30,7 @@ int main(int argc, char *argv[])
   const float zoom = 0.0f;
   const int dim_up = 0;
   const float lambda = 0.55f;
-  std::vector<float> positiondata = {0.0, 0.0};
+  Eigen::Vector2f positiondata(0, 0);
   float lens_length = 0.0;
   const int draw_aspheric = 1;
   float max_aperture_radius = 0.0f;
@@ -41,23 +42,23 @@ int main(int argc, char *argv[])
 
   for(int wedge = 1; wedge < max_tries; wedge++){
 
-    std::vector<float> cam_pos = {0.0, 0.0, 9999.0f};
+    Eigen::Vector3f cam_pos(0.0, 0.0, 9999.0f);
     float y_wedge = lenses[0].housing_radius / (static_cast<float>(max_tries)/static_cast<float>(wedge));
-    cam_pos[dim_up] = y_wedge;
+    cam_pos(dim_up) = y_wedge;
 
-    std::vector<float> cam_dir = {0.0, 0.0, -cam_pos[2]*10.0f};
-    cam_dir[dim_up] = cam_pos[dim_up];
+    Eigen::Vector3f cam_dir(0.0, 0.0, -cam_pos(2)*10.0f);
+    cam_dir(dim_up) = cam_pos(dim_up);
     raytrace_normalise(cam_dir);
     
-    std::vector<float> in(5);
-    std::vector<float> out(5);
-    std::vector<float> ap(5);
-    in[4] = out[4] = ap[4] = lambda;
+    Eigen::VectorXf in(0,0,0,0,0);
+    Eigen::VectorXf out(0,0,0,0,0);
+    Eigen::VectorXf ap(0,0,0,0,0);
+    in(4) = out(4) = ap(4) = lambda;
     float t = 0.0;
-    std::vector<float> n(3);
+    Eigen::VectorXf n(0,0,0);
     
-    std::vector<float> outpos(2);
-    std::vector<float> outdir(2);
+    Eigen::Vector2f outpos(0,0);
+    Eigen::Vector2f outdir(0,0);
     
     // intersection on first lens element
     if (stringcmp(lenses[0].geometry, "cyl-y")){
@@ -76,10 +77,10 @@ int main(int argc, char *argv[])
       csToSphere(cam_pos, cam_dir, outpos, outdir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
     }
 
-    in[0] = outpos[0];
-    in[1] = outpos[1];
-    in[2] = outdir[0];
-    in[3] = outdir[1];
+    in(0) = outpos(0);
+    in(1) = outpos(1);
+    in(2) = outdir(0);
+    in(3) = outdir(1);
     
     // evaluate until ray is blocked, positiondata will still have value of previous ray
     if (evaluate_reverse_fstop(lenses, lenses_cnt, zoom, in, out, dim_up, draw_aspheric, positiondata, max_aperture_radius)){
@@ -89,10 +90,10 @@ int main(int argc, char *argv[])
     cnt += 1;
   }
 
-  fmt::print("Last valid exit vertex position: [{}, {}]\n", positiondata[0], positiondata[1]);
+  fmt::print("Last valid exit vertex position: [{}, {}]\n", positiondata(0), positiondata(1));
   fmt::print("Failed at try {} of {}\n", cnt, max_tries);
 
-  float theta = std::atan(positiondata[1] / positiondata[0]);
+  float theta = std::atan(positiondata(1) / positiondata(0));
   float fstop = 1.0 / (std::sin(theta)* 2.0);
 
   if ((fstop != fstop) || (fstop == 0.0)){

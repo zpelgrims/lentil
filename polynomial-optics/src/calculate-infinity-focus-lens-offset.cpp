@@ -30,26 +30,25 @@ int main(int argc, char *argv[]){
     float lens_length = 0;
     for(int i=0;i<lenses_cnt;i++) lens_length += lens_get_thickness(lenses[i], zoom);
 
-    std::vector<float> cam_pos(3);
-    std::vector<float> cam_dir(3);
-    cam_pos[dim_up] = 0.1*lenses[lenses_cnt-1].housing_radius;
+    Eigen::Vector3f cam_pos(0,0,0);
+    Eigen::Vector3f cam_dir(0,0,0);
+    cam_pos(dim_up) = 0.1*lenses[lenses_cnt-1].housing_radius;
 
-    cam_dir[2] = cam_pos[2] - 99999;
-    cam_dir[dim_up] = cam_pos[dim_up];
+    cam_dir(2) = cam_pos(2) - 99999;
+    cam_dir(dim_up) = cam_pos(dim_up);
     raytrace_normalise(cam_dir);
-    for(int i=0;i<3;i++) cam_pos[i] -= 0.1f * cam_dir[i];
+    for(int i=0;i<3;i++) cam_pos(i) -= 0.1f * cam_dir(i);
     
-    std::vector<float> in(5);
-    std::vector<float> out(5);
-    std::vector<float> ap(5);
-    std::vector<float> inrt(5);
-    std::vector<float> outrt(5);
-    inrt[4] = outrt[4] = in[4] = out[4] = ap[4] = lambda;
+    Eigen::VectorXf in(0,0,0,0,lambda);
+    Eigen::VectorXf out(0,0,0,0,lambda);
+    Eigen::VectorXf ap(0,0,0,0,lambda);
+    Eigen::VectorXf inrt(0,0,0,0,lambda);
+    Eigen::VectorXf outrt(0,0,0,0,lambda);
     float t = 0.0f;
-    std::vector<float> n(3);
+    Eigen::Vector3f n(0,0,0);
 
-    std::vector<float> outpos(2);
-    std::vector<float> outdir(2);
+    Eigen::Vector2f outpos(0,0);
+    Eigen::Vector2f outdir(0,0);
     
     if (stringcmp(lenses[0].geometry, "cyl-y")){
       // intersection with first lens element, but seems like a duplicate purpose of the algebra method above..
@@ -73,12 +72,12 @@ int main(int argc, char *argv[]){
       sphereToCs(outpos, outdir, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
     }
 
-    in[0] = outpos[0];
-    in[1] = outpos[1];
-    in[2] = outdir[0];
-    in[3] = outdir[1];
+    in(0) = outpos(0);
+    in(1) = outpos(1);
+    in(2) = outdir(0);
+    in(3) = outdir(1);
     
-    for(int i=0;i<5;i++) inrt[i] = in[i];
+    for(int i=0;i<5;i++) inrt(i) = in(i);
     
     float distance = evaluate_reverse_intersection_y0(lenses, lenses_cnt, zoom, inrt, outrt, dim_up, draw_aspheric);
 

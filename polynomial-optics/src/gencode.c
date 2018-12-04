@@ -134,18 +134,18 @@ int main(int argc, char **argv)
   float out[] = {0, 0, 0, 0, 0};
   poly_system_evaluate(&poly, sensor, out, 100);
  
-  const std::vector<float> inpos = {out[0], out[1]};
-  const std::vector<float> indir = {out[2], out[3]};
-  std::vector<float> wspos(3);
-  std::vector<float> wsdir(3);
+  const Eigen::Vector2f inpos(out[0], out[1]);
+  const Eigen::Vector2f indir(out[2], out[3]);
+  Eigen::Vector3f pos_cs(0,0,0);
+  Eigen::Vector3f dir_cs(0,0,0);
 
-  if (stringcmp(lenses[0].geometry, "cyl-y")) cylinderToCs(inpos, indir, wspos, wsdir, 0, lenses[0].lens_radius, true);
-  else if (stringcmp(lenses[0].geometry, "cyl-x")) cylinderToCs(inpos, indir, wspos, wsdir, 0, lenses[0].lens_radius, false);
-  else sphereToCs(inpos, indir, wspos, wsdir, 0, lenses[0].lens_radius);
+  if (stringcmp(lenses[0].geometry, "cyl-y")) cylinderToCs(inpos, indir, pos_cs, dir_cs, 0, lenses[0].lens_radius, true);
+  else if (stringcmp(lenses[0].geometry, "cyl-x")) cylinderToCs(inpos, indir, pos_cs, dir_cs, 0, lenses[0].lens_radius, false);
+  else sphereToCs(inpos, indir, pos_cs, dir_cs, 0, lenses[0].lens_radius);
   
-  raytrace_normalise(wsdir);
-  wsdir[2] = wsdir[2]<-1?-1:wsdir[2]>1?1:wsdir[2];
-  float fov = wsdir[2];
+  raytrace_normalise(dir_cs);
+  dir_cs(2) = dir_cs(2) < -1 ? -1 : dir_cs(2) > 1 ? 1 : dir_cs(2);
+  const float fov = dir_cs(2);
   fprintf(f, "camera->lens_field_of_view = %f; // cosine of the approximate field of view assuming a 35mm image\n", fov);
   fprintf(f, "} break;\n");
   fclose(f);

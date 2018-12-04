@@ -9,27 +9,25 @@
 static inline int evaluate_draw(const std::vector<lens_element_t> lenses, 
                                 const int lenses_cnt, 
                                 const float zoom, 
-                                const std::vector<float> in, 
-                                std::vector<float> &out, 
+                                const Eigen::VectorXf in, 
+                                Eigen::VectorXf &out, 
                                 cairo_t *cr, 
                                 float scale, 
                                 const int dim_up, 
                                 const int draw_aspherical,
-                                std::vector<float> &pos_out,
-                                std::vector<float> &dir_out)
+                                Eigen::Vector3f &pos_out,
+                                Eigen::Vector3f &dir_out)
 {
   int error = 0;
-  float n1 = spectrum_eta_from_abbe_um(lenses[lenses_cnt-1].ior, lenses[lenses_cnt-1].vno, in[4]);
-  std::vector<float> pos(3);
-  std::vector<float> dir(3);
+  float n1 = spectrum_eta_from_abbe_um(lenses[lenses_cnt-1].ior, lenses[lenses_cnt-1].vno, in(4));
+  Eigen::Vector3f pos(0,0,0);
+  Eigen::Vector3f dir(0,0,0);
   float intensity = 1.0f;
 
-  const std::vector<float> inpos = {in[0], in[1]};
-  const std::vector<float> indir = {in[2], in[3]};
-  planeToCs(inpos, indir, pos, dir, 0);
+  planeToCs(Eigen::Vector2f(in(0), in(1)), Eigen::Vector2f(in(2), in(3)), pos, dir, 0);
 
   cairo_set_source_rgba(cr, 1.0, 1.0, 0.2, 0.7);
-  cairo_move_to(cr, pos[2], pos[dim_up]);
+  cairo_move_to(cr, pos(2), pos(dim_up);
 
   float distsum = 0;
 
@@ -40,17 +38,15 @@ static inline int evaluate_draw(const std::vector<lens_element_t> lenses,
     float t = 0.0f;
     distsum += lens_get_thickness(lenses[k], zoom);
     
-    //normal at intersection
-    std::vector<float> n(3);
-    
-    error |= intersect(lenses, k, pos, dir, t, n, R, distsum, true);
+    Eigen::Vector3f normal(0,0,0);
+    error |= intersect(lenses, k, pos, dir, t, normal, R, distsum, true);
 
     // index of refraction and ratio current/next:
-    const float n2 = k ? spectrum_eta_from_abbe_um(lenses[k-1].ior, lenses[k-1].vno, in[4]) : 1.0f; // outside the lens there is vacuum
+    const float n2 = k ? spectrum_eta_from_abbe_um(lenses[k-1].ior, lenses[k-1].vno, in(4)) : 1.0f; // outside the lens there is vacuum
 
-    cairo_line_to(cr, pos[2], pos[dim_up]);
+    cairo_line_to(cr, pos(2), pos(dim_up));
 
-    intensity *= refract(n1, n2, n, dir);
+    intensity *= refract(n1, n2, normal, dir);
     if(intensity < INTENSITY_EPS) error |= 8;
 
     if(error)
@@ -69,61 +65,61 @@ static inline int evaluate_draw(const std::vector<lens_element_t> lenses,
     n1 = n2;
   }
 
-  std::vector<float> outpos(2);
-  std::vector<float> outdir(2);
+  Eigen::Vector2f outpos(0,0);
+  Eigen::Vector2f outdir(0,0);
   
   // return [x,y,dx,dy,lambda]
-  if (stringcmp(lenses[0].geometry, "cyl-y")) csToCylinder(pos, dir, outpos, outdir, distsum-fabs(lenses[0].lens_radius), lenses[0].lens_radius, true);
-  else if (stringcmp(lenses[0].geometry, "cyl-x")) csToCylinder(pos, dir, outpos, outdir, distsum-fabs(lenses[0].lens_radius), lenses[0].lens_radius, false);
-  else csToSphere(pos, dir, outpos, outdir, distsum-fabs(lenses[0].lens_radius), lenses[0].lens_radius);
+  if (stringcmp(lenses[0].geometry, "cyl-y")) csToCylinder(pos, dir, outpos, outdir, distsum-std::abs(lenses[0].lens_radius), lenses[0].lens_radius, true);
+  else if (stringcmp(lenses[0].geometry, "cyl-x")) csToCylinder(pos, dir, outpos, outdir, distsum-std::abs(lenses[0].lens_radius), lenses[0].lens_radius, false);
+  else csToSphere(pos, dir, outpos, outdir, distsum-std::abs(lenses[0].lens_radius), lenses[0].lens_radius);
 
-  out[0] = outpos[0];
-  out[1] = outpos[1];
-  out[2] = outdir[0];
-  out[3] = outdir[1];
-  out[4] = intensity;
+  out(0) = outpos(0);
+  out(1) = outpos(1);
+  out(2) = outdir(0);
+  out(3) = outdir(1);
+  out(4) = intensity;
 
 
-  cairo_line_to(cr, pos[2] + dir[2]*1000.0, pos[dim_up] + dir[dim_up]*1000.0);
+  cairo_line_to(cr, pos(2) + dir(2)*1000.0, pos(dim_up) + dir(dim_up)*1000.0);
   cairo_save(cr);
   cairo_scale(cr, 1/scale, 1/scale);
   cairo_set_line_width(cr, 1.0f/20.0f);
   cairo_stroke(cr);
   cairo_restore(cr);
 
-  pos_out[0] = pos[0];
-  pos_out[1] = pos[1];
-  pos_out[2] = pos[2];
-  dir_out[0] = dir[0];
-  dir_out[1] = dir[1];
-  dir_out[2] = dir[2];
+  pos_out(0) = pos(0);
+  pos_out(1) = pos(1);
+  pos_out(2) = pos(2);
+  dir_out(0) = dir(0);
+  dir_out(1) = dir(1);
+  dir_out(2) = dir(2);
   return error;
 }
 
 // evaluate scene to sensor:
-static inline int evaluate_reverse_draw(const std::vector<lens_element_t> lenses, const int lenses_cnt, const float zoom, const std::vector<float> in, std::vector<float> &out, cairo_t *cr, const float scale, const int dim_up, const int draw_aspherical)
+static inline int evaluate_reverse_draw(const std::vector<lens_element_t> lenses, const int lenses_cnt, const float zoom, const Eigen::VectorXf in, Eigen::VectorXf &out, cairo_t *cr, const float scale, const int dim_up, const int draw_aspherical)
 {
   int error = 0;
   float n1 = 1.0f;
-  std::vector<float> pos(3);
-  std::vector<float> dir(3);
+  Eigen::Vector3f pos(0,0,0);
+  Eigen::Vector3f dir(0,0,0);
   float intensity = 1.0f;
 
   float lens_length = 0;
   for(int i=0;i<lenses_cnt;i++) lens_length += lens_get_thickness(lenses[i], zoom);
 
-  const std::vector<float> inpos = {in[0], in[1]};
-  const std::vector<float> indir = {in[2], in[3]};
+  const Eigen::Vector2f inpos(in(0), in(1));
+  const Eigen::Vector2f indir(in(2), in(3));
   if (stringcmp(lenses[0].geometry, "cyl-y")) cylinderToCs(inpos, indir, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
   else if (stringcmp(lenses[0].geometry, "cyl-x")) cylinderToCs(inpos, indir, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, false);
   else sphereToCs(inpos, indir, pos, dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius);
 
   // sphere param only knows about directions facing /away/ from outer pupil, so
   // need to flip this if we're tracing into the lens towards the sensor:
-  for(int i = 0; i < 3; i++) dir[i] = -dir[i];
+  for(int i = 0; i < 3; i++) dir(i) = -dir(i);
 
-  cairo_move_to(cr, pos[2]-9999.0*dir[2], pos[dim_up] - 9999.0*dir[dim_up]); 
-  cairo_line_to(cr, pos[2], pos[dim_up]);
+  cairo_move_to(cr, pos(2)-9999.0*dir(2), pos(dim_up) - 9999.0*dir(dim_up)); 
+  cairo_line_to(cr, pos(2), pos(dim_up));
 
   float distsum = lens_length;
 
@@ -134,15 +130,15 @@ static inline int evaluate_reverse_draw(const std::vector<lens_element_t> lenses
     const float dist = lens_get_thickness(lenses[k], zoom);
 
     //normal at intersection
-    std::vector<float> n(3);
+    Eigen::Vector3f n(0,0,0);
     error |= intersect(lenses, k, pos, dir, t, n, R, distsum, false);
 
     if(n[2] < 0.0) error |= 16;
 
-    cairo_line_to(cr, pos[2], pos[dim_up]);
+    cairo_line_to(cr, pos(2), pos(dim_up));
     
     // index of refraction and ratio current/next:
-    const float n2 = spectrum_eta_from_abbe_um(lenses[k].ior, lenses[k].vno, in[4]);
+    const float n2 = spectrum_eta_from_abbe_um(lenses[k].ior, lenses[k].vno, in(4));
     intensity *= refract(n1, n2, n, dir);
     if(intensity < INTENSITY_EPS) error |= 8;
 
@@ -165,8 +161,8 @@ static inline int evaluate_reverse_draw(const std::vector<lens_element_t> lenses
   }
   
 
-  cairo_line_to(cr, pos[2], pos[dim_up]);
-  cairo_line_to(cr, 0.0f, pos[dim_up] - pos[2]*dir[dim_up]/dir[2]);
+  cairo_line_to(cr, pos(2), pos(dim_up));
+  cairo_line_to(cr, 0.0f, pos(dim_up) - pos(2)*dir(dim_up)/dir(2));
   
   cairo_save(cr);
   cairo_scale(cr, 1/scale, 1/scale);
@@ -177,14 +173,14 @@ static inline int evaluate_reverse_draw(const std::vector<lens_element_t> lenses
   cairo_restore(cr);
 
   // return [x,y,dx,dy,lambda]
-  std::vector<float> outpos(2);
-  std::vector<float> outdir(2);
+  Eigen::Vector2f outpos(0,0);
+  Eigen::Vector2f outdir(0,0);
   csToPlane(pos, dir, outpos, outdir, 0.0f);//0.0==distsum);
-  out[0] = outpos[0];
-  out[1] = outpos[1];
-  out[2] = outdir[0];
-  out[3] = outdir[1];
-  out[4] = intensity;
+  out(0) = outpos(0);
+  out(1) = outpos(1);
+  out(2) = outdir(0);
+  out(3) = outdir(1);
+  out(4) = intensity;
   
   return error;
 }
