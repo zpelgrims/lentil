@@ -1,7 +1,7 @@
-Fork of "Sparse high-degree polynomials for wide-angle lenses (2016)" paper
+## Fork of "Sparse high-degree polynomials for wide-angle lenses (2016)" paper
 ------------------------
 
-Added features:
+#### Added features:
 
 - Support for anamorphic lens elements in both axes
 - Support for anamorphic exit pupil (cylindrical projection to unit disk)
@@ -11,16 +11,20 @@ Added features:
     - fstop
     - infinity focus
 
+#### Workflow:
+
 1. Build the code by running ```. ./build.sh```.
 2. View a lens description
 3. Raytrace the focal length/infinity focus
-3. Generate the polynomial code using ```src/database-to-code.sh int_lens_id int_focal_length```
+3. Generate the polynomial code using ```src/database-to-code.sh int_lens_id int_focal_length int_degree int_max_coefficients```
 
 
 ------------------------
 ------------------------
+------------------------
+------------------------
 
-Overview
+#### ORIGINAL PAPER README:
 ------------------------
 The provided code can be used to find sparse polynomials transferring rays through a lens system.
 

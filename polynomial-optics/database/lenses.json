@@ -3520,10 +3520,12 @@
     "focal-length-mm-patent": 100.0,
     "focal-length-mm-raytraced": 99.44563293457031,
     "fstop": {
+      "100": 1.107933521270752,
       "50": 1.1092119216918945,
       "unscaled": 1.1079870462417603
     },
     "max-fstop-aperture-radius": {
+      "100": 25.623899459838867,
       "50": 12.814361572265625,
       "unscaled": 25.480609893798828
     },
@@ -3835,7 +3837,8 @@
     "patent-location": "https://patentimages.storage.googleapis.com/2f/75/dd/b76ccb73bc0f44/US2701982.pdf",
     "patent-number": "US2701982",
     "polynomial-optics": [
-      50
+      50,
+      100
     ],
     "prime": true,
     "product-name": "double-gauss-test-low-degree-low-coefficients",
