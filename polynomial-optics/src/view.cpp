@@ -283,7 +283,7 @@ void draw_aperture(cairo_t *cr) {
   cairo_stroke(cr);
 }
 
-void draw_focallength(cairo_t *cr) {
+void draw_focal_length(cairo_t *cr, const float scale) {
 
   Eigen::Vector3f cam_pos(0,0,0);
   Eigen::Vector3f cam_dir(0,0,0);
@@ -551,9 +551,12 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
 
       const float lambda = 0.5f;
 
-      Eigen::VectorXf in(5); in << 0,0,0,0,lambda;
-      Eigen::VectorXf out(5); out << 0,0,0,0,lambda;
-      Eigen::VectorXf ap(5); ap << 0,0,0,0,lambda;
+      //Eigen::VectorXf in(5); in << 0,0,0,0,lambda;
+      //Eigen::VectorXf out(5); out << 0,0,0,0,lambda;
+      float in[5] = {0.0, 0.0, 0.0, 0.0, lambda};
+      float out[5] = {0.0, 0.0, 0.0, 0.0, lambda};
+      float ap[5] = {0.0, 0.0, 0.0, 0.0, lambda};
+      //Eigen::VectorXf ap(5); ap << 0,0,0,0,lambda;
       Eigen::VectorXf inrt(5); inrt << 0,0,0,0,lambda;
       Eigen::VectorXf outrt(5); outrt << 0,0,0,0,lambda;
 
@@ -651,7 +654,10 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
         outrt[2] = -outrt[2];
         outrt[3] = -outrt[3];
         outrt[4] = lambda;
-        error = evaluate_draw(lenses, lenses_cnt, zoom, outrt, inrt, cr, scale, dim_up, draw_aspheric, false, false);
+
+        // tmp need to remove
+        Eigen::Vector3f tmpdraw01, tmpdraw02;
+        error = evaluate_draw(lenses, lenses_cnt, zoom, outrt, inrt, cr, scale, dim_up, draw_aspheric, tmpdraw01, tmpdraw02);
       }  
     }
   }
@@ -660,7 +666,7 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
   draw_sensor(cr);
   draw_aperture(cr);
 
-  if (draw_focallength) draw_focallength(cr);
+  if (draw_focallength) draw_focal_length(cr, scale);
 
 
   if(screenshot) {

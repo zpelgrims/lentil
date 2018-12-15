@@ -63,7 +63,7 @@ static inline int spherical(
   return error;
 }
 
-static inline float evaluate_aspherical(const Eigen::Vector3f pos, const float R, const int k, const Eigen::Vector4f correction) {
+static inline float evaluate_aspherical(const Eigen::Vector2f pos, const float R, const int k, const Eigen::Vector4f correction) {
   float h = std::sqrt(pos(0)*pos(0) + pos(1)*pos(1));
   float hr = h / R;
   float h2 = h*h;
@@ -75,7 +75,7 @@ static inline float evaluate_aspherical(const Eigen::Vector3f pos, const float R
   return z;
 }
 
-static inline float evaluate_aspherical_derivative(const Eigen::Vector3f pos, const float R, const int k, const Eigen::Vector4f correction) {
+static inline float evaluate_aspherical_derivative(const Eigen::Vector2f pos, const float R, const int k, const Eigen::Vector4f correction) {
   float h = std::sqrt(pos(0)*pos(0)+pos(1)*pos(1));
   float hr = h / R;
   float h2 = h*h;
@@ -107,17 +107,17 @@ static inline int aspherical(
   float position_error = 1e7;
 
 
+  Eigen::Vector2f pos2f(pos(0), pos(1));
   for(int i = 0; i < 100; i++)
   {
-    position_error = rad+center-pos(2)-evaluate_aspherical(pos, rad, k, correction);
+    position_error = rad+center-pos(2)-evaluate_aspherical(pos2f, rad, k, correction);
     float tErr = position_error/dir(2);
     t += tErr;
     propagate(pos, dir, tErr);
     if(std::abs(position_error) < 1e-4) break;
   }
 
-
-  float dz = evaluate_aspherical_derivative(pos, rad, k, correction);
+  float dz = evaluate_aspherical_derivative(pos2f, rad, k, correction);
   const float r = std::sqrt(pos(0)*pos(0)+pos(1)*pos(1));
 
   if(normal(2) < 0) dz = -dz;

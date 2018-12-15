@@ -27,7 +27,7 @@ static inline int evaluate_draw(const std::vector<lens_element_t> lenses,
   planeToCs(Eigen::Vector2f(in(0), in(1)), Eigen::Vector2f(in(2), in(3)), pos, dir, 0);
 
   cairo_set_source_rgba(cr, 1.0, 1.0, 0.2, 0.7);
-  cairo_move_to(cr, pos(2), pos(dim_up);
+  cairo_move_to(cr, pos(2), pos(dim_up));
 
   float distsum = 0;
 
