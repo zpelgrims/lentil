@@ -1,14 +1,12 @@
 #!/bin/bash
 
+# should be called like ". ./build.sh"
 
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-
 
 # todo:
 # check if dependencies are installed
 # if not, install all dependencies
-
-
 
 echo ""
 echo "Setting environment variables: "
@@ -28,4 +26,4 @@ echo ""
 # reset text formatting
 tput sgr0
 
-make
+make -j 32

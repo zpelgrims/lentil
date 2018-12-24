@@ -1,14 +1,8 @@
 CXX=g++
-CXXFLAGS=-Wall -D_GNU_SOURCE -fopenmp -std=c++14 -DFMT_HEADER_ONLY
+CXXFLAGS=-Wall -D_GNU_SOURCE -fopenmp -std=c++17 -DFMT_HEADER_ONLY
 # CXXFLAGS += -I/usr/local/include/cairo/ -L/usr/local/lib
-
-# OPTFLAGS=-I. -ggdb3 -Isrc/
-
-#OPTFLAGS= -ffast-math -mfpmath=sse -march=native -fexpensive-optimizations
-OPTFLAGS = -O3 -DNDEBUG -ffast-math -mfpmath=sse -march=native -fno-finite-math-only -I. -Isrc/
-#OPTFLAGS += -Wno-ignored-attributes -Wno-misleading-indentation
-OPTFLAGS += -g #debug symbols for debugging with gdb
-
+OPTFLAGS = -O3 -DNDEBUG -ffast-math -mfpmath=sse -march=native -fno-finite-math-only -fexpensive-optimizations -I. -Isrc/
+OPTFLAGS += -ggdb3 #debug symbols for debugging with gdb
 LDFLAGS = -lm
 
 HEADERS=\
@@ -20,7 +14,6 @@ src/gencode.h\
 src/spectrum.h
 
 .PHONY=all clean
-
 
 all: \
 	view \
@@ -35,7 +28,6 @@ all: \
 	printpoly \
 	print-lens-path \
 	add-fitted-focal-length
-
 
 view: Makefile src/view.cpp ${HEADERS}
 	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/view.cpp $(shell pkg-config --cflags --libs gtk+-3.0) ${LDFLAGS} -o bin/view ${LDFLAGS}

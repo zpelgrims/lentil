@@ -3,9 +3,17 @@
     "commercial": false,
     "company": "angenieux",
     "focal-length-mm-patent": 100.0,
-    "focal-length-mm-raytraced": 99.67037200927734,
-    "fstop": 1.107980489730835,
-    "max-fstop-aperture-radius": 25.48064613342285,
+    "focal-length-mm-raytraced": 99.44563293457031,
+    "fstop": {
+      "100": 1.1079325675964355,
+      "49": 1.1085729598999023,
+      "unscaled": 1.1079870462417603
+    },
+    "max-fstop-aperture-radius": {
+      "100": 25.623905181884766,
+      "49": 12.53105640411377,
+      "unscaled": 25.480609893798828
+    },
     "notes": "large aperture six element objective, nice swirly bokeh",
     "optical-elements-adjusted": [
       {
@@ -314,7 +322,8 @@
     "patent-location": "https://patentimages.storage.googleapis.com/2f/75/dd/b76ccb73bc0f44/US2701982.pdf",
     "patent-number": "US2701982",
     "polynomial-optics": [
-      100
+      100,
+      49
     ],
     "prime": true,
     "product-name": "double-gauss",
@@ -326,7 +335,6 @@
     "company": "meyer-optik-goerlitz",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": 99.65371704101563,
-    "fstop": 1.4671032428741455,
     "notes": "Primoplan 58mm f1.5",
     "optical-elements-patent": [
       {
@@ -443,7 +451,6 @@
     "company": "unknown",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": 85.5024185180664,
-    "fstop": 3.4082977771759033,
     "notes": "classical 19th century petzval lens, should be scaled to 100mm",
     "optical-elements-patent": [
       {
@@ -540,7 +547,6 @@
     "company": "nikon",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": 99.26875305175781,
-    "fstop": 2.7449190616607666,
     "notes": "This invention provides a retrofocus-type wide angle lens having a relative aperture of F/2.8, an angle of field of 75° and a back focus of more than 1.3 times the focallength and comprises seven lens elements",
     "optical-elements-patent": [
       {
@@ -707,7 +713,6 @@
     "company": "canon",
     "focal-length-mm-patent": 14.2,
     "focal-length-mm-raytraced": 15.135459899902344,
-    "fstop": 2.636186361312866,
     "notes": "The present invention relates to a retro-focus type wide angle lens which is compact despite its remarkably large field of view and well compensated for various aberrations. f = 14.2, f2.8, Angle of field = 114",
     "notes-to-self": "3rd lens element in patent seems to have incorrect radius of curvature when compared to provided image (58.28->40.28). This has been corrected in the optical-elements-patent dict.",
     "optical-elements-patent": [
@@ -985,7 +990,6 @@
     "company": "kodak",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": 100.00676727294922,
-    "fstop": 2.195089340209961,
     "notes": "Petzval type lens, f=100mm",
     "optical-elements-patent": [
       {
@@ -1082,7 +1086,6 @@
     "company": "cooke",
     "focal-length-mm-patent": 25.4,
     "focal-length-mm-raytraced": 25.92892837524414,
-    "fstop": 1.994993805885315,
     "notes": "Cooke Series O f/2.0 OPIC lens, Horace W. Lee designed the Cooke OPIC lenses to be the first to combine an f/2.0 aperture with a fully corrected color and geometry. Studios snapped up the new Cooke f/2.0 (T2.3) lenses. The original f/2.0 OPIC design became the now-legendary uncoated Cooke Speed Panchros.",
     "optical-elements-patent": [
       {
@@ -1209,7 +1212,6 @@
     "company": "nikon",
     "focal-length-mm-patent": 51.6,
     "focal-length-mm-raytraced": 52.808231353759766,
-    "fstop": 1.2235713005065918,
     "notes": "f/1.25",
     "optical-elements-patent": [
       {
@@ -1396,7 +1398,6 @@
     "company": "zeiss",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": 99.09127044677734,
-    "fstop": 1.3913335800170898,
     "notes": "58mm?",
     "optical-elements-patent": [
       {
@@ -1523,7 +1524,6 @@
     "company": "asahi",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": 99.61552429199219,
-    "fstop": 1.24519681930542,
     "notes": "Based on the Biotar design, 50mm",
     "optical-elements-patent": [
       {
@@ -1680,7 +1680,6 @@
     "company": "asahi",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": 99.20272827148438,
-    "fstop": 1.960183024406433,
     "notes": "SMC Takumar 35mm f2.0",
     "optical-elements-patent": [
       {
@@ -1857,7 +1856,6 @@
     "company": "asahi",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": 126.5606689453125,
-    "fstop": 4.531745433807373,
     "notes": "SMC Takumar 18mm f3.5",
     "notes-to-self": "The dimensions have been matched, yet the FL/fstop are incorrect. There also seems to be a discrepency between the provided image and the raytraced drawing (lens element 4 from image space). Currently not suited for production in this state.",
     "optical-elements-patent": [
@@ -2095,7 +2093,6 @@
     "company": "zeiss",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": 99.331298828125,
-    "fstop": 3.173597574234009,
     "notes": "Flektagon 35mm f2.8",
     "notes-to-self": "Huge discrepancy between drawings and raytrace drawings. The numbers match but the distance between the lens elements is not the same at all..",
     "optical-elements-patent": [
@@ -2243,7 +2240,6 @@
     "company": "cooke",
     "focal-length-mm-patent": 25.4,
     "focal-length-mm-raytraced": 9.555700302124023,
-    "fstop": null,
     "notes": "Anamorphic 2x stretch",
     "notes-to-self": "Not in working order.. The raytraced focal length is vastly different.. Standardized to 1inch. Quite strange how the light travels through the elements.. Think I must have made a translation mistake",
     "optical-elements-patent": [
@@ -2441,7 +2437,6 @@
     "patent-location": "https://patentimages.storage.googleapis.com/14/ca/8f/ca77e3572940d2/US2832262.pdf",
     "patent-number": "US2832262",
     "polynomial-optics": [
-      100
     ],
     "prime": true,
     "product-name": "anamorphic",
@@ -2453,7 +2448,6 @@
     "company": "Panavision",
     "focal-length-mm-patent": 100.0,
     "focal-length-mm-raytraced": null,
-    "fstop": null,
     "notes": "Rear anamorph. To be placed behind a primary spherical lens. Squeeze factor 1.34. Index of refraction and Abbe numbers not in patent, instead glass type is given. IOR and abbe taken from OHARA glass catalogue.",
     "optical-elements-patent": [
       {
@@ -2610,7 +2604,6 @@
     "company": "Panavision-Angenieux",
     "focal-length-mm-patent": 100.0,
     "focal-length-mm-raytraced": null,
-    "fstop": null,
     "notes": "Testing combining rear anamorphic (#2002) + regular lens (#0001)",
     "optical-elements-patent": [
       {
@@ -2907,7 +2900,6 @@
     "patent-location": null,
     "patent-number": null,
     "polynomial-optics": [
-      100
     ],
     "prime": true,
     "product-name": "rear-anamorph-double-gauss",
@@ -2919,7 +2911,6 @@
     "company": "schneider",
     "focal-length-mm-patent": 31,
     "focal-length-mm-raytraced": 30.41015625,
-    "fstop": 1.9532511234283447,
     "max-fstop-aperture-radius": 9.80594253540039,
     "notes": "",
     "optical-elements-patent": [
@@ -3117,7 +3108,6 @@
     "patent-location": "https://worldwide.espacenet.com/publicationDetails/originalDocument?CC=US&NR=6310731B1&KC=B1&FT=D&ND=7&date=20011030&DB=&locale=en_EP",
     "patent-number": "US6310731",
     "polynomial-optics": [
-      31
     ],
     "prime": true,
     "product-name": "anamorphic",
@@ -3129,8 +3119,6 @@
     "company": "test",
     "focal-length-mm-patent": 31,
     "focal-length-mm-raytraced": null,
-    "fstop": null,
-    "max-fstop-aperture-radius": null,
     "notes": "",
     "optical-elements-patent": [
       {
@@ -3197,8 +3185,6 @@
     "company": "angenieux",
     "focal-length-mm-patent": 100.0,
     "focal-length-mm-raytraced": 99.44563293457031,
-    "fstop": 1.1079870462417603,
-    "max-fstop-aperture-radius": 25.480609893798828,
     "notes": "DUPLICATE large aperture six element objective, nice swirly bokeh",
     "optical-elements-adjusted": [
       {
@@ -3507,7 +3493,6 @@
     "patent-location": "https://patentimages.storage.googleapis.com/2f/75/dd/b76ccb73bc0f44/US2701982.pdf",
     "patent-number": "US2701982",
     "polynomial-optics": [
-      50
     ],
     "prime": true,
     "product-name": "double-gauss",
@@ -3521,11 +3506,13 @@
     "focal-length-mm-raytraced": 99.44563293457031,
     "fstop": {
       "100": 1.107933521270752,
+      "49": 1.109336495399475,
       "50": 1.1092119216918945,
       "unscaled": 1.1079870462417603
     },
     "max-fstop-aperture-radius": {
       "100": 25.623899459838867,
+      "49": 12.557219505310059,
       "50": 12.814361572265625,
       "unscaled": 25.480609893798828
     },
@@ -3837,8 +3824,6 @@
     "patent-location": "https://patentimages.storage.googleapis.com/2f/75/dd/b76ccb73bc0f44/US2701982.pdf",
     "patent-number": "US2701982",
     "polynomial-optics": [
-      50,
-      100
     ],
     "prime": true,
     "product-name": "double-gauss-test-low-degree-low-coefficients",
