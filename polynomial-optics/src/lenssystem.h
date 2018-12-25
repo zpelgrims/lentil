@@ -95,8 +95,12 @@ int lens_configuration(std::vector<lens_element_t> &l, const char *id, const int
 {
   l.clear();
 
-  // need to put this in a try except block, it segfaults without any information when LENTIL_PATH is not set...
+  // !!! need to put this in a try except block, it segfaults without any information when LENTIL_PATH is not set...
   std::string lens_database_path = std::getenv("LENTIL_PATH");
+  if (lens_database_path.size() == 0){
+    fmt::print("LENTIL_PATH has not been set!\n", lens_database_path);
+    return -1;
+  }
   fmt::print("LENTIL_PATH: {}\n", lens_database_path);
 
   std::string polynomial_optics = "polynomial-optics";
