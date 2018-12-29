@@ -14,5 +14,5 @@ camera->lens_outer_pupil_geometry = "spherical"; // geometry of outer pupil
 camera->lens_inner_pupil_geometry = "spherical"; // geometry of inner pupil
 camera->lens_fstop = 1.107933; // effective_focal_length/(2*aperture_housing_radius)
 camera->lens_aperture_radius_at_fstop = 25.623905; // aperture radius at smallest fstop
-camera->lens_field_of_view = 0.977144; // cosine of the approximate field of view assuming a 35mm image
+camera->lens_field_of_view = 0.975910; // cosine of the approximate field of view assuming a 35mm image
 } break;

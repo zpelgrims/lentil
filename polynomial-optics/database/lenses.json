@@ -6,12 +6,12 @@
     "focal-length-mm-raytraced": 99.44563293457031,
     "fstop": {
       "100": 1.1079325675964355,
-      "49": 1.1085729598999023,
+      "49": 1.109336495399475,
       "unscaled": 1.1079870462417603
     },
     "max-fstop-aperture-radius": {
       "100": 25.623905181884766,
-      "49": 12.53105640411377,
+      "49": 12.557219505310059,
       "unscaled": 25.480609893798828
     },
     "notes": "large aperture six element objective, nice swirly bokeh",
@@ -2436,8 +2436,7 @@
     ],
     "patent-location": "https://patentimages.storage.googleapis.com/14/ca/8f/ca77e3572940d2/US2832262.pdf",
     "patent-number": "US2832262",
-    "polynomial-optics": [
-    ],
+    "polynomial-optics": [],
     "prime": true,
     "product-name": "anamorphic",
     "production-ready": false,
@@ -2899,8 +2898,7 @@
     ],
     "patent-location": null,
     "patent-number": null,
-    "polynomial-optics": [
-    ],
+    "polynomial-optics": [],
     "prime": true,
     "product-name": "rear-anamorph-double-gauss",
     "production-ready": false,
@@ -2910,8 +2908,15 @@
     "commercial": false,
     "company": "schneider",
     "focal-length-mm-patent": 31,
-    "focal-length-mm-raytraced": 30.41015625,
-    "max-fstop-aperture-radius": 9.80594253540039,
+    "focal-length-mm-raytraced": 30.410140991210938,
+    "fstop": {
+      "31": 1.9531233310699463,
+      "unscaled": 1.9532463550567627
+    },
+    "max-fstop-aperture-radius": {
+      "31": 9.997279167175293,
+      "unscaled": 9.805952072143555
+    },
     "notes": "",
     "optical-elements-patent": [
       {
@@ -3108,6 +3113,7 @@
     "patent-location": "https://worldwide.espacenet.com/publicationDetails/originalDocument?CC=US&NR=6310731B1&KC=B1&FT=D&ND=7&date=20011030&DB=&locale=en_EP",
     "patent-number": "US6310731",
     "polynomial-optics": [
+      31
     ],
     "prime": true,
     "product-name": "anamorphic",
@@ -3492,8 +3498,7 @@
     ],
     "patent-location": "https://patentimages.storage.googleapis.com/2f/75/dd/b76ccb73bc0f44/US2701982.pdf",
     "patent-number": "US2701982",
-    "polynomial-optics": [
-    ],
+    "polynomial-optics": [],
     "prime": true,
     "product-name": "double-gauss",
     "production-ready": true,
@@ -3823,8 +3828,7 @@
     ],
     "patent-location": "https://patentimages.storage.googleapis.com/2f/75/dd/b76ccb73bc0f44/US2701982.pdf",
     "patent-number": "US2701982",
-    "polynomial-optics": [
-    ],
+    "polynomial-optics": [],
     "prime": true,
     "product-name": "double-gauss-test-low-degree-low-coefficients",
     "production-ready": true,

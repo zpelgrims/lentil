@@ -4,12 +4,12 @@
     "company": "angenieux",
     "fstop": {
       "100": 1.1079325675964355,
-      "49": 1.1085729598999023,
+      "49": 1.109336495399475,
       "unscaled": 1.1079870462417603
     },
     "max-fstop-aperture-radius": {
       "100": 25.623905181884766,
-      "49": 12.53105640411377,
+      "49": 12.557219505310059,
       "unscaled": 25.480609893798828
     },
     "notes": "large aperture six element objective, nice swirly bokeh",
@@ -161,7 +161,14 @@
   "2004": {
     "commercial": false,
     "company": "schneider",
-    "max-fstop-aperture-radius": 9.80594253540039,
+    "fstop": {
+      "31": 1.9531233310699463,
+      "unscaled": 1.9532463550567627
+    },
+    "max-fstop-aperture-radius": {
+      "31": 9.997279167175293,
+      "unscaled": 9.805952072143555
+    },
     "notes": "",
     "patent-number": "US6310731",
     "polynomial-optics": [
@@ -178,9 +185,7 @@
     "company": "angenieux",
     "notes": "DUPLICATE large aperture six element objective, nice swirly bokeh",
     "patent-number": "US2701982",
-    "polynomial-optics": [
-      50
-    ],
+    "polynomial-optics": [],
     "prime": true,
     "product-name": "double-gauss",
     "production-ready": true,
@@ -204,11 +209,7 @@
     },
     "notes": "DUPLICATE, test for lower degree/coefficients. large aperture six element objective, nice swirly bokeh",
     "patent-number": "US2701982",
-    "polynomial-optics": [
-      50,
-      100,
-      49
-    ],
+    "polynomial-optics": [],
     "prime": true,
     "product-name": "double-gauss-test-low-degree-low-coefficients",
     "production-ready": true,

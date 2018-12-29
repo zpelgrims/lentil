@@ -101,13 +101,13 @@ int lens_configuration(std::vector<lens_element_t> &l, const char *id, const int
     fmt::print("LENTIL_PATH has not been set!\n", lens_database_path);
     return -1;
   }
-  fmt::print("LENTIL_PATH: {}\n", lens_database_path);
-
   std::string polynomial_optics = "polynomial-optics";
   if (!(lens_database_path.find(polynomial_optics) != std::string::npos)) {
     fmt::print("LENTIL_PATH has not set correctly! Point it to the polynomial-optics folder. \n");
     return -1;
   }
+  fmt::print("LENTIL_PATH: {}\n", lens_database_path);
+
 
   lens_database_path += "/database/lenses.json";
   std::ifstream in_json(lens_database_path);
