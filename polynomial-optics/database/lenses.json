@@ -3833,5 +3833,107 @@
     "product-name": "double-gauss-test-low-degree-low-coefficients",
     "production-ready": true,
     "year": 9999
+  },
+  "9994": {
+    "commercial": false,
+    "company": "test",
+    "focal-length-mm-patent": null,
+    "focal-length-mm-raytraced": null,
+    "fstop": {
+    },
+    "max-fstop-aperture-radius": {
+    },
+    "notes": "Test lens for multi-fitting",
+    "optical-elements-adjusted": [
+      {
+        "abbe": 32.3,
+        "aspherical-equation": null,
+        "housing-radius": 54,
+        "ior": 1.6751,
+        "lens-geometry": "spherical",
+        "material": "SF5",
+        "radius": 164.13,
+        "thickness": 10.99
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 54,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 559.2,
+        "thickness": 0.23
+      },
+      {
+        "abbe": 46.7,
+        "aspherical-equation": null,
+        "housing-radius": 51,
+        "ior": 1.6689,
+        "lens-geometry": "spherical",
+        "material": "BAF10",
+        "radius": 100.12,
+        "thickness": 11.45
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 51,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 213.54,
+        "thickness": 0.23
+      }
+    ],
+    "optical-elements-patent": [
+      {
+        "abbe": 32.3,
+        "aspherical-equation": null,
+        "housing-radius": 54,
+        "ior": 1.6751,
+        "lens-geometry": "spherical",
+        "material": "SF5",
+        "radius": 164.13,
+        "thickness": 10.99
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 54,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 559.2,
+        "thickness": 0.23
+      },
+      {
+        "abbe": 46.7,
+        "aspherical-equation": null,
+        "housing-radius": 51,
+        "ior": 1.6689,
+        "lens-geometry": "spherical",
+        "material": "BAF10",
+        "radius": 100.12,
+        "thickness": 11.45
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 51,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 213.54,
+        "thickness": 0.23
+      }
+    ],
+    "patent-location": null,
+    "patent-number": null,
+    "polynomial-optics": [],
+    "prime": true,
+    "product-name": "simple",
+    "production-ready": false,
+    "year": 9999
   }
 }
