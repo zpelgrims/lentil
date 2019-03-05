@@ -14,14 +14,14 @@ using json = nlohmann::json;
 
 typedef struct lens_element_t
 {
-  float lens_radius;
-  float thickness_short;
-  float thickness_mid;
-  float thickness_long;
-  float ior;
-  float vno;
-  float housing_radius;
-  Eigen::Vector4f aspheric_correction_coefficients;
+  double lens_radius;
+  double thickness_short;
+  double thickness_mid;
+  double thickness_long;
+  double ior;
+  double vno;
+  double housing_radius;
+  Eigen::Vector4d aspheric_correction_coefficients;
   int aspheric;
   std::string material;
   std::string geometry;
@@ -43,13 +43,13 @@ inline bool stringcmp(const std::string& a, const std::string& b) {
   return true;
 }
 
-static inline float lens_get_thickness(const lens_element_t l, const float zoom) {
+static inline double lens_get_thickness(const lens_element_t l, const double zoom) {
   if(zoom < .5f) return l.thickness_short * (1.0f - 2.0f*zoom) + l.thickness_mid * 2.0f * zoom;
   else           return l.thickness_mid * (1.0f - 2.0f*(zoom - 0.5f)) + l.thickness_long * (zoom - 0.5f) * 2.0f;
 }
 
 
-float lens_get_aperture_radius(const std::vector<lens_element_t> l, const int num) {
+double lens_get_aperture_radius(const std::vector<lens_element_t> l, const int num) {
   for(int k=0;k<num;k++) {
     if (stringcmp(l[k].material, "iris")) return l[k].housing_radius;
   }
@@ -57,8 +57,8 @@ float lens_get_aperture_radius(const std::vector<lens_element_t> l, const int nu
 }
 
 
-float lens_get_aperture_pos(const std::vector<lens_element_t> l, const int num, const float zoom) {
-  float pos = 0;
+double lens_get_aperture_pos(const std::vector<lens_element_t> l, const int num, const double zoom) {
+  double pos = 0;
   int k = 0;
   while(!stringcmp(l[k].material, "iris") && k < num) {
       pos += lens_get_thickness(l[k], zoom);
@@ -68,8 +68,8 @@ float lens_get_aperture_pos(const std::vector<lens_element_t> l, const int num, 
 }
 
 
-float lens_get_aperture_pos_reverse(const std::vector<lens_element_t> l, const int num, const float zoom) {
-  float pos = 0.0;
+double lens_get_aperture_pos_reverse(const std::vector<lens_element_t> l, const int num, const double zoom) {
+  double pos = 0.0;
   for(int i = num; i>0; i--) {
     pos += lens_get_thickness(l[i], zoom);
     if(stringcmp(l[i].material, "iris")) return pos;
@@ -114,11 +114,11 @@ int lens_configuration(std::vector<lens_element_t> &l, const char *id, const int
   json lens_database = json::parse(in_json);
 
   int cnt = 0;
-  float last_ior = 1.0f;
-  float last_vno = 0.0f;
+  double last_ior = 1.0f;
+  double last_vno = 0.0f;
   
   // calculate lens scale
-  float scale = 1.0f;
+  double scale = 1.0f;
 //--> will fail if patent focallength is empty
   if (target_focal_length != 0){ // dirty way of checking if we want to adjust the scale at all (e.g when calculating the raytraced focal length, we don't want to do this)
     if (lens_database[id]["focal-length-mm-raytraced"].empty()){
@@ -201,6 +201,6 @@ std::string find_lens_id_location(const char *id, const int lens_focal_length){
 }
 
 
-inline void add_to_thickness_last_element(std::vector<lens_element_t> &l, const float sensorshift, const int lenses_cnt, const float thickness_original) {
+inline void add_to_thickness_last_element(std::vector<lens_element_t> &l, const double sensorshift, const int lenses_cnt, const double thickness_original) {
   l[lenses_cnt-1].thickness_short = thickness_original + sensorshift;
 }

@@ -27,14 +27,14 @@ int main(int argc, char *argv[])
   // loading lens config with focallength=0, which means no scale transform on the lens
   const int lenses_cnt = lens_configuration(lenses, id, focallength);
 
-  const float zoom = 0.0f;
+  const double zoom = 0.0;
   const int dim_up = 0;
-  const float lambda = 0.55f;
-  Eigen::Vector2f positiondata(0, 0);
-  float lens_length = 0.0;
+  const double lambda = 0.55;
+  Eigen::Vector2d positiondata(0, 0);
+  double lens_length = 0.0;
   const int draw_aspheric = 1;
-  float max_aperture_radius = 0.0f;
-  float prev_best_aperture_radius = 0.0f;
+  double max_aperture_radius = 0.0;
+  double prev_best_aperture_radius = 0.0;
   int cnt = 0;
   const int max_tries = 1000;
 
@@ -42,23 +42,23 @@ int main(int argc, char *argv[])
 
   for(int wedge = 1; wedge < max_tries; wedge++){
 
-    Eigen::Vector3f cam_pos(0.0, 0.0, 9999.0f);
-    float y_wedge = lenses[0].housing_radius / (static_cast<float>(max_tries)/static_cast<float>(wedge));
+    Eigen::Vector3d cam_pos(0.0, 0.0, 9999.0);
+    double y_wedge = lenses[0].housing_radius / (static_cast<double>(max_tries)/static_cast<double>(wedge));
     cam_pos(dim_up) = y_wedge;
 
-    Eigen::Vector3f cam_dir(0.0, 0.0, -cam_pos(2)*10.0f);
+    Eigen::Vector3d cam_dir(0.0, 0.0, -cam_pos(2)*10.0);
     cam_dir(dim_up) = cam_pos(dim_up);
     raytrace_normalise(cam_dir);
     
-    Eigen::VectorXf in(5); in.setZero();
-    Eigen::VectorXf out(5); out.setZero();
-    Eigen::VectorXf ap(5); ap.setZero();
+    Eigen::VectorXd in(5); in.setZero();
+    Eigen::VectorXd out(5); out.setZero();
+    Eigen::VectorXd ap(5); ap.setZero();
     in(4) = out(4) = ap(4) = lambda;
-    float t = 0.0;
-    Eigen::Vector3f n(0,0,0);
+    double t = 0.0;
+    Eigen::Vector3d n(0,0,0);
     
-    Eigen::Vector2f outpos(0,0);
-    Eigen::Vector2f outdir(0,0);
+    Eigen::Vector2d outpos(0,0);
+    Eigen::Vector2d outdir(0,0);
     
     // intersection on first lens element
     if (stringcmp(lenses[0].geometry, "cyl-y")){
@@ -93,8 +93,8 @@ int main(int argc, char *argv[])
   fmt::print("Last valid exit vertex position: [{}, {}]\n", positiondata(0), positiondata(1));
   fmt::print("Failed at try {} of {}\n", cnt, max_tries);
 
-  float theta = std::atan(positiondata(1) / positiondata(0));
-  float fstop = 1.0 / (std::sin(theta)* 2.0);
+  double theta = std::atan(positiondata(1) / positiondata(0));
+  double fstop = 1.0 / (std::sin(theta)* 2.0);
 
   if ((fstop != fstop) || (fstop == 0.0)){
     fmt::print("f-stop has an incorrect value [{}], aborting\n", fstop);

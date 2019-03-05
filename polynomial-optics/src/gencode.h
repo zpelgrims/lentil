@@ -32,7 +32,7 @@ void print_jacobian(FILE *f, const poly_system_t *system, const char *vnamei[pol
   for(int i = 0; i < poly_num_vars; i++)
     for(int j = 0; j < poly_num_vars; j++)
     {
-      fprintf(f, "const float dx%d%d = ", i, j);
+      fprintf(f, "const double dx%d%d = ", i, j);
       poly_print(&jacobian.poly[i*poly_num_vars+j], vnamei, f);
       fprintf(f, "+0.0f;\n");
     }
@@ -55,20 +55,20 @@ void print_pt_sample_aperture(FILE *f, const poly_system_t *system,
   // solve the first two rows of the system x1 = P(x0, omega0, ..) for given x1 and x0.
   // 1) first guess, take omega0 = normalise(x1 - x0), leave rest of x0 input unchanged
   //    this has to be done outside, we don't know about the 3d geometry any more.
-  // float sqr_err = 0.0f;
+  // double sqr_err = 0.0f;
   for(int k=0;k<4;k++)
-    fprintf(f, "float pred_%s;\n", vnameo[k]);
-  fprintf(f, "float sqr_err = FLT_MAX;\n");
+    fprintf(f, "double pred_%s;\n", vnameo[k]);
+  fprintf(f, "double sqr_err = FLT_MAX;\n");
   fprintf(f, "for(int k=0;k<5&&sqr_err > 1e-4f;k++)\n{\n");
 
   // 1.5) compute input to the polynomial, begin_[x,y,dx,dy] from our initial guess and the distance:
-  fprintf(f, "  const float %s = %s + dist * %s;\n", begin_var[0], vnamei[0], vnamei[2]);
-  fprintf(f, "  const float %s = %s + dist * %s;\n", begin_var[1], vnamei[1], vnamei[3]);
-  fprintf(f, "  const float %s = %s;\n", begin_var[2], vnamei[2]);
-  fprintf(f, "  const float %s = %s;\n", begin_var[3], vnamei[3]);
+  fprintf(f, "  const double %s = %s + dist * %s;\n", begin_var[0], vnamei[0], vnamei[2]);
+  fprintf(f, "  const double %s = %s + dist * %s;\n", begin_var[1], vnamei[1], vnamei[3]);
+  fprintf(f, "  const double %s = %s;\n", begin_var[2], vnamei[2]);
+  fprintf(f, "  const double %s = %s;\n", begin_var[3], vnamei[3]);
   // wavelength may be unused for lenses such as lensbaby, where the aperture comes right after
   // the sensor, without glass elements in between:
-  fprintf(f, "  const float %s = %s;\n", begin_var[4], vnamei[4]);
+  fprintf(f, "  const double %s = %s;\n", begin_var[4], vnamei[4]);
 
   // 2) evaluate what we get x1' = P(x0, omega0, ..)
   for(int k=0;k<4;k++)
@@ -81,7 +81,7 @@ void print_pt_sample_aperture(FILE *f, const poly_system_t *system,
   // 3) evaluate 2x2 submatrix of jacobian dx1/domega0 and step omega0 back to our target x1.
   poly_jacobian_t sysjac;
   poly_system_get_jacobian(system, &sysjac);
-  fprintf(f, "  Eigen::Matrix2f dx1_domega0;\n");
+  fprintf(f, "  Eigen::Matrix2d dx1_domega0;\n");
   for(int i=0;i<2;i++) for(int j=0;j<2;j++)
   {
     fprintf(f, "  dx1_domega0(%d, %d) = ", i, j);
@@ -92,15 +92,15 @@ void print_pt_sample_aperture(FILE *f, const poly_system_t *system,
     poly_destroy(sysjac.poly+k);
 
   // 4) invert jacobian (could use adjoint, but who's gonna fight over a 2x2 inversion)
-  fprintf(f, "  Eigen::Matrix2f invJ;\n");
-  fprintf(f, "  const float invdet = 1.0f/(dx1_domega0(0, 0)*dx1_domega0(1, 1) - dx1_domega0(0, 1)*dx1_domega0(1, 0));\n");
+  fprintf(f, "  Eigen::Matrix2d invJ;\n");
+  fprintf(f, "  const double invdet = 1.0f/(dx1_domega0(0, 0)*dx1_domega0(1, 1) - dx1_domega0(0, 1)*dx1_domega0(1, 0));\n");
   fprintf(f, "  invJ(0, 0) =  dx1_domega0(1, 1)*invdet;\n");
   fprintf(f, "  invJ(1, 1) =  dx1_domega0(0, 0)*invdet;\n");
   fprintf(f, "  invJ(0, 1) = -dx1_domega0(0, 1)*invdet;\n");
   fprintf(f, "  invJ(1, 0) = -dx1_domega0(1, 0)*invdet;\n");
 
   // 5) determine step and update omega0
-  fprintf(f, "  const Eigen::Vector2f dx1(out_x - pred_x, out_y - pred_y);\n");
+  fprintf(f, "  const Eigen::Vector2d dx1(out_x - pred_x, out_y - pred_y);\n");
     // sqr_err = 0.0f;
     // for(int k=0;k<2;k++) sqr_err += dx1[k]*dx1[k];
   fprintf(f, "  for(int i=0;i<2;i++)\n  {\n");
@@ -160,29 +160,29 @@ void print_lt_sample_aperture(FILE *f, const poly_system_t *system, const poly_s
   for(int k=0;k<poly_num_vars;k++) begin_var[k] = static_cast<char *>(malloc(50));
   for(int k=0;k<poly_num_vars;k++) snprintf(begin_var[k], 50, "begin_%s", vnamei[k]);
   //early out if worldspace point is definitely outside field of view:
-  fprintf(f, "Eigen::Vector3f view(\n");
+  fprintf(f, "Eigen::Vector3d view(\n");
   fprintf(f, "  scene_x,\n");
   fprintf(f, "  scene_y,\n");
   fprintf(f, "  scene_z + camera->lens_outer_pupil_curvature_radius\n);\n");
   fprintf(f, "raytrace_normalise(view);\n");
   fprintf(f, "int error = 0;\n");
   fprintf(f, "if(1 || view(2) >= camera->lens_field_of_view)\n{\n");
-  fprintf(f, "  const float eps = 1e-8;\n");
-  fprintf(f, "  float sqr_err = 1e30, sqr_ap_err = 1e30;\n");
-  fprintf(f, "  float prev_sqr_err = 1e32, prev_sqr_ap_err = 1e32;\n");
+  fprintf(f, "  const double eps = 1e-8;\n");
+  fprintf(f, "  double sqr_err = 1e30, sqr_ap_err = 1e30;\n");
+  fprintf(f, "  double prev_sqr_err = 1e32, prev_sqr_ap_err = 1e32;\n");
   //also stop if error is getting larger
   fprintf(f, "  for(int k=0;k<100&&(sqr_err>eps||sqr_ap_err>eps)&&error==0;k++)\n  {\n");
   fprintf(f, "    prev_sqr_err = sqr_err, prev_sqr_ap_err = sqr_ap_err;\n");
 
   // 1) input to the polynomial, begin_[x,y,dx,dy], is always the same as the current sensor guess vname:
-  fprintf(f, "    const float %s = %s;\n", begin_var[0], vnamei[0]);
-  fprintf(f, "    const float %s = %s;\n", begin_var[1], vnamei[1]);
-  fprintf(f, "    const float %s = %s;\n", begin_var[2], vnamei[2]);
-  fprintf(f, "    const float %s = %s;\n", begin_var[3], vnamei[3]);
-  fprintf(f, "    const float %s = %s;\n", begin_var[4], vnamei[4]);
+  fprintf(f, "    const double %s = %s;\n", begin_var[0], vnamei[0]);
+  fprintf(f, "    const double %s = %s;\n", begin_var[1], vnamei[1]);
+  fprintf(f, "    const double %s = %s;\n", begin_var[2], vnamei[2]);
+  fprintf(f, "    const double %s = %s;\n", begin_var[3], vnamei[3]);
+  fprintf(f, "    const double %s = %s;\n", begin_var[4], vnamei[4]);
 
   // 2) evaluate aperture position and calculate error vector
-  fprintf(f, "    const Eigen::Vector2f pred_ap(\n");
+  fprintf(f, "    const Eigen::Vector2d pred_ap(\n");
   for(int k=0;k<2;k++)
   {
     fprintf(f, "      ");
@@ -190,14 +190,14 @@ void print_lt_sample_aperture(FILE *f, const poly_system_t *system, const poly_s
     fprintf(f, "%s", k<1?",\n":"\n    );\n");
   }
 
-  fprintf(f, "    const Eigen::Vector2f delta_ap(ap_%s - pred_ap[0], ap_%s - pred_ap[1]);\n", vnameo[0], vnameo[1]);
+  fprintf(f, "    const Eigen::Vector2d delta_ap(ap_%s - pred_ap[0], ap_%s - pred_ap[1]);\n", vnameo[0], vnameo[1]);
   fprintf(f, "    sqr_ap_err = delta_ap[0]*delta_ap[0]+delta_ap[1]*delta_ap[1];\n");
 
   // 3) calculate inverse 2x2 submatrix of jacobian and propagate error back to sensor direction
   // 3.1) evaluate aperture jacobian
   poly_jacobian_t apjac;
   poly_system_get_jacobian(ap_system, &apjac);
-  fprintf(f, "    Eigen::Matrix2f dx1_domega0;\n");
+  fprintf(f, "    Eigen::Matrix2d dx1_domega0;\n");
   for(int i=0;i<2;i++) for(int j=0;j<2;j++)
   {
     fprintf(f, "    dx1_domega0(%d, %d) = ", i, j);
@@ -206,8 +206,8 @@ void print_lt_sample_aperture(FILE *f, const poly_system_t *system, const poly_s
   }
 
   // 3.2) invert jacobian
-  fprintf(f, "    Eigen::Matrix2f invApJ;\n");
-  fprintf(f, "    const float invdetap = 1.0f/(dx1_domega0(0, 0)*dx1_domega0(1, 1) - dx1_domega0(0, 1)*dx1_domega0(1, 0));\n");
+  fprintf(f, "    Eigen::Matrix2d invApJ;\n");
+  fprintf(f, "    const double invdetap = 1.0f/(dx1_domega0(0, 0)*dx1_domega0(1, 1) - dx1_domega0(0, 1)*dx1_domega0(1, 0));\n");
   fprintf(f, "    invApJ(0, 0) =  dx1_domega0(1, 1)*invdetap;\n");
   fprintf(f, "    invApJ(1, 1) =  dx1_domega0(0, 0)*invdetap;\n");
   fprintf(f, "    invApJ(0, 1) = -dx1_domega0(0, 1)*invdetap;\n");
@@ -236,24 +236,24 @@ void print_lt_sample_aperture(FILE *f, const poly_system_t *system, const poly_s
     fprintf(f, ";\n");
   }
 
-  fprintf(f, "    Eigen::Vector3f pred_out_cs_pos(0,0,0);\n");
-  fprintf(f, "    Eigen::Vector3f pred_out_cs_dir(0,0,0);\n");
-  fprintf(f, "    Eigen::Vector2f outpos(out(0), out(1));\n");
-  fprintf(f, "    Eigen::Vector2f outdir(out(2), out(3));\n");
+  fprintf(f, "    Eigen::Vector3d pred_out_cs_pos(0,0,0);\n");
+  fprintf(f, "    Eigen::Vector3d pred_out_cs_dir(0,0,0);\n");
+  fprintf(f, "    Eigen::Vector2d outpos(out(0), out(1));\n");
+  fprintf(f, "    Eigen::Vector2d outdir(out(2), out(3));\n");
 
   fprintf(f, "    if (camera->lens_outer_pupil_geometry == \"cyl-y\") cylinderToCs(outpos, outdir, pred_out_cs_pos, pred_out_cs_dir, - camera->lens_outer_pupil_curvature_radius, camera->lens_outer_pupil_curvature_radius, true);\n");
 	fprintf(f, "    else if (camera->lens_outer_pupil_geometry == \"cyl-x\") cylinderToCs(outpos, outdir, pred_out_cs_pos, pred_out_cs_dir, - camera->lens_outer_pupil_curvature_radius, camera->lens_outer_pupil_curvature_radius, false);\n");
   fprintf(f, "    else sphereToCs(outpos, outdir, pred_out_cs_pos, pred_out_cs_dir, - camera->lens_outer_pupil_curvature_radius, camera->lens_outer_pupil_curvature_radius);\n");
 
-  fprintf(f, "    Eigen::Vector3f view(\n");
+  fprintf(f, "    Eigen::Vector3d view(\n");
   fprintf(f, "      scene_x - pred_out_cs_pos(0),\n");
   fprintf(f, "      scene_y - pred_out_cs_pos(1),\n");
   fprintf(f, "      scene_z - pred_out_cs_pos(2)\n    );\n");
   fprintf(f, "    raytrace_normalise(view);\n");
 
-  fprintf(f, "    Eigen::VectorXf out_new(5); out_new.setZero();\n");
-  fprintf(f, "    Eigen::Vector2f out_new_pos(0,0);\n");
-  fprintf(f, "    Eigen::Vector2f out_new_dir(0,0);\n");
+  fprintf(f, "    Eigen::VectorXd out_new(5); out_new.setZero();\n");
+  fprintf(f, "    Eigen::Vector2d out_new_pos(0,0);\n");
+  fprintf(f, "    Eigen::Vector2d out_new_dir(0,0);\n");
 
   //Position is just converted back, direction gets replaced with new one
   fprintf(f, "    if (camera->lens_outer_pupil_geometry == \"cyl-y\") csToCylinder(pred_out_cs_pos, view, out_new_pos, out_new_dir, - camera->lens_outer_pupil_curvature_radius, camera->lens_outer_pupil_curvature_radius, true);\n");
@@ -265,14 +265,14 @@ void print_lt_sample_aperture(FILE *f, const poly_system_t *system, const poly_s
   fprintf(f, "    out_new(3) = out_new_dir(1);\n");
 
   //Calculate error vector (out_new - pred_out)[dx,dy]
-  fprintf(f, "    const Eigen::Vector2f delta_out(out_new[2] - out[2], out_new[3] - out[3]);\n");
+  fprintf(f, "    const Eigen::Vector2d delta_out(out_new[2] - out[2], out_new[3] - out[3]);\n");
   fprintf(f, "    sqr_err = delta_out[0]*delta_out[0]+delta_out[1]*delta_out[1];\n");
 
   // 5) Propagate error back to sensor position
   // 5.1) calculate inverse 2x2 submatrix of jacobian mapping sensor positions to outgoing directions
   poly_jacobian_t jac;
   poly_system_get_jacobian(system, &jac);
-  fprintf(f, "    Eigen::Matrix2f domega2_dx0;\n");
+  fprintf(f, "    Eigen::Matrix2d domega2_dx0;\n");
   for(int i=0;i<2;i++) for(int j=0;j<2;j++)
   {
     fprintf(f, "    domega2_dx0(%d, %d) = ", i, j);
@@ -281,8 +281,8 @@ void print_lt_sample_aperture(FILE *f, const poly_system_t *system, const poly_s
   }
 
   // 5.2) invert jacobian
-  fprintf(f, "    Eigen::Matrix2f invJ;\n");
-  fprintf(f, "    const float invdet = 1.0f/(domega2_dx0(0, 0)*domega2_dx0(1, 1) - domega2_dx0(0, 1)*domega2_dx0(1, 0));\n");
+  fprintf(f, "    Eigen::Matrix2d invJ;\n");
+  fprintf(f, "    const double invdet = 1.0f/(domega2_dx0(0, 0)*domega2_dx0(1, 1) - domega2_dx0(0, 1)*domega2_dx0(1, 0));\n");
   fprintf(f, "    invJ(0, 0) =  domega2_dx0(1, 1)*invdet;\n");
   fprintf(f, "    invJ(1, 1) =  domega2_dx0(0, 0)*invdet;\n");
   fprintf(f, "    invJ(0, 1) = -domega2_dx0(0, 1)*invdet;\n");
@@ -306,11 +306,11 @@ void print_lt_sample_aperture(FILE *f, const poly_system_t *system, const poly_s
   fprintf(f, "if(out[0]*out[0]+out[1]*out[1] > camera->lens_outer_pupil_radius*camera->lens_outer_pupil_radius) error |= 16;\n");
   
   //now calculate transmittance or set it to zero if we stoped due to divergence
-  fprintf(f, "const float %s = %s;\n", begin_var[0], vnamei[0]);
-  fprintf(f, "const float %s = %s;\n", begin_var[1], vnamei[1]);
-  fprintf(f, "const float %s = %s;\n", begin_var[2], vnamei[2]);
-  fprintf(f, "const float %s = %s;\n", begin_var[3], vnamei[3]);
-  fprintf(f, "const float %s = %s;\n", begin_var[4], vnamei[4]);
+  fprintf(f, "const double %s = %s;\n", begin_var[0], vnamei[0]);
+  fprintf(f, "const double %s = %s;\n", begin_var[1], vnamei[1]);
+  fprintf(f, "const double %s = %s;\n", begin_var[2], vnamei[2]);
+  fprintf(f, "const double %s = %s;\n", begin_var[3], vnamei[3]);
+  fprintf(f, "const double %s = %s;\n", begin_var[4], vnamei[4]);
   
   fprintf(f, "if(error==0)\n");
   fprintf(f, "  out[4] = ");
