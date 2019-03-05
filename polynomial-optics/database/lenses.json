@@ -331,7 +331,7 @@
     "year": 1953
   },
   "0002": {
-    "commercial": false,
+    "commercial": true,
     "company": "meyer-optik-goerlitz",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": 99.65371704101563,
@@ -447,7 +447,7 @@
     "year": 1936
   },
   "0003": {
-    "commercial": false,
+    "commercial": true,
     "company": "unknown",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": 85.5024185180664,
@@ -543,7 +543,7 @@
     "year": 1900
   },
   "0004": {
-    "commercial": false,
+    "commercial": true,
     "company": "nikon",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": 99.26875305175781,
@@ -709,7 +709,7 @@
     "year": 1971
   },
   "0005": {
-    "commercial": false,
+    "commercial": true,
     "company": "canon",
     "focal-length-mm-patent": 14.2,
     "focal-length-mm-raytraced": 15.135459899902344,
@@ -986,7 +986,7 @@
     "year": 1982
   },
   "0006": {
-    "commercial": false,
+    "commercial": true,
     "company": "kodak",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": 100.00676727294922,
@@ -1394,7 +1394,7 @@
     "year": 2014
   },
   "0009": {
-    "commercial": false,
+    "commercial": true,
     "company": "zeiss",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": 99.09127044677734,
@@ -1516,11 +1516,11 @@
     "polynomial-optics": [],
     "prime": true,
     "product-name": "biotar",
-    "production-ready": true,
+    "production-ready": false,
     "year": 1927
   },
   "0010": {
-    "commercial": false,
+    "commercial": true,
     "company": "asahi",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": 99.61552429199219,
@@ -1676,7 +1676,7 @@
     "year": 1969
   },
   "0011": {
-    "commercial": false,
+    "commercial": true,
     "company": "asahi",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": 99.20272827148438,
@@ -1852,7 +1852,7 @@
     "year": 1970
   },
   "0012": {
-    "commercial": false,
+    "commercial": true,
     "company": "asahi",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": 126.5606689453125,
@@ -2089,7 +2089,7 @@
     "year": 1974
   },
   "0013": {
-    "commercial": false,
+    "commercial": true,
     "company": "zeiss",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": 99.331298828125,
@@ -2236,7 +2236,7 @@
     "year": 1954
   },
   "2001": {
-    "commercial": false,
+    "commercial": true,
     "company": "cooke",
     "focal-length-mm-patent": 25.4,
     "focal-length-mm-raytraced": 9.555700302124023,
@@ -2443,7 +2443,7 @@
     "year": 1954
   },
   "2002": {
-    "commercial": false,
+    "commercial": true,
     "company": "Panavision",
     "focal-length-mm-patent": 100.0,
     "focal-length-mm-raytraced": null,
@@ -3117,7 +3117,7 @@
     ],
     "prime": true,
     "product-name": "anamorphic",
-    "production-ready": true,
+    "production-ready": false,
     "year": 2001
   },
   "9991": {
@@ -3501,7 +3501,7 @@
     "polynomial-optics": [],
     "prime": true,
     "product-name": "double-gauss",
-    "production-ready": true,
+    "production-ready": false,
     "year": 9999
   },
   "9993": {
@@ -3831,7 +3831,7 @@
     "polynomial-optics": [],
     "prime": true,
     "product-name": "double-gauss-test-low-degree-low-coefficients",
-    "production-ready": true,
+    "production-ready": false,
     "year": 9999
   },
   "9994": {
