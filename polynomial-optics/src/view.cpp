@@ -60,9 +60,6 @@ const std::vector<float> white = {1.0, 1.0, 1.0, 1.0};
 const std::vector<float> mint = {0.631, 1.0, 0.78, 0.5};
 const std::vector<float> salmon = {232.0/255.0, 121.0/255.0, 121.0/255.0, 1.0};
 
-const std::vector<float> testFocusDistances = {0.5, 1.0, 1.5, 2.0, 2.5, 3.5, 5.0, 7.5, 10.0, 15.0, 30.0, 100.0}; // in meter
-int focus_stepper = 0;
-
 std::string lens_svg_path = "";
 
 
@@ -124,22 +121,6 @@ gboolean on_keypress (GtkWidget *widget, GdkEventKey *event, gpointer data) {
   }
   else if(event->keyval == GDK_KEY_equal) {
     trace_forward = !trace_forward;
-    gtk_widget_queue_draw(widget);
-    return TRUE;
-  }
-  else if(event->keyval == GDK_KEY_t) {
-    if (focus_stepper < testFocusDistances.length() && focus_stepper >= 0) {
-      focus_stepper += 1;
-      focus_distance = testFocusDistances[focus_stepper];
-    }
-    gtk_widget_queue_draw(widget);
-    return TRUE;
-  }
-  else if(event->keyval == GDK_KEY_y) {
-    if (focus_stepper < testFocusDistances.length() && focus_stepper >= 0) {
-      focus_stepper -= 1;
-      focus_distance = testFocusDistances[focus_stepper];
-    }
     gtk_widget_queue_draw(widget);
     return TRUE;
   }
