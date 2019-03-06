@@ -124,14 +124,6 @@ gboolean on_keypress (GtkWidget *widget, GdkEventKey *event, gpointer data) {
     gtk_widget_queue_draw(widget);
     return TRUE;
   }
-  else if(event->keyval == GDK_KEY_t) {
-    if (focus_stepper < testFocusDistances.length() && focus_stepper >= 0) {
-      focus_stepper += 1;
-      focus_distance = testFocusDistances[focus_stepper];
-    }
-    gtk_widget_queue_draw(widget);
-    return TRUE;
-  }
 
   return FALSE;
 }

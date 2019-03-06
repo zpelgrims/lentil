@@ -71,7 +71,7 @@ static inline double evaluate_aspherical(const Eigen::Vector2d pos, const double
   double h6 = h4*h2;
   double h8 = h4*h4;
   double h10 = h8*h2;
-  double z = h*hr/(1+std::sqrt(std::max(0.0f, 1-(1+k)*hr*hr)))+correction[0]*h4+correction[1]*h6+correction[2]*h8+correction[3]*h10;
+  double z = h*hr/(1+std::sqrt(std::max(0.0, 1-(1+k)*hr*hr)))+correction[0]*h4+correction[1]*h6+correction[2]*h8+correction[3]*h10;
   return z;
 }
 
@@ -83,8 +83,8 @@ static inline double evaluate_aspherical_derivative(const Eigen::Vector2d pos, c
   double h5 = h3*h2;
   double h7 = h5*h2;
   double h9 = h7*h2;
-  double z = 2*hr/(1+std::sqrt(std::max(0.0f, 1-(1+k)*hr*hr)))+
-    hr*hr*hr*(k+1)/(std::sqrt(std::max(0.0f, 1-(1+k)*hr*hr))*powf(std::sqrt(std::max(0.0f, 1-(1+k)*hr*hr))+1, 2))+
+  double z = 2*hr/(1+std::sqrt(std::max(0.0, 1-(1+k)*hr*hr)))+
+    hr*hr*hr*(k+1)/(std::sqrt(std::max(0.0, 1-(1+k)*hr*hr))*powf(std::sqrt(std::max(0.0, 1-(1+k)*hr*hr))+1, 2))+
     4*correction[0]*h3+6*correction[1]*h5+8*correction[2]*h7+10*correction[3]*h9;
   return z;
 }
@@ -218,7 +218,7 @@ static inline void sphereToCs(const Eigen::Vector2d inpos, const Eigen::Vector2d
   const Eigen::Vector3d normal(
     inpos(0)/sphereRad,
     inpos(1)/sphereRad,
-    std::sqrt(std::max(0.0f, sphereRad*sphereRad-inpos(0)*inpos(0)-inpos(1)*inpos(1)))/std::abs(sphereRad)
+    std::sqrt(std::max(0.0, sphereRad*sphereRad-inpos(0)*inpos(0)-inpos(1)*inpos(1)))/std::abs(sphereRad)
   );
 
   const Eigen::Vector3d tempDir(
@@ -307,16 +307,16 @@ static inline void cylinderToCs(const Eigen::Vector2d inpos, const Eigen::Vector
   Eigen::Vector3d normal(0,0,0);
   if (cyl_y){
     normal(0) = inpos(0)/R;
-    normal(2) = std::sqrt(std::max(0.0f, R*R-inpos(0)*inpos(0)))/std::abs(R);
+    normal(2) = std::sqrt(std::max(0.0, R*R-inpos(0)*inpos(0)))/std::abs(R);
   } else {
     normal(1) = inpos(1)/R;
-    normal(2) = std::sqrt(std::max(0.0f, R*R-inpos(1)*inpos(1)))/std::abs(R);
+    normal(2) = std::sqrt(std::max(0.0, R*R-inpos(1)*inpos(1)))/std::abs(R);
   }
 
   const Eigen::Vector3d tempDir(
     indir(0), 
     indir(1), 
-    std::sqrt(std::max(0.0f, 1.0f-indir(0)*indir(0)-indir(1)*indir(1)))
+    std::sqrt(std::max(0.0, 1.0-indir(0)*indir(0)-indir(1)*indir(1)))
   );
 
   // tangent

@@ -125,8 +125,8 @@ int main(int argc, char **argv)
   fprintf(f, "camera->lens_aperture_radius_at_fstop = %f; // aperture radius at smallest fstop\n", lens_database[id]["max-fstop-aperture-radius"][std::to_string(lens_focal_length)].get<float>());
 
   // calculate approximate fov for 35mm sensor
-  double sensor[] = {22.f, 0, (lenses[lenses_cnt-1].housing_radius-22.f)/bfl, 0, .55};
-  double out[] = {0, 0, 0, 0, 0};
+  float sensor[] = {22.f, 0, (float)((lenses[lenses_cnt-1].housing_radius-22.f)/bfl), 0, .55f};
+  float out[] = {0, 0, 0, 0, 0};
   poly_system_evaluate(&poly, sensor, out, 100);
  
   const Eigen::Vector2d inpos(out[0], out[1]);
