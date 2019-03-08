@@ -2234,6 +2234,233 @@
     "product-name": "flektagon",
     "production-ready": true,
     "year": 1954
+  },  
+  "0014": {
+    "commercial": true,
+    "company": "unsure",
+    "focal-length-mm-patent": 100,
+    "focal-length-mm-raytraced": null,
+    "notes": "Aspherical 181 degree field of view fisheye",
+    "notes-to-self": null,
+    "optical-elements-patent": [
+      {
+        "abbe": 40.81,
+        "aspherical-equation": null,
+        "housing-radius": 22.0,
+        "ior": 1.883,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 40.82,
+        "thickness": 2.0
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 12.7,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 12.969,
+        "thickness": 12.306
+      },
+      {
+        "abbe": 40.81,
+        "aspherical-equation": null,
+        "housing-radius": 12.7,
+        "ior": 1.883,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": -36.811,
+        "thickness": 1.5
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 12.7,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 22.349,
+        "thickness": 4.408
+      },
+      {
+        "abbe": 25.46,
+        "aspherical-equation": null,
+        "housing-radius": 12.7,
+        "ior": 2.001,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 90.887,
+        "thickness": 4.119
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 12.7,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": -37.463,
+        "thickness": 10.671
+      },
+      {
+        "abbe": 81.56,
+        "aspherical-equation": [-1.5313e-5, 9.4893e-8, -1.8128e-9, 8.7528e-12],
+        "housing-radius": 9,
+        "ior": 1.497,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 19.865,
+        "thickness": 4.906
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": [9.4784e-5, -5.6706e-7, 3.1435e-9, -5.8172e-12],
+        "housing-radius": 9,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": -19.386,
+        "thickness": 5.0
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 6,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "iris",
+        "radius": 100000,
+        "thickness": 1.1
+      },
+      {
+        "abbe": 24.06,
+        "aspherical-equation": [3.9901e-4, -1.4077e-5, 2.7313e-7, -2.6707e-9],
+        "housing-radius": 6,
+        "ior": 1.821,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 67.768,
+        "thickness": 1.0
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": [3.8524e-4, -1.3527e-5, 2.3317e-7, -1.7242e-9],
+        "housing-radius": 10,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 17.746,
+        "thickness": 3.083
+      },
+      {
+        "abbe": 25.46,
+        "aspherical-equation": null,
+        "housing-radius": 10,
+        "ior": 2.001,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 22.334,
+        "thickness": 1.0
+      },
+      {
+        "abbe": 81.61,
+        "aspherical-equation": null,
+        "housing-radius": 10,
+        "ior": 1.497,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 17.027,
+        "thickness": 2.141
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 10,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 31.952,
+        "thickness": 0.671
+      },
+      {
+        "abbe": 81.61,
+        "aspherical-equation": null,
+        "housing-radius": 10,
+        "ior": 1.497,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 43.402,
+        "thickness": 4.088
+      },
+      {
+        "abbe": 19.32,
+        "aspherical-equation": null,
+        "housing-radius": 10,
+        "ior": 2.003,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": -21.82,
+        "thickness": 1.0
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 10,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": -29.68,
+        "thickness": 0.3
+      },
+      {
+        "abbe": 40.81,
+        "aspherical-equation": null,
+        "housing-radius": 12,
+        "ior": 1.883,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 31.251,
+        "thickness": 2.707
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 12,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 76.213,
+        "thickness": 1.0
+      },
+      {
+        "abbe": 64.20,
+        "aspherical-equation": null,
+        "housing-radius": 12.9,
+        "ior": 1.517,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 100000,
+        "thickness": 3.0
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 12.9,
+        "ior": 1.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 100000,
+        "thickness": 14.0
+      }
+    ],
+    "patent-location": null,
+    "patent-number": null,
+    "polynomial-optics": [],
+    "prime": true,
+    "product-name": "fisheye",
+    "production-ready": true,
+    "year": 1954
   },
   "2001": {
     "commercial": true,
