@@ -380,7 +380,7 @@ void draw_lenses(cairo_t *cr, double scale){
       double alpha2 = asin(fminf(1.0, fmax(-1.0, fabs(hrad2/rad2))));
 
       if(draw_aspheric) {
-        const int num_steps = 50;
+        const int num_steps = 100;
 
         for(int j = 0; j <= num_steps; j++)
         {
@@ -426,7 +426,7 @@ void draw_lenses(cairo_t *cr, double scale){
       cairo_clip(cr);
       
       if(draw_aspheric) {
-        const int num_steps = 50;
+        const int num_steps = 100;
 
         for(int j = 0; j <= num_steps; j++) {
           Eigen::Vector2d y(hrad*(2 * j / (double)num_steps - 1), 0); //float y[] = {hrad*(2 * j / (float)num_steps - 1), 0};

@@ -2235,8 +2235,16 @@
   "0014": {
     "commercial": true,
     "company": "unsure",
-    "focal-length-mm-patent": 100,
-    "focal-length-mm-raytraced": null,
+    "focal-length-mm-patent": 6.0,
+    "focal-length-mm-raytraced": 5.4807494090768785,
+    "fstop": {
+      "6": 16.58635679454206,
+      "unscaled": 16.58635679454206
+    },
+    "max-fstop-aperture-radius": {
+      "6": 5.975442772374432,
+      "unscaled": 5.975442772374432
+    },
     "notes": "Aspherical 181 degree field of view fisheye",
     "notes-to-self": null,
     "optical-elements-patent": [

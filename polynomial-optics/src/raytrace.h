@@ -342,13 +342,13 @@ inline int intersect(const std::vector<lens_element_t> lenses, const int k,
                     Eigen::Vector3d &pos, Eigen::Vector3d dir, 
                     double &t, Eigen::Vector3d &n,
                     const double R, const double distsum,
-                    const bool tracing_forward) {
+                    const bool tracing_forward, const int draw_aspherical=1) {
 
   double sign = tracing_forward ? 1.0 : -1.0;
 
   if(stringcmp(lenses[k].geometry, "cyl-y")) return cylindrical(pos, dir, t, R, distsum + (R * sign), lenses[k].housing_radius, n, true);
   else if (stringcmp(lenses[k].geometry, "cyl-x")) return cylindrical(pos, dir, t, R, distsum + (R * sign), lenses[k].housing_radius, n, false);
-  else if(stringcmp(lenses[k].geometry, "aspherical")) return aspherical(pos, dir, t, R, distsum + (R * sign), lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
+  else if(stringcmp(lenses[k].geometry, "aspherical") && draw_aspherical) return aspherical(pos, dir, t, R, distsum + (R * sign), lenses[k].aspheric, lenses[k].aspheric_correction_coefficients, lenses[k].housing_radius, n);
   else return spherical(pos, dir, t, R, distsum + (R * sign), lenses[k].housing_radius, n);
 }
 

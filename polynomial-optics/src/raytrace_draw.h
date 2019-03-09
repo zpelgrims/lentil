@@ -39,7 +39,7 @@ static inline int evaluate_draw(const std::vector<lens_element_t> lenses,
     distsum += lens_get_thickness(lenses[k], zoom);
     
     Eigen::Vector3d normal(0,0,0);
-    error |= intersect(lenses, k, pos, dir, t, normal, R, distsum, true);
+    error |= intersect(lenses, k, pos, dir, t, normal, R, distsum, true, draw_aspherical);
 
     // index of refraction and ratio current/next:
     const double n2 = k ? spectrum_eta_from_abbe_um(lenses[k-1].ior, lenses[k-1].vno, in(4)) : 1.0; // outside the lens there is vacuum
@@ -131,7 +131,7 @@ static inline int evaluate_reverse_draw(const std::vector<lens_element_t> lenses
 
     //normal at intersection
     Eigen::Vector3d n(0,0,0);
-    error |= intersect(lenses, k, pos, dir, t, n, R, distsum, false);
+    error |= intersect(lenses, k, pos, dir, t, n, R, distsum, false, draw_aspherical);
 
     if(n[2] < 0.0) error |= 16;
 

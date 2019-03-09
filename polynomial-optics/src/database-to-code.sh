@@ -7,14 +7,14 @@ LENS_FOCAL_LENGTH=${args[1]}
 MAX_DEGREE=${args[2]} #default = 11
 MAX_COEFFICIENTS=${args[3]} #default = 28
 
-printf "database->code conversion:"
+printf "database->code conversion:\n"
 printf "\t lens id: %s\n" $LENS_ID
 printf "\t focal length: %s\n" $LENS_FOCAL_LENGTH
 
 # generate lens name from database id
 read LENS_NAME <<< $($LENTIL_PATH/bin/print-lens-path $LENS_ID $LENS_FOCAL_LENGTH $i) &&
 printf "\t lens name: %s\n" $LENS_NAME
-printf "-------------------------------------"
+printf "%s\n" "-------------------------------------"
 
 # calculate fstop and add it to the database
 # special 0 case first, which takes unscaled lens data to calculate the fstop
