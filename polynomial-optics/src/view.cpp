@@ -549,13 +549,13 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
       cam_dir[dim_up] = cam_pos[dim_up];
       raytrace_normalise(cam_dir);
 
-      const double lambda = 0.55;
+      const float lambda = 0.55;
 
       //Eigen::VectorXd in(5); in << 0,0,0,0,lambda;
       //Eigen::VectorXd out(5); out << 0,0,0,0,lambda;
-      double in[5] = {0.0, 0.0, 0.0, 0.0, lambda};
-      double out[5] = {0.0, 0.0, 0.0, 0.0, lambda};
-      double ap[5] = {0.0, 0.0, 0.0, 0.0, lambda};
+      float in[5] = {0.0, 0.0, 0.0, 0.0, lambda};
+      float out[5] = {0.0, 0.0, 0.0, 0.0, lambda};
+      float ap[5] = {0.0, 0.0, 0.0, 0.0, lambda};
       //Eigen::VectorXd ap(5); ap << 0,0,0,0,lambda;
       Eigen::VectorXd inrt(5); inrt << 0,0,0,0,lambda;
       Eigen::VectorXd outrt(5); outrt << 0,0,0,0,lambda;

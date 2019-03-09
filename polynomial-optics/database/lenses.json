@@ -3,16 +3,14 @@
     "commercial": false,
     "company": "angenieux",
     "focal-length-mm-patent": 100.0,
-    "focal-length-mm-raytraced": 99.44563293457031,
+    "focal-length-mm-raytraced": 99.44564546640218,
     "fstop": {
-      "100": 1.1079325675964355,
-      "49": 1.109336495399475,
-      "unscaled": 1.1079870462417603
+      "49": 1.108072268445372,
+      "unscaled": 1.1078236781618793
     },
     "max-fstop-aperture-radius": {
-      "100": 25.623905181884766,
-      "49": 12.557219505310059,
-      "unscaled": 25.480609893798828
+      "49": 12.561180783257896,
+      "unscaled": 25.481638992599265
     },
     "notes": "large aperture six element objective, nice swirly bokeh",
     "optical-elements-adjusted": [
@@ -322,7 +320,6 @@
     "patent-location": "https://patentimages.storage.googleapis.com/2f/75/dd/b76ccb73bc0f44/US2701982.pdf",
     "patent-number": "US2701982",
     "polynomial-optics": [
-      100,
       49
     ],
     "prime": true,
@@ -2234,7 +2231,7 @@
     "product-name": "flektagon",
     "production-ready": true,
     "year": 1954
-  },  
+  },
   "0014": {
     "commercial": true,
     "company": "unsure",
@@ -2305,7 +2302,12 @@
       },
       {
         "abbe": 81.56,
-        "aspherical-equation": [-1.5313e-5, 9.4893e-8, -1.8128e-9, 8.7528e-12],
+        "aspherical-equation": [
+          -1.5313e-05,
+          9.4893e-08,
+          -1.8128e-09,
+          8.7528e-12
+        ],
         "housing-radius": 9,
         "ior": 1.497,
         "lens-geometry": "spherical",
@@ -2315,7 +2317,12 @@
       },
       {
         "abbe": null,
-        "aspherical-equation": [9.4784e-5, -5.6706e-7, 3.1435e-9, -5.8172e-12],
+        "aspherical-equation": [
+          9.4784e-05,
+          -5.6706e-07,
+          3.1435e-09,
+          -5.8172e-12
+        ],
         "housing-radius": 9,
         "ior": 1.0,
         "lens-geometry": "spherical",
@@ -2335,7 +2342,12 @@
       },
       {
         "abbe": 24.06,
-        "aspherical-equation": [3.9901e-4, -1.4077e-5, 2.7313e-7, -2.6707e-9],
+        "aspherical-equation": [
+          0.00039901,
+          -1.4077e-05,
+          2.7313e-07,
+          -2.6707e-09
+        ],
         "housing-radius": 6,
         "ior": 1.821,
         "lens-geometry": "spherical",
@@ -2345,7 +2357,12 @@
       },
       {
         "abbe": null,
-        "aspherical-equation": [3.8524e-4, -1.3527e-5, 2.3317e-7, -1.7242e-9],
+        "aspherical-equation": [
+          0.00038524,
+          -1.3527e-05,
+          2.3317e-07,
+          -1.7242e-09
+        ],
         "housing-radius": 10,
         "ior": 1.0,
         "lens-geometry": "spherical",
@@ -2434,7 +2451,7 @@
         "thickness": 1.0
       },
       {
-        "abbe": 64.20,
+        "abbe": 64.2,
         "aspherical-equation": null,
         "housing-radius": 12.9,
         "ior": 1.517,
@@ -3136,14 +3153,8 @@
     "company": "schneider",
     "focal-length-mm-patent": 31,
     "focal-length-mm-raytraced": 30.410140991210938,
-    "fstop": {
-      "31": 1.9531233310699463,
-      "unscaled": 1.9532463550567627
-    },
-    "max-fstop-aperture-radius": {
-      "31": 9.997279167175293,
-      "unscaled": 9.805952072143555
-    },
+    "fstop": {},
+    "max-fstop-aperture-radius": {},
     "notes": "",
     "optical-elements-patent": [
       {
@@ -3339,9 +3350,7 @@
     ],
     "patent-location": "https://worldwide.espacenet.com/publicationDetails/originalDocument?CC=US&NR=6310731B1&KC=B1&FT=D&ND=7&date=20011030&DB=&locale=en_EP",
     "patent-number": "US6310731",
-    "polynomial-optics": [
-      31
-    ],
+    "polynomial-optics": [],
     "prime": true,
     "product-name": "anamorphic",
     "production-ready": false,
@@ -4066,10 +4075,8 @@
     "company": "test",
     "focal-length-mm-patent": null,
     "focal-length-mm-raytraced": null,
-    "fstop": {
-    },
-    "max-fstop-aperture-radius": {
-    },
+    "fstop": {},
+    "max-fstop-aperture-radius": {},
     "notes": "Test lens for multi-fitting",
     "optical-elements-adjusted": [
       {
