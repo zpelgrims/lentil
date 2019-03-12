@@ -2318,7 +2318,7 @@
         ],
         "housing-radius": 9,
         "ior": 1.497,
-        "lens-geometry": "spherical",
+        "lens-geometry": "aspherical",
         "material": "abbe",
         "radius": 19.865,
         "thickness": 4.906
@@ -2333,7 +2333,7 @@
         ],
         "housing-radius": 9,
         "ior": 1.0,
-        "lens-geometry": "spherical",
+        "lens-geometry": "aspherical",
         "material": "air",
         "radius": -19.386,
         "thickness": 5.0
@@ -2358,7 +2358,7 @@
         ],
         "housing-radius": 6,
         "ior": 1.821,
-        "lens-geometry": "spherical",
+        "lens-geometry": "aspherical",
         "material": "abbe",
         "radius": 67.768,
         "thickness": 1.0
@@ -2373,7 +2373,7 @@
         ],
         "housing-radius": 10,
         "ior": 1.0,
-        "lens-geometry": "spherical",
+        "lens-geometry": "aspherical",
         "material": "air",
         "radius": 17.746,
         "thickness": 3.083
