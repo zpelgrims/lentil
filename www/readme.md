@@ -104,3 +104,11 @@ payment popup.
 - [ ] Add icons for new lenses
 - [x] Underline current page in navbar
 - [x] Restyle login and register boxes
+
+
+**thoughts**
+
+- currently only for arnold, more renderers soon (feature comparison list)
+- don't see a specific lens you are looking for? contact us
+- faq
+- move away from academia, more into modern product look

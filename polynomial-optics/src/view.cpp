@@ -22,17 +22,17 @@ using json = nlohmann::json;
 #endif
 
 
-static float zoom = 0.0f; // zoom, if the lens supports it.
+static double zoom = 0.0f; // zoom, if the lens supports it.
 static int num_rays = 500;
 static int dim_up = 0; // xz (top - 0) or plot yz (side - 1) of the lens in 2d?
 static poly_system_t poly, poly_aperture;
-static float aperture_rad;
+static double aperture_rad;
 static std::vector<lens_element_t> lenses;
 static int lenses_cnt = 0;
-static float lens_pupil_dist = 0.0f;
-static float lens_pupil_rad = 0.0f;
-static float lens_length = 0;
-static float aperture_pos = 0;
+static double lens_pupil_dist = 0.0f;
+static double lens_pupil_rad = 0.0f;
+static double lens_length = 0;
+static double aperture_pos = 0;
 
 static int screenshot = 0;
 static int draw_raytraced = 1;
@@ -46,8 +46,8 @@ const int width = 900;
 const int height = 550;
 const int gridsize = 10; //10 mm
 
-static float global_scale = 20.0f;
-static float window_aspect_ratio = static_cast<float>(width)/static_cast<float>(height);
+static double global_scale = 20.0f;
+static double window_aspect_ratio = static_cast<double>(width)/static_cast<double>(height);
 
 const std::vector<float> black = {0.1, 0.1, 0.1, 1.0};
 const std::vector<float> darkgrey = {0.15, 0.15, 0.15, 1.0};
@@ -158,7 +158,7 @@ static inline void hsl_2_rgb(const std::vector<float> HSL, std::vector<float> &R
   }
 }
 
-static void stroke_with_pencil(cairo_t *cr, const float scale, const float line_width) {
+static void stroke_with_pencil(cairo_t *cr, const double scale, const double line_width) {
   cairo_save(cr);
   cairo_scale(cr, 1./scale, 1./scale);
   cairo_set_line_width(cr, line_width);
@@ -175,7 +175,7 @@ void draw_optical_axis(cairo_t *cr) {
 }
 
 void draw_sensor(cairo_t *cr) {
-  float sensor_size = 0.0;
+  double sensor_size = 0.0;
   if (dim_up) sensor_size = 24.0;
   else        sensor_size = 35.0;
 
@@ -204,8 +204,8 @@ void draw_grid(cairo_t *cr) {
   }
 }
 
-void draw_rulers(cairo_t *cr, const float max_housing_radius, const float ruler_padding) {
-  float ruler_height = 2.5;
+void draw_rulers(cairo_t *cr, const double max_housing_radius, const double ruler_padding) {
+  double ruler_height = 2.5;
   cairo_set_source_rgb(cr, grey[0], grey[1], grey[2]);
   cairo_set_line_width(cr, 200.0/width);
 
@@ -256,7 +256,7 @@ void draw_rulers(cairo_t *cr, const float max_housing_radius, const float ruler_
   }
 }
 
-void draw_axis_text(cairo_t *cr, const float max_housing_radius, const float ruler_padding) {
+void draw_axis_text(cairo_t *cr, const double max_housing_radius, const double ruler_padding) {
   cairo_move_to(cr, 0.0 - ruler_padding, max_housing_radius + ruler_padding*2);
   std::string dim_up_text;
   if (dim_up) dim_up_text = "dim_up = 1 [side]";
@@ -269,8 +269,8 @@ void draw_axis_text(cairo_t *cr, const float max_housing_radius, const float rul
 
 void draw_aperture(cairo_t *cr) {
   int aperture_element = lens_get_aperture_element(lenses, lenses_cnt-1);
-  float aperture_pos = lens_get_aperture_pos_reverse(lenses, lenses_cnt-1, 0.0f);
-  float housing_radius = lenses[aperture_element].housing_radius;
+  double aperture_pos = lens_get_aperture_pos_reverse(lenses, lenses_cnt-1, 0.0);
+  double housing_radius = lenses[aperture_element].housing_radius;
 
   cairo_set_source_rgba(cr, lightgrey[0], lightgrey[1], lightgrey[2], lightgrey[3]);
   cairo_set_line_width(cr, 500.0/width);
@@ -283,40 +283,40 @@ void draw_aperture(cairo_t *cr) {
   cairo_stroke(cr);
 }
 
-void draw_focal_length(cairo_t *cr, const float scale) {
+void draw_focal_length(cairo_t *cr, const double scale) {
 
-  Eigen::Vector3f cam_pos(0,0,0);
-  Eigen::Vector3f cam_dir(0,0,0);
-  cam_pos[dim_up] = lenses[lenses_cnt-1].housing_radius * 0.5f;
+  Eigen::Vector3d cam_pos(0,0,0);
+  Eigen::Vector3d cam_dir(0,0,0);
+  cam_pos[dim_up] = lenses[lenses_cnt-1].housing_radius * 0.5;
   cam_dir[2] = cam_pos[2] + 99999;
   cam_dir[dim_up] = cam_pos[dim_up];
 
-  const float lambda = 0.55f;
-  Eigen::VectorXf in(5); in << 0,0,0,0,lambda;
-  Eigen::VectorXf out(5); out << 0,0,0,0,lambda;
-  Eigen::VectorXf ap(5); ap <<  0,0,0,0,lambda;
-  Eigen::VectorXf inrt(5); inrt << cam_pos[0], cam_pos[1], cam_pos[2], 0.0f, lambda;
-  Eigen::VectorXf outrt(5); outrt << cam_dir[0], cam_dir[1], cam_dir[2], 0.0f, lambda;
+  const double lambda = 0.55;
+  Eigen::VectorXd in(5); in << 0,0,0,0,lambda;
+  Eigen::VectorXd out(5); out << 0,0,0,0,lambda;
+  Eigen::VectorXd ap(5); ap <<  0,0,0,0,lambda;
+  Eigen::VectorXd inrt(5); inrt << cam_pos[0], cam_pos[1], cam_pos[2], 0.0, lambda;
+  Eigen::VectorXd outrt(5); outrt << cam_dir[0], cam_dir[1], cam_dir[2], 0.0, lambda;
 
   int error = 0;
-  Eigen::Vector3f pos(0,0,0);
-  Eigen::Vector3f dir(0,0,0);
+  Eigen::Vector3d pos(0,0,0);
+  Eigen::Vector3d dir(0,0,0);
   error = evaluate_draw(lenses, lenses_cnt, zoom, inrt, outrt, cr, scale, dim_up, draw_aspheric, pos, dir);
 
-  Eigen::Vector3f ray_origin(pos[0], pos[1], pos[2]);
-  Eigen::Vector3f pp_line1start(0,0,0);
-  Eigen::Vector3f pp_line1end(0.0, 0.0, 99999.0);
-  Eigen::Vector3f pp_line2end(0.0, 0.0, static_cast<float>(pos[2] + (dir[2] * 1000.0)));
+  Eigen::Vector3d ray_origin(pos[0], pos[1], pos[2]);
+  Eigen::Vector3d pp_line1start(0,0,0);
+  Eigen::Vector3d pp_line1end(0.0, 0.0, 99999.0);
+  Eigen::Vector3d pp_line2end(0.0, 0.0, pos[2] + (dir[2] * 1000.0));
   pp_line1start[dim_up] = inrt[dim_up];
   pp_line1end[dim_up] = inrt[dim_up];
   pp_line2end[dim_up] = pos[dim_up] + (dir[dim_up] * 1000.0);
-  float principlePlaneDistance = lineLineIntersection_x(pp_line1start, pp_line1end, ray_origin, pp_line2end, dim_up);
+  double principlePlaneDistance = lineLineIntersection_x(pp_line1start, pp_line1end, ray_origin, pp_line2end, dim_up);
 
-  Eigen::Vector3f focalPointLineStart(0,0,0);
-  Eigen::Vector3f focalPointLineEnd(0.0, 0.0, 99999.0);
-  float focalPointDistance = lineLineIntersection_x(focalPointLineStart, focalPointLineEnd, ray_origin, pp_line2end, dim_up);
+  Eigen::Vector3d focalPointLineStart(0,0,0);
+  Eigen::Vector3d focalPointLineEnd(0.0, 0.0, 99999.0);
+  double focalPointDistance = lineLineIntersection_x(focalPointLineStart, focalPointLineEnd, ray_origin, pp_line2end, dim_up);
   
-  float tracedFocalLength = focalPointDistance - principlePlaneDistance;
+  double tracedFocalLength = focalPointDistance - principlePlaneDistance;
   fmt::print("Traced Focal Length = {}\n", tracedFocalLength);
   
   cairo_new_path(cr);
@@ -329,7 +329,7 @@ void draw_focal_length(cairo_t *cr, const float scale) {
   cairo_arc(cr, focalPointDistance, 0.0, 1, 0, 2 * M_PI);
   cairo_fill(cr);
 
-  float max_housing_radius = 70;
+  double max_housing_radius = 70.0;
   cairo_set_source_rgba(cr, 0.5, 0.5, 0.5, 1.0);
   cairo_set_line_width(cr, 0.75);
   cairo_move_to(cr, principlePlaneDistance, max_housing_radius);
@@ -346,17 +346,17 @@ void draw_focal_length(cairo_t *cr, const float scale) {
 }
 
 
-void draw_lenses(cairo_t *cr, float scale){
-  float pos = lens_length;
-  float line_width = 70.0/static_cast<float>(width);
+void draw_lenses(cairo_t *cr, double scale){
+  double pos = lens_length;
+  double line_width = 70.0/static_cast<double>(width);
 
   for(int i=0; i<lenses_cnt; i++){
-    float rad = lenses[i].lens_radius;
+    double rad = lenses[i].lens_radius;
     if (stringcmp(lenses[i].geometry, "cyl-y") && dim_up) rad = 99999.0;
     else if (stringcmp(lenses[i].geometry, "cyl-x") && !dim_up) rad = 99999.0;
     
-    float hrad = lenses[i].housing_radius;
-    float t = lens_get_thickness(lenses[i], zoom);
+    double hrad = lenses[i].housing_radius;
+    double t = lens_get_thickness(lenses[i], zoom);
 
     // skip aperture drawing
     if(stringcmp(lenses[i].material, "iris")) {
@@ -366,45 +366,45 @@ void draw_lenses(cairo_t *cr, float scale){
 
     if(stringcmp(lenses[i].material, "iris")) aperture_pos = pos;
 
-    if(lenses[i].ior != 1.0f && i < lenses_cnt-1) {
+    if(lenses[i].ior != 1.0 && i < lenses_cnt-1) {
       cairo_save(cr);
 
-      float rad2 = lenses[i+1].lens_radius;
+      double rad2 = lenses[i+1].lens_radius;
       if (stringcmp(lenses[i+1].geometry, "cyl-y") && dim_up) rad2 = 99999.0;
       else if (stringcmp(lenses[i+1].geometry, "cyl-x") && !dim_up) rad2 = 99999.0;
     
-      float hrad2 = lenses[i+1].housing_radius;
-      float off  = rad  > 0.0f ? 0.0f : M_PI;
-      float off2 = rad2 > 0.0f ? 0.0f : M_PI;
-      float alpha  = asinf(fminf(1.0f, fmaxf(-1.0f, fabsf(hrad/rad))));
-      float alpha2 = asinf(fminf(1.0f, fmaxf(-1.0f, fabsf(hrad2/rad2))));
+      double hrad2 = lenses[i+1].housing_radius;
+      double off  = rad  > 0.0 ? 0.0 : M_PI;
+      double off2 = rad2 > 0.0 ? 0.0 : M_PI;
+      double alpha  = asin(fminf(1.0, fmax(-1.0, fabs(hrad/rad))));
+      double alpha2 = asin(fminf(1.0, fmax(-1.0, fabs(hrad2/rad2))));
 
       if(draw_aspheric) {
-        const int num_steps = 50;
+        const int num_steps = 100;
 
         for(int j = 0; j <= num_steps; j++)
         {
-          Eigen::Vector2f y(hrad*(2 * j / (float)num_steps - 1), 0); //float y[] = {hrad*(2 * j / (float)num_steps - 1), 0};
-          Eigen::Vector4f coeff(0,0,0,0);
+          Eigen::Vector2d y(hrad*(2 * j / (double)num_steps - 1), 0); //float y[] = {hrad*(2 * j / (float)num_steps - 1), 0};
+          Eigen::Vector4d coeff(0,0,0,0);
           for (int i = 0; i < 4; i++) coeff(i) = lenses[i].aspheric_correction_coefficients[i];
-          float x = pos-evaluate_aspherical(y, rad, lenses[i].aspheric, coeff);
+          double x = pos-evaluate_aspherical(y, rad, lenses[i].aspheric, coeff);
           cairo_line_to(cr, x, y[0]);
         }
 
         for(int j = num_steps; j >= 0; j--)
         {
-          Eigen::Vector2f y(hrad2*(2 * j / (float)num_steps - 1), 0); //float y[] = {hrad2*(2 * j / (float)num_steps - 1), 0};
-          Eigen::Vector4f coeff(0,0,0,0);
+          Eigen::Vector2d y(hrad2*(2 * j / (double)num_steps - 1), 0); //float y[] = {hrad2*(2 * j / (float)num_steps - 1), 0};
+          Eigen::Vector4d coeff(0,0,0,0);
           for (int i = 0; i < 4; i++) coeff(i) = lenses[i+1].aspheric_correction_coefficients[i];
-          float x = pos-t-evaluate_aspherical(y, rad2, lenses[i+1].aspheric, coeff);
+          double x = pos-t-evaluate_aspherical(y, rad2, lenses[i+1].aspheric, coeff);
           cairo_line_to(cr, x, y[0]);
         }
       } else {
-        cairo_arc(cr, pos-rad, 0.0f, std::abs(rad), off-alpha, off+alpha);
-        if(rad * rad2 > 0.0f)
-          cairo_arc_negative(cr, pos-t-rad2, 0.0f, std::abs(rad2), off2+alpha2, off2-alpha2);
+        cairo_arc(cr, pos-rad, 0.0, std::abs(rad), off-alpha, off+alpha);
+        if(rad * rad2 > 0.0)
+          cairo_arc_negative(cr, pos-t-rad2, 0.0, std::abs(rad2), off2+alpha2, off2-alpha2);
         else
-          cairo_arc(cr, pos-t-rad2, 0.0f, std::abs(rad2), off2-alpha2, off2+alpha2);
+          cairo_arc(cr, pos-t-rad2, 0.0, std::abs(rad2), off2-alpha2, off2+alpha2);
       }
 
       cairo_close_path(cr);
@@ -426,17 +426,17 @@ void draw_lenses(cairo_t *cr, float scale){
       cairo_clip(cr);
       
       if(draw_aspheric) {
-        const int num_steps = 50;
+        const int num_steps = 100;
 
         for(int j = 0; j <= num_steps; j++) {
-          Eigen::Vector2f y(hrad*(2 * j / (float)num_steps - 1), 0); //float y[] = {hrad*(2 * j / (float)num_steps - 1), 0};
-          Eigen::Vector4f coeff(0,0,0,0);
+          Eigen::Vector2d y(hrad*(2 * j / (double)num_steps - 1), 0); //float y[] = {hrad*(2 * j / (float)num_steps - 1), 0};
+          Eigen::Vector4d coeff(0,0,0,0);
           for (int i = 0; i < 4; i++) coeff(i) = lenses[i].aspheric_correction_coefficients[i];
-          float x = pos-evaluate_aspherical(y, rad, lenses[i].aspheric, coeff);
+          double x = pos-evaluate_aspherical(y, rad, lenses[i].aspheric, coeff);
           cairo_line_to(cr, x, y[0]);
         }
       } else {
-        cairo_arc(cr, pos-rad, 0.0f, std::abs(rad), .0f, 2.0f*M_PI);
+        cairo_arc(cr, pos-rad, 0.0, std::abs(rad), 0.0, 2.0*M_PI);
       }
 
       if (stringcmp(lenses[i].geometry, "cyl-y") || stringcmp(lenses[i].geometry, "cyl-x")) cairo_set_source_rgba(cr, mint[0], mint[1], mint[2], 0.85);
@@ -477,28 +477,28 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
     cairo_translate(cr, width/2.0, 0);
   }
 
-  cairo_scale(cr, ((float)width/window_aspect_ratio)/20.0, (float)height/20.0);
+  cairo_scale(cr, ((double)width/window_aspect_ratio)/20.0, (double)height/20.0);
   cairo_set_line_width(cr, 40.0/width);
 
-  const float scale = global_scale/lens_length;
+  const double scale = global_scale/lens_length;
   cairo_scale(cr, scale, scale); // scale by arbitrary factor
 
   if (!mode_visual_debug){
-    float center_shift = -((lens_length + lenses[lenses_cnt-1].thickness_short) / 2.0);
+    double center_shift = -((lens_length + lenses[lenses_cnt-1].thickness_short) / 2.0);
     cairo_translate(cr, center_shift, 0);
   } else {
     cairo_translate(cr, 20.0, 0.0); // move 20mm away
     draw_grid(cr);
 
     // find max housing radius
-    float max_housing_radius = 0.0;
+    double max_housing_radius = 0.0;
     for (int i=0; i < lenses_cnt; i++){
       if (lenses[i].housing_radius > max_housing_radius){
         max_housing_radius = lenses[i].housing_radius;
       }
     }
 
-    float ruler_padding = gridsize;
+    double ruler_padding = gridsize;
     draw_rulers(cr, max_housing_radius, ruler_padding);
     draw_axis_text(cr, max_housing_radius, ruler_padding);
   }
@@ -514,24 +514,24 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
 
     for(int k=0; k<num_rays; k++){
 
-      const float y = 2.0f * (num_rays/2-k)/(float)num_rays * lenses[0].housing_radius;
+      const double y = 2.0f * (num_rays/2-k)/(double)num_rays * lenses[0].housing_radius;
 
-      Eigen::Vector3f cam_pos(0,0,0);
-      Eigen::Vector3f cam_dir(0,0,0);
+      Eigen::Vector3d cam_pos(0,0,0);
+      Eigen::Vector3d cam_dir(0,0,0);
       cam_dir[dim_up] = y;
       cam_dir[2] = cam_pos[2] + 99999;
       
-      const float lambda = 0.55f;
-      Eigen::VectorXf in(5); in << 0,0,0,0,lambda;
-      Eigen::VectorXf out(5); out <<  0,0,0,0,lambda;
-      Eigen::VectorXf ap(5); ap << 0,0,0,0,lambda;
-      Eigen::VectorXf inrt(5); inrt << cam_pos[0], cam_pos[1], cam_pos[2], 0.0f, lambda;
-      Eigen::VectorXf outrt(5); outrt << cam_dir[0], cam_dir[1], cam_dir[2], 0.0f, lambda;
+      const double lambda = 0.55;
+      Eigen::VectorXd in(5); in << 0,0,0,0,lambda;
+      Eigen::VectorXd out(5); out <<  0,0,0,0,lambda;
+      Eigen::VectorXd ap(5); ap << 0,0,0,0,lambda;
+      Eigen::VectorXd inrt(5); inrt << cam_pos[0], cam_pos[1], cam_pos[2], 0.0, lambda;
+      Eigen::VectorXd outrt(5); outrt << cam_dir[0], cam_dir[1], cam_dir[2], 0.0, lambda;
 
       int error = 0;
       if(draw_raytraced) {
-        Eigen::Vector3f pos_out(0,0,0);
-        Eigen::Vector3f dir_out(0,0,0);
+        Eigen::Vector3d pos_out(0,0,0);
+        Eigen::Vector3d dir_out(0,0,0);
         error = evaluate_draw(lenses, lenses_cnt, zoom, inrt, outrt, cr, scale, dim_up, draw_aspheric, pos_out, dir_out);
       }
     }
@@ -541,30 +541,30 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
 
     for(int k=0; k<num_rays; k++){
 
-      Eigen::Vector3f cam_pos(0.0, 0.0, 9999.0f);
-      const float y = 2.0f * (num_rays/2-k)/(float)num_rays * lenses[0].housing_radius;
+      Eigen::Vector3d cam_pos(0.0, 0.0, 9999.0);
+      const double y = 2.0 * (num_rays/2-k)/(double)num_rays * lenses[0].housing_radius;
       cam_pos[dim_up] = y;
 
-      Eigen::Vector3f cam_dir(0.0, 0.0, -cam_pos[2]*10.0f);
+      Eigen::Vector3d cam_dir(0.0, 0.0, -cam_pos[2]*10.0f);
       cam_dir[dim_up] = cam_pos[dim_up];
       raytrace_normalise(cam_dir);
 
-      const float lambda = 0.5f;
+      const float lambda = 0.55;
 
-      //Eigen::VectorXf in(5); in << 0,0,0,0,lambda;
-      //Eigen::VectorXf out(5); out << 0,0,0,0,lambda;
+      //Eigen::VectorXd in(5); in << 0,0,0,0,lambda;
+      //Eigen::VectorXd out(5); out << 0,0,0,0,lambda;
       float in[5] = {0.0, 0.0, 0.0, 0.0, lambda};
       float out[5] = {0.0, 0.0, 0.0, 0.0, lambda};
       float ap[5] = {0.0, 0.0, 0.0, 0.0, lambda};
-      //Eigen::VectorXf ap(5); ap << 0,0,0,0,lambda;
-      Eigen::VectorXf inrt(5); inrt << 0,0,0,0,lambda;
-      Eigen::VectorXf outrt(5); outrt << 0,0,0,0,lambda;
+      //Eigen::VectorXd ap(5); ap << 0,0,0,0,lambda;
+      Eigen::VectorXd inrt(5); inrt << 0,0,0,0,lambda;
+      Eigen::VectorXd outrt(5); outrt << 0,0,0,0,lambda;
 
-      float t = 0.0f;
-      Eigen::Vector3f n(0,0,0);
+      double t = 0.0;
+      Eigen::Vector3d n(0,0,0);
 
-      Eigen::Vector2f outpos(0,0);
-      Eigen::Vector2f outdir(0,0);
+      Eigen::Vector2d outpos(0,0);
+      Eigen::Vector2d outdir(0,0);
 
       // intersection with first lens element
       if (stringcmp(lenses[0].geometry, "cyl-y")){
@@ -608,7 +608,7 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
         std::vector<float> rgb(3);
         hsl_2_rgb(hsl, rgb);
 
-        const float polynomial_length = lens_length/5.0f;
+        const double polynomial_length = lens_length/5.0;
 
         // evaluate sensor -> light
         for(int i=0;i<5;i++) in[i] = outrt[i];
@@ -621,7 +621,7 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
         const int aperture_death = (ap[0]*ap[0] + ap[1]*ap[1] > aperture_rad*aperture_rad);
         
         if(!aperture_death) {
-          float transmittance = out[4];
+          double transmittance = out[4];
           cairo_set_source_rgba(cr, rgb[0], rgb[1], rgb[2], 6.0 * transmittance);
 
           // sensor
@@ -630,14 +630,14 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
           stroke_with_pencil(cr, scale, 90.0/width);
 
           // aperture
-          float aperture_pos = lens_get_aperture_pos_reverse(lenses, lenses_cnt-1, 0.0f);
+          double aperture_pos = lens_get_aperture_pos_reverse(lenses, lenses_cnt-1, 0.0);
           cairo_move_to(cr, aperture_pos, ap[dim_up]);
           cairo_line_to(cr, aperture_pos + .2*polynomial_length, ap[dim_up] + .2*polynomial_length*ap[dim_up+2]);
           stroke_with_pencil(cr, scale, 90.0/width);
 
           // outer pupil
-          Eigen::Vector2f outpos(out[0], out[1]);
-          Eigen::Vector2f outdir(out[2], out[3]);
+          Eigen::Vector2d outpos(out[0], out[1]);
+          Eigen::Vector2d outdir(out[2], out[3]);
           if (stringcmp(lenses[0].geometry, "cyl-y") && !dim_up) cylinderToCs(outpos, outdir, cam_pos, cam_dir, lens_length - lenses[0].lens_radius, lenses[0].lens_radius, true);
           else if (stringcmp(lenses[0].geometry, "cyl-y") && dim_up) cylinderToCs(outpos, outdir, cam_pos, cam_dir, lens_length - 99999.0, 99999.0, true);
           else if (stringcmp(lenses[0].geometry, "cyl-x") && !dim_up) cylinderToCs(outpos, outdir, cam_pos, cam_dir, lens_length - 99999.0, 99999.0, false);
@@ -656,7 +656,7 @@ gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
         outrt[4] = lambda;
 
         // tmp need to remove
-        Eigen::Vector3f tmpdraw01, tmpdraw02;
+        Eigen::Vector3d tmpdraw01, tmpdraw02;
         error = evaluate_draw(lenses, lenses_cnt, zoom, outrt, inrt, cr, scale, dim_up, draw_aspheric, tmpdraw01, tmpdraw02);
       }  
     }

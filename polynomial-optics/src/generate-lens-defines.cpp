@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
 
 
   // pota_h_lenses.h path
-  std::string pota_h_lenses_h_path = fmt::format("{}/../pota/src/auto_generated_lens_includes/pota_h_lenses.h", std::getenv("LENTIL_PATH")); 
+  std::string pota_h_lenses_h_path = fmt::format("{}/../pota/include/auto_generated_lens_includes/pota_h_lenses.h", std::getenv("LENTIL_PATH")); 
   fmt::print("pota_h_lenses.h path: {}\n", pota_h_lenses_h_path);
 
 
@@ -130,7 +130,7 @@ int main(int argc, char *argv[])
 
   // pota_cpp_lenses.h path
   std::string pota_cpp_lenses_h_path = std::getenv("LENTIL_PATH");
-  pota_cpp_lenses_h_path += "/../pota/src/auto_generated_lens_includes/pota_cpp_lenses.h";
+  pota_cpp_lenses_h_path += "/../pota/include/auto_generated_lens_includes/pota_cpp_lenses.h";
   fmt::print("pota_cpp_lenses.h path: {}\n", pota_cpp_lenses_h_path);
 
 
@@ -184,7 +184,7 @@ int main(int argc, char *argv[])
 
   for (auto gencode_filename : gencode_outputs){
     // gencode outputs - path
-    std::string gencode_outputs_path = fmt::format("{}/../pota/src/auto_generated_lens_includes/load_{}", std::getenv("LENTIL_PATH"), gencode_filename);
+    std::string gencode_outputs_path = fmt::format("{}/../pota/include/auto_generated_lens_includes/load_{}", std::getenv("LENTIL_PATH"), gencode_filename);
     fmt::print("gencode outputs - path: {}\n", gencode_outputs_path);
 
 

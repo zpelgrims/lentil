@@ -91,11 +91,11 @@ int main(int argc, char **argv)
 
 
   lenses_cnt = lens_configuration(lenses, id, lens_focal_length);
-  float lens_length = 0;
+  double lens_length = 0;
   for(int i = 0; i < lenses_cnt; i++) lens_length += lens_get_thickness(lenses[i], zoom);
-  const float aperture_housing_radius = lens_get_aperture_radius(lenses, lenses_cnt);
-  const float aperture_pos = lens_get_aperture_pos(lenses, lenses_cnt, zoom);
-  const float bfl = lens_get_thickness(lenses[lenses_cnt-1], zoom);
+  const double aperture_housing_radius = lens_get_aperture_radius(lenses, lenses_cnt);
+  const double aperture_pos = lens_get_aperture_pos(lenses, lenses_cnt, zoom);
+  const double bfl = lens_get_thickness(lenses[lenses_cnt-1], zoom);
 
   // construct lens name
   std::string lens_name = lens_database[id]["company"].get<std::string>();
@@ -125,14 +125,14 @@ int main(int argc, char **argv)
   fprintf(f, "camera->lens_aperture_radius_at_fstop = %f; // aperture radius at smallest fstop\n", lens_database[id]["max-fstop-aperture-radius"][std::to_string(lens_focal_length)].get<float>());
 
   // calculate approximate fov for 35mm sensor
-  float sensor[] = {22.f, 0, (lenses[lenses_cnt-1].housing_radius-22.f)/bfl, 0, .55};
+  float sensor[] = {22.f, 0, (float)((lenses[lenses_cnt-1].housing_radius-22.f)/bfl), 0, .55f};
   float out[] = {0, 0, 0, 0, 0};
   poly_system_evaluate(&poly, sensor, out, 100);
  
-  const Eigen::Vector2f inpos(out[0], out[1]);
-  const Eigen::Vector2f indir(out[2], out[3]);
-  Eigen::Vector3f pos_cs(0,0,0);
-  Eigen::Vector3f dir_cs(0,0,0);
+  const Eigen::Vector2d inpos(out[0], out[1]);
+  const Eigen::Vector2d indir(out[2], out[3]);
+  Eigen::Vector3d pos_cs(0,0,0);
+  Eigen::Vector3d dir_cs(0,0,0);
 
   if (stringcmp(lenses[0].geometry, "cyl-y")) cylinderToCs(inpos, indir, pos_cs, dir_cs, 0, lenses[0].lens_radius, true);
   else if (stringcmp(lenses[0].geometry, "cyl-x")) cylinderToCs(inpos, indir, pos_cs, dir_cs, 0, lenses[0].lens_radius, false);
@@ -140,7 +140,7 @@ int main(int argc, char **argv)
   
   raytrace_normalise(dir_cs);
   dir_cs(2) = dir_cs(2) < -1 ? -1 : dir_cs(2) > 1 ? 1 : dir_cs(2);
-  const float fov = dir_cs(2);
+  const double fov = dir_cs(2);
   fprintf(f, "camera->lens_field_of_view = %f; // cosine of the approximate field of view assuming a 35mm image\n", fov);
   fprintf(f, "} break;\n");
   fclose(f);

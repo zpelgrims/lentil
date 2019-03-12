@@ -14,24 +14,24 @@ using json = nlohmann::json;
 int main(int argc, char *argv[]){
   const char *id = argv[1];
   std::vector<lens_element_t> lenses;
-  const float zoom = 0.0f;
+  const double zoom = 0.0;
   const int lenses_cnt = lens_configuration(lenses, id, 0);
   const int dim_up = 1;
   const int draw_aspheric = 1;
-  float err = 99999.0;
-  float original_last_element_thickness = lenses[lenses_cnt-1].thickness_short;
-  float optimal_thickness = 0.0f;
-  const float lambda = 0.55f;
+  double err = 99999.0;
+  double original_last_element_thickness = lenses[lenses_cnt-1].thickness_short;
+  double optimal_thickness = 0.0;
+  const double lambda = 0.55;
 
-  for(float extra_thickness = 500.0; extra_thickness > -500.0; extra_thickness -= 0.001){
+  for(double extra_thickness = 500.0; extra_thickness > -500.0; extra_thickness -= 0.001){
 
     // change last element thickness
     lenses[lenses_cnt-1].thickness_short = original_last_element_thickness + extra_thickness;
-    float lens_length = 0;
+    double lens_length = 0;
     for(int i=0;i<lenses_cnt;i++) lens_length += lens_get_thickness(lenses[i], zoom);
 
-    Eigen::Vector3f cam_pos(0,0,0);
-    Eigen::Vector3f cam_dir(0,0,0);
+    Eigen::Vector3d cam_pos(0,0,0);
+    Eigen::Vector3d cam_dir(0,0,0);
     cam_pos(dim_up) = 0.1*lenses[lenses_cnt-1].housing_radius;
 
     cam_dir(2) = cam_pos(2) - 99999;
@@ -39,16 +39,16 @@ int main(int argc, char *argv[]){
     raytrace_normalise(cam_dir);
     for(int i=0;i<3;i++) cam_pos(i) -= 0.1f * cam_dir(i);
     
-    Eigen::VectorXf in(5); in << 0,0,0,0,lambda;
-    Eigen::VectorXf out(5); out << 0,0,0,0,lambda;
-    Eigen::VectorXf ap(5); ap << 0,0,0,0,lambda;
-    Eigen::VectorXf inrt(5); inrt << 0,0,0,0,lambda;
-    Eigen::VectorXf outrt(5); outrt << 0,0,0,0,lambda;
-    float t = 0.0f;
-    Eigen::Vector3f n(0,0,0);
+    Eigen::VectorXd in(5); in << 0,0,0,0,lambda;
+    Eigen::VectorXd out(5); out << 0,0,0,0,lambda;
+    Eigen::VectorXd ap(5); ap << 0,0,0,0,lambda;
+    Eigen::VectorXd inrt(5); inrt << 0,0,0,0,lambda;
+    Eigen::VectorXd outrt(5); outrt << 0,0,0,0,lambda;
+    double t = 0.0f;
+    Eigen::Vector3d n(0,0,0);
 
-    Eigen::Vector2f outpos(0,0);
-    Eigen::Vector2f outdir(0,0);
+    Eigen::Vector2d outpos(0,0);
+    Eigen::Vector2d outdir(0,0);
     
     if (stringcmp(lenses[0].geometry, "cyl-y")){
       // intersection with first lens element, but seems like a duplicate purpose of the algebra method above..
@@ -79,7 +79,7 @@ int main(int argc, char *argv[]){
     
     for(int i=0;i<5;i++) inrt(i) = in(i);
     
-    float distance = evaluate_reverse_intersection_y0(lenses, lenses_cnt, zoom, inrt, outrt, dim_up, draw_aspheric);
+    double distance = evaluate_reverse_intersection_y0(lenses, lenses_cnt, zoom, inrt, outrt, dim_up, draw_aspheric);
 
     if (distance < err && distance >= 0.0f){
       err = distance;
@@ -87,7 +87,7 @@ int main(int argc, char *argv[]){
     }
   }
 
-  if (optimal_thickness <= 0.001f){
+  if (optimal_thickness <= 0.001){
     fmt::print("Raytraced optimal offset is [{}], seems wrong.. aborting.\n", optimal_thickness);
     return 0;
   }
