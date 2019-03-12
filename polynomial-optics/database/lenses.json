@@ -2238,11 +2238,11 @@
     "focal-length-mm-patent": 6.0,
     "focal-length-mm-raytraced": 5.4807494090768785,
     "fstop": {
-      "6": 16.58635679454206,
+      "6": 63.82734383065059,
       "unscaled": 16.58635679454206
     },
     "max-fstop-aperture-radius": {
-      "6": 5.975442772374432,
+      "6": 6.506989220679896,
       "unscaled": 5.975442772374432
     },
     "notes": "Aspherical 181 degree field of view fisheye",
@@ -2371,7 +2371,7 @@
           2.3317e-07,
           -1.7242e-09
         ],
-        "housing-radius": 10,
+        "housing-radius": 6,
         "ior": 1.0,
         "lens-geometry": "aspherical",
         "material": "air",

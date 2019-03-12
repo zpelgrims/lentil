@@ -1,8 +1,9 @@
 CXX=clang++
 CXXFLAGS=-Wall -D_GNU_SOURCE -fopenmp -std=c++17 -DFMT_HEADER_ONLY
 CXXFLAGS += -I/usr/local/include/cairo/ -L/usr/local/lib
-OPTFLAGS = -O3 -DNDEBUG -ffast-math -mfpmath=sse -march=native -fno-finite-math-only -fexpensive-optimizations -I. -Isrc/
-#OPTFLAGS += -ggdb3 #debug symbols for debugging with gdb
+OPTFLAGS = -DNDEBUG -ffast-math -mfpmath=sse -march=native -fno-finite-math-only -fexpensive-optimizations -I. -Isrc/
+#OPTFLAGS += -g #debug symbols
+OPTFLAGS += -O3
 LDFLAGS = -lm
 
 HEADERS=\

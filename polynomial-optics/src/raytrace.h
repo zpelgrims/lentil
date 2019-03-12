@@ -48,9 +48,9 @@ static inline int spherical(
   double t = 0.0f;
   const double t0 = (-b-std::sqrt(discr))/(2*a);
   const double t1 = (-b+std::sqrt(discr))/(2*a);
-  if(t0 < -1e-4f) t = t1;
+  if(t0 < -1e-4) t = t1;
   else t = fminf(t0, t1);
-  if(t < -1e-4f) return 16;
+  if(t < -1e-4) return 16;
 
   propagate(pos, dir, t);
   error |= (int)(pos(0)*pos(0) + pos(1)*pos(1) > housing_rad*housing_rad)<<4;
@@ -411,8 +411,6 @@ static inline int evaluate_for_pos_dir(
                   int aspheric, 
                   Eigen::Vector3d &pos, Eigen::Vector3d &dir, 
                   const double total_lens_length,
-                  std::vector<Eigen::Vector3d> &pos_list,
-                  std::vector<Eigen::VectorXd> &dir_list,
                   bool print_debug
                   )
 {
