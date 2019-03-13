@@ -15,42 +15,69 @@ class LentilDialog(QtWidgets.QDialog):
         self.signals()
 
     def build_attributes(self):
-        self.hboxLayout = QtWidgets.QVBoxLayout(self)
+        self.hboxLayout = QtWidgets.QVBoxLayout()
 
-        self.unitCB = QtWidgets.QComboBox(self)
+        self.unitHB = QtWidgets.QHBoxLayout()
+        self.unitL = QtWidgets.QLabel('Units: ')
+        #self.unitL.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
+        self.unitCB = QtWidgets.QComboBox()
         self.unitCB.addItem("mm")
         self.unitCB.addItem("cm")
         self.unitCB.addItem("dm")
         self.unitCB.addItem("m")
+        self.unitHB.addWidget(self.unitL)
+        self.unitHB.addWidget(self.unitCB)
 
-
-        self.lensCB = QtWidgets.QComboBox(self)
+        self.lensHB = QtWidgets.QHBoxLayout()
+        self.lensL = QtWidgets.QLabel('Lens: ')
+        #self.lensL.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
+        self.lensCB = QtWidgets.QComboBox()
         for lensid in self.lens_database:
             # self.lensCB.addItem("{}-{}".format(
             #     self.lens_database[lensid]["company"], 
             #     self.lens_database[lensid]["product-name"]
             # ))
             self.lensCB.addItem(lensid)
-
+        self.lensHB.addWidget(self.lensL)
+        self.lensHB.addWidget(self.lensCB)
 
         self.image = QtSvg.QSvgWidget()
-        self.image.setFixedSize(400, 300)
+        self.image.setFixedSize(900/2, 550/2)
         
+        self.sensorwidthHB = QtWidgets.QHBoxLayout()
+        self.sensorwidthL = QtWidgets.QLabel('Sensor Width: ')
+        self.sensorwidthS = Slider(tickPosition=QtWidgets.QSlider.TicksLeft, orientation=QtCore.Qt.Horizontal)
+        self.sensorwidthS_vbox = QtWidgets.QVBoxLayout()
+        self.sensorwidthS_hbox = QtWidgets.QHBoxLayout()
+        self.sensorwidth_LMin = QtWidgets.QLabel(alignment=QtCore.Qt.AlignLeft)
+        self.sensorwidth_LMax = QtWidgets.QLabel(alignment=QtCore.Qt.AlignRight)
+        self.sensorwidthS_hbox.addWidget(self.sensorwidth_LMin, QtCore.Qt.AlignLeft)
+        self.sensorwidthS_hbox.addWidget(self.sensorwidth_LMax, QtCore.Qt.AlignRight)
+        self.sensorwidthS_vbox.addWidget(self.sensorwidthS)
+        self.sensorwidthS_vbox.addLayout(self.sensorwidthS_hbox)
+        self.sensorwidthS_vbox.addStretch()
+        self.sensorwidthS.setMinimum(1.4)
+        self.sensorwidthS.setMaximum(32)
+        self.sensorwidthLValue = QtWidgets.QLabel(alignment=QtCore.Qt.AlignCenter)
+        self.sensorwidthHB.addWidget(self.sensorwidthL)
+        self.sensorwidthHB.addLayout(self.sensorwidthS_vbox)
+        self.sensorwidthHB.addWidget(self.sensorwidthLValue)
 
-        self.slider = DoubleSlider(self)
-        self.slider.setMinimum(0)
-        self.slider.setMaximum(self.slider._max_int)
 
         self.hboxLayout.addWidget(self.image)
-        self.hboxLayout.addWidget(self.unitCB)
-        self.hboxLayout.addWidget(self.lensCB)
-        self.hboxLayout.addWidget(self.slider)
+        self.hboxLayout.addLayout(self.unitHB)
+        self.hboxLayout.addLayout(self.lensHB)
+        self.hboxLayout.addLayout(self.sensorwidthHB)
 
         self.setLayout(self.hboxLayout)
 
+
     def signals(self):
         self.lensCB.currentTextChanged.connect(self.lensid_changed)
-        self.slider.valueChanged.connect(self.click_handler)
+
+        self.sensorwidthS.minimumChanged.connect(self.sensorwidth_LMin.setNum)
+        self.sensorwidthS.maximumChanged.connect(self.sensorwidth_LMax.setNum)
+        self.sensorwidthS.valueChanged.connect(self.sensorwidthLValue.setNum)
 
     
     def lensid_changed(self):
@@ -66,48 +93,21 @@ class LentilDialog(QtWidgets.QDialog):
             self.lens_database = json.load(data_file)
 
 
-    def click_handler(self):
-        print(self.slider.value())
+    def print_value(self):
+        print(self.sensorwidthS.value())
 
 
-class DoubleSlider(QtWidgets.QSlider):
-    def __init__(self, *args, **kwargs):
-        super(DoubleSlider, self).__init__(*args, **kwargs)
-        self.decimals = 5
-        self._max_int = 10 ** self.decimals
+class Slider(QtWidgets.QSlider):
+    minimumChanged = QtCore.Signal(int)
+    maximumChanged = QtCore.Signal(int)
 
-        self._min_value = 0.0
-        self._max_value = 4.0
+    def setMinimum(self, minimum):
+        self.minimumChanged.emit(minimum)
+        super(Slider, self).setMinimum(minimum)
 
-    @property
-    def _value_range(self):
-        return self._max_value - self._min_value
-
-    def value(self):
-        return float(super(DoubleSlider, self).value()) / self._max_int * self._value_range + self._min_value
-
-    def setValue(self, value):
-        super(DoubleSlider, self).setValue(int((value - self._min_value) / self._value_range * self._max_int))
-
-    def setMinimum(self, value):
-        if value > self._max_value:
-            raise ValueError("Minimum limit cannot be higher than maximum")
-
-        self._min_value = value
-        self.setValue(self.value())
-
-    def setMaximum(self, value):
-        if value < self._min_value:
-            raise ValueError("Minimum limit cannot be higher than maximum")
-
-        self._max_value = value
-        self.setValue(self.value())
-
-    def minimum(self):
-        return self._min_value
-
-    def maximum(self):
-        return self._max_value
+    def setMaximum(self, maximum):
+        self.maximumChanged.emit(maximum)
+        super(Slider, self).setMaximum(maximum)
 
 
 ld = LentilDialog()
