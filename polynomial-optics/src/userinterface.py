@@ -43,6 +43,7 @@ class LentilDialog(QtWidgets.QDialog):
 
         self.image = QtSvg.QSvgWidget()
         self.image.setFixedSize(900/2, 550/2)
+        self.lensid_changed()
         
         self.sensorwidthS = SliderLayout('Sensor Width', 0, 36)
         self.fstopS = SliderLayout('Fstop', 1.4, 32)
@@ -76,7 +77,6 @@ class LentilDialog(QtWidgets.QDialog):
     def signals(self):
         self.lensCB.currentTextChanged.connect(self.lensid_changed)
 
-  
     
     def lensid_changed(self):
         lensname = str(self.lensCB.currentText())
