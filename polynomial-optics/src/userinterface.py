@@ -1,7 +1,6 @@
 from PySide2 import QtCore, QtWidgets, QtGui, QtSvg
 import json
 
-# needs a camera reader
 
 class LentilDialog(QtWidgets.QDialog):
     def __init__(self, parent=None):
@@ -10,6 +9,7 @@ class LentilDialog(QtWidgets.QDialog):
         self.setMinimumWidth(350)
         self.lens_database = None
         self.currentLensId = None
+        self.currentCamera = None
 
         self.read_public_lens_database()
         self.build_attributes()
@@ -85,7 +85,10 @@ class LentilDialog(QtWidgets.QDialog):
 
     def signals(self):
         self.lensCB.currentTextChanged.connect(self.lensid_changed)
-
+        self.cameraCB.currentTextChanged.connect(self.camera_changed)
+    
+    def camera_changed(self):
+        self.currentCamera = str(self.cameraCB.currentText())
     
     def lensid_changed(self):
         lensname = str(self.lensCB.currentText())
@@ -133,7 +136,7 @@ class SliderLayout(QtWidgets.QWidget):
         #self.slider.minimumChanged.connect(self._LMin.setNum)
         #self.slider.maximumChanged.connect(self._LMax.setNum)
         self.slider.valueChanged.connect(self.labelValue.setValue)
-
+        self.labelValue.valueChanged.connect(self.slider.setValue)
 
 class ArnoldMayaTranslator(LentilDialog):
     def __init__(self, parent=None):
@@ -150,16 +153,16 @@ class ArnoldMayaTranslator(LentilDialog):
             if cmds.getAttr("{}.renderable".format(cam)) == True:
                 self.cameraCB.addItem(str(cam))
         
-
     def translate(self):
-        self.camera_name = 'perspShape'
+        # TODO: all attrs need to be added
 
-        self.sensorwidthS.slider.valueChanged.connect(self.valuechanged_sensorWidth)
-        self.sensorwidthS.labelValue.valueChanged.connect(self.valuechanged_sensorWidth)
-    def valuechanged_sensorWidth(self):
-        cmds.setAttr("{}.aiExposure".format(self.camera_name), self.sensorwidthS.labelValue.value())
+        self.sensorwidthS.slider.valueChanged.connect(self.valuechanged)
+        self.sensorwidthS.labelValue.valueChanged.connect(self.valuechanged)
+    
+    def valuechanged(self):
+        # TODO: all attrs need to be added
 
-
+        cmds.setAttr("{}.aiExposure".format(self.currentCamera), self.sensorwidthS.labelValue.value())
 
 
 
