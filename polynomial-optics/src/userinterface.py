@@ -44,30 +44,18 @@ class LentilDialog(QtWidgets.QDialog):
         self.image = QtSvg.QSvgWidget()
         self.image.setFixedSize(900/2, 550/2)
         
-        self.sensorwidthHB = QtWidgets.QHBoxLayout()
-        self.sensorwidthL = QtWidgets.QLabel('Sensor Width: ')
-        self.sensorwidthS = Slider(tickPosition=QtWidgets.QSlider.TicksLeft, orientation=QtCore.Qt.Horizontal)
-        self.sensorwidthS_vbox = QtWidgets.QVBoxLayout()
-        self.sensorwidthS_hbox = QtWidgets.QHBoxLayout()
-        self.sensorwidth_LMin = QtWidgets.QLabel(alignment=QtCore.Qt.AlignLeft)
-        self.sensorwidth_LMax = QtWidgets.QLabel(alignment=QtCore.Qt.AlignRight)
-        self.sensorwidthS_hbox.addWidget(self.sensorwidth_LMin, QtCore.Qt.AlignLeft)
-        self.sensorwidthS_hbox.addWidget(self.sensorwidth_LMax, QtCore.Qt.AlignRight)
-        self.sensorwidthS_vbox.addWidget(self.sensorwidthS)
-        self.sensorwidthS_vbox.addLayout(self.sensorwidthS_hbox)
-        self.sensorwidthS_vbox.addStretch()
-        self.sensorwidthS.setMinimum(1.4)
-        self.sensorwidthS.setMaximum(32)
-        self.sensorwidthLValue = QtWidgets.QLabel(alignment=QtCore.Qt.AlignCenter)
-        self.sensorwidthHB.addWidget(self.sensorwidthL)
-        self.sensorwidthHB.addLayout(self.sensorwidthS_vbox)
-        self.sensorwidthHB.addWidget(self.sensorwidthLValue)
+        self.sensorwidthS = SliderLayout('Sensor Width', 0, 36)
 
+        self.fstopS = SliderLayout('Fstop', 1.4, 32)
+
+        self.wavelengthS = SliderLayout('Wavelength', 350, 850)
 
         self.hboxLayout.addWidget(self.image)
         self.hboxLayout.addLayout(self.unitHB)
         self.hboxLayout.addLayout(self.lensHB)
-        self.hboxLayout.addLayout(self.sensorwidthHB)
+        self.hboxLayout.addWidget(self.sensorwidthS)
+        self.hboxLayout.addWidget(self.fstopS)
+        self.hboxLayout.addWidget(self.wavelengthS)
 
         self.setLayout(self.hboxLayout)
 
@@ -75,10 +63,7 @@ class LentilDialog(QtWidgets.QDialog):
     def signals(self):
         self.lensCB.currentTextChanged.connect(self.lensid_changed)
 
-        self.sensorwidthS.minimumChanged.connect(self.sensorwidth_LMin.setNum)
-        self.sensorwidthS.maximumChanged.connect(self.sensorwidth_LMax.setNum)
-        self.sensorwidthS.valueChanged.connect(self.sensorwidthLValue.setNum)
-
+  
     
     def lensid_changed(self):
         lensname = str(self.lensCB.currentText())
@@ -108,6 +93,34 @@ class Slider(QtWidgets.QSlider):
     def setMaximum(self, maximum):
         self.maximumChanged.emit(maximum)
         super(Slider, self).setMaximum(maximum)
+
+
+class SliderLayout(QtWidgets.QWidget):
+    def __init__(self, name, minval, maxval, parent=None):
+        QtWidgets.QWidget.__init__(self, parent=parent)
+
+        self.sensorwidthHB = QtWidgets.QHBoxLayout(self)
+        self.sensorwidthL = QtWidgets.QLabel('{name} '.format(name=name))
+        self.sensorwidthS = Slider(tickPosition=QtWidgets.QSlider.TicksLeft, orientation=QtCore.Qt.Horizontal)
+        self.sensorwidthS_vbox = QtWidgets.QVBoxLayout(self)
+        self.sensorwidthS_hbox = QtWidgets.QHBoxLayout(self)
+        self.sensorwidth_LMin = QtWidgets.QLabel(alignment=QtCore.Qt.AlignLeft)
+        self.sensorwidth_LMax = QtWidgets.QLabel(alignment=QtCore.Qt.AlignRight)
+        self.sensorwidthS_hbox.addWidget(self.sensorwidth_LMin, QtCore.Qt.AlignLeft)
+        self.sensorwidthS_hbox.addWidget(self.sensorwidth_LMax, QtCore.Qt.AlignRight)
+        self.sensorwidthS_vbox.addWidget(self.sensorwidthS)
+        self.sensorwidthS_vbox.addLayout(self.sensorwidthS_hbox)
+        self.sensorwidthS_vbox.addStretch()
+        self.sensorwidthS.setMinimum(minval)
+        self.sensorwidthS.setMaximum(maxval)
+        self.sensorwidthLValue = QtWidgets.QLabel(alignment=QtCore.Qt.AlignCenter)
+        self.sensorwidthHB.addWidget(self.sensorwidthL)
+        self.sensorwidthHB.addLayout(self.sensorwidthS_vbox)
+        self.sensorwidthHB.addWidget(self.sensorwidthLValue)
+
+        self.sensorwidthS.minimumChanged.connect(self.sensorwidth_LMin.setNum)
+        self.sensorwidthS.maximumChanged.connect(self.sensorwidth_LMax.setNum)
+        self.sensorwidthS.valueChanged.connect(self.sensorwidthLValue.setNum)
 
 
 ld = LentilDialog()
