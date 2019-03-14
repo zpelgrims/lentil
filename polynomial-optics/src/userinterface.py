@@ -1,12 +1,13 @@
 from PySide2 import QtCore, QtWidgets, QtGui, QtSvg
 import json
 
+# needs a camera reader
 
 class LentilDialog(QtWidgets.QDialog):
     def __init__(self, parent=None):
         super(LentilDialog, self).__init__(parent)
         self.setWindowTitle("Lentil")
-        self.setMinimumWidth(400)
+        self.setMinimumWidth(350)
         self.lens_database = None
         self.currentLensId = None
 
@@ -15,7 +16,13 @@ class LentilDialog(QtWidgets.QDialog):
         self.signals()
 
     def build_attributes(self):
-        self.hboxLayout = QtWidgets.QVBoxLayout()
+        self.vboxLayout = QtWidgets.QVBoxLayout()
+
+        self.cameraHB = QtWidgets.QHBoxLayout()
+        self.cameraL = QtWidgets.QLabel('Camera node: ')
+        self.cameraCB = QtWidgets.QComboBox()
+        self.cameraHB.addWidget(self.cameraL)
+        self.cameraHB.addWidget(self.cameraCB)
 
         self.unitHB = QtWidgets.QHBoxLayout()
         self.unitL = QtWidgets.QLabel('Units: ')
@@ -42,7 +49,8 @@ class LentilDialog(QtWidgets.QDialog):
         self.lensHB.addWidget(self.lensCB)
 
         self.image = QtSvg.QSvgWidget()
-        self.image.setFixedSize(900/2, 550/2)
+        self.imageScaleFactor = 2.5
+        self.image.setFixedSize(900/self.imageScaleFactor, 550/self.imageScaleFactor)
         self.lensid_changed()
         
         self.sensorwidthS = SliderLayout('Sensor Width', 0, 36)
@@ -60,18 +68,19 @@ class LentilDialog(QtWidgets.QDialog):
         self.vignettingRetriesS = SliderLayout('Vignetting retries', 0, 100)
         
 
-        self.hboxLayout.addWidget(self.image)
-        self.hboxLayout.addLayout(self.unitHB)
-        self.hboxLayout.addLayout(self.lensHB)
-        self.hboxLayout.addWidget(self.sensorwidthS)
-        self.hboxLayout.addWidget(self.fstopS)
-        self.hboxLayout.addWidget(self.wavelengthS)
-        self.hboxLayout.addLayout(self.dofHbox)
-        self.hboxLayout.addWidget(self.focusDistanceS)
-        self.hboxLayout.addWidget(self.extraSensorShiftS)
-        self.hboxLayout.addWidget(self.vignettingRetriesS)
+        self.vboxLayout.addWidget(self.image)
+        self.vboxLayout.addLayout(self.cameraHB)
+        self.vboxLayout.addLayout(self.dofHbox)
+        self.vboxLayout.addLayout(self.unitHB)
+        self.vboxLayout.addLayout(self.lensHB)
+        self.vboxLayout.addWidget(self.sensorwidthS)
+        self.vboxLayout.addWidget(self.fstopS)
+        self.vboxLayout.addWidget(self.wavelengthS)
+        self.vboxLayout.addWidget(self.focusDistanceS)
+        self.vboxLayout.addWidget(self.extraSensorShiftS)
+        self.vboxLayout.addWidget(self.vignettingRetriesS)
 
-        self.setLayout(self.hboxLayout)
+        self.setLayout(self.vboxLayout)
 
 
     def signals(self):
@@ -91,9 +100,6 @@ class LentilDialog(QtWidgets.QDialog):
             self.lens_database = json.load(data_file)
 
 
-    def print_value(self):
-        print(self.sensorwidthS.value())
-
 
 class Slider(QtWidgets.QSlider):
     minimumChanged = QtCore.Signal(float)
@@ -112,21 +118,50 @@ class SliderLayout(QtWidgets.QWidget):
     def __init__(self, name, minval, maxval, parent=None):
         QtWidgets.QWidget.__init__(self, parent=parent)
 
-        self.sensorwidthHB = QtWidgets.QHBoxLayout(self)
-        self.sensorwidthL = QtWidgets.QLabel('{name}: '.format(name=name))
-        self.sensorwidthS = Slider(tickPosition=QtWidgets.QSlider.TicksLeft, orientation=QtCore.Qt.Horizontal)
-        self.sensorwidthS.setMinimum(minval)
-        self.sensorwidthS.setMaximum(maxval)
-        self.sensorwidthLValue = QtWidgets.QDoubleSpinBox()
-        self.sensorwidthLValue.setMaximum(maxval)
-        self.sensorwidthLValue.setMinimum(minval)
-        self.sensorwidthHB.addWidget(self.sensorwidthL)
-        self.sensorwidthHB.addWidget(self.sensorwidthS)
-        self.sensorwidthHB.addWidget(self.sensorwidthLValue)
+        self.hbox = QtWidgets.QHBoxLayout(self)
+        self.label = QtWidgets.QLabel('{name}: '.format(name=name))
+        self.slider = Slider(tickPosition=QtWidgets.QSlider.TicksLeft, orientation=QtCore.Qt.Horizontal)
+        self.slider.setMinimum(minval)
+        self.slider.setMaximum(maxval)
+        self.labelValue = QtWidgets.QDoubleSpinBox()
+        self.labelValue.setMaximum(maxval)
+        self.labelValue.setMinimum(minval)
+        self.hbox.addWidget(self.label)
+        self.hbox.addWidget(self.slider)
+        self.hbox.addWidget(self.labelValue)
 
-        #self.sensorwidthS.minimumChanged.connect(self.sensorwidth_LMin.setNum)
-        #self.sensorwidthS.maximumChanged.connect(self.sensorwidth_LMax.setNum)
-        self.sensorwidthS.valueChanged.connect(self.sensorwidthLValue.setValue)
+        #self.slider.minimumChanged.connect(self._LMin.setNum)
+        #self.slider.maximumChanged.connect(self._LMax.setNum)
+        self.slider.valueChanged.connect(self.labelValue.setValue)
 
-ld = LentilDialog()
+
+class ArnoldMayaTranslator(LentilDialog):
+    def __init__(self, parent=None):
+        LentilDialog.__init__(self, parent=parent)
+        
+        import maya.cmds as cmds
+
+        self.discover_cameras()
+        self.translate()
+
+    def discover_cameras(self):
+        rendercams = []
+        for cam in cmds.ls(cameras=True):
+            if cmds.getAttr("{}.renderable".format(cam)) == True:
+                self.cameraCB.addItem(str(cam))
+        
+
+    def translate(self):
+        self.camera_name = 'perspShape'
+
+        self.sensorwidthS.slider.valueChanged.connect(self.valuechanged_sensorWidth)
+        self.sensorwidthS.labelValue.valueChanged.connect(self.valuechanged_sensorWidth)
+    def valuechanged_sensorWidth(self):
+        cmds.setAttr("{}.aiExposure".format(self.camera_name), self.sensorwidthS.labelValue.value())
+
+
+
+
+
+ld = ArnoldMayaTranslator()
 ld.show()
