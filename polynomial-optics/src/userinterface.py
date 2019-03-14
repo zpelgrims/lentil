@@ -45,10 +45,19 @@ class LentilDialog(QtWidgets.QDialog):
         self.image.setFixedSize(900/2, 550/2)
         
         self.sensorwidthS = SliderLayout('Sensor Width', 0, 36)
-
         self.fstopS = SliderLayout('Fstop', 1.4, 32)
-
         self.wavelengthS = SliderLayout('Wavelength', 350, 850)
+        
+        self.dofHbox = QtWidgets.QHBoxLayout()
+        self.dofL = QtWidgets.QLabel("Depth of Field: ")
+        self.dofB = QtWidgets.QCheckBox()
+        self.dofHbox.addWidget(self.dofL)
+        self.dofHbox.addWidget(self.dofB)
+        
+        self.focusDistanceS = SliderLayout('Focus Distance (units)', 50, 10000)
+        self.extraSensorShiftS = SliderLayout('Extra Sensor Shift (mm)', -40.0, 40.0)
+        self.vignettingRetriesS = SliderLayout('Vignetting retries', 0, 100)
+        
 
         self.hboxLayout.addWidget(self.image)
         self.hboxLayout.addLayout(self.unitHB)
@@ -56,6 +65,10 @@ class LentilDialog(QtWidgets.QDialog):
         self.hboxLayout.addWidget(self.sensorwidthS)
         self.hboxLayout.addWidget(self.fstopS)
         self.hboxLayout.addWidget(self.wavelengthS)
+        self.hboxLayout.addLayout(self.dofHbox)
+        self.hboxLayout.addWidget(self.focusDistanceS)
+        self.hboxLayout.addWidget(self.extraSensorShiftS)
+        self.hboxLayout.addWidget(self.vignettingRetriesS)
 
         self.setLayout(self.hboxLayout)
 
@@ -83,8 +96,8 @@ class LentilDialog(QtWidgets.QDialog):
 
 
 class Slider(QtWidgets.QSlider):
-    minimumChanged = QtCore.Signal(int)
-    maximumChanged = QtCore.Signal(int)
+    minimumChanged = QtCore.Signal(float)
+    maximumChanged = QtCore.Signal(float)
 
     def setMinimum(self, minimum):
         self.minimumChanged.emit(minimum)
@@ -100,28 +113,20 @@ class SliderLayout(QtWidgets.QWidget):
         QtWidgets.QWidget.__init__(self, parent=parent)
 
         self.sensorwidthHB = QtWidgets.QHBoxLayout(self)
-        self.sensorwidthL = QtWidgets.QLabel('{name} '.format(name=name))
+        self.sensorwidthL = QtWidgets.QLabel('{name}: '.format(name=name))
         self.sensorwidthS = Slider(tickPosition=QtWidgets.QSlider.TicksLeft, orientation=QtCore.Qt.Horizontal)
-        self.sensorwidthS_vbox = QtWidgets.QVBoxLayout(self)
-        self.sensorwidthS_hbox = QtWidgets.QHBoxLayout(self)
-        self.sensorwidth_LMin = QtWidgets.QLabel(alignment=QtCore.Qt.AlignLeft)
-        self.sensorwidth_LMax = QtWidgets.QLabel(alignment=QtCore.Qt.AlignRight)
-        self.sensorwidthS_hbox.addWidget(self.sensorwidth_LMin, QtCore.Qt.AlignLeft)
-        self.sensorwidthS_hbox.addWidget(self.sensorwidth_LMax, QtCore.Qt.AlignRight)
-        self.sensorwidthS_vbox.addWidget(self.sensorwidthS)
-        self.sensorwidthS_vbox.addLayout(self.sensorwidthS_hbox)
-        self.sensorwidthS_vbox.addStretch()
         self.sensorwidthS.setMinimum(minval)
         self.sensorwidthS.setMaximum(maxval)
-        self.sensorwidthLValue = QtWidgets.QLabel(alignment=QtCore.Qt.AlignCenter)
+        self.sensorwidthLValue = QtWidgets.QDoubleSpinBox()
+        self.sensorwidthLValue.setMaximum(maxval)
+        self.sensorwidthLValue.setMinimum(minval)
         self.sensorwidthHB.addWidget(self.sensorwidthL)
-        self.sensorwidthHB.addLayout(self.sensorwidthS_vbox)
+        self.sensorwidthHB.addWidget(self.sensorwidthS)
         self.sensorwidthHB.addWidget(self.sensorwidthLValue)
 
-        self.sensorwidthS.minimumChanged.connect(self.sensorwidth_LMin.setNum)
-        self.sensorwidthS.maximumChanged.connect(self.sensorwidth_LMax.setNum)
-        self.sensorwidthS.valueChanged.connect(self.sensorwidthLValue.setNum)
-
+        #self.sensorwidthS.minimumChanged.connect(self.sensorwidth_LMin.setNum)
+        #self.sensorwidthS.maximumChanged.connect(self.sensorwidth_LMax.setNum)
+        self.sensorwidthS.valueChanged.connect(self.sensorwidthLValue.setValue)
 
 ld = LentilDialog()
 ld.show()
