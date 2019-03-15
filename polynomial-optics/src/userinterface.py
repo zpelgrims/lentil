@@ -38,7 +38,7 @@ class LentilDialog(QtWidgets.QDialog):
         self.cameraCB = QtWidgets.QComboBox()
         self.cameraHB.addWidget(self.cameraL)
         self.cameraHB.addWidget(self.cameraCB)
-        
+
         self.dofHbox = QtWidgets.QHBoxLayout()
         self.dofL = QtWidgets.QLabel("Depth of Field: ")
         self.dofCB = QtWidgets.QComboBox()
@@ -69,6 +69,12 @@ class LentilDialog(QtWidgets.QDialog):
         self.lensHB.addWidget(self.lensL)
         self.lensHB.addWidget(self.lensCB)
 
+        self.yearHB = QtWidgets.QHBoxLayout()
+        self.yearL = QtWidgets.QLabel('Year: ')
+        self.yearL2 = QtWidgets.QLabel()
+        self.yearHB.addWidget(self.yearL)
+        self.yearHB.addWidget(self.yearL2)
+
         self.focalLengthHB = QtWidgets.QHBoxLayout()
         self.focalLengthL = QtWidgets.QLabel('Focal Length: ')
         self.focalLengthCB = QtWidgets.QComboBox()
@@ -96,6 +102,7 @@ class LentilDialog(QtWidgets.QDialog):
         self.vboxLayout.addLayout(self.dofHbox)
         self.vboxLayout.addLayout(self.unitHB)
         self.vboxLayout.addLayout(self.lensHB)
+        self.vboxLayout.addLayout(self.yearHB)
         self.vboxLayout.addLayout(self.focalLengthHB)
         self.vboxLayout.addWidget(self.sensorwidthS)
         self.vboxLayout.addWidget(self.fstopS)
@@ -122,6 +129,9 @@ class LentilDialog(QtWidgets.QDialog):
 
         svg_location = "/Users/zeno/lentil/www/public/{}".format(self.lens_database[self.currentLensId]["www-svg-location"])
         self.image.load(svg_location)
+
+
+        self.yearL2.setText(str(self.lens_database[lensname]["year"]))
 
         # load all min and max values
 
@@ -194,9 +204,10 @@ class ArnoldMayaTranslator(LentilDialog):
     
     def switch_cam_to_lentil(self):
         try:
-            cmds.setAttr("{}.aiTranslator".format(self.currentCamera), "pota", type="string")
-        except:
+            cmds.setAttr("{}.aiTranslator".format(self.currentCamera), "spherical", type="string")
+        except: #add proper exception
             print("Lentil doesn't seem to be installed.")
+            return
 
     def read_values(self):
         # values should be read from the camera node
@@ -206,7 +217,7 @@ class ArnoldMayaTranslator(LentilDialog):
         self.focusDistanceS.slider.setValue(cmds.getAttr("{}.aiFocalDistance".format(self.currentCamera)))
         self.extraSensorShiftS.slider.setValue(cmds.getAttr("{}.aiExtraSensorShift".format(self.currentCamera)))
         self.vignettingRetriesS.slider.setValue(cmds.getAttr("{}.aiVignettingRetries".format(self.currentCamera)))
-        
+
 
 
     def callback(self):
