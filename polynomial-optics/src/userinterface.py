@@ -8,6 +8,9 @@ TODO:
 Connect all attributes
 Load min/max values on lens change
 Read all values from camera node
+Handle correct lens names
+Dialog should be on top
+if more than 1 cams, do not choose 'perspShape' by default
 
 """
 
@@ -94,8 +97,8 @@ class LentilDialog(QtWidgets.QDialog):
         self.separator = QHLine()
         
         self.wavelengthS = SliderLayout('Wavelength (nm)', 350, 850)
-        self.extraSensorShiftS = SliderLayout('Extra Sensor Shift (mm)', -40.0, 40.0)
-        self.vignettingRetriesS = SliderLayout('Vignetting retries', 0, 100)
+        self.extraSensorShiftS = SliderLayout('Additional Sensor Shift (mm)', -40.0, 40.0)
+        self.vignettingRetriesS = SliderLayout('Vignetting Retries', 0, 100)
 
         self.vboxLayout.addWidget(self.image)
         self.vboxLayout.addLayout(self.cameraHB)
