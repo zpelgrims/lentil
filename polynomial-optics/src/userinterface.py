@@ -7,8 +7,7 @@ TODO:
 
 Connect all attributes
 Load min/max values on lens change
-Read values from camera node
-Better styling (align params, etc)
+Read all values from camera node
 
 """
 
@@ -88,7 +87,7 @@ class LentilDialog(QtWidgets.QDialog):
         
         self.separator = QHLine()
         
-        self.wavelengthS = SliderLayout('Wavelength', 350, 850)
+        self.wavelengthS = SliderLayout('Wavelength (nm)', 350, 850)
         self.extraSensorShiftS = SliderLayout('Extra Sensor Shift (mm)', -40.0, 40.0)
         self.vignettingRetriesS = SliderLayout('Vignetting retries', 0, 100)
 
@@ -181,7 +180,8 @@ class ArnoldMayaTranslator(LentilDialog):
         import maya.cmds as cmds
 
         self.discover_cameras()
-        self.read_values()
+        self.switch_cam_to_lentil()
+        #self.read_values()
         self.callback()
 
     def discover_cameras(self):
@@ -192,9 +192,21 @@ class ArnoldMayaTranslator(LentilDialog):
             
         # if more than 1 cams, do not choose 'perspShape' by default
     
+    def switch_cam_to_lentil(self):
+        try:
+            cmds.setAttr("{}.aiTranslator".format(self.currentCamera), "pota", type="string")
+        except:
+            print("Lentil doesn't seem to be installed.")
+
     def read_values(self):
         # values should be read from the camera node
-        pass
+        self.sensorwidthS.slider.setValue(cmds.getAttr("{}.aiSensorWidth".format(self.currentCamera)))
+        self.fstopS.slider.setValue(cmds.getAttr("{}.aiFstop".format(self.currentCamera)))
+        self.wavelengthS.slider.setValue(cmds.getAttr("{}.aiWavelength".format(self.currentCamera)))
+        self.focusDistanceS.slider.setValue(cmds.getAttr("{}.aiFocalDistance".format(self.currentCamera)))
+        self.extraSensorShiftS.slider.setValue(cmds.getAttr("{}.aiExtraSensorShift".format(self.currentCamera)))
+        self.vignettingRetriesS.slider.setValue(cmds.getAttr("{}.aiVignettingRetries".format(self.currentCamera)))
+        
 
 
     def callback(self):
