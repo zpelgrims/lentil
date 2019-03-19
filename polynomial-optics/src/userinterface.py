@@ -194,38 +194,43 @@ class ArnoldMayaTranslator(LentilDialog):
 
         self.discover_cameras()
         self.switch_cam_to_lentil()
-        #self.read_values()
+        self.read_values()
         self.callback()
 
     def discover_cameras(self):
-        rendercams = []
+        rendercams = set()
         for cam in cmds.ls(cameras=True):
             if cmds.getAttr("{}.renderable".format(cam)) == True:
                 self.cameraCB.addItem(str(cam))
+                rendercams.add(cam)
+
+        if len(rendercams) > 1 and 'perspShape' in rendercams:
+            rendercams.remove('perspShape')
             
-        # if more than 1 cams, do not choose 'perspShape' by default
-    
+        #self.cameraCB pick list(rendercams)[0]
+        
+
     def switch_cam_to_lentil(self):
         try:
-            cmds.setAttr("{}.aiTranslator".format(self.currentCamera), "spherical", type="string")
+            cmds.setAttr("{}.aiTranslator".format(self.currentCamera), "pota", type="string")
         except: #add proper exception
             print("Lentil doesn't seem to be installed.")
             return
 
     def read_values(self):
-        # values should be read from the camera node
         self.sensorwidthS.slider.setValue(cmds.getAttr("{}.aiSensorWidth".format(self.currentCamera)))
         self.fstopS.slider.setValue(cmds.getAttr("{}.aiFstop".format(self.currentCamera)))
         self.wavelengthS.slider.setValue(cmds.getAttr("{}.aiWavelength".format(self.currentCamera)))
         self.focusDistanceS.slider.setValue(cmds.getAttr("{}.aiFocalDistance".format(self.currentCamera)))
         self.extraSensorShiftS.slider.setValue(cmds.getAttr("{}.aiExtraSensorShift".format(self.currentCamera)))
         self.vignettingRetriesS.slider.setValue(cmds.getAttr("{}.aiVignettingRetries".format(self.currentCamera)))
-
+        # self.dofCB 
+        # self.unitCB
+        # self.focalLengthCB
+        # self.lensCB
 
 
     def callback(self):
-        # TODO: all attrs need to be added
-
         self.sensorwidthS.slider.valueChanged.connect(self.value_changed)
         self.sensorwidthS.labelValue.valueChanged.connect(self.value_changed)
         self.fstopS.slider.valueChanged.connect(self.value_changed)
@@ -238,12 +243,22 @@ class ArnoldMayaTranslator(LentilDialog):
         self.extraSensorShiftS.labelValue.valueChanged.connect(self.value_changed)
         self.vignettingRetriesS.slider.valueChanged.connect(self.value_changed)
         self.vignettingRetriesS.labelValue.valueChanged.connect(self.value_changed)
+        # self.dofCB 
+        # self.unitCB
+        # self.focalLengthCB
+        # self.lensCB
 
     def value_changed(self):
-        # TODO: all attrs need to be added
-
-        cmds.setAttr("{}.aiExposure".format(self.currentCamera), self.sensorwidthS.labelValue.value())
-
+        cmds.setAttr("{}.aiSensorWidth".format(self.currentCamera), self.sensorwidthS.labelValue.value())
+        cmds.setAttr("{}.aiFstop".format(self.currentCamera), self.fstopS.labelValue.value())
+        cmds.setAttr("{}.aiWavelength".format(self.currentCamera), self.wavelengthS.labelValue.value())
+        cmds.setAttr("{}.aiFocalDistance".format(self.currentCamera), self.focusDistanceS.labelValue.value())
+        cmds.setAttr("{}.aiExtraSensorShift".format(self.currentCamera), self.extraSensorShiftS.labelValue.value())
+        cmds.setAttr("{}.aiVignettingRetries".format(self.currentCamera), self.vignettingRetriesS.labelValue.value())
+        # self.dofCB 
+        # self.unitCB
+        # self.focalLengthCB
+        # self.lensCB
 
 
 ld = ArnoldMayaTranslator()
