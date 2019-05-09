@@ -8,6 +8,10 @@ TODO:
 
 Connect all attributes
 Dialog should be on top
+Switching focallength should switch lens
+Switching lens should switch lens
+Fstop minimum should be set
+
 
 """
 
@@ -48,7 +52,7 @@ class LentilDialog(QtWidgets.QDialog):
         self.dofHbox.addWidget(self.dofCB)
 
         self.unitHB = QtWidgets.QHBoxLayout()
-        self.unitL = QtWidgets.QLabel('Units: ')
+        self.unitL = QtWidgets.QLabel('DCC Units: ')
         self.unitCB = QtWidgets.QComboBox()
         self.unitCB.addItem("mm")
         self.unitCB.addItem("cm")
@@ -67,7 +71,6 @@ class LentilDialog(QtWidgets.QDialog):
                 self.lens_database[lensid]["product-name"]
             ))
             self.lensIndex.append(lensid)
-            # self.lensCB.addItem(lensid)
         self.lensHB.addWidget(self.lensL)
         self.lensHB.addWidget(self.lensCB)
 
@@ -255,7 +258,7 @@ class ArnoldMayaTranslator(LentilDialog):
         try:
             cmds.setAttr("{}.aiTranslator".format(self.currentCamera), "pota", type="string")
         except: #add proper exception
-            print("Lentil doesn't seem to be installed.")
+            print("Error: Lentil doesn't seem to be installed.")
             return
 
     def read_values(self):
@@ -268,7 +271,8 @@ class ArnoldMayaTranslator(LentilDialog):
         self.unitCB.setCurrentIndex(cmds.getAttr("{}.aiUnitModel".format(self.currentCamera))) # why doesn't this work?
         
         # need to add lensmodel, focallength
-        # self.focalLengthCB.setCurrentText(self.extract_focal_length_from_full_name(test))
+        #lens_name = 
+        #self.focalLengthCB.setCurrentText(self.extract_focal_length_from_full_name(lens_name))
         # self.lensCB
 
     def value_changed(self):
@@ -281,8 +285,8 @@ class ArnoldMayaTranslator(LentilDialog):
         cmds.setAttr("{}.aiDof".format(self.currentCamera), False if self.dofCB.currentText() == 'disabled' else True)
         cmds.setAttr("{}.aiUnitModel".format(self.currentCamera), self.unitCB.currentIndex())
 
-        # need to add lens model update
-        # cmds.setAttr("{}.aiLensModel".format(self.currentCamera), )
+        # need to add lens model update, problem is maya does get/set with enum values.. need to relate these enum values to the database numbers
+        # cmds.setAttr("{}.aiLensModel".format(self.currentCamera), get_maya_lens_list_position())
 
 
 
