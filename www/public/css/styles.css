@@ -87,7 +87,7 @@ hr {
   text-transform: lowercase;
   font-size: 2rem;
   text-align: center;
-  transition: all .2s; }
+  transition: all 0.2s; }
   .button:hover {
     background-color: #d85050;
     color: white;
@@ -180,31 +180,32 @@ hr {
   align-items: center;
   justify-content: space-between;
   animation: 1s fadein forwards; }
+  .nav__background {
+    background: #1abc9c; }
   .nav__brand {
-    color: #333333;
+    color: white;
     font-size: 4rem;
     flex: 1; }
-    .nav__brand:hover {
-      color: black;
+    .nav__brand:hover, .nav__brand:focus, .nav__brand:active, .nav__brand:visited {
+      color: white;
       text-decoration: none; }
-    .nav__brand:focus, .nav__brand:active, .nav__brand:visited {
-      text-decoration: none;
-      color: #333333; }
-  .nav__right__item {
-    color: #333333;
-    font-size: 2rem;
-    margin: 0 1rem;
-    transition: all .2s; }
-    .nav__right__item:hover {
-      color: black;
-      text-decoration: none;
-      animation: .3s underline forwards; }
-    .nav__right__item:focus, .nav__right__item:active, .nav__right__item:visited {
-      text-decoration: none;
-      color: #333333; }
+  .nav__right {
+    color: white; }
+    .nav__right__item {
+      color: white;
+      font-size: 2rem;
+      margin: 0 1rem;
+      transition: all 0.2s; }
+      .nav__right__item:hover {
+        color: white;
+        text-decoration: none;
+        animation: 0.3s underline forwards; }
+      .nav__right__item:focus, .nav__right__item:active, .nav__right__item:visited {
+        color: white;
+        text-decoration: none; }
 
 .active {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.5); }
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5); }
 
 .footer {
   height: 15rem;
@@ -349,9 +350,9 @@ input:-webkit-autofill {
 
 @keyframes underline {
   0% {
-    border-bottom: 1px solid rgba(0, 0, 0, 0); }
+    border-bottom: 1px solid rgba(255, 255, 255, 0); }
   100% {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.3); } }
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3); } }
 
 @keyframes fadein {
   0% {
@@ -408,7 +409,7 @@ input:-webkit-autofill {
   .flash--error {
     background: #e87979; }
   .flash--success {
-    background: #00B233; }
+    background: #00b233; }
   .flash__x {
     position: absolute;
     right: 5%;
