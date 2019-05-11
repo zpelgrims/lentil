@@ -158,4 +158,6 @@
 
   - Re-configure environment
 
-- 05/10/19 5:00-
+- 05/10/19 5:00-5:30
+
+  - Re-style navbar

@@ -1,7 +1,8 @@
 $font-color: #333333;
 $highlight-color: #e87979;
 $lowlight-color: #d85050;
-$complimentary-color: #00B233;
+$complimentary-color: #00b233;
+$hero-background-color: #1abc9c;
 
 *,
 *::after,
@@ -25,8 +26,8 @@ body {
 hr {
   border: 0;
   clear: both;
-  display:block;
-  width: 80%;               
+  display: block;
+  width: 80%;
   background-color: rgba(0, 0, 0, 0.5);
   height: 1px;
   margin: 2rem auto;
@@ -45,7 +46,7 @@ hr {
   text-transform: lowercase;
   font-size: 2rem;
   text-align: center;
-  transition: all .2s;
+  transition: all 0.2s;
 
   &:hover {
     background-color: $lowlight-color;
