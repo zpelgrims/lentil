@@ -2,7 +2,7 @@ BUILD_SERVER=root@66.42.72.219
 DATE="$( date +"%y%m%d-%H%M" )" && #need to make sure this is in UTC?
 USER=testemail@gmail.com &&
 USER_BUILD_FOLDER=$DATE-$USER &&
-DOWNLOAD_DIR=/root/test_upload_folder/$USER_BUILD_FOLDER &&
+DOWNLOAD_DIR=/root/test_upload_folder &&
 
 mkdir -p $DOWNLOAD_DIR/$USER_BUILD_FOLDER &&
 
