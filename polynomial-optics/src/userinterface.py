@@ -7,7 +7,6 @@ import re
 TODO:
 
 Fstop minimum should be set, doesn't work..
-unitcb maya->lentil doesn't work
 need to change lens/focallength when user changes lens enum  -> untested
 """
 
@@ -244,10 +243,11 @@ class ArnoldMayaTranslator(LentilDialog):
         import maya.cmds as cmds
 
         self.enum_lens_map = {}
-
+        
         self.discover_cameras()
         self.switch_cam_to_lentil()
         self.build_camera_enum_map()
+        self.listen_for_attributes()
         self.read_values()
         self.callback()
 
@@ -288,6 +288,30 @@ class ArnoldMayaTranslator(LentilDialog):
         self.lensCB.setCurrentText(lens_name)
         self.focalLengthCB.setCurrentText(str(focallength))
         # self.yearCB.setCurrentText(str(year))
+    
+
+    def listen_for_attributes(self):
+        self.sensorwidth_sj = cmds.scriptJob(attributeChange=["{}.aiSensorWidth".format(self.currentCamera), self.read_values])
+        self.fstop_sj = cmds.scriptJob(attributeChange=["{}.aiFstop".format(self.currentCamera), self.read_values])
+        self.wavelength_sj = cmds.scriptJob(attributeChange=["{}.aiWavelength".format(self.currentCamera), self.read_values])
+        self.focaldistance_sj = cmds.scriptJob(attributeChange=["{}.aiFocalDistance".format(self.currentCamera), self.read_values])
+        self.extrasensorshift_sj = cmds.scriptJob(attributeChange=["{}.aiExtraSensorShift".format(self.currentCamera), self.read_values])
+        self.vignettingretries_sj = cmds.scriptJob(attributeChange=["{}.aiVignettingRetries".format(self.currentCamera), self.read_values])
+        self.lensmodel_sj = cmds.scriptJob(attributeChange=["{}.aiLensModel".format(self.currentCamera), self.read_values])
+        self.dof_sj = cmds.scriptJob(attributeChange=["{}.aiDof".format(self.currentCamera), self.read_values])
+        self.unitmodel_sj = cmds.scriptJob(attributeChange=["{}.aiUnitModel".format(self.currentCamera), self.read_values])
+
+    def __del__(self):
+        # kill the scriptjobs that listen for attribute changes
+        cmds.scriptJob(kill=self.sensorwidth_sj, force=True)
+        cmds.scriptJob(kill=self.fstop_sj, force=True)
+        cmds.scriptJob(kill=self.wavelength_sj, force=True)
+        cmds.scriptJob(kill=self.focaldistance_sj, force=True)
+        cmds.scriptJob(kill=self.extrasensorshift_sj, force=True)
+        cmds.scriptJob(kill=self.vignettingretries_sj, force=True)
+        cmds.scriptJob(kill=self.lensmodel_sj, force=True)
+        cmds.scriptJob(kill=self.dof_sj, force=True)
+        cmds.scriptJob(kill=self.unitmodel_sj, force=True)
 
     def value_changed(self):
         cmds.setAttr("{}.aiSensorWidth".format(self.currentCamera), self.sensorwidthS.labelValue.value())
