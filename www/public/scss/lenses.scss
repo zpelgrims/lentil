@@ -10,14 +10,25 @@
     width: 100%;
     margin-top: 2rem;
 
-    &__title {
+    &__bubbles {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      list-style: none;
+    }
+
+    &__bubble {
       text-transform: lowercase;
       font-size: 1.8rem;
       margin-top: 1rem;
       transition: 0.2s all;
+      background: #d9d9d9;
+      color: white;
+      margin: 0.5rem 0.2rem;
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
 
       &:hover {
-        color: black;
         cursor: pointer;
       }
     }

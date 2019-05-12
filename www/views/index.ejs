@@ -33,9 +33,17 @@
           <% } %> <% } %>
           <img src="<%= lens.image %>" alt="<%= lens.image %>" />
         </div>
-        <h3 class="lense__card__title">
-          <%= lens.company %> | <%= lens.product_name %> | <%= lens.year %>
-        </h3>
+        <ul class="lense__card__bubbles">
+          <li class="lense__card__bubble">
+            <%= lens.company %>
+          </li>
+          <li class="lense__card__bubble">
+            <%= lens.product_name %>
+          </li>
+          <li class="lense__card__bubble">
+            <%= lens.year %>
+          </li>
+        </ul>
       </div>
       <div class="exp-lense">
         <div

@@ -9,13 +9,22 @@
   .lense__card {
     width: 100%;
     margin-top: 2rem; }
-    .lense__card__title {
+    .lense__card__bubbles {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      list-style: none; }
+    .lense__card__bubble {
       text-transform: lowercase;
       font-size: 1.8rem;
       margin-top: 1rem;
-      transition: 0.2s all; }
-      .lense__card__title:hover {
-        color: black;
+      transition: 0.2s all;
+      background: #d9d9d9;
+      color: white;
+      margin: 0.5rem 0.2rem;
+      padding: 0.5rem 1rem;
+      border-radius: 50px; }
+      .lense__card__bubble:hover {
         cursor: pointer; }
     .lense__card__image {
       height: auto;

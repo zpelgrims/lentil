@@ -170,3 +170,4 @@
 
   - Update font and logo
   - Setup scroll arrow functionality
+  - Two lenses per row instead of three
