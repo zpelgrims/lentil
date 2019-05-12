@@ -6,7 +6,7 @@ import re
 """
 TODO:
 
-Fstop minimum should be set, doesn't work..
+Fstop minimum should be set -> untested
 need to change lens/focallength when user changes lens enum  -> untested
 """
 
@@ -140,7 +140,7 @@ class LentilDialog(QtWidgets.QDialog):
         for focallength in self.lens_database[self.currentLensId]["polynomial-optics"]:
             self.focalLengthCB.addItem("{}".format(focallength))
 
-        # remove exception when public lens json has fstop data for all lenses
+        # remove exception when public lens json has fstop data for all lenses, currently just errors out if lens is not found
         try:
             self.fstopS.slider.setMinimum(self.lens_database[self.currentLensId]["fstop"][str(self.focalLengthCB.currentText())])
             print("set fstop to minimum of: {}".format(self.lens_database[self.currentLensId]["fstop"][str(self.focalLengthCB.currentText())]))
