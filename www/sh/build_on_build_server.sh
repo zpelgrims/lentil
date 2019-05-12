@@ -23,7 +23,7 @@ mkdir -p $DOWNLOAD_DIR &&
 
 # windows is obviously wrong
 if [ "$OS" == "windows" ]; then
-   ssh -t $BUILD_SERVER "cd lentil-build/lentil && git pull --recurse-submodules && cd pota/build/server && bash ./build_server_unix.sh $LENSES $USER $USER_BUILD_FOLDER $DOWNLOAD_DIR"
+   ssh -t $BUILD_SERVER "cd lentil-build/lentil && git pull --recurse-submodules && cd pota/build/server && bash ./build_server_linux.sh $LENSES $USER $USER_BUILD_FOLDER $DOWNLOAD_DIR"
 elif [ "$OS" == "linux" ]; then
    ssh -t $BUILD_SERVER "cd lentil-build/lentil && git pull --recurse-submodules && cd pota/build/server && bash ./build_server_linux.sh $LENSES $USER $USER_BUILD_FOLDER $DOWNLOAD_DIR"
 else 
