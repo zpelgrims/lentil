@@ -1,8 +1,12 @@
 args=("$@")
-OS=${args[0]} #windows/linux/osx
+
 BUILD_SERVER=root@66.42.72.219
 DATE="$( date +"%y%m%d-%H%M" )" && #need to make sure this is in UTC?
+
+# these three vars need to be passed from html
+OS=${args[0]} #windows/linux/osx
 USER=testemail@gmail.com &&
+LENSES=.1001
 
 if [ $OS -eq "windows" ]; then
    USER_BUILD_FOLDER=$DATE-$USER-windows &&
@@ -15,12 +19,13 @@ fi
 DOWNLOAD_DIR=/root/test_upload_folder &&
 mkdir -p $DOWNLOAD_DIR &&
 
+# windows is obviously wrong
 if [ $OS -eq "windows" ]; then
-   ssh -t $BUILD_SERVER "cd lentil-build/lentil/pota/build/server && bash ./build_server_unix.sh .1001 $USER $USER_BUILD_FOLDER $DOWNLOAD_DIR" &&
+   ssh -t $BUILD_SERVER "cd lentil-build/lentil/pota/build/server && bash ./build_server_unix.sh $LENSES $USER $USER_BUILD_FOLDER $DOWNLOAD_DIR" &&
 elif [ $OS -eq "linux" ]; then
-   ssh -t $BUILD_SERVER "cd lentil-build/lentil/pota/build/server && bash ./build_server_unix.sh .1001 $USER $USER_BUILD_FOLDER $DOWNLOAD_DIR" &&
+   ssh -t $BUILD_SERVER "cd lentil-build/lentil/pota/build/server && bash ./build_server_linux.sh $LENSES $USER $USER_BUILD_FOLDER $DOWNLOAD_DIR" &&
 elif [ $OS -eq "osx" ]; then
-   ssh -t $BUILD_SERVER "cd lentil-build/lentil/pota/build/server && bash ./build_server_unix.sh .1001 $USER $USER_BUILD_FOLDER $DOWNLOAD_DIR" &&
+   ssh -t $BUILD_SERVER "cd lentil-build/lentil/pota/build/server && bash ./build_server_osx.sh $LENSES $USER $USER_BUILD_FOLDER $DOWNLOAD_DIR" &&
 fi
 
 
