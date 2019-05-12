@@ -12,7 +12,7 @@
       "49": 12.561180783257896,
       "unscaled": 25.481638992599265
     },
-    "notes": "large aperture six element objective, nice swirly bokeh",
+    "notes": "A six element objective with a huge aperture. Due to optical vignetting in the lens, it creates very swirly bokeh.",
     "optical-elements-adjusted": [
       {
         "abbe": 32.3,
@@ -332,7 +332,8 @@
     "company": "meyer-optik-goerlitz",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": 99.65371704101563,
-    "notes": "Primoplan 58mm f1.5",
+    "notes": "The Primoplan 58 was developed by the brilliant Meyer-Optik designer Paul Schäfter 80 years ago. Its light intensity of 1:1.9, which was considered extremely high back then, made the Primoplan 58 f1.9 one of the most exciting lenses of its time. It features lots of optical vignetting, making for very swirly bokeh.",
+    "notes-to-self": "Primoplan 58mm f1.5",
     "optical-elements-patent": [
       {
         "abbe": 51.1,
@@ -448,7 +449,8 @@
     "company": "unknown",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": 85.5024185180664,
-    "notes": "classical 19th century petzval lens, should be scaled to 100mm",
+    "notes": "The Petzval lens is the first photographic portrait objective lens in the history of photography. It was developed by the mathematics professor Josef Maximilian Petzval in 1840. It was the first mathematically calculated objective in the history of photography. The lens was able to let 22 times more light in than any other design at the time. This enabled photographers to for the first time take portraits with exposure times of less than a minute.",
+    "notes-to-self": "classical 19th century petzval lens, should be scaled to 100mm",
     "optical-elements-patent": [
       {
         "abbe": 62.0,
