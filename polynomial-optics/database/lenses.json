@@ -546,7 +546,7 @@
     "company": "nikon",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": 99.26875305175781,
-    "notes": "This invention provides a retrofocus-type wide angle lens having a relative aperture of F/2.8, an angle of field of 75° and a back focus of more than 1.3 times the focallength and comprises seven lens elements",
+    "notes": "A 7 element retrofocus-type wide angle lens with a relative aperture of F/2.8, an angle of field of 75° and a back focus of more than 1.3 times the focallength.",
     "optical-elements-patent": [
       {
         "abbe": 58.1,
@@ -712,8 +712,8 @@
     "company": "canon",
     "focal-length-mm-patent": 14.2,
     "focal-length-mm-raytraced": 15.135459899902344,
-    "notes": "The present invention relates to a retro-focus type wide angle lens which is compact despite its remarkably large field of view and well compensated for various aberrations. f = 14.2, f2.8, Angle of field = 114",
-    "notes-to-self": "3rd lens element in patent seems to have incorrect radius of curvature when compared to provided image (58.28->40.28). This has been corrected in the optical-elements-patent dict.",
+    "notes": "A compact retrofocus-type wide angle lens which is well compensated for various aberrations considering its remarkably large field of view (114 degrees).",
+    "notes-to-self": "3rd lens element in patent seems to have incorrect radius of curvature when compared to provided image (58.28->40.28). This has been corrected in the optical-elements-patent dict. f = 14.2, f2.8, Angle of field = 114",
     "optical-elements-patent": [
       {
         "abbe": 50.2,
@@ -989,7 +989,8 @@
     "company": "kodak",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": 100.00676727294922,
-    "notes": "Petzval type lens, f=100mm",
+    "notes": "Kodak's take on the classical Petzval design. Features a heavy amount of optical vignetting, resulting in swirly bokeh which helps emphasise the subject in focus.",
+    "notes-to-self": "Petzval type lens, f=100mm",
     "optical-elements-patent": [
       {
         "abbe": 58.599998474121094,
@@ -1085,7 +1086,8 @@
     "company": "cooke",
     "focal-length-mm-patent": 25.4,
     "focal-length-mm-raytraced": 25.92892837524414,
-    "notes": "Cooke Series O f/2.0 OPIC lens, Horace W. Lee designed the Cooke OPIC lenses to be the first to combine an f/2.0 aperture with a fully corrected color and geometry. Studios snapped up the new Cooke f/2.0 (T2.3) lenses. The original f/2.0 OPIC design became the now-legendary uncoated Cooke Speed Panchros.",
+    "notes": "Cooke Series O f/2.0 OPIC lens, Horace W. Lee designed. This original f/2.0 OPIC design became the now-legendary uncoated Cooke Speed Panchros. Studios jumped up the new Cooke f/2.0 (T2.3) lenses, due to which they appear in almost every film in the early hollywood era.",
+    "notes-to-self": "",
     "optical-elements-patent": [
       {
         "abbe": 59,
@@ -1211,7 +1213,7 @@
     "company": "nikon",
     "focal-length-mm-patent": 51.6,
     "focal-length-mm-raytraced": 52.808231353759766,
-    "notes": "f/1.25",
+    "notes": "Modern f/1.25 design by Nikon.",
     "optical-elements-patent": [
       {
         "abbe": 46.57,
@@ -1397,7 +1399,8 @@
     "company": "zeiss",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": 99.09127044677734,
-    "notes": "58mm?",
+    "notes": "The Biotar was developed by the famous lens designer Dr. Willy Walter Merté for Carl Zeiss, it is a six element lens with asymmetrical outer elements, a variant of the Double Gauss design for higher performance and increased field correction and speed. Virtually all of today’s fast lenses with a medium field angle (50-100mm focal length on 35mm cameras) are Double Gauss designs, like the Biotar. These Double Gauss lenses attempted to improve on the Planar design from 1896 by abandoning the strict symmetry approach for the radii of curvature of the surfaces and the refractive indices of the glass materials and therefore achieved additional correction parameters. The famed Helios 44-2 lenses are very close clones of the Biotar.",
+    "notes-to-self": "https://www.casualphotophile.com/2019/02/13/carl-zeiss-jena-biotar-58mm-f-2-lens-review/, 58mm?",
     "optical-elements-patent": [
       {
         "abbe": 48.0,
@@ -1523,7 +1526,8 @@
     "company": "asahi",
     "focal-length-mm-patent": 100,
     "focal-length-mm-raytraced": 99.61552429199219,
-    "notes": "Based on the Biotar design, 50mm",
+    "notes": "The Asahi Takumar (Pentax) is based on the Zeiss Biotar.",
+    "notes-to-self": "50mm",
     "optical-elements-patent": [
       {
         "abbe": 46.599998474121094,
@@ -2231,7 +2235,7 @@
     "polynomial-optics": [],
     "prime": true,
     "product-name": "flektagon",
-    "production-ready": true,
+    "production-ready": false,
     "year": 1954
   },
   "0014": {
