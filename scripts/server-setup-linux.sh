@@ -1,10 +1,10 @@
 #!/bin/bash
-# server-setup-unix.sh
+# server-setup-linux.sh
 
 # to launch: 
-# wget -O server-setup-unix.sh https://raw.githubusercontent.com/zpelgrims/lentil/master/scripts/server-setup-unix.sh
-# chmod 777 server-setup-unix.sh
-# ./server-setup-unix.sh
+# wget -O server-setup-linux.sh https://raw.githubusercontent.com/zpelgrims/lentil/master/scripts/server-setup-linux.sh
+# chmod 777 server-setup-linux.sh
+# ./server-setup-linux.sh
 
 # set timezone, should be equal between all build servers regardless of location
 sudo timedatectl set-timezone UTC
@@ -35,4 +35,4 @@ git clone --recurse-submodules https://zpelgrims@github.com/zpelgrims/lentil.git
 cd ~/lentil-build/lentil
 
 # cleanup
-rm -f ~/server-setup-unix.sh
+rm -f ~/server-setup-linux.sh
