@@ -53,6 +53,15 @@ choco install git -params '"/GitAndUnixToolsOnPath"' --yes
 choco install 7zip --yes
 "C:\Program Files (x86)\p-nand-q.com\GTools\pathed" /APPEND "C:\Program Files\7-Zip" /MACHINE
 
+:: install puttyy: pscp (copy over ssh), needs to be in C:\pscp
+choco install putty --yes
+:: TODO: change/check path!!
+"C:\Program Files (x86)\p-nand-q.com\GTools\pathed" /APPEND "C:\Program Files\PuTTY" /MACHINE
+
+choco install openssh --yes
+:: TODO: change/check path!!
+"C:\Program Files (x86)\p-nand-q.com\GTools\pathed" /APPEND "C:\Program Files\openssh" /MACHINE
+
 
 :: refresh envvars, is this needed?
 :: this currently quits the batch script.. fix!
