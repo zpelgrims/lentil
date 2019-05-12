@@ -6,13 +6,9 @@ import re
 """
 TODO:
 
-Connect all attributes
-Dialog should be on top
-Switching focallength should switch lens
-Switching lens should switch lens
-Fstop minimum should be set
-
-
+Fstop minimum should be set, doesn't work..
+unitcb maya->lentil doesn't work
+need to change lens/focallength when user changes lens enum  -> untested
 """
 
 
@@ -145,9 +141,12 @@ class LentilDialog(QtWidgets.QDialog):
         for focallength in self.lens_database[self.currentLensId]["polynomial-optics"]:
             self.focalLengthCB.addItem("{}".format(focallength))
 
-        # enable this when public lens json has fstop data for all lenses
-        # self.fstopS.slider.setMinimum(self.lens_database[self.currentLensId]["fstop"][str(self.focalLengthCB.currentText())])
-
+        # remove exception when public lens json has fstop data for all lenses
+        try:
+            self.fstopS.slider.setMinimum(self.lens_database[self.currentLensId]["fstop"][str(self.focalLengthCB.currentText())])
+            print("set fstop to minimum of: {}".format(self.lens_database[self.currentLensId]["fstop"][str(self.focalLengthCB.currentText())]))
+        except:
+            pass
 
     def _read_public_lens_database(self):
         with open("/Users/zeno/lentil/www/json/lenses_public.json") as data_file:    
@@ -162,7 +161,17 @@ class LentilDialog(QtWidgets.QDialog):
         )
     
     def extract_focal_length_from_full_name(self, fullname):
-        return int(re.search('([^_]+$)', fullname).group(1)[:-2])
+        return re.search('([^_]+$)', fullname).group(1)
+
+    def extract_lens_name_from_full_name(self, fullname):
+        return re.search('^\D+', fullname).group(0)
+    
+    # def extract_year_from_full_name(self, fullname):
+    #     lens_name = self.extract_lens_name_from_full_name(fullname)
+    #     focallength = self.extract_focal_length_from_full_name(fullname)
+    #     full_name_without_lens_name = fullname.replace(lens_name, "")
+    #     year = full_name_without_lens_name.replace(focallength, "")
+    #     return int(year[:-1])
 
     def callback(self):
         self.sensorwidthS.slider.valueChanged.connect(self.value_changed)
@@ -234,9 +243,11 @@ class ArnoldMayaTranslator(LentilDialog):
         
         import maya.cmds as cmds
 
+        self.enum_lens_map = {}
 
         self.discover_cameras()
         self.switch_cam_to_lentil()
+        self.build_camera_enum_map()
         self.read_values()
         self.callback()
 
@@ -270,10 +281,13 @@ class ArnoldMayaTranslator(LentilDialog):
         self.vignettingRetriesS.slider.setValue(cmds.getAttr("{}.aiVignettingRetries".format(self.currentCamera)))
         self.unitCB.setCurrentIndex(cmds.getAttr("{}.aiUnitModel".format(self.currentCamera))) # why doesn't this work?
         
-        # need to add lensmodel, focallength
-        #lens_name = 
-        #self.focalLengthCB.setCurrentText(self.extract_focal_length_from_full_name(lens_name))
-        # self.lensCB
+        lens_full_name = cmds.getAttr("{}.aiLensModel".format(self.currentCamera), asString=True)
+        focallength = int(self.extract_focal_length_from_full_name(lens_full_name)[:-2])
+        lens_name = self.extract_lens_name_from_full_name(lens_full_name)[:-1]
+        # year = self.extract_year_from_full_name(lens_full_name)
+        self.lensCB.setCurrentText(lens_name)
+        self.focalLengthCB.setCurrentText(str(focallength))
+        # self.yearCB.setCurrentText(str(year))
 
     def value_changed(self):
         cmds.setAttr("{}.aiSensorWidth".format(self.currentCamera), self.sensorwidthS.labelValue.value())
@@ -285,10 +299,25 @@ class ArnoldMayaTranslator(LentilDialog):
         cmds.setAttr("{}.aiDof".format(self.currentCamera), False if self.dofCB.currentText() == 'disabled' else True)
         cmds.setAttr("{}.aiUnitModel".format(self.currentCamera), self.unitCB.currentIndex())
 
-        # need to add lens model update, problem is maya does get/set with enum values.. need to relate these enum values to the database numbers
-        # cmds.setAttr("{}.aiLensModel".format(self.currentCamera), get_maya_lens_list_position())
+        current_lens_name = "{}_{}_{}_{}mm".format(self.lens_database[self.currentLensId]["company"].replace("-", "_"),
+                                            self.lens_database[self.currentLensId]["product-name"].replace("-", "_"),
+                                            self.lens_database[self.currentLensId]["year"],
+                                            self.focalLengthCB.currentText())
+        cmds.setAttr("{}.aiLensModel".format(self.currentCamera), self.enum_lens_map[current_lens_name])
 
 
+    def build_camera_enum_map(self):
+        for n in range(len(self.lens_database)):
+            try:
+                cmds.setAttr("{}.aiLensModel".format(self.currentCamera), n)
+            except:
+                continue
+            
+            enum_value_str = cmds.getAttr("{}.aiLensModel".format(self.currentCamera), asString=True)
+            self.enum_lens_map[enum_value_str] = cmds.getAttr("{}.aiLensModel".format(self.currentCamera))
+
+        # print(self.enum_lens_map)
+        
 
 ld = ArnoldMayaTranslator()
 ld.show()
