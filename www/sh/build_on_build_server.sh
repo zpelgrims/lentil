@@ -1,3 +1,5 @@
+# to test: ./build_on_build_server.sh osx testemail@gmail.com .1001
+
 args=("$@")
 
 BUILD_SERVER=root@66.42.72.219
@@ -5,8 +7,8 @@ DATE="$( date +"%y%m%d-%H%M" )" && #need to make sure this is in UTC?
 
 # these three vars need to be passed from html
 OS=${args[0]} #windows/linux/osx
-USER=testemail@gmail.com &&
-LENSES=.1001
+USER=${args[1]} #username
+LENSES=${args[2]} #.1001
 
 if [ $OS -eq "windows" ]; then
    USER_BUILD_FOLDER=$DATE-$USER-windows &&
