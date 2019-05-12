@@ -162,18 +162,6 @@ hr {
   justify-content: flex-end;
   align-items: center; }
 
-.description {
-  animation: 1s fadedown forwards; }
-  .description__left {
-    padding-right: 3rem;
-    border-right: 1px solid rgba(0, 0, 0, 0.5);
-    text-align: right;
-    margin-bottom: 3rem;
-    font-size: 2.2rem; }
-  .description__right {
-    margin-bottom: 3rem;
-    font-size: 2.2rem; }
-
 .nav {
   padding: 1rem 2rem;
   display: flex;
@@ -416,3 +404,60 @@ input:-webkit-autofill {
     top: 15%; }
     .flash__x:hover {
       cursor: pointer; }
+
+.hero {
+  color: white;
+  height: 60vh;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; }
+  .hero__background {
+    background-color: #1abc9c;
+    z-index: -1; }
+  .hero__header {
+    z-index: 3;
+    margin: 2rem;
+    font-size: 4rem;
+    text-align: center;
+    width: 75%;
+    font-weight: 400; }
+    .hero__header--bold {
+      font-weight: 500; }
+  .hero__subheader {
+    z-index: 3;
+    font-size: 2rem;
+    text-align: center;
+    width: 75%;
+    margin: 2rem;
+    font-weight: 400; }
+  .hero::after {
+    content: '';
+    background: url("../imgs/lenses/0001/1953-angenieux-double-gauss.svg");
+    background-position: center;
+    opacity: 0.25;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 2; }
+  .hero__arrow {
+    color: white;
+    z-index: 3;
+    font-size: 4rem;
+    margin-top: 6rem; }
+
+.description {
+  animation: 1s fadedown forwards; }
+  .description__left {
+    padding-right: 3rem;
+    border-right: 1px solid rgba(0, 0, 0, 0.5);
+    text-align: right;
+    margin-bottom: 3rem;
+    font-size: 2.2rem; }
+  .description__right {
+    margin-bottom: 3rem;
+    font-size: 2.2rem; }
