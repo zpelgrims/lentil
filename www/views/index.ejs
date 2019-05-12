@@ -1,92 +1,111 @@
-<% include partials/header %>
+<% include partials/header %> <%# HERO %>
 
-<div class="container">
-  <div class="col-md-10 col-md-offset-1">
-    <div class="description">
-      <div class="col-md-6">
-        <h3 class="description__left">
-          lentil is a camera toolkit for production raytracers 
-          capable of rendering images with high-order abberations 
-          at a fraction of the cost of tracing rays through the 
-          lens elements
-        </h3>
-      </div>
-      <div class="col-md-6">
-        <h3 class="description__right">
-          the choice of lens greatly helps determine the feeling 
-          of practical film. In computer graphics thus far, this 
-          has been neglected. Our mission is to change this.
-        </h3>
-      </div>
+<div class="hero__background">
+  <div class="container">
+    <div class="hero">
+      <h2 class="hero__header">
+        <span class="hero__header--bold">lentil</span> is a camera toolkit for
+        production raytracers capable of efficiently simulating light transport
+        through <span class="hero__header--bold">real</span> lenses
+      </h2>
+      <h4 class="hero__subheader">
+        The choice of lens greatly helps determine the feeling of practical
+        film. In computer graphics thus far, this has been neglected. Our
+        mission is to change this.
+      </h4>
+      <i class="fas fa-chevron-down hero__arrow"></i>
     </div>
   </div>
-
 </div>
-
 
 <div class="container">
   <div class="lenses">
-    <% for(let i = 0; i < lenses.length; i++) { %>
-      <% let lens = lenses[i]; %>
-      <div class="lense">
-        <div class="lense__card lense__card--<%= [i] %>" id="card-<%= [i] %>">
-          <div class="lense__card__image">
-            <% if(user) { %>
-              <% if(user.lenses.indexOf(lens._id) > -1) { %>
-                <i class="fas fa-tag lense__card__image__tag"></i>
-              <% } %>
-              <% if(user.cart.indexOf(lens._id) > -1) { %>
-                <i class="fas fa-shopping-cart lense__card__image__cart"></i>
-              <% } %>
-            <% } %>
-            <img src="<%= lens.image %>" alt="<%= lens.image %>">
-          </div>
-          <h3 class="lense__card__title"><%= lens.company %> | <%= lens.product_name %> | <%= lens.year %></h3>
+    <% for(let i = 0; i < lenses.length; i++) { %> <% let lens = lenses[i]; %>
+    <div class="lense">
+      <div class="lense__card lense__card--<%= [i] %>" id="card-<%= [i] %>">
+        <div class="lense__card__image">
+          <% if(user) { %> <% if(user.lenses.indexOf(lens._id) > -1) { %>
+          <i class="fas fa-tag lense__card__image__tag"></i>
+          <% } %> <% if(user.cart.indexOf(lens._id) > -1) { %>
+          <i class="fas fa-shopping-cart lense__card__image__cart"></i>
+          <% } %> <% } %>
+          <img src="<%= lens.image %>" alt="<%= lens.image %>" />
         </div>
-        <div class="exp-lense">
-          <div class="exp-lense__card exp-lense__card--<%= [i] %>" id="expcard-<%= [i] %>">
-            <div class="col-md-4">
-              <div class="exp-lense__card__info">
-                <% if(lens.polynomial_optics) { %>
-                  <div class="exp-lense__card__info__prop">
-                    <span class="exp-lense__card__info__prop--key">focal lengths</span>
-                    <span class="exp-lenses__card__info__prop--val">[<%= lens.polynomial_optics %>]</span>
-                  </div>
-                <% } %>
-                <div class="exp-lense__card__info__prop">
-                  <span class="exp-lense__card__info__prop--key">f-stop</span>
-                  <span class="exp-lenses__card__info__prop--val">f<%= lens.fstop %></span>
-                </div>
-                <div class="exp-lense__card__info__prop">
-                  <span class="exp-lense__card__info__prop--key">year</span>
-                  <span class="exp-lenses__card__info__prop--val"><%= lens.year %></span>
-                </div>
-                <div class="exp-lense__card__info__prop">
-                  <span class="exp-lense__card__info__prop--key">notes</span>
-                  <span class="exp-lenses__card__info__prop--val"><%= lens.notes %></span>
-                </div>
-                <% if(user) { %>
-                  <% if(user.cart.indexOf(lens._id) > -1) { %>
-                    <button class="button button--inactive">added to cart</button>
-                  <% } else if(user.lenses.indexOf(lens._id) > -1) { %>
-                    <button class="button button--inactive">you own this</button>
-                  <% } else { %>
-                    <a href="/<%= lens._id %>/add" class="button">add to cart</a>
-                  <% } %>
-                <% } else { %>
-                  <a href="/<%= lens._id %>/add" class="button">add to cart</a>
-                <% } %>
+        <h3 class="lense__card__title">
+          <%= lens.company %> | <%= lens.product_name %> | <%= lens.year %>
+        </h3>
+      </div>
+      <div class="exp-lense">
+        <div
+          class="exp-lense__card exp-lense__card--<%= [i] %>"
+          id="expcard-<%= [i] %>"
+        >
+          <div class="col-md-4">
+            <div class="exp-lense__card__info">
+              <% if(lens.polynomial_optics) { %>
+              <div class="exp-lense__card__info__prop">
+                <span class="exp-lense__card__info__prop--key"
+                  >focal lengths</span
+                >
+                <span class="exp-lenses__card__info__prop--val"
+                  >[<%= lens.polynomial_optics %>]</span
+                >
               </div>
+              <% } %>
+              <div class="exp-lense__card__info__prop">
+                <span class="exp-lense__card__info__prop--key">f-stop</span>
+                <span class="exp-lenses__card__info__prop--val"
+                  >f<%= lens.fstop %></span
+                >
+              </div>
+              <div class="exp-lense__card__info__prop">
+                <span class="exp-lense__card__info__prop--key">year</span>
+                <span class="exp-lenses__card__info__prop--val"
+                  ><%= lens.year %></span
+                >
+              </div>
+              <div class="exp-lense__card__info__prop">
+                <span class="exp-lense__card__info__prop--key">notes</span>
+                <span class="exp-lenses__card__info__prop--val"
+                  ><%= lens.notes %></span
+                >
+              </div>
+              <% if(user) { %> <% if(user.cart.indexOf(lens._id) > -1) { %>
+              <button class="button button--inactive">added to cart</button>
+              <% } else if(user.lenses.indexOf(lens._id) > -1) { %>
+              <button class="button button--inactive">you own this</button>
+              <% } else { %>
+              <a href="/<%= lens._id %>/add" class="button">add to cart</a>
+              <% } %> <% } else { %>
+              <a href="/<%= lens._id %>/add" class="button">add to cart</a>
+              <% } %>
             </div>
-            <div class="twentytwenty-container">
-              <img src="http://zenopelgrims.com/wp-content/uploads/2018/03/pota_chart_thinlens.png" alt="Arnold Thin-Lens" class="aligncenter size-full wp-image-2370" />
-              <img src="http://zenopelgrims.com/wp-content/uploads/2018/03/polynomial-optics-arnold-zeiss-biotar-chromatic-aberration.png" alt="POTA Zeiss Biotar (1927)" class="aligncenter size-full wp-image-2368" />
-              <img src="http://zenopelgrims.com/wp-content/uploads/2018/03/pota_test_thinlens.png" alt="Arnold Thin-Lens" class="aligncenter size-full wp-image-2372" />
-              <img src="http://zenopelgrims.com/wp-content/uploads/2018/03/pota_test_petzval.png" alt="POTA Petzval (1900)" class="aligncenter size-full wp-image-2371" />
-            </div>
+          </div>
+          <div class="twentytwenty-container">
+            <img
+              src="http://zenopelgrims.com/wp-content/uploads/2018/03/pota_chart_thinlens.png"
+              alt="Arnold Thin-Lens"
+              class="aligncenter size-full wp-image-2370"
+            />
+            <img
+              src="http://zenopelgrims.com/wp-content/uploads/2018/03/polynomial-optics-arnold-zeiss-biotar-chromatic-aberration.png"
+              alt="POTA Zeiss Biotar (1927)"
+              class="aligncenter size-full wp-image-2368"
+            />
+            <img
+              src="http://zenopelgrims.com/wp-content/uploads/2018/03/pota_test_thinlens.png"
+              alt="Arnold Thin-Lens"
+              class="aligncenter size-full wp-image-2372"
+            />
+            <img
+              src="http://zenopelgrims.com/wp-content/uploads/2018/03/pota_test_petzval.png"
+              alt="POTA Petzval (1900)"
+              class="aligncenter size-full wp-image-2371"
+            />
           </div>
         </div>
       </div>
+    </div>
     <% }; %>
   </div>
 </div>
