@@ -58,7 +58,8 @@
   box-sizing: inherit; }
 
 html {
-  font-size: 62.5%; }
+  font-size: 62.5%;
+  scroll-behavior: smooth; }
 
 body {
   box-sizing: border-box;
@@ -451,6 +452,9 @@ input:-webkit-autofill {
     height: 100%;
     width: 100%;
     z-index: 2; }
+  .hero__arrow-link {
+    color: white;
+    z-index: 3; }
   .hero__arrow {
     color: white;
     z-index: 3;
