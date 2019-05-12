@@ -10,9 +10,9 @@ OS=${args[0]} #windows/linux/osx
 USER=${args[1]} #username
 LENSES=${args[2]} #.1001
 
-if [ $OS==windows ]; then
+if [ "$OS" == "windows" ]; then
    USER_BUILD_FOLDER=$DATE-$USER-windows
-elif [ $OS==linux ]; then
+elif [ "$OS" == "linux" ]; then
    USER_BUILD_FOLDER=$DATE-$USER-linux
 else
    USER_BUILD_FOLDER=$DATE-$USER-osx
@@ -22,9 +22,9 @@ DOWNLOAD_DIR=/root/test_upload_folder &&
 mkdir -p $DOWNLOAD_DIR &&
 
 # windows is obviously wrong
-if [ $OS==windows ]; then
+if [ "$OS" == "windows" ]; then
    ssh -t $BUILD_SERVER "cd lentil-build/lentil/pota/build/server && bash ./build_server_unix.sh $LENSES $USER $USER_BUILD_FOLDER $DOWNLOAD_DIR"
-elif [ $OS==linux ]; then
+elif [ "$OS" == "linux" ]; then
    ssh -t $BUILD_SERVER "cd lentil-build/lentil/pota/build/server && bash ./build_server_linux.sh $LENSES $USER $USER_BUILD_FOLDER $DOWNLOAD_DIR"
 else 
    ssh -t $BUILD_SERVER "cd lentil-build/lentil/pota/build/server && bash ./build_server_osx.sh $LENSES $USER $USER_BUILD_FOLDER $DOWNLOAD_DIR"
