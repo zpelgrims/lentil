@@ -2,7 +2,6 @@
 
 args=("$@")
 
-BUILD_SERVER=root@66.42.72.219
 DATE="$( date +"%y%m%d-%H%M" )" && #need to make sure this is in UTC?
 
 # these three vars need to be passed from html
@@ -11,10 +10,13 @@ USER=${args[1]} #username
 LENSES=${args[2]} #.1001
 
 if [ "$OS" == "windows" ]; then
+   BUILD_SERVER=root@66.42.72.219 #obvs wrong!
    USER_BUILD_FOLDER=$DATE-$USER-windows
 elif [ "$OS" == "linux" ]; then
+   BUILD_SERVER=root@66.42.72.219
    USER_BUILD_FOLDER=$DATE-$USER-linux
 else
+   BUILD_SERVER=Xcloud@185.90.39.34
    USER_BUILD_FOLDER=$DATE-$USER-osx
 fi
 
