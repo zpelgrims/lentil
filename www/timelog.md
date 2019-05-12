@@ -167,3 +167,6 @@
   - Re-style hero
 
 - 5/12/19 1:30-
+
+  - Update font and logo
+  - Setup scroll arrow functionality

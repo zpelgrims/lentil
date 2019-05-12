@@ -2,8 +2,8 @@
 .lense {
   display: flex;
   flex-direction: column;
-  width: 30%;
-  margin: 1.5%;
+  width: 45%;
+  margin: 2.5%;
   animation: 1s fadein forwards;
   height: 100%; }
   .lense__card {
@@ -13,7 +13,7 @@
       text-transform: lowercase;
       font-size: 1.8rem;
       margin-top: 1rem;
-      transition: .2s all; }
+      transition: 0.2s all; }
       .lense__card__title:hover {
         color: black;
         cursor: pointer; }
@@ -21,7 +21,7 @@
       height: auto;
       position: relative;
       width: 100%;
-      transition: all .2s; }
+      transition: all 0.2s; }
       .lense__card__image:hover {
         transform: scale(1.01);
         cursor: pointer; }
@@ -48,7 +48,7 @@
 
 .activelens {
   color: #e87979;
-  animation: .2s slideup forwards; }
+  animation: 0.2s slideup forwards; }
 
 *,
 *::after,
@@ -286,7 +286,8 @@ input:-webkit-autofill {
   height: 0px;
   margin-left: -3px; }
 
-.twentytwenty-horizontal .twentytwenty-handle:after, .twentytwenty-horizontal .twentytwenty-handle:before {
+.twentytwenty-horizontal .twentytwenty-handle:after,
+.twentytwenty-horizontal .twentytwenty-handle:before {
   width: 2px; }
 
 .dropdown {

@@ -1,8 +1,8 @@
 .lense {
   display: flex;
   flex-direction: column;
-  width: 30%;
-  margin: 1.5%;
+  width: 45%;
+  margin: 2.5%;
   animation: 1s fadein forwards;
   height: 100%;
 
@@ -14,7 +14,7 @@
       text-transform: lowercase;
       font-size: 1.8rem;
       margin-top: 1rem;
-      transition: .2s all;
+      transition: 0.2s all;
 
       &:hover {
         color: black;
@@ -26,7 +26,7 @@
       height: auto;
       position: relative;
       width: 100%;
-      transition: all .2s;
+      transition: all 0.2s;
 
       &:hover {
         transform: scale(1.01);
@@ -65,5 +65,5 @@
 
 .activelens {
   color: #e87979;
-  animation: .2s slideup forwards;
+  animation: 0.2s slideup forwards;
 }
