@@ -16,8 +16,6 @@ git repo needs to be set to use ssh to avoid password verification:
         on build server: copy content of: cat ~/.ssh/id_rsa.pub
         add that to the github zpelgrims account settings
 
-
-
 if i update arnold version:
     change in pota makefiles
     upload to /lentil-builds/arnold/
