@@ -1,0 +1,23 @@
+how to setup the servers:
+
+install build server (vultr)
+install web server (vultr)
+
+remove ssh authentication between the two ssh key:
+    on web machine: ssh-keygen -t rsa
+    on web machine: ssh-copy-id username@build_server_ip
+
+    on build machine: ssh-keygen -t rsa
+    on build machine: ssh-copy-id username@web_server_ip
+
+git repo needs to be set to use ssh to avoid password verification:
+    on build server: git remote set-url origin git@github.com:zpelgrims/lentil.git
+    make sure a public key is installed: 
+        on build server: copy content of: cat ~/.ssh/id_rsa.pub
+        add that to the github zpelgrims account settings
+
+
+
+if i update arnold version:
+    change in pota makefiles
+    upload to /lentil-builds/arnold/
