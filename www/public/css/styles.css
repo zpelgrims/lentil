@@ -62,7 +62,7 @@ html {
 
 body {
   box-sizing: border-box;
-  font-family: 'Spectral';
+  font-family: 'Overpass', Arial, Helvetica, sans-serif;
   color: #333333;
   background: #efefef; }
 
@@ -167,13 +167,18 @@ hr {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  animation: 1s fadein forwards; }
+  animation: 1s fadein forwards;
+  height: 7vh; }
   .nav__background {
-    background: #1abc9c; }
+    background: #1abc9c;
+    z-index: -1; }
   .nav__brand {
     color: white;
     font-size: 4rem;
-    flex: 1; }
+    flex: 1;
+    display: flex;
+    align-items: center;
+    height: 100%; }
     .nav__brand:hover, .nav__brand:focus, .nav__brand:active, .nav__brand:visited {
       color: white;
       text-decoration: none; }
@@ -191,6 +196,8 @@ hr {
       .nav__right__item:focus, .nav__right__item:active, .nav__right__item:visited {
         color: white;
         text-decoration: none; }
+  .nav__logo {
+    height: 100%; }
 
 .active {
   border-bottom: 1px solid rgba(255, 255, 255, 0.5); }
@@ -423,16 +430,16 @@ input:-webkit-autofill {
     font-size: 4rem;
     text-align: center;
     width: 75%;
-    font-weight: 400; }
+    font-weight: 300; }
     .hero__header--bold {
-      font-weight: 500; }
+      font-weight: 400; }
   .hero__subheader {
     z-index: 3;
     font-size: 2rem;
     text-align: center;
     width: 75%;
     margin: 2rem;
-    font-weight: 400; }
+    font-weight: 300; }
   .hero::after {
     content: '';
     background: url("../imgs/lenses/0001/1953-angenieux-double-gauss.svg");
