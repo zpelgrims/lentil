@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   width: 45%;
-  margin: 2.5%;
+  margin: 1rem 2.5%;
   animation: 1s fadein forwards;
   height: 100%; }
   .lense__card {
@@ -93,7 +93,7 @@ hr {
   color: white;
   border: none;
   padding: 1rem 5rem;
-  border-radius: 5px;
+  border-radius: 50px;
   text-transform: lowercase;
   font-size: 2rem;
   text-align: center;
@@ -214,7 +214,7 @@ hr {
 
 .footer {
   height: 15rem;
-  background: #272727;
+  background: #1abc9c;
   color: #dfdfdf;
   font-size: 1.6rem;
   padding: 2rem;
@@ -280,10 +280,12 @@ input:-webkit-autofill {
         .exp-lense__card__info__prop--key {
           min-width: 30%;
           text-align: right;
-          padding-right: 1rem; }
+          padding-right: 1rem;
+          font-weight: 500; }
         .exp-lense__card__info__prop--val {
           min-width: 70%;
-          text-align: left; }
+          text-align: left;
+          font-weight: 300; }
 
 .twentytwenty-container {
   min-height: 100%;
@@ -415,7 +417,7 @@ input:-webkit-autofill {
   .flash--error {
     background: #e87979; }
   .flash--success {
-    background: #00b233; }
+    background: #1abc9c; }
   .flash__x {
     position: absolute;
     right: 5%;
@@ -482,3 +484,18 @@ input:-webkit-autofill {
   .description__right {
     margin-bottom: 3rem;
     font-size: 2.2rem; }
+
+.features {
+  width: 65%;
+  margin: 0 auto; }
+  .features__2020 {
+    width: 100%;
+    margin-top: 4rem; }
+  .features__info {
+    text-align: justify;
+    font-weight: 300;
+    font-size: 1.8rem; }
+    .features__info--bold {
+      font-weight: 500; }
+    .features__info--italic {
+      font-style: italic; }

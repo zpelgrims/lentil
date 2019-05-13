@@ -166,8 +166,10 @@
 
   - Re-style hero
 
-- 5/12/19 1:30-
+- 5/12/19 1:30-3:00
+  7:00-
 
   - Update font and logo
   - Setup scroll arrow functionality
   - Two lenses per row instead of three
+  - Add lens title bubbles

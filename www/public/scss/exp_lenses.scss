@@ -24,11 +24,13 @@
           min-width: 30%;
           text-align: right;
           padding-right: 1rem;
+          font-weight: 500;
         }
 
         &--val {
           min-width: 70%;
           text-align: left;
+          font-weight: 300;
         }
       }
     }
