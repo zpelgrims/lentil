@@ -12,7 +12,7 @@ printf "\t lens id: %s\n" $LENS_ID
 printf "\t focal length: %s\n" $LENS_FOCAL_LENGTH
 
 # generate lens name from database id
-read LENS_NAME <<< $($LENTIL_PATH/bin/print-lens-path $LENS_ID $LENS_FOCAL_LENGTH $i) &&
+read LENS_NAME <<< $($LENTIL_PATH/bin/print-lens-path $LENS_ID) &&
 printf "\t lens name: %s\n" $LENS_NAME
 printf "%s\n" "-------------------------------------"
 
