@@ -1,0 +1,51 @@
+<% include partials/header %>
+
+<div class="container">
+  <div class="features">
+    <div class="twentytwenty-container features__2020">
+      <img
+        src="http://zenopelgrims.com/wp-content/uploads/2018/03/pota_chart_thinlens.png"
+        alt="Arnold Thin-Lens"
+        class="aligncenter size-full wp-image-2370"
+      />
+      <img
+        src="http://zenopelgrims.com/wp-content/uploads/2018/03/polynomial-optics-arnold-zeiss-biotar-chromatic-aberration.png"
+        alt="POTA Zeiss Biotar (1927)"
+        class="aligncenter size-full wp-image-2368"
+      />
+      <img
+        src="http://zenopelgrims.com/wp-content/uploads/2018/03/pota_test_thinlens.png"
+        alt="Arnold Thin-Lens"
+        class="aligncenter size-full wp-image-2372"
+      />
+      <img
+        src="http://zenopelgrims.com/wp-content/uploads/2018/03/pota_test_petzval.png"
+        alt="POTA Petzval (1900)"
+        class="aligncenter size-full wp-image-2371"
+      />
+    </div>
+    <p class="features__info">
+      The thin-lens equation used in raytracers is a severe approximation to how
+      real lenses work. A downside of it's elegance, it misses most of the
+      interesting lens abberations. Lentil is able to
+      <span class="features__info--bold"
+        >calculate complex lens abberations</span
+      >
+      by using <span class="features__info--bold">real lens data</span>,
+      simulating their optical characteristics.
+    </p>
+    <p class="features__info">
+      Lentil is <span class="features__info--bold">much faster</span> than
+      optimised raytracing through each lens element. We precompute the lens in
+      <span class="features__info--italic">such a way</span> that it flattens to
+      a singular evaluation.
+    </p>
+    <p class="features__info">
+      We provide a library of
+      <span class="features__info--bold">prime lenses</span>. No, zoom lenses
+      are not yet supported.
+    </p>
+  </div>
+</div>
+
+<% include partials/footer %>

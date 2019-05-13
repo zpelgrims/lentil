@@ -24,11 +24,13 @@
           min-width: 30%;
           text-align: right;
           padding-right: 1rem;
+          font-weight: 500;
         }
-      
+
         &--val {
           min-width: 70%;
           text-align: left;
+          font-weight: 300;
         }
       }
     }
@@ -40,12 +42,13 @@
   border-bottom: 1px solid rgba($highlight-color, 0.3);
 }
 
-.twentytwenty-handle{
-	top: 0%;
+.twentytwenty-handle {
+  top: 0%;
   width: 0px;
   height: 0px;
   margin-left: -3px;
 }
-.twentytwenty-horizontal .twentytwenty-handle:after, .twentytwenty-horizontal .twentytwenty-handle:before{
-	width: 2px;
+.twentytwenty-horizontal .twentytwenty-handle:after,
+.twentytwenty-horizontal .twentytwenty-handle:before {
+  width: 2px;
 }

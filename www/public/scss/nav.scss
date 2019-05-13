@@ -4,15 +4,20 @@
   align-items: center;
   justify-content: space-between;
   animation: 1s fadein forwards;
+  height: 7vh;
 
   &__background {
     background: $hero-background-color;
+    z-index: -1;
   }
 
   &__brand {
     color: white;
     font-size: 4rem;
     flex: 1;
+    display: flex;
+    align-items: center;
+    height: 100%;
 
     &:hover,
     &:focus,
@@ -45,6 +50,10 @@
         text-decoration: none;
       }
     }
+  }
+
+  &__logo {
+    height: 100%;
   }
 }
 

@@ -1,13 +1,21 @@
 <div class="nav__background">
   <div class="container">
     <nav class="nav">
-      <a href="/" class="nav__brand">lentil</a>
+      <a href="/" class="nav__brand">
+        <img
+          src="../imgs/lentil_logo.png"
+          alt="Lentil Logo"
+          class="nav__logo"
+        />
+        lentil
+      </a>
       <div class="nav__right">
         <a
           href="/"
           class="nav__right__item <% if(page && page == 'lenses') { %> active <% } %>"
           >lenses</a
-        >/ <a href="#" class="nav__right__item">gallery</a>/
+        >/ <a href="/features" class="nav__right__item">features</a>/ 
+        <a href="#" class="nav__right__item">gallery</a>/
         <a href="#" class="nav__right__item">changelog</a>/
         <a
           href="/cart"

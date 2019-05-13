@@ -13,13 +13,15 @@
         film. In computer graphics thus far, this has been neglected. Our
         mission is to change this.
       </h4>
-      <i class="fas fa-chevron-down hero__arrow"></i>
+      <a href="/#lenses" class="hero__arrow-link">
+        <i class="fas fa-chevron-down hero__arrow"></i>
+      </a>
     </div>
   </div>
 </div>
 
 <div class="container">
-  <div class="lenses">
+  <div class="lenses" id="lenses">
     <% for(let i = 0; i < lenses.length; i++) { %> <% let lens = lenses[i]; %>
     <div class="lense">
       <div class="lense__card lense__card--<%= [i] %>" id="card-<%= [i] %>">
@@ -31,9 +33,17 @@
           <% } %> <% } %>
           <img src="<%= lens.image %>" alt="<%= lens.image %>" />
         </div>
-        <h3 class="lense__card__title">
-          <%= lens.company %> | <%= lens.product_name %> | <%= lens.year %>
-        </h3>
+        <ul class="lense__card__bubbles">
+          <li class="lense__card__bubble">
+            <%= lens.company %>
+          </li>
+          <li class="lense__card__bubble">
+            <%= lens.product_name %>
+          </li>
+          <li class="lense__card__bubble">
+            <%= lens.year %>
+          </li>
+        </ul>
       </div>
       <div class="exp-lense">
         <div
@@ -48,7 +58,7 @@
                   >focal lengths</span
                 >
                 <span class="exp-lenses__card__info__prop--val"
-                  >[<%= lens.polynomial_optics %>]</span
+                  ><%= lens.polynomial_optics %></span
                 >
               </div>
               <% } %>

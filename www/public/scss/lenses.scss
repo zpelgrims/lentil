@@ -1,8 +1,8 @@
 .lense {
   display: flex;
   flex-direction: column;
-  width: 30%;
-  margin: 1.5%;
+  width: 45%;
+  margin: 1rem 2.5%;
   animation: 1s fadein forwards;
   height: 100%;
 
@@ -10,14 +10,25 @@
     width: 100%;
     margin-top: 2rem;
 
-    &__title {
+    &__bubbles {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      list-style: none;
+    }
+
+    &__bubble {
       text-transform: lowercase;
       font-size: 1.8rem;
       margin-top: 1rem;
-      transition: .2s all;
+      transition: 0.2s all;
+      background: #d9d9d9;
+      color: white;
+      margin: 0.5rem 0.2rem;
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
 
       &:hover {
-        color: black;
         cursor: pointer;
       }
     }
@@ -26,7 +37,7 @@
       height: auto;
       position: relative;
       width: 100%;
-      transition: all .2s;
+      transition: all 0.2s;
 
       &:hover {
         transform: scale(1.01);
@@ -65,5 +76,5 @@
 
 .activelens {
   color: #e87979;
-  animation: .2s slideup forwards;
+  animation: 0.2s slideup forwards;
 }

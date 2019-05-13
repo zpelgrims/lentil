@@ -2,26 +2,35 @@
 .lense {
   display: flex;
   flex-direction: column;
-  width: 30%;
-  margin: 1.5%;
+  width: 45%;
+  margin: 1rem 2.5%;
   animation: 1s fadein forwards;
   height: 100%; }
   .lense__card {
     width: 100%;
     margin-top: 2rem; }
-    .lense__card__title {
+    .lense__card__bubbles {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      list-style: none; }
+    .lense__card__bubble {
       text-transform: lowercase;
       font-size: 1.8rem;
       margin-top: 1rem;
-      transition: .2s all; }
-      .lense__card__title:hover {
-        color: black;
+      transition: 0.2s all;
+      background: #d9d9d9;
+      color: white;
+      margin: 0.5rem 0.2rem;
+      padding: 0.5rem 1rem;
+      border-radius: 50px; }
+      .lense__card__bubble:hover {
         cursor: pointer; }
     .lense__card__image {
       height: auto;
       position: relative;
       width: 100%;
-      transition: all .2s; }
+      transition: all 0.2s; }
       .lense__card__image:hover {
         transform: scale(1.01);
         cursor: pointer; }
@@ -48,7 +57,7 @@
 
 .activelens {
   color: #e87979;
-  animation: .2s slideup forwards; }
+  animation: 0.2s slideup forwards; }
 
 *,
 *::after,
@@ -58,11 +67,12 @@
   box-sizing: inherit; }
 
 html {
-  font-size: 62.5%; }
+  font-size: 62.5%;
+  scroll-behavior: smooth; }
 
 body {
   box-sizing: border-box;
-  font-family: 'Spectral';
+  font-family: 'Overpass', Arial, Helvetica, sans-serif;
   color: #333333;
   background: #efefef; }
 
@@ -83,7 +93,7 @@ hr {
   color: white;
   border: none;
   padding: 1rem 5rem;
-  border-radius: 5px;
+  border-radius: 50px;
   text-transform: lowercase;
   font-size: 2rem;
   text-align: center;
@@ -167,13 +177,18 @@ hr {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  animation: 1s fadein forwards; }
+  animation: 1s fadein forwards;
+  height: 7vh; }
   .nav__background {
-    background: #1abc9c; }
+    background: #1abc9c;
+    z-index: -1; }
   .nav__brand {
     color: white;
     font-size: 4rem;
-    flex: 1; }
+    flex: 1;
+    display: flex;
+    align-items: center;
+    height: 100%; }
     .nav__brand:hover, .nav__brand:focus, .nav__brand:active, .nav__brand:visited {
       color: white;
       text-decoration: none; }
@@ -191,13 +206,15 @@ hr {
       .nav__right__item:focus, .nav__right__item:active, .nav__right__item:visited {
         color: white;
         text-decoration: none; }
+  .nav__logo {
+    height: 100%; }
 
 .active {
   border-bottom: 1px solid rgba(255, 255, 255, 0.5); }
 
 .footer {
   height: 15rem;
-  background: #272727;
+  background: #1abc9c;
   color: #dfdfdf;
   font-size: 1.6rem;
   padding: 2rem;
@@ -263,10 +280,12 @@ input:-webkit-autofill {
         .exp-lense__card__info__prop--key {
           min-width: 30%;
           text-align: right;
-          padding-right: 1rem; }
+          padding-right: 1rem;
+          font-weight: 500; }
         .exp-lense__card__info__prop--val {
           min-width: 70%;
-          text-align: left; }
+          text-align: left;
+          font-weight: 300; }
 
 .twentytwenty-container {
   min-height: 100%;
@@ -278,7 +297,8 @@ input:-webkit-autofill {
   height: 0px;
   margin-left: -3px; }
 
-.twentytwenty-horizontal .twentytwenty-handle:after, .twentytwenty-horizontal .twentytwenty-handle:before {
+.twentytwenty-horizontal .twentytwenty-handle:after,
+.twentytwenty-horizontal .twentytwenty-handle:before {
   width: 2px; }
 
 .dropdown {
@@ -397,7 +417,7 @@ input:-webkit-autofill {
   .flash--error {
     background: #e87979; }
   .flash--success {
-    background: #00b233; }
+    background: #1abc9c; }
   .flash__x {
     position: absolute;
     right: 5%;
@@ -423,16 +443,16 @@ input:-webkit-autofill {
     font-size: 4rem;
     text-align: center;
     width: 75%;
-    font-weight: 400; }
+    font-weight: 300; }
     .hero__header--bold {
-      font-weight: 500; }
+      font-weight: 400; }
   .hero__subheader {
     z-index: 3;
     font-size: 2rem;
     text-align: center;
     width: 75%;
     margin: 2rem;
-    font-weight: 400; }
+    font-weight: 300; }
   .hero::after {
     content: '';
     background: url("../imgs/lenses/0001/1953-angenieux-double-gauss.svg");
@@ -444,6 +464,9 @@ input:-webkit-autofill {
     height: 100%;
     width: 100%;
     z-index: 2; }
+  .hero__arrow-link {
+    color: white;
+    z-index: 3; }
   .hero__arrow {
     color: white;
     z-index: 3;
@@ -461,3 +484,18 @@ input:-webkit-autofill {
   .description__right {
     margin-bottom: 3rem;
     font-size: 2.2rem; }
+
+.features {
+  width: 65%;
+  margin: 0 auto; }
+  .features__2020 {
+    width: 100%;
+    margin-top: 4rem; }
+  .features__info {
+    text-align: justify;
+    font-weight: 300;
+    font-size: 1.8rem; }
+    .features__info--bold {
+      font-weight: 500; }
+    .features__info--italic {
+      font-style: italic; }

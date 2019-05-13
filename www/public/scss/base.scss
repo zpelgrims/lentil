@@ -1,7 +1,7 @@
 $font-color: #333333;
 $highlight-color: #e87979;
 $lowlight-color: #d85050;
-$complimentary-color: #00b233;
+$complimentary-color: #1abc9c;
 $hero-background-color: #1abc9c;
 
 *,
@@ -14,11 +14,12 @@ $hero-background-color: #1abc9c;
 
 html {
   font-size: 62.5%;
+  scroll-behavior: smooth;
 }
 
 body {
   box-sizing: border-box;
-  font-family: 'Spectral';
+  font-family: 'Overpass', Arial, Helvetica, sans-serif;
   color: $font-color;
   background: #efefef;
 }
@@ -42,7 +43,7 @@ hr {
   color: white;
   border: none;
   padding: 1rem 5rem;
-  border-radius: 5px;
+  border-radius: 50px;
   text-transform: lowercase;
   font-size: 2rem;
   text-align: center;
