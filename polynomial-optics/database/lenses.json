@@ -5,11 +5,15 @@
     "focal-length-mm-patent": 100.0,
     "focal-length-mm-raytraced": 99.44564546640218,
     "fstop": {
+      "105": 1.1077938034775305,
       "49": 1.108072268445372,
+      "85": 1.1078930841467716,
       "unscaled": 1.1078236781618793
     },
     "max-fstop-aperture-radius": {
+      "105": 26.903570103839055,
       "49": 12.561180783257896,
+      "85": 21.78290976713877,
       "unscaled": 25.481638992599265
     },
     "notes": "A six element objective with a huge aperture. Due to optical vignetting in the lens, it creates very swirly bokeh.",
@@ -320,7 +324,9 @@
     "patent-location": "https://patentimages.storage.googleapis.com/2f/75/dd/b76ccb73bc0f44/US2701982.pdf",
     "patent-number": "US2701982",
     "polynomial-optics": [
-      49
+      49,
+      85,
+      105
     ],
     "prime": true,
     "product-name": "double-gauss",
@@ -331,7 +337,15 @@
     "commercial": true,
     "company": "meyer-optik-goerlitz",
     "focal-length-mm-patent": 100,
-    "focal-length-mm-raytraced": 99.65371704101563,
+    "focal-length-mm-raytraced": 99.71559532428776,
+    "fstop": {
+      "58": 1.4719464647327434,
+      "unscaled": 1.470050511260092
+    },
+    "max-fstop-aperture-radius": {
+      "58": 13.588470527173888,
+      "unscaled": 23.368825585717612
+    },
     "notes": "The Primoplan 58 was developed by the brilliant Meyer-Optik designer Paul Schäfter 80 years ago. Its light intensity of 1:1.9, which was considered extremely high back then, made the Primoplan 58 f1.9 one of the most exciting lenses of its time. It features lots of optical vignetting, making for very swirly bokeh.",
     "notes-to-self": "Primoplan 58mm f1.5",
     "optical-elements-patent": [
@@ -438,7 +452,9 @@
     ],
     "patent-location": "database/lenses/1936-meyer-optik-goerlitz-primoplan/patent/DE1387593.pdf",
     "patent-number": "DE1387593",
-    "polynomial-optics": [],
+    "polynomial-optics": [
+      58
+    ],
     "prime": true,
     "product-name": "primoplan",
     "production-ready": true,

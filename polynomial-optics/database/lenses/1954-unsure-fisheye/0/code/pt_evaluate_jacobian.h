@@ -1,0 +1,28 @@
+case unsure_fisheye_1954_0mm:
+{
+const double dx00 =  + -11.6852  + 0.178531 *lens_ipow(y, 2) + 0.562915 *lens_ipow(x, 2) + 22.7111 *y*dy + 649.91 *lens_ipow(dx, 2) + 37.77 *x*dx + 612.707 *lens_ipow(dy, 2) + -36531.5 *lens_ipow(dx, 4) + 317.126 *y*lens_ipow(dx, 2)*dy + -7.23074e-06 *lens_ipow(x, 6) + -7374.79 *y*lens_ipow(dx, 2)*lens_ipow(dy, 3) + -11200.9 *y*lens_ipow(dx, 4)*dy + -4.64465 *lens_ipow(x, 3)*lens_ipow(dx, 3)+0.0f;
+const double dx01 =  + 180.333 *dx*dy + 0.357062 *x*y + 22.7111 *x*dy + 317.126 *x*lens_ipow(dx, 2)*dy + -7374.79 *x*lens_ipow(dx, 2)*lens_ipow(dy, 3) + -11200.9 *x*lens_ipow(dx, 4)*dy+0.0f;
+const double dx02 =  + -529.432  + 180.333 *y*dy + 1299.82 *x*dx + 18.885 *lens_ipow(x, 2) + -7.78834e+06 *lens_ipow(dx, 4) + -146126 *x*lens_ipow(dx, 3) + 634.253 *x*y*dx*dy + -14749.6 *x*y*dx*lens_ipow(dy, 3) + -44803.7 *x*y*lens_ipow(dx, 3)*dy + -3.48349 *lens_ipow(x, 4)*lens_ipow(dx, 2)+0.0f;
+const double dx03 =  + 180.333 *y*dx + 22.7111 *x*y + 1225.41 *x*dy + 317.126 *x*y*lens_ipow(dx, 2) + -22124.4 *x*y*lens_ipow(dx, 2)*lens_ipow(dy, 2) + -11200.9 *x*y*lens_ipow(dx, 4)+0.0f;
+const double dx04 = +0.0f;
+const double dx10 =  + 17.7367 *y*dx + 0.290362 *x*y + 4.48649 *x*y*lens_ipow(dx, 2) + -3.51149 *lens_ipow(x, 2)*dx*dy + -4636.94 *y*dx*lens_ipow(dy, 4)+0.0f;
+const double dx11 =  + -8.57411  + 17.7367 *x*dx + 0.145181 *lens_ipow(x, 2) + 0.323759 *lens_ipow(y, 2) + 10.3812 *y*dy + 0.141402 *lens_ipow(y, 3)*dy + 2.24324 *lens_ipow(x, 2)*lens_ipow(dx, 2) + -1.91601e+07 *lens_ipow(dy, 6) + 19945.4 *lens_ipow(y, 2)*lens_ipow(dy, 4) + 347.223 *lens_ipow(y, 3)*lens_ipow(dy, 3) + 1.72841 *lens_ipow(y, 4)*lens_ipow(dy, 2) + -4636.94 *x*dx*lens_ipow(dy, 4)+0.0f;
+const double dx12 =  + 17.7367 *x*y + -55922.9 *dx*dy + 4.48649 *lens_ipow(x, 2)*y*dx + -1.1705 *lens_ipow(x, 3)*dy + -4636.94 *x*y*lens_ipow(dy, 4)+0.0f;
+const double dx13 =  + -405.674  + 5.1906 *lens_ipow(y, 2) + -27961.4 *lens_ipow(dx, 2) + 0.0353506 *lens_ipow(y, 4) + -1.1705 *lens_ipow(x, 3)*dx + -4.07029e+09 *lens_ipow(dy, 6) + -1.14961e+08 *y*lens_ipow(dy, 5) + 26593.8 *lens_ipow(y, 3)*lens_ipow(dy, 3) + 260.417 *lens_ipow(y, 4)*lens_ipow(dy, 2) + 0.691363 *lens_ipow(y, 5)*dy + -18547.8 *x*y*dx*lens_ipow(dy, 3)+0.0f;
+const double dx14 = +0.0f;
+const double dx20 =  + -0.633003  + 0.00993621 *lens_ipow(y, 2) + 0.0343395 *lens_ipow(x, 2) + 1.22154 *y*dy + 1.87865 *x*dx + 31.4923 *lens_ipow(dy, 2) + -6.22016e-05 *lens_ipow(x, 4) + 0.00316971 *lens_ipow(x, 2)*y*dy + 2238.84 *lens_ipow(dy, 6) + -187.875 *y*lens_ipow(dx, 2)*lens_ipow(dy, 3) + 11.0998 *lens_ipow(x, 2)*lens_ipow(dx, 2)*lens_ipow(dy, 2) + -0.0807007 *lens_ipow(x, 3)*lens_ipow(dx, 3)+0.0f;
+const double dx21 =  + 6.32727 *dx*dy + 0.0198724 *x*y + 1.22154 *x*dy + 0.00105657 *lens_ipow(x, 3)*dy + -187.875 *x*lens_ipow(dx, 2)*lens_ipow(dy, 3)+0.0f;
+const double dx22 =  + -29.5345  + -2.11206 *lambda + 6.32727 *y*dy + -3296.97 *lens_ipow(dx, 2) + 0.939326 *lens_ipow(x, 2) + -375.75 *x*y*dx*lens_ipow(dy, 3) + 7.39989 *lens_ipow(x, 3)*dx*lens_ipow(dy, 2) + -0.0605255 *lens_ipow(x, 4)*lens_ipow(dx, 2)+0.0f;
+const double dx23 =  + 6.32727 *y*dx + 1.22154 *x*y + 62.9847 *x*dy + 0.00105657 *lens_ipow(x, 3)*y + 13433 *x*lens_ipow(dy, 5) + -563.625 *x*y*lens_ipow(dx, 2)*lens_ipow(dy, 2) + 7.39989 *lens_ipow(x, 3)*lens_ipow(dx, 2)*dy+0.0f;
+const double dx24 =  + -2.11206 *dx+0.0f;
+const double dx30 =  + 1.53653 *y*dx + 0.0271277 *x*y + -0.000111509 *lens_ipow(x, 3)*y + -0.00664545 *lens_ipow(x, 2)*y*dx + -0.07405 *lens_ipow(y, 3)*dx*lens_ipow(dy, 2) + -2.8698e-07 *x*lens_ipow(y, 5)+0.0f;
+const double dx31 =  + -0.734093  + 1.53653 *x*dx + 42.8914 *lens_ipow(dx, 2) + 0.0135638 *lens_ipow(x, 2) + 0.0369098 *lens_ipow(y, 2) + 36.9782 *lens_ipow(dy, 2) + 2.59732 *y*dy + -2.78772e-05 *lens_ipow(x, 4) + -971.99 *lens_ipow(dy, 4) + -0.00221515 *lens_ipow(x, 3)*dx + 0.00320289 *lens_ipow(y, 4)*lens_ipow(dy, 2) + -5.04158e-07 *lens_ipow(y, 6) + -0.22215 *x*lens_ipow(y, 2)*dx*lens_ipow(dy, 2) + -7.17449e-07 *lens_ipow(x, 2)*lens_ipow(y, 4)+0.0f;
+const double dx32 =  + 1.53653 *x*y + 85.7828 *y*dx + -0.00221515 *lens_ipow(x, 3)*y + -0.07405 *x*lens_ipow(y, 3)*lens_ipow(dy, 2)+0.0f;
+const double dx33 =  + -36.2774  + 73.9563 *y*dy + 1.29866 *lens_ipow(y, 2) + -238432 *lens_ipow(dy, 4) + -3887.96 *y*lens_ipow(dy, 3) + 0.00128116 *lens_ipow(y, 5)*dy + -0.1481 *x*lens_ipow(y, 3)*dx*dy+0.0f;
+const double dx34 = +0.0f;
+const double dx40 =  + -0.00371397 *x*lambda + -0.0923117 *dx*lambda + -1.34357e-05 *lens_ipow(x, 3) + -0.000420769 *lens_ipow(x, 2)*dx + -0.00619874 *lens_ipow(y, 2)*dx*lens_ipow(dy, 2) + 9.90915e-06 *lens_ipow(x, 3)*lens_ipow(lambda, 2) + -2.62816e-06 *lens_ipow(x, 4)*dx+0.0f;
+const double dx41 =  + -0.00158408 *y + -0.176171 *dy*lambda + -4.73545e-05 *lens_ipow(y, 3)*lambda + -0.0123975 *x*y*dx*lens_ipow(dy, 2) + -7.46373e-06 *lens_ipow(y, 4)*dy + -0.00175943 *lens_ipow(y, 2)*dy*lens_ipow(lambda, 3)+0.0f;
+const double dx42 =  + -0.0923117 *x*lambda + -0.000140256 *lens_ipow(x, 3) + -0.00619874 *x*lens_ipow(y, 2)*lens_ipow(dy, 2) + -5.25631e-07 *lens_ipow(x, 5)+0.0f;
+const double dx43 =  + -0.176171 *y*lambda + -16.8241 *dy*lens_ipow(lambda, 2) + -0.0123975 *x*lens_ipow(y, 2)*dx*dy + -1.49275e-06 *lens_ipow(y, 5) + -0.000586477 *lens_ipow(y, 3)*lens_ipow(lambda, 3)+0.0f;
+const double dx44 =  + 0.850771  + -2.37514 *lambda + 1.81425 *lens_ipow(lambda, 2) + -0.00185699 *lens_ipow(x, 2) + -0.0923117 *x*dx + -0.176171 *y*dy + -16.8241 *lens_ipow(dy, 2)*lambda + -1.18386e-05 *lens_ipow(y, 4) + 4.95458e-06 *lens_ipow(x, 4)*lambda + -0.00175943 *lens_ipow(y, 3)*dy*lens_ipow(lambda, 2)+0.0f;
+} break;

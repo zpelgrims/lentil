@@ -3,20 +3,23 @@
     "commercial": false,
     "company": "angenieux",
     "fstop": {
-      "100": 1.1079325675964355,
+      "105": 1.1077938034775305,
       "49": 1.108072268445372,
+      "85": 1.1078930841467716,
       "unscaled": 1.1078236781618793
     },
     "max-fstop-aperture-radius": {
-      "100": 25.623905181884766,
+      "105": 26.903570103839055,
       "49": 12.561180783257896,
+      "85": 21.78290976713877,
       "unscaled": 25.481638992599265
     },
-    "notes": "large aperture six element objective, nice swirly bokeh",
+    "notes": "A six element objective with a huge aperture. Due to optical vignetting in the lens, it creates very swirly bokeh.",
     "patent-number": "US2701982",
     "polynomial-optics": [
-      100,
-      49
+      49,
+      85,
+      105
     ],
     "prime": true,
     "product-name": "double-gauss",
@@ -27,9 +30,20 @@
   "0002": {
     "commercial": true,
     "company": "meyer-optik-goerlitz",
-    "notes": "Primoplan 58mm f1.5",
+    "fstop": {
+      "58": 1.4719464647327434,
+      "unscaled": 1.470050511260092
+    },
+    "max-fstop-aperture-radius": {
+      "58": 13.588470527173888,
+      "unscaled": 23.368825585717612
+    },
+    "notes": "The Primoplan 58 was developed by the brilliant Meyer-Optik designer Paul Schäfter 80 years ago. Its light intensity of 1:1.9, which was considered extremely high back then, made the Primoplan 58 f1.9 one of the most exciting lenses of its time. It features lots of optical vignetting, making for very swirly bokeh.",
+    "notes-to-self": "Primoplan 58mm f1.5",
     "patent-number": "DE1387593",
-    "polynomial-optics": [],
+    "polynomial-optics": [
+      58
+    ],
     "prime": true,
     "product-name": "primoplan",
     "production-ready": true,
@@ -39,7 +53,8 @@
   "0003": {
     "commercial": true,
     "company": "unknown",
-    "notes": "classical 19th century petzval lens, should be scaled to 100mm",
+    "notes": "The Petzval lens is the first photographic portrait objective lens in the history of photography. It was developed by the mathematics professor Josef Maximilian Petzval in 1840. It was the first mathematically calculated objective in the history of photography. The lens was able to let 22 times more light in than any other design at the time. This enabled photographers to for the first time take portraits with exposure times of less than a minute.",
+    "notes-to-self": "classical 19th century petzval lens, should be scaled to 100mm",
     "patent-number": null,
     "polynomial-optics": [],
     "prime": true,
@@ -51,7 +66,7 @@
   "0004": {
     "commercial": true,
     "company": "nikon",
-    "notes": "This invention provides a retrofocus-type wide angle lens having a relative aperture of F/2.8, an angle of field of 75° and a back focus of more than 1.3 times the focallength and comprises seven lens elements",
+    "notes": "A 7 element retrofocus-type wide angle lens with a relative aperture of F/2.8, an angle of field of 75° and a back focus of more than 1.3 times the focallength.",
     "patent-number": "US3583791",
     "polynomial-optics": [],
     "prime": true,
@@ -63,8 +78,8 @@
   "0005": {
     "commercial": true,
     "company": "canon",
-    "notes": "The present invention relates to a retro-focus type wide angle lens which is compact despite its remarkably large field of view and well compensated for various aberrations. f = 14.2, f2.8, Angle of field = 114",
-    "notes-to-self": "3rd lens element in patent seems to have incorrect radius of curvature when compared to provided image (58.28->40.28). This has been corrected in the optical-elements-patent dict.",
+    "notes": "A compact retrofocus-type wide angle lens which is well compensated for various aberrations considering its remarkably large field of view (114 degrees).",
+    "notes-to-self": "3rd lens element in patent seems to have incorrect radius of curvature when compared to provided image (58.28->40.28). This has been corrected in the optical-elements-patent dict. f = 14.2, f2.8, Angle of field = 114",
     "patent-number": "US4310222",
     "polynomial-optics": [],
     "prime": true,
@@ -76,7 +91,8 @@
   "0006": {
     "commercial": true,
     "company": "kodak",
-    "notes": "Petzval type lens, f=100mm",
+    "notes": "Kodak's take on the classical Petzval design. Features a heavy amount of optical vignetting, resulting in swirly bokeh which helps emphasise the subject in focus.",
+    "notes-to-self": "Petzval type lens, f=100mm",
     "patent-number": "US2500046A",
     "polynomial-optics": [],
     "prime": true,
@@ -88,7 +104,8 @@
   "0007": {
     "commercial": true,
     "company": "cooke",
-    "notes": "Cooke Series O f/2.0 OPIC lens, Horace W. Lee designed the Cooke OPIC lenses to be the first to combine an f/2.0 aperture with a fully corrected color and geometry. Studios snapped up the new Cooke f/2.0 (T2.3) lenses. The original f/2.0 OPIC design became the now-legendary uncoated Cooke Speed Panchros.",
+    "notes": "Cooke Series O f/2.0 OPIC lens, Horace W. Lee designed. This original f/2.0 OPIC design became the now-legendary uncoated Cooke Speed Panchros. Studios jumped up the new Cooke f/2.0 (T2.3) lenses, due to which they appear in almost every film in the early hollywood era.",
+    "notes-to-self": "",
     "patent-number": "GB157040A",
     "polynomial-optics": [],
     "prime": true,
@@ -100,7 +117,7 @@
   "0008": {
     "commercial": true,
     "company": "nikon",
-    "notes": "f/1.25",
+    "notes": "Modern f/1.25 design by Nikon.",
     "patent-number": "US8721094",
     "polynomial-optics": [],
     "prime": true,
@@ -112,7 +129,8 @@
   "0009": {
     "commercial": true,
     "company": "zeiss",
-    "notes": "58mm?",
+    "notes": "The Biotar was developed by the famous lens designer Dr. Willy Walter Merté for Carl Zeiss, it is a six element lens with asymmetrical outer elements, a variant of the Double Gauss design for higher performance and increased field correction and speed. Virtually all of today’s fast lenses with a medium field angle (50-100mm focal length on 35mm cameras) are Double Gauss designs, like the Biotar. These Double Gauss lenses attempted to improve on the Planar design from 1896 by abandoning the strict symmetry approach for the radii of curvature of the surfaces and the refractive indices of the glass materials and therefore achieved additional correction parameters. The famed Helios 44-2 lenses are very close clones of the Biotar.",
+    "notes-to-self": "https://www.casualphotophile.com/2019/02/13/carl-zeiss-jena-biotar-58mm-f-2-lens-review/, 58mm?",
     "patent-number": "DE485798C",
     "polynomial-optics": [],
     "prime": true,
@@ -124,7 +142,8 @@
   "0010": {
     "commercial": true,
     "company": "asahi",
-    "notes": "Based on the Biotar design, 50mm",
+    "notes": "The Asahi Takumar (Pentax) is based on the Zeiss Biotar.",
+    "notes-to-self": "50mm",
     "patent-number": "US3451745",
     "polynomial-optics": [],
     "prime": true,
@@ -145,22 +164,17 @@
     "www-svg-location": "/imgs/lenses/0011/1970-asahi-takumar.svg",
     "year": 1970
   },
-  "0013": {
-    "commercial": true,
-    "company": "zeiss",
-    "notes": "Flektagon 35mm f2.8",
-    "notes-to-self": "Huge discrepancy between drawings and raytrace drawings. The numbers match but the distance between the lens elements is not the same at all..",
-    "patent-number": "DE953471",
-    "polynomial-optics": [],
-    "prime": true,
-    "product-name": "flektagon",
-    "production-ready": true,
-    "www-svg-location": "/imgs/lenses/0013/1954-zeiss-flektagon.svg",
-    "year": 1954
-  },
   "0014": {
     "commercial": true,
     "company": "unsure",
+    "fstop": {
+      "6": 63.82734383065059,
+      "unscaled": 16.58635679454206
+    },
+    "max-fstop-aperture-radius": {
+      "6": 6.506989220679896,
+      "unscaled": 5.975442772374432
+    },
     "notes": "Aspherical 181 degree field of view fisheye",
     "notes-to-self": null,
     "patent-number": null,
