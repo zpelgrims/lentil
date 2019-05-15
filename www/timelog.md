@@ -175,4 +175,7 @@
   - Add lens title bubbles
   - Setup features route, view and some content
 
-- 5/13/19 8:15-
+- 5/13/19 8:15-9:00
+
+  - Style features page
+  - Add border to flash messages for visibility

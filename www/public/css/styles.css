@@ -413,7 +413,8 @@ input:-webkit-autofill {
   color: white;
   border-radius: 5px;
   text-transform: lowercase;
-  animation: 5s slideinout forwards; }
+  animation: 5s slideinout forwards;
+  border: 1px solid white; }
   .flash--error {
     background: #e87979; }
   .flash--success {

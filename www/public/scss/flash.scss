@@ -9,6 +9,7 @@
   border-radius: 5px;
   text-transform: lowercase;
   animation: 5s slideinout forwards;
+  border: 1px solid white;
 
   &--error {
     background: $highlight-color;
