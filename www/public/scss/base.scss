@@ -42,7 +42,7 @@ hr {
   background-color: $highlight-color;
   color: white;
   border: none;
-  padding: 1rem 5rem;
+  padding: 0.5rem 2rem;
   border-radius: 50px;
   text-transform: lowercase;
   font-size: 2rem;
@@ -68,10 +68,24 @@ hr {
 
   &--inactive {
     filter: grayscale(75%);
+  }
 
-    &:hover {
-      background-color: $highlight-color;
+  &--green {
+    background-color: $hero-background-color;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: $hero-background-color;
     }
+  }
+
+  &--icon {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 25;
+    transform: translateY(-50%);
   }
 }
 

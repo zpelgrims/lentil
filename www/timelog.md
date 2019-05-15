@@ -179,3 +179,7 @@
 
   - Style features page
   - Add border to flash messages for visibility
+
+- 5/14/19 4:30-
+
+  - Replace purchased/in cart icons

@@ -27,9 +27,9 @@
       <div class="lense__card lense__card--<%= [i] %>" id="card-<%= [i] %>">
         <div class="lense__card__image">
           <% if(user) { %> <% if(user.lenses.indexOf(lens._id) > -1) { %>
-          <i class="fas fa-tag lense__card__image__tag"></i>
+          <button class="button button--icon button--green">purchased</button>
           <% } %> <% if(user.cart.indexOf(lens._id) > -1) { %>
-          <i class="fas fa-shopping-cart lense__card__image__cart"></i>
+          <button class="button button--icon button--green">in cart</button>
           <% } %> <% } %>
           <img src="<%= lens.image %>" alt="<%= lens.image %>" />
         </div>
@@ -81,9 +81,9 @@
                 >
               </div>
               <% if(user) { %> <% if(user.cart.indexOf(lens._id) > -1) { %>
-              <button class="button button--inactive">added to cart</button>
+              <button class="button button--green button--inactive">in cart</button>
               <% } else if(user.lenses.indexOf(lens._id) > -1) { %>
-              <button class="button button--inactive">you own this</button>
+              <button class="button button--green button--inactive">purchased</button>
               <% } else { %>
               <a href="/<%= lens._id %>/add" class="button">add to cart</a>
               <% } %> <% } else { %>
