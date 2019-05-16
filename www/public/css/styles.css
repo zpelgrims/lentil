@@ -297,6 +297,7 @@ input:-webkit-autofill {
 
 .twentytwenty-container {
   min-height: 100%;
+  max-height: 30.8rem;
   border-bottom: 1px solid rgba(232, 121, 121, 0.3); }
 
 .twentytwenty-handle {

@@ -180,6 +180,10 @@
   - Style features page
   - Add border to flash messages for visibility
 
-- 5/14/19 4:30-
+- 5/14/19 4:30-5:15
 
   - Replace purchased/in cart icons
+
+- 5/15/19 6:00-
+
+  - Expanded lens view fit on bigger screens
