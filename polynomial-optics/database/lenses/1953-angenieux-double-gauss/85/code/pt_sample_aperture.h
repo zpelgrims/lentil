@@ -1,4 +1,4 @@
-case angenieux_double_gauss_1953_85mm:
+case angenieux__double_gauss__1953__85mm:
 {
 double pred_x;
 double pred_y;

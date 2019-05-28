@@ -62,7 +62,7 @@ class LentilDialog(QtWidgets.QDialog):
         self.lensHB = QtWidgets.QHBoxLayout()
         self.lensL = QtWidgets.QLabel('Lens: ')
         self.lensCB = QtWidgets.QComboBox()
-        for lensid in self.lens_database:
+        for lensid in self.lens_database: #for lensid in self.available_lenses redraw!!
             self.lensCB.addItem("{}-{}".format(
                 self.lens_database[lensid]["company"], 
                 self.lens_database[lensid]["product-name"]
@@ -198,6 +198,10 @@ class LentilDialog(QtWidgets.QDialog):
     def discover_available_camera_models(self):
         pass # implement in child classes
 
+    def get_company_lens_model_from_string(self, string):
+        split = string.split("__")
+        return (split[0], split[1])
+
 
 
 class QHLine(QtWidgets.QFrame):
@@ -251,6 +255,7 @@ class ArnoldMayaTranslator(LentilDialog):
         
         self.discover_cameras()
         self.switch_cam_to_lentil()
+        self.discover_available_camera_models()
         self.build_camera_enum_map()
         self.listen_for_attributes()
         self.read_values()
@@ -261,14 +266,16 @@ class ArnoldMayaTranslator(LentilDialog):
             try:
                 cmds.setAttr("{}.aiLensModel".format(self.currentCamera), n)
             except: #add proper exception
-                return
+                continue
             
             enum_value_str = cmds.getAttr("{}.aiLensModel".format(self.currentCamera), asString=True)
-            company, product_name = get_company_lens_model_from_string(enum_value_str) # deconstruct into company/model .. is this possible?? what if i separate - and _?
+            company, product_name = self.get_company_lens_model_from_string(enum_value_str)
             for lensid in self.lens_database:
-                # might have to do some .replace("_", "-")
-                if company == self.lens_database[lensid]["company"] and product_name == self.lens_database[lensid]["product-name"]:
-                    self.available_lenses.append(lensid)
+                if company.replace("_", "-") == self.lens_database[lensid]["company"] and product_name.replace("_", "-") == self.lens_database[lensid]["product-name"]:
+                    self.available_lenses.append(str(lensid))
+
+        # remove doubles from list
+        print(self.available_lenses)
             
 
     def discover_cameras(self):
