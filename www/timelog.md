@@ -167,9 +167,23 @@
   - Re-style hero
 
 - 5/12/19 1:30-3:00
-  7:00-
+  7:00-8:15
 
   - Update font and logo
   - Setup scroll arrow functionality
   - Two lenses per row instead of three
   - Add lens title bubbles
+  - Setup features route, view and some content
+
+- 5/13/19 8:15-9:00
+
+  - Style features page
+  - Add border to flash messages for visibility
+
+- 5/14/19 4:30-5:15
+
+  - Replace purchased/in cart icons
+
+- 5/15/19 6:00-
+
+  - Expanded lens view fit on bigger screens

@@ -284,10 +284,10 @@ class ArnoldMayaTranslator(LentilDialog):
         #self.cameraCB pick list(rendercams)[0]
         
 
-    def switch_cam_to_lentil(self):
+    def switch_cam_to_lentil(self): # this doesn't work, bug in setAttr... find other way
         try:
             cmds.setAttr("{}.aiTranslator".format(self.currentCamera), "pota", type="string")
-        except: #add proper exception
+        except RuntimeError:
             print("Error: Lentil doesn't seem to be installed.")
             return
 

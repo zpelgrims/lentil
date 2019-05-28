@@ -27,9 +27,9 @@
       <div class="lense__card lense__card--<%= [i] %>" id="card-<%= [i] %>">
         <div class="lense__card__image">
           <% if(user) { %> <% if(user.lenses.indexOf(lens._id) > -1) { %>
-          <i class="fas fa-tag lense__card__image__tag"></i>
+          <button class="button button--icon button--green">purchased</button>
           <% } %> <% if(user.cart.indexOf(lens._id) > -1) { %>
-          <i class="fas fa-shopping-cart lense__card__image__cart"></i>
+          <button class="button button--icon button--green">in cart</button>
           <% } %> <% } %>
           <img src="<%= lens.image %>" alt="<%= lens.image %>" />
         </div>
@@ -81,9 +81,13 @@
                 >
               </div>
               <% if(user) { %> <% if(user.cart.indexOf(lens._id) > -1) { %>
-              <button class="button button--inactive">added to cart</button>
+              <button class="button button--green button--inactive">
+                in cart
+              </button>
               <% } else if(user.lenses.indexOf(lens._id) > -1) { %>
-              <button class="button button--inactive">you own this</button>
+              <button class="button button--green button--inactive">
+                purchased
+              </button>
               <% } else { %>
               <a href="/<%= lens._id %>/add" class="button">add to cart</a>
               <% } %> <% } else { %>
@@ -91,27 +95,29 @@
               <% } %>
             </div>
           </div>
-          <div class="twentytwenty-container">
-            <img
-              src="http://zenopelgrims.com/wp-content/uploads/2018/03/pota_chart_thinlens.png"
-              alt="Arnold Thin-Lens"
-              class="aligncenter size-full wp-image-2370"
-            />
-            <img
-              src="http://zenopelgrims.com/wp-content/uploads/2018/03/polynomial-optics-arnold-zeiss-biotar-chromatic-aberration.png"
-              alt="POTA Zeiss Biotar (1927)"
-              class="aligncenter size-full wp-image-2368"
-            />
-            <img
-              src="http://zenopelgrims.com/wp-content/uploads/2018/03/pota_test_thinlens.png"
-              alt="Arnold Thin-Lens"
-              class="aligncenter size-full wp-image-2372"
-            />
-            <img
-              src="http://zenopelgrims.com/wp-content/uploads/2018/03/pota_test_petzval.png"
-              alt="POTA Petzval (1900)"
-              class="aligncenter size-full wp-image-2371"
-            />
+          <div class="col-md-8">
+            <div class="twentytwenty-container">
+              <img
+                src="http://zenopelgrims.com/wp-content/uploads/2018/03/pota_chart_thinlens.png"
+                alt="Arnold Thin-Lens"
+                class="aligncenter size-full wp-image-2370"
+              />
+              <img
+                src="http://zenopelgrims.com/wp-content/uploads/2018/03/polynomial-optics-arnold-zeiss-biotar-chromatic-aberration.png"
+                alt="POTA Zeiss Biotar (1927)"
+                class="aligncenter size-full wp-image-2368"
+              />
+              <img
+                src="http://zenopelgrims.com/wp-content/uploads/2018/03/pota_test_thinlens.png"
+                alt="Arnold Thin-Lens"
+                class="aligncenter size-full wp-image-2372"
+              />
+              <img
+                src="http://zenopelgrims.com/wp-content/uploads/2018/03/pota_test_petzval.png"
+                alt="POTA Petzval (1900)"
+                class="aligncenter size-full wp-image-2371"
+              />
+            </div>
           </div>
         </div>
       </div>
