@@ -8,6 +8,7 @@ TODO:
 
 Fstop minimum should be set -> untested
 need to change lens/focallength when user changes lens enum  -> untested
+need to generate an individual public lens database.. or can i just construct all the necessary lenses beforehand?
 """
 
 
@@ -17,6 +18,7 @@ class LentilDialog(QtWidgets.QDialog):
         self.setWindowTitle("Lentil")
         self.setMinimumWidth(350)
         self.lens_database = None
+        self.available_lenses = []
         self.currentLensId = None
         self.currentCamera = None
 
@@ -192,6 +194,9 @@ class LentilDialog(QtWidgets.QDialog):
 
     def value_changed(self):
         pass # implement in child classes
+    
+    def discover_available_camera_models(self):
+        pass # implement in child classes
 
 
 
@@ -250,7 +255,21 @@ class ArnoldMayaTranslator(LentilDialog):
         self.listen_for_attributes()
         self.read_values()
         self.callback()
-
+    
+    def discover_available_camera_models(self):
+        for n in range(len(self.lens_database)):
+            try:
+                cmds.setAttr("{}.aiLensModel".format(self.currentCamera), n)
+            except: #add proper exception
+                return
+            
+            enum_value_str = cmds.getAttr("{}.aiLensModel".format(self.currentCamera), asString=True)
+            company, product_name = get_company_lens_model_from_string(enum_value_str) # deconstruct into company/model .. is this possible?? what if i separate - and _?
+            for lensid in self.lens_database:
+                # might have to do some .replace("_", "-")
+                if company == self.lens_database[lensid]["company"] and product_name == self.lens_database[lensid]["product-name"]:
+                    self.available_lenses.append(lensid)
+            
 
     def discover_cameras(self):
         rendercams = set()
