@@ -5,9 +5,9 @@ args=("$@")
 DATE="$( date +"%y%m%d-%H%M" )" && #need to make sure this is in UTC?
 
 # these three vars need to be passed from html
-OS=${args[0]} #windows/linux/osx
-USER=${args[1]} #username
-LENSES=${args[2]} #.1001
+OS=${args[0]} # windows/linux/osx
+USER=${args[1]} # username
+LENSES=${args[2]} # .1001
 
 if [ "$OS" == "windows" ]; then
    BUILD_SERVER=root@66.42.72.219
@@ -23,7 +23,6 @@ fi
 DOWNLOAD_DIR=/root/test_upload_folder &&
 mkdir -p $DOWNLOAD_DIR &&
 
-# windows is obviously wrong
 if [ "$OS" == "windows" ]; then
    ssh -t $BUILD_SERVER "cd lentil-build/lentil && git pull --recurse-submodules && cd pota/build/server && bash ./build_server_windows.sh $LENSES $USER $USER_BUILD_FOLDER $DOWNLOAD_DIR"
 elif [ "$OS" == "linux" ]; then
