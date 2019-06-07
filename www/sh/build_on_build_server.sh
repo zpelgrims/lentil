@@ -24,11 +24,12 @@ DOWNLOAD_DIR=/root/test_upload_folder &&
 mkdir -p $DOWNLOAD_DIR &&
 
 if [ "$OS" == "windows" ]; then
-   ssh -t $BUILD_SERVER "cd C:/lentil-build/lentil && git pull --recurse-submodules && cd pota/build/server && ./build_server_windows.bat $LENSES $USER $USER_BUILD_FOLDER $DOWNLOAD_DIR"
+   touch /root/test_commands/
+   ssh $BUILD_SERVER "cd C:/lentil-build/lentil/pota/build/server && ./build_server_windows.bat $LENSES $USER $USER_BUILD_FOLDER $DOWNLOAD_DIR"
 elif [ "$OS" == "linux" ]; then
-   ssh -t $BUILD_SERVER "cd lentil-build/lentil && git pull --recurse-submodules && cd pota/build/server && bash ./build_server_linux.sh $LENSES $USER $USER_BUILD_FOLDER $DOWNLOAD_DIR"
+   ssh -t $BUILD_SERVER "cd lentil-build/lentil/pota/build/server && bash ./build_server_linux.sh $LENSES $USER $USER_BUILD_FOLDER $DOWNLOAD_DIR"
 else 
-   ssh -t $BUILD_SERVER "cd lentil-build/lentil && git pull --recurse-submodules && cd pota/build/server && bash ./build_server_osx.sh $LENSES $USER $USER_BUILD_FOLDER $DOWNLOAD_DIR"
+   ssh -t $BUILD_SERVER "cd lentil-build/lentil/pota/build/server && bash ./build_server_osx.sh $LENSES $USER $USER_BUILD_FOLDER $DOWNLOAD_DIR"
 fi
 
 
