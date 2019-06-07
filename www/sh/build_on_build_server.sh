@@ -7,7 +7,7 @@ DATE="$( date +"%y%m%d-%H%M" )" && #need to make sure this is in UTC?
 # these three vars need to be passed from html
 OS=${args[0]} # windows/linux/osx
 USER=${args[1]} # username
-LENSES=${args[2]} # .1001
+LENSES=${args[2]} # .1001.1002
 
 if [ "$OS" == "windows" ]; then
    BUILD_SERVER=administrator@78.141.197.83
