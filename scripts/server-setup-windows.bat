@@ -21,7 +21,7 @@ choco install dotnet3.5 --yes
 
 
 :: install wget
-choco install wget --yes
+choco install wget --yes --version 1.19.1
 
 
 :: install pathed for easy %PATH% manipulation
@@ -61,8 +61,8 @@ C:\lentil-build\tools\RefreshEnv.cmd
 
 
 :: clone lentil repo
-cd "C:\lentil-build"
-git clone --recurse-submodules https://zpelgrims@github.com/zpelgrims/lentil.git
+cd ..
+"C:/Program Files/Git/bin/git" clone --recurse-submodules https://zpelgrims@github.com/zpelgrims/lentil.git
 
 
 :: download arnold sdk's
@@ -79,9 +79,3 @@ choco install "visualstudio2017buildtools" --yes --passive
 choco install "visualstudio2017-workload-vctools" --yes --passive
 
 
-:: initialize x64 developer command line environment:
-"C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
-
-
-:: change directory to lentil repo
-cd "C:\lentil-build\lentil"
