@@ -1,4 +1,4 @@
-case angenieux_double_gauss_1953_105mm:
+case angenieux__double_gauss__1953__105mm:
 {
 const double dx00 =  + -0.604711  + 0.559077 *lambda + -0.000623532 *lens_ipow(x, 2) + 0.16019 *lens_ipow(dx, 2) + 0.247335 *lens_ipow(dy, 2) + -0.37374 *lens_ipow(lambda, 2) + 0.0100278 *x*dx + -0.000221945 *lens_ipow(y, 2) + 0.00392862 *y*dy + 2.34375 *lens_ipow(dx, 4) + 0.0989676 *x*lens_ipow(dx, 3) + 2.07909 *lens_ipow(dx, 2)*lens_ipow(dy, 2) + 0.0581811 *y*lens_ipow(dx, 2)*dy + 0.187934 *x*dx*lens_ipow(dy, 4)+0.0f;
 const double dx01 =  + -0.000443889 *x*y + 0.00392862 *x*dy + 0.00678719 *y*dx + 0.0581811 *x*lens_ipow(dx, 2)*dy + 1.41756 *dx*lens_ipow(dy, 3) + 1.66507 *lens_ipow(dx, 3)*dy + 0.307312 *y*dx*lens_ipow(dy, 4)+0.0f;

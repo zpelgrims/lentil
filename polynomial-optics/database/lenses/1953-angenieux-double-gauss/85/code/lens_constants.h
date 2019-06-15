@@ -1,4 +1,4 @@
-case angenieux_double_gauss_1953_85mm:
+case angenieux__double_gauss__1953__85mm:
 {
 camera->lens_name = "angenieux-double-gauss-1953-85mm"; // descriptive name of the lens
 camera->lens_outer_pupil_radius = 46.155865; // scene facing radius in mm

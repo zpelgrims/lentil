@@ -1,4 +1,4 @@
-case angenieux_double_gauss_1953_85mm:
+case angenieux__double_gauss__1953__85mm:
 {
 const double dx00 =  + -0.630653  + 0.648774 *lambda + -0.000968475 *lens_ipow(x, 2) + 0.552026 *lens_ipow(dx, 2) + -0.458111 *lens_ipow(lambda, 2) + -0.00045453 *lens_ipow(y, 2) + 0.000203875 *lens_ipow(y, 2)*lambda + 0.0424443 *x*dx*lambda + 0.0104645 *y*dy*lambda + 5.79425 *lens_ipow(dy, 2)*lens_ipow(lambda, 2) + 0.0270538 *y*lens_ipow(dx, 2)*dy + -0.00262859 *lens_ipow(x, 2)*lens_ipow(dx, 2) + -14.1942 *lens_ipow(dy, 2)*lens_ipow(lambda, 3) + -0.00199227 *x*y*dx*dy*lambda + 9.6531 *lens_ipow(dy, 2)*lens_ipow(lambda, 4) + -9.89049e-05 *lens_ipow(x, 2)*y*dy*lens_ipow(lambda, 3) + -0.000297284 *lens_ipow(x, 3)*dx*lens_ipow(lambda, 3) + -1.40393e-11 *lens_ipow(x, 4)*lens_ipow(y, 4)+0.0f;
 const double dx01 =  + -0.000909061 *x*y + 0.00040775 *x*y*lambda + 0.0104645 *x*dy*lambda + 0.0123311 *y*dx*lambda + 0.399235 *dx*dy*lambda + 0.0270538 *x*lens_ipow(dx, 2)*dy + 0.0632785 *y*dx*lens_ipow(dy, 2)*lambda + -0.000996136 *lens_ipow(x, 2)*dx*dy*lambda + -3.29683e-05 *lens_ipow(x, 3)*dy*lens_ipow(lambda, 3) + -1.12314e-11 *lens_ipow(x, 5)*lens_ipow(y, 3)+0.0f;

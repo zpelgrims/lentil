@@ -1,8 +1,4 @@
-:: this script needs to be launched from the administrator cmdprompt
-
-:: issues
-:: why is choco not available
-:: use 'Install-ChocolateyPath -PathToInstall "$($env:SystemDrive)\tools\gittfs"' for PATH envvar setting?
+:: run through this script manually from administrator cmdprompt!
 
 title "Windows build machine set-up"
 
@@ -25,7 +21,7 @@ choco install dotnet3.5 --yes
 
 
 :: install wget
-choco install wget --yes
+choco install wget --yes --version 1.19.1
 
 
 :: install pathed for easy %PATH% manipulation
@@ -41,7 +37,7 @@ call "C:\Program Files (x86)\p-nand-q.com\GTools\pathed"
 
 :: download envvar refresher by chocolatey
 :: maybe not needed
-wget https://github.com/chocolatey/choco/raw/master/src/chocolatey.resources/redirects/RefreshEnv.cmd
+wget https://github.com/chocolatey/choco/raw/master/src/chocolatey.resources/redirects/RefreshEnv.cmd --no-check-certificate
 
 
 :: install git
@@ -53,43 +49,33 @@ choco install git -params '"/GitAndUnixToolsOnPath"' --yes
 choco install 7zip --yes
 "C:\Program Files (x86)\p-nand-q.com\GTools\pathed" /APPEND "C:\Program Files\7-Zip" /MACHINE
 
-:: install puttyy: pscp (copy over ssh), needs to be in C:\pscp
-choco install putty --yes
-:: TODO: change/check path!!
-"C:\Program Files (x86)\p-nand-q.com\GTools\pathed" /APPEND "C:\Program Files\PuTTY" /MACHINE
-
 choco install openssh --yes
-:: TODO: change/check path!!
-"C:\Program Files (x86)\p-nand-q.com\GTools\pathed" /APPEND "C:\Program Files\openssh" /MACHINE
+:: follow instructions here: https://github.com/PowerShell/Win32-OpenSSH/wiki/Install-Win32-OpenSSH
+:: generate keys and cross-copy (see server_setup_instructions.txt)
+"C:\Program Files (x86)\p-nand-q.com\GTools\pathed" /APPEND "C:\Program Files\OpenSSH-Win64" /MACHINE
 
 
 :: refresh envvars, is this needed?
-:: this currently quits the batch script.. fix!
-:: C:\lentil-build\tools\RefreshEnv.cmd
+:: this currently quits the batch script.. fix! Manual entering is OK
+C:\lentil-build\tools\RefreshEnv.cmd
 
 
 :: clone lentil repo
-git clone --recurse-submodules https://zpelgrims@github.com/zpelgrims/lentil.git
+cd ..
+"C:/Program Files/Git/bin/git" clone --recurse-submodules https://zpelgrims@github.com/zpelgrims/lentil.git
 
 
 :: download arnold sdk's
 :: maybe should put absolute path
-cd "C:\lentil-build"
 wget -O arnold.zip https://www.dropbox.com/sh/rx57g4e3reamk3i/AAD5wLVnUQL1GEvDKv3MbbRfa?dl=1
 
 
 :: unzip arnold sdk's
 7z x arnold.zip -oarnold
 
-
+:: possibly need to restart the cmd prompt? or open it in regular (non-admin) mode?
 :: install visual studio 2017 build tools
 choco install "visualstudio2017buildtools" --yes --passive
 choco install "visualstudio2017-workload-vctools" --yes --passive
 
 
-:: initialize x64 developer command line environment:
-"C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
-
-
-:: change directory to lentil repo
-cd "C:\lentil-build\lentil"

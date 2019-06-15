@@ -1,4 +1,4 @@
-case angenieux_double_gauss_1953_49mm:
+case angenieux__double_gauss__1953__49mm:
 {
 //input: scene_[x,y,z] - point in scene, ap_[x,y] - point on aperture
 //output: [x,y,dx,dy] point and direction on sensor

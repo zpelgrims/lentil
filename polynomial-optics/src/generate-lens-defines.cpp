@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
         focal_length_vector.push_back(focal_length);
       }
 
-      std::string case_lens_name = fmt::format("{}_{}_{}", dash_to_underscore(lens.value()["company"].get<std::string>()),
+      std::string case_lens_name = fmt::format("{}__{}__{}", dash_to_underscore(lens.value()["company"].get<std::string>()),
                                                            dash_to_underscore(lens.value()["product-name"].get<std::string>()),
                                                            lens.value()["year"].get<int>()
       );
@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
     for (auto iterator_map: internal_map) {
       std::vector<int> &internal_vector = iterator_map.second;
       for (auto iterator_vector : internal_vector){
-        fprintf(pota_h_lenses_h,"\t%s_%dmm,\n", it.first.c_str(), iterator_vector);
+        fprintf(pota_h_lenses_h,"\t%s__%dmm,\n", it.first.c_str(), iterator_vector);
       }
     }
   }
@@ -115,7 +115,7 @@ int main(int argc, char *argv[])
       fprintf(pota_h_lenses_h, "#ifdef LENS_ID_%s\n", iterator_map.first.c_str());
       std::vector<int> &internal_vector = iterator_map.second;
       for (auto iterator_vector : internal_vector){
-        fprintf(pota_h_lenses_h, "\t%s_%dmm,\n", it.first.c_str(), iterator_vector);
+        fprintf(pota_h_lenses_h, "\t%s__%dmm,\n", it.first.c_str(), iterator_vector);
       }
       fprintf(pota_h_lenses_h, "#endif\n");
     }
@@ -147,7 +147,7 @@ int main(int argc, char *argv[])
     for (auto iterator_map: internal_map) {
       std::vector<int> &internal_vector = iterator_map.second;
       for (auto iterator_vector : internal_vector){
-        fprintf(pota_cpp_lenses_h,"\t\"%s_%dmm\",\n", it.first.c_str(), iterator_vector);
+        fprintf(pota_cpp_lenses_h,"\t\"%s__%dmm\",\n", it.first.c_str(), iterator_vector);
       }
     }
   }
@@ -161,7 +161,7 @@ int main(int argc, char *argv[])
       fprintf(pota_cpp_lenses_h, "#ifdef LENS_ID_%s\n", iterator_map.first.c_str());
       std::vector<int> &internal_vector = iterator_map.second;
       for (auto iterator_vector : internal_vector){
-        fprintf(pota_cpp_lenses_h, "\t\"%s_%dmm\",\n", it.first.c_str(), iterator_vector);
+        fprintf(pota_cpp_lenses_h, "\t\"%s__%dmm\",\n", it.first.c_str(), iterator_vector);
       }
       fprintf(pota_cpp_lenses_h, "#endif\n");
     }

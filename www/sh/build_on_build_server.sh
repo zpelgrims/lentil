@@ -5,12 +5,12 @@ args=("$@")
 DATE="$( date +"%y%m%d-%H%M" )" && #need to make sure this is in UTC?
 
 # these three vars need to be passed from html
-OS=${args[0]} #windows/linux/osx
-USER=${args[1]} #username
-LENSES=${args[2]} #.1001
+OS=${args[0]} # windows/linux/osx
+USER=${args[1]} # username
+LENSES=${args[2]} # .1001.1002
 
 if [ "$OS" == "windows" ]; then
-   BUILD_SERVER=root@66.42.72.219 #obvs wrong!
+   BUILD_SERVER=administrator@78.141.197.83
    USER_BUILD_FOLDER=$DATE-$USER-windows
 elif [ "$OS" == "linux" ]; then
    BUILD_SERVER=root@66.42.72.219
@@ -20,16 +20,15 @@ else
    USER_BUILD_FOLDER=$DATE-$USER-osx
 fi
 
-DOWNLOAD_DIR=/root/test_upload_folder &&
+DOWNLOAD_DIR=/root/lentil_deliveries &&
 mkdir -p $DOWNLOAD_DIR &&
 
-# windows is obviously wrong
 if [ "$OS" == "windows" ]; then
-   ssh -t $BUILD_SERVER "cd lentil-build/lentil && git pull --recurse-submodules && cd pota/build/server && bash ./build_server_linux.sh $LENSES $USER $USER_BUILD_FOLDER $DOWNLOAD_DIR"
+   ssh $BUILD_SERVER "cd C:/lentil-build/lentil/pota/build/server && build_server_windows.bat $LENSES $USER $USER_BUILD_FOLDER $DOWNLOAD_DIR"
 elif [ "$OS" == "linux" ]; then
-   ssh -t $BUILD_SERVER "cd lentil-build/lentil && git pull --recurse-submodules && cd pota/build/server && bash ./build_server_linux.sh $LENSES $USER $USER_BUILD_FOLDER $DOWNLOAD_DIR"
+   ssh -t $BUILD_SERVER "cd lentil-build/lentil/pota/build/server && bash ./build_server_linux.sh $LENSES $USER $USER_BUILD_FOLDER $DOWNLOAD_DIR"
 else 
-   ssh -t $BUILD_SERVER "cd lentil-build/lentil && git pull --recurse-submodules && cd pota/build/server && bash ./build_server_osx.sh $LENSES $USER $USER_BUILD_FOLDER $DOWNLOAD_DIR"
+   ssh -t $BUILD_SERVER "cd lentil-build/lentil/pota/build/server && bash ./build_server_osx.sh $LENSES $USER $USER_BUILD_FOLDER $DOWNLOAD_DIR"
 fi
 
 

@@ -7,7 +7,6 @@ import re
 TODO:
 
 Fstop minimum should be set -> untested
-need to change lens/focallength when user changes lens enum  -> untested
 """
 
 
@@ -17,12 +16,12 @@ class LentilDialog(QtWidgets.QDialog):
         self.setWindowTitle("Lentil")
         self.setMinimumWidth(350)
         self.lens_database = None
+        self.available_lenses = []
         self.currentLensId = None
         self.currentCamera = None
 
         self._read_public_lens_database()
         self.build_attributes()
-        self.lensid_changed()
         self.signals()
 
     def build_attributes(self):
@@ -60,12 +59,7 @@ class LentilDialog(QtWidgets.QDialog):
         self.lensHB = QtWidgets.QHBoxLayout()
         self.lensL = QtWidgets.QLabel('Lens: ')
         self.lensCB = QtWidgets.QComboBox()
-        for lensid in self.lens_database:
-            self.lensCB.addItem("{}-{}".format(
-                self.lens_database[lensid]["company"], 
-                self.lens_database[lensid]["product-name"]
-            ))
-            self.lensIndex.append(lensid)
+
         self.lensHB.addWidget(self.lensL)
         self.lensHB.addWidget(self.lensCB)
 
@@ -192,6 +186,13 @@ class LentilDialog(QtWidgets.QDialog):
 
     def value_changed(self):
         pass # implement in child classes
+    
+    def discover_available_camera_models(self):
+        pass # implement in child classes
+
+    def get_company_lens_model_from_string(self, string):
+        split = string.split("__")
+        return (split[0], split[1])
 
 
 
@@ -246,10 +247,38 @@ class ArnoldMayaTranslator(LentilDialog):
         
         self.discover_cameras()
         self.switch_cam_to_lentil()
+        self.discover_available_camera_models()
+        self.add_available_camera_models()
+
+        self.lensid_changed()
         self.build_camera_enum_map()
         self.listen_for_attributes()
         self.read_values()
         self.callback()
+    
+    def discover_available_camera_models(self):
+        for n in range(len(self.lens_database)):
+            try:
+                cmds.setAttr("{}.aiLensModel".format(self.currentCamera), n)
+            except: #add proper exception
+                continue
+            
+            enum_value_str = cmds.getAttr("{}.aiLensModel".format(self.currentCamera), asString=True)
+            company, product_name = self.get_company_lens_model_from_string(enum_value_str)
+            for lensid in self.lens_database:
+                if company.replace("_", "-") == self.lens_database[lensid]["company"] and product_name.replace("_", "-") == self.lens_database[lensid]["product-name"]:
+                    self.available_lenses.append(str(lensid))
+
+        # remove doubles from list
+        self.available_lenses = list(set(self.available_lenses))
+            
+    def add_available_camera_models(self):
+        for lensid in self.available_lenses:
+            self.lensCB.addItem("{}-{}".format(
+                self.lens_database[lensid]["company"], 
+                self.lens_database[lensid]["product-name"]
+            ))
+            self.lensIndex.append(lensid)
 
 
     def discover_cameras(self):
@@ -323,7 +352,7 @@ class ArnoldMayaTranslator(LentilDialog):
         cmds.setAttr("{}.aiDof".format(self.currentCamera), False if self.dofCB.currentText() == 'disabled' else True)
         cmds.setAttr("{}.aiUnitModel".format(self.currentCamera), self.unitCB.currentIndex())
 
-        current_lens_name = "{}_{}_{}_{}mm".format(self.lens_database[self.currentLensId]["company"].replace("-", "_"),
+        current_lens_name = "{}__{}__{}__{}mm".format(self.lens_database[self.currentLensId]["company"].replace("-", "_"),
                                             self.lens_database[self.currentLensId]["product-name"].replace("-", "_"),
                                             self.lens_database[self.currentLensId]["year"],
                                             self.focalLengthCB.currentText())

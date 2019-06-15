@@ -21,6 +21,11 @@ for each build server: remove ssh authentication between by using two ssh key:
     on build machine: ssh-keygen -t rsa
     on build machine: ssh-copy-id username@web_server_ip
 
+    for windows build machine:
+    ssh-keygen -t rsa
+    copy website id_rsa.pub contents manually to authorized_keys on build server
+    copy build id_rsa.pub contents manually to authorized_keys on website server
+
 for each build server: git repo needs to be set to use ssh to avoid password verification:
     on build server: git remote set-url origin git@github.com:zpelgrims/lentil.git
     make sure a public key is installed: 
