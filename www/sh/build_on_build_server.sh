@@ -20,11 +20,10 @@ else
    USER_BUILD_FOLDER=$DATE-$USER-osx
 fi
 
-DOWNLOAD_DIR=/root/test_upload_folder &&
+DOWNLOAD_DIR=/root/lentil_deliveries &&
 mkdir -p $DOWNLOAD_DIR &&
 
 if [ "$OS" == "windows" ]; then
-   touch /root/test_commands/
    ssh $BUILD_SERVER "cd C:/lentil-build/lentil/pota/build/server && build_server_windows.bat $LENSES $USER $USER_BUILD_FOLDER $DOWNLOAD_DIR"
 elif [ "$OS" == "linux" ]; then
    ssh -t $BUILD_SERVER "cd lentil-build/lentil/pota/build/server && bash ./build_server_linux.sh $LENSES $USER $USER_BUILD_FOLDER $DOWNLOAD_DIR"
