@@ -112,3 +112,14 @@ payment popup.
 - don't see a specific lens you are looking for? contact us
 - faq
 - move away from academia, more into modern product look
+
+**Todo NEW**
+
+- [ ] Create and implement designs for remaining pages
+- [ ] Work on mobile responsiveness
+- [ ] Setup build on purchase
+- [ ] Setup real stripe account and manage keys
+- [ ] Setup heroku or firebase server
+- [ ] Setup production environment keys
+- [ ] Setup hosting
+- [ ] Push it live!
