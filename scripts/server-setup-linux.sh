@@ -19,6 +19,9 @@ cd ~/lentil-build/
 sudo apt-get update
 sudo apt install build-essential --yes
 
+# sshpass
+sudo apt install sshpass
+
 # download arnold sdk's
 wget -O ~/lentil-build/arnold.zip https://www.dropbox.com/sh/rx57g4e3reamk3i/AAD5wLVnUQL1GEvDKv3MbbRfa?dl=1
 
