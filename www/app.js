@@ -2,12 +2,12 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const Lens = require('./models/Lens');
-const lenses = require('./json/lenses_public.json');
-const { lensMap } = require('./functions/lensMap');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/User');
 const bodyParser = require('body-parser');
+const lenses = require('./json/lenses_public.json');
+const { lensMap } = require('./functions/lensMap');
 const keys = require('./config/keys');
 const flash = require('connect-flash');
 
@@ -19,16 +19,10 @@ if(process.env.NODE_ENV === 'production') {
   mongoose.connect(keys.db);
 } else {
   mongoose.connect('mongodb://localhost/lentil', { useNewUrlParser: true })
-} 
+}
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error: '));
-
-// Map json lenses object to array
-const lensArray = Object.keys(lenses).map(key => [key, lenses[key]]);
-
-// Update or add each lens model
-lensMap(lensArray);
 
 // Setup ejs view engine
 app.set('view engine', 'ejs');
