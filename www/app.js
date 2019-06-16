@@ -15,8 +15,11 @@ const flash = require('connect-flash');
 const PORT = process.env.PORT || 3000;
 
 // Setup database
-mongoose.connect('mongodb://localhost/lentil', { useNewUrlParser: true }) ||
+if(process.env.NODE_ENV === 'production') {
   mongoose.connect(keys.db);
+} else {
+  mongoose.connect('mongodb://localhost/lentil', { useNewUrlParser: true })
+} 
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error: '));
