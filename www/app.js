@@ -8,7 +8,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/User');
 const bodyParser = require('body-parser');
-const keys = require('./keys');
+const keys = require('./config/keys');
 const flash = require('connect-flash');
 
 // Dynamically switch between dev and live ports

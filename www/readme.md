@@ -121,5 +121,6 @@ payment popup.
 - [ ] Setup real stripe account and manage keys
 - [ ] Setup heroku or firebase server
 - [ ] Setup production environment keys
+- [ ] Setup build-lenses script
 - [ ] Setup hosting
 - [ ] Push it live!

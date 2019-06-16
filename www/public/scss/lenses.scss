@@ -5,6 +5,9 @@
   margin: 1rem 2.5%;
   animation: 1s fadein forwards;
   height: 100%;
+  @media (max-width: 900px) {
+    width: 90%;
+  }
 
   &__card {
     width: 100%;

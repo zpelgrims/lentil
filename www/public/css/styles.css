@@ -6,6 +6,9 @@
   margin: 1rem 2.5%;
   animation: 1s fadein forwards;
   height: 100%; }
+  @media (max-width: 900px) {
+    .lense {
+      width: 90%; } }
   .lense__card {
     width: 100%;
     margin-top: 2rem; }

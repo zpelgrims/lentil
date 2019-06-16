@@ -184,6 +184,13 @@
 
   - Replace purchased/in cart icons
 
-- 5/15/19 6:00-
+- 5/15/19 6:00-6:15
 
   - Expanded lens view fit on bigger screens
+  - Add favicon
+
+- 5/22/19 5:30-5:45
+
+  - Work on mobile responsiveness
+
+- 06/16/19 12:30-
