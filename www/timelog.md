@@ -193,4 +193,12 @@
 
   - Work on mobile responsiveness
 
-- 06/16/19 12:30-
+- 06/16/19 12:30-3:30
+
+  - Setup heroku
+  - Setup config variables
+  - Setup build-lenses script
+
+06/29/19 9:00-
+
+  - 

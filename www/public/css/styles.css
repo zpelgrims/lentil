@@ -499,7 +499,8 @@ input:-webkit-autofill {
     font-size: 2.2rem; }
 
 .features {
-  width: 65%;
+  width: 700px;
+  max-width: 90vw;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -508,10 +509,16 @@ input:-webkit-autofill {
   .features__2020 {
     width: 100%;
     margin-top: 4rem; }
+    @media (max-width: 460px) {
+      .features__2020 {
+        margin-top: 0; } }
   .features__info {
     text-align: justify;
     font-weight: 300;
     font-size: 1.8rem; }
+    @media (max-width: 460px) {
+      .features__info {
+        font-size: 1.4rem; } }
     .features__info--bold {
       font-weight: 500; }
     .features__info--italic {

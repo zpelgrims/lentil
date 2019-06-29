@@ -1,5 +1,8 @@
+@import './breakpoints';
+
 .features {
-  width: 65%;
+  width: 700px;
+  max-width: 90vw;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -9,12 +12,20 @@
   &__2020 {
     width: 100%;
     margin-top: 4rem;
+
+    @include media($breakpoint-sm) {
+      margin-top: 0;
+    }
   }
 
   &__info {
     text-align: justify;
     font-weight: 300;
     font-size: 1.8rem;
+
+    @include media($breakpoint-sm) {
+      font-size: 1.4rem;
+    }
 
     &--bold {
       font-weight: 500;
