@@ -199,6 +199,12 @@
   - Setup config variables
   - Setup build-lenses script
 
-06/29/19 9:00-
+- 06/29/19 9:00-10:15
+  1:30-2:30
+  3:00-4:00
 
-  - 
+  - Optimize features page for mobile
+  - Optimize navbar for mobile
+  - Remove filter script
+
+- 06/30/19 12:00-
