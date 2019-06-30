@@ -26,6 +26,10 @@
     align-items: center;
     height: 100%;
 
+    @include media($breakpoint-sm) {
+      font-size: 3rem;
+    }
+
     &:hover,
     &:focus,
     &:active,
@@ -86,6 +90,10 @@
 
     @include media($breakpoint-lg) {
       display: block;
+    }
+
+    @include media($breakpoint-sm) {
+      transform: scale(0.8);
     }
 
     &--active {
