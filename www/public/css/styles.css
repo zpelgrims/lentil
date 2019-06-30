@@ -289,6 +289,9 @@ hr {
     display: flex;
     align-items: center;
     height: 100%; }
+    @media (max-width: 460px) {
+      .nav__brand {
+        font-size: 3rem; } }
     .nav__brand:hover, .nav__brand:focus, .nav__brand:active, .nav__brand:visited {
       color: white;
       text-decoration: none; }
@@ -327,6 +330,9 @@ hr {
     @media (max-width: 1024px) {
       .nav__menu {
         display: block; } }
+    @media (max-width: 460px) {
+      .nav__menu {
+        transform: scale(0.8); } }
     .nav__menu--active .nav__bar--1 {
       transform: translate(-8px, 1px) rotate(-45deg); }
     .nav__menu--active .nav__bar--2 {
@@ -623,6 +629,9 @@ input:-webkit-autofill {
   flex-direction: column;
   align-items: center;
   justify-content: center; }
+  @media (max-width: 460px) {
+    .hero {
+      justify-content: flex-end; } }
   .hero__background {
     background-color: #1abc9c;
     z-index: -1; }
@@ -633,6 +642,13 @@ input:-webkit-autofill {
     text-align: center;
     width: 75%;
     font-weight: 300; }
+    @media (max-width: 768px) {
+      .hero__header {
+        font-size: 3.5rem; } }
+    @media (max-width: 460px) {
+      .hero__header {
+        font-size: 2.5rem;
+        width: 90%; } }
     .hero__header--bold {
       font-weight: 400; }
   .hero__subheader {
@@ -642,6 +658,10 @@ input:-webkit-autofill {
     width: 75%;
     margin: 2rem;
     font-weight: 300; }
+    @media (max-width: 460px) {
+      .hero__subheader {
+        font-size: 1.6rem;
+        width: 90%; } }
   .hero::after {
     content: '';
     background: url("../imgs/lenses/0001/1953-angenieux-double-gauss.svg");
@@ -660,7 +680,8 @@ input:-webkit-autofill {
     color: white;
     z-index: 3;
     font-size: 4rem;
-    margin-top: 6rem; }
+    margin-top: 6rem;
+    margin-bottom: 2rem; }
 
 .description {
   animation: 1s fadedown forwards; }

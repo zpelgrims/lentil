@@ -1,3 +1,5 @@
+@import './breakpoints';
+
 .hero {
   color: white;
   height: 60vh;
@@ -7,6 +9,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  @include media($breakpoint-sm) {
+    justify-content: flex-end;
+  }
 
   &__background {
     background-color: $hero-background-color;
@@ -21,6 +27,15 @@
     width: 75%;
     font-weight: 300;
 
+    @include media($breakpoint-md) {
+      font-size: 3.5rem;
+    }
+
+    @include media($breakpoint-sm) {
+      font-size: 2.5rem;
+      width: 90%;
+    }
+
     &--bold {
       font-weight: 400;
     }
@@ -33,6 +48,11 @@
     width: 75%;
     margin: 2rem;
     font-weight: 300;
+
+    @include media($breakpoint-sm) {
+      font-size: 1.6rem;
+      width: 90%;
+    }
   }
 
   &::after {
@@ -58,6 +78,7 @@
     z-index: 3;
     font-size: 4rem;
     margin-top: 6rem;
+    margin-bottom: 2rem;
   }
 }
 
