@@ -669,6 +669,9 @@ input:-webkit-autofill {
     text-align: center;
     width: 75%;
     font-weight: 300; }
+    @media (max-width: 1024px) {
+      .hero__header {
+        width: 90%; } }
     @media (max-width: 768px) {
       .hero__header {
         font-size: 3.5rem; } }
@@ -685,6 +688,9 @@ input:-webkit-autofill {
     width: 75%;
     margin: 2rem;
     font-weight: 300; }
+    @media (max-width: 1024px) {
+      .hero__subheader {
+        width: 90%; } }
     @media (max-width: 460px) {
       .hero__subheader {
         font-size: 1.6rem;

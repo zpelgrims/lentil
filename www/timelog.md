@@ -221,3 +221,6 @@
   - Work on mobile optimizations
 
 - 07/20/19 10:30-
+
+  - Nav mobile optimizations
+  - Hero mobile optimizations

@@ -27,6 +27,10 @@
     width: 75%;
     font-weight: 300;
 
+    @include media($breakpoint-lg) {
+      width: 90%
+    }
+
     @include media($breakpoint-md) {
       font-size: 3.5rem;
     }
@@ -48,6 +52,10 @@
     width: 75%;
     margin: 2rem;
     font-weight: 300;
+
+    @include media($breakpoint-lg) {
+      width: 90%
+    }
 
     @include media($breakpoint-sm) {
       font-size: 1.6rem;
