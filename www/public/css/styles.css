@@ -57,6 +57,10 @@
 .lenses {
   display: flex;
   flex-wrap: wrap; }
+  @media (max-width: 768px) {
+    .lenses {
+      flex-direction: column;
+      align-items: center; } }
 
 .activelens {
   color: #e87979;
@@ -454,12 +458,22 @@ input:-webkit-autofill {
 .exp-lense {
   height: 0; }
   .exp-lense__card {
-    width: 68vw;
+    width: 90vw;
     display: block;
     opacity: 0;
     margin-top: 3rem;
     position: absolute;
-    left: -9999px; }
+    left: 50%;
+    transform: translateX(-50%); }
+    @media (min-width: 768px) {
+      .exp-lense__card {
+        width: 750px; } }
+    @media (min-width: 992px) {
+      .exp-lense__card {
+        width: 970px; } }
+    @media (min-width: 1200px) {
+      .exp-lense__card {
+        width: 1170px; } }
     .exp-lense__card__info {
       height: 30.8rem;
       display: flex;
@@ -484,6 +498,9 @@ input:-webkit-autofill {
   max-height: 30.8rem;
   border-bottom: 1px solid rgba(232, 121, 121, 0.3);
   z-index: -1; }
+  @media (max-width: 768px) {
+    .twentytwenty-container {
+      display: none; } }
 
 .twentytwenty-handle {
   top: 0%;

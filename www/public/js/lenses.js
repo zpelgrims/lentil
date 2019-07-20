@@ -14,7 +14,6 @@ document.querySelectorAll('.lense__card').forEach((card) => {
         expcard.style.display = "none";
         expcard.parentElement.style.height = "0";
         expcard.parentElement.style.margin = "0";
-        expcard.style.left = "15vw"
       });
       card.classList.add('activelens');
       document.querySelector('#expcard-' + id).style.display = "block";
@@ -24,3 +23,5 @@ document.querySelectorAll('.lense__card').forEach((card) => {
     }
   };
 });
+
+// Instead of applying styles on click, lets toggle a class

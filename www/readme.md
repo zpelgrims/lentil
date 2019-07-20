@@ -119,8 +119,17 @@ payment popup.
 - [ ] Work on mobile responsiveness
 - [ ] Setup build on purchase
 - [ ] Setup real stripe account and manage keys
-- [ ] Setup heroku or firebase server
-- [ ] Setup production environment keys
-- [ ] Setup build-lenses script
+- [x] Setup heroku or firebase server
+- [x] Setup production environment keys
+- [x] Setup build-lenses script
 - [ ] Setup hosting
 - [ ] Push it live!
+
+**Timeline**
+
+Final deadline: Sept. 1st
+
+- Mobile Responsiveness: August 9th
+- Build on purchase: August 16th
+- Setup stripe account and manage keys: August 25th
+- Everything else: August 31st

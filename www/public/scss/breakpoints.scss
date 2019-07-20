@@ -10,3 +10,9 @@ $breakpoint-xxl: 1920px;
     @content
   }
 }
+
+@mixin media-min($breakpoint) {
+  @media(min-width: $breakpoint) {
+    @content
+  }
+}

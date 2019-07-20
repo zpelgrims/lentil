@@ -208,3 +208,12 @@
   - Remove filter script
 
 - 06/30/19 12:00-
+
+  - Optimize navbar for mobile
+  - Optimize hero for mobile
+
+- 07/18/19 7:15-7:45
+
+  - Work on mobile optimizations
+
+- 07/19/19 4:15-

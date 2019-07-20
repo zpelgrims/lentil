@@ -1,13 +1,29 @@
+@import './breakpoints';
+
 .exp-lense {
   height: 0;
 
   &__card {
-    width: 68vw;
+    width: 90vw;
     display: block;
     opacity: 0;
     margin-top: 3rem;
     position: absolute;
-    left: -9999px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    @include media-min(768px) {
+      $width: 750px;
+      width: $width;
+    }
+    @include media-min(992px) {
+      $width: 970px;
+      width: $width;
+    }
+    @include media-min(1200px) {
+      $width: 1170px;
+      width: $width;
+    }
 
     &__info {
       height: 30.8rem;
@@ -42,6 +58,10 @@
   max-height: 30.8rem;
   border-bottom: 1px solid rgba($highlight-color, 0.3);
   z-index: -1;
+
+  @include media($breakpoint-md) {
+    display: none
+  }
 }
 
 .twentytwenty-handle {

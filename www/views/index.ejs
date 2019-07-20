@@ -76,8 +76,12 @@
               </div>
               <div class="exp-lense__card__info__prop">
                 <span class="exp-lense__card__info__prop--key">notes</span>
-                <span class="exp-lenses__card__info__prop--val"
-                  ><%= lens.notes %></span
+                <span class="exp-lenses__card__info__prop--val">
+                  <%= lens.notes.substring(0, 256) %>
+                  <% if(lens.notes.length > 256) { %>
+                    ...
+                  <% } %>
+                </span
                 >
               </div>
               <% if(user) { %> <% if(user.cart.indexOf(lens._id) > -1) { %>
