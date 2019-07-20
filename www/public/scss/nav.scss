@@ -2,20 +2,31 @@
 @import './base';
 
 .nav {
-  padding: 1rem 2rem;
+  padding: 1rem 39rem;
+  width: 100%;
+  position: fixed;
   display: flex;
   align-items: center;
   justify-content: space-between;
   animation: 1s fadein forwards;
   height: 7vh;
 
+  @include media($breakpoint-lg) {
+    padding: 1rem 4rem;
+  }
+
   @include media($breakpoint-sm) {
-    padding: 1rem 0;
+    padding: 1rem 2rem;
   }
 
   &__background {
     background: $hero-background-color;
-    z-index: -1;
+    z-index: 4;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 7vh;
   }
 
   &__brand {

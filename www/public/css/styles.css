@@ -274,18 +274,28 @@ hr {
   color: white; }
 
 .nav {
-  padding: 1rem 2rem;
+  padding: 1rem 39rem;
+  width: 100%;
+  position: fixed;
   display: flex;
   align-items: center;
   justify-content: space-between;
   animation: 1s fadein forwards;
   height: 7vh; }
+  @media (max-width: 1024px) {
+    .nav {
+      padding: 1rem 4rem; } }
   @media (max-width: 460px) {
     .nav {
-      padding: 1rem 0; } }
+      padding: 1rem 2rem; } }
   .nav__background {
     background: #1abc9c;
-    z-index: -1; }
+    z-index: 4;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 7vh; }
   .nav__brand {
     color: white;
     font-size: 4rem;

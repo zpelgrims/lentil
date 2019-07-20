@@ -216,4 +216,8 @@
 
   - Work on mobile optimizations
 
-- 07/19/19 4:15-
+- 07/19/19 4:15-5:15
+
+  - Work on mobile optimizations
+
+- 07/20/19 10:30-
