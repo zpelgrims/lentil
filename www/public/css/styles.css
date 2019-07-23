@@ -130,7 +130,8 @@ hr {
     transform: translateY(-50%); }
 
 .content {
-  min-height: 100vh; }
+  min-height: 100vh;
+  margin-top: calc(7vh + 3rem); }
 
 ::selection {
   background-color: #e87979;
@@ -251,7 +252,8 @@ hr {
     transform: translateY(-50%); }
 
 .content {
-  min-height: 100vh; }
+  min-height: 100vh;
+  margin-top: calc(7vh + 3rem); }
 
 ::selection {
   background-color: #e87979;
@@ -650,6 +652,7 @@ input:-webkit-autofill {
       cursor: pointer; }
 
 .hero {
+  margin-top: 7vh;
   color: white;
   height: 60vh;
   width: 100%;
