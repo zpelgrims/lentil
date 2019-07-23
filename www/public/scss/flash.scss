@@ -10,6 +10,7 @@
   text-transform: lowercase;
   animation: 5s slideinout forwards;
   border: 1px solid white;
+  z-index: 4;
 
   &--error {
     background: $highlight-color;

@@ -421,7 +421,7 @@ hr {
 .footer {
   height: 15rem;
   background: #1abc9c;
-  color: #dfdfdf;
+  color: white;
   font-size: 1.6rem;
   padding: 2rem;
   width: 100%;
@@ -430,23 +430,24 @@ hr {
     text-align: center; }
 
 .login {
-  min-height: 75vh;
-  position: relative; }
+  min-height: calc(100vh - 15rem);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center; }
   .login__title {
     margin: 2rem;
     color: #333333; }
   .login__well {
-    position: absolute;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 5rem 10rem;
+    width: 400px;
+    height: 400px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: center;
     background: white;
-    border-radius: 1rem; }
+    border-radius: 1rem;
+    max-width: 90vw; }
   .login__textbox {
     font-family: Arial;
     text-align: center;
@@ -635,7 +636,8 @@ input:-webkit-autofill {
   border-radius: 5px;
   text-transform: lowercase;
   animation: 5s slideinout forwards;
-  border: 1px solid white; }
+  border: 1px solid white;
+  z-index: 4; }
   .flash--error {
     background: #e87979; }
   .flash--success {

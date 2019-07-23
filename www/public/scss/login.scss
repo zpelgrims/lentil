@@ -1,6 +1,9 @@
 .login {
-  min-height: 75vh;
+  min-height: calc(100vh - 15rem);
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &__title {
     margin: 2rem;
@@ -8,17 +11,15 @@
   }
 
   &__well {
-    position: absolute;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 5rem 10rem;
+    width: 400px;
+    height: 400px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: center;
     background: white;
     border-radius: 1rem;
+    max-width: 90vw
   }
 
   &__textbox {

@@ -220,7 +220,10 @@
 
   - Work on mobile optimizations
 
-- 07/20/19 10:30-
+- 07/20/19 10:30-11:30
 
   - Nav mobile optimizations
   - Hero mobile optimizations
+  - Features mobile optimizations
+
+- 07/23/19 4:00-
