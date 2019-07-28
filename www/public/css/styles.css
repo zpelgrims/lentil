@@ -491,7 +491,8 @@ input:-webkit-autofill {
       height: 30.8rem;
       display: flex;
       flex-direction: column;
-      justify-content: space-between; }
+      justify-content: space-between;
+      overflow-y: scroll; }
       .exp-lense__card__info__prop {
         font-size: 1.6rem;
         display: flex;

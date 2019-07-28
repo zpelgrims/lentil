@@ -133,3 +133,5 @@ Final deadline: Sept. 1st
 - Build on purchase: August 16th
 - Setup stripe account and manage keys: August 25th
 - Everything else: August 31st
+	- Push up to heroku
+	- Point hosting to heroku domain

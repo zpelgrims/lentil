@@ -77,10 +77,7 @@
               <div class="exp-lense__card__info__prop">
                 <span class="exp-lense__card__info__prop--key">notes</span>
                 <span class="exp-lenses__card__info__prop--val">
-                  <%= lens.notes.substring(0, 256) %>
-                  <% if(lens.notes.length > 256) { %>
-                    ...
-                  <% } %>
+                  <%= lens.notes %>
                 </span
                 >
               </div>

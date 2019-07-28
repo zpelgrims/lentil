@@ -226,4 +226,11 @@
   - Hero mobile optimizations
   - Features mobile optimizations
 
-- 07/23/19 4:00-
+- 07/23/19 4:00-4:45
+
+  - Login/Register mobile optimizations
+  - Stylistic adjustments
+
+- 07/28/19 11:15-
+
+  -
