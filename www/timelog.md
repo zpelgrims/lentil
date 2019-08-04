@@ -231,6 +231,16 @@
   - Login/Register mobile optimizations
   - Stylistic adjustments
 
-- 07/28/19 11:15-
+- 07/28/19 11:15-12:30
 
-  -
+  - Add scrolling for expanded lens info
+  - Fix issue with cart
+  - Remove unused nav links
+
+- 08/03/19 4:00-4:30
+
+  - Re-design footer
+
+- 08/04/19 1:00-
+
+  - 

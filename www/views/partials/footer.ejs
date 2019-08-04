@@ -1,6 +1,43 @@
   <footer class="footer">
-    <p class="footer__text">crafted by a bunch of raytracing nerds, 
-      built on the shoulders of the raytracing giants
+    <div class="footer__lists">
+      <ul class="footer__left-list">
+        <a href="/" class="footer__left-list__link">
+          <li class="footer__left-list__item">lenses</li>
+        </a>
+        <a href="/features" class="footer__left-list__link">
+          <li class="footer__left-list__item">features</li>
+        </a>
+      </ul>
+      <ul class="footer__center-list">
+        <a href="/login" class="footer__center-list__link">
+          <li class="footer__center-list__item">login</li>
+        </a>
+        <a href="/register" class="footer__center-list__link">
+          <li class="footer__center-list__item">register</li>
+        </a>
+        <a href="/cart" class="footer__center-list__link">
+          <li class="footer__center-list__item">cart</li>
+        </a>
+      </ul>
+      <ul class="footer__right-list">
+        <a href="#" class="footer__right-list__link">
+          <li class="footer__right-list__item">github</li>
+        </a>
+        <a href="#" class="footer__right-list__link">
+          <li class="footer__right-list__item">facebook</li>
+        </a>
+        <a href="#" class="footer__right-list__link">
+          <li class="footer__right-list__item">twitter</li>
+        </a>
+      </ul>
+    </div>
+    <p class="footer__text">crafted with dedication by a bunch of raytracing 
+    nerds, built on the shoulders of the raytracing giants
+    </p>
+    <% const date = new Date(); %>
+    <% const year = date.getFullYear(); %>
+    <p class="footer__disclaimer">
+      © <%= year %> Lentil Ltd. 
     </p>
   </footer>
   <script type="text/javascript" src="js/lenses.js"></script>

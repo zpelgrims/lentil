@@ -1,13 +1,54 @@
 .footer {
-  height: 15rem;
+  min-height: 15rem;
   background: $hero-background-color;
   color: white;
   font-size: 1.6rem;
-  padding: 2rem;
+  padding: 2rem 4rem;
   width: 100%;
   position: absolute;
 
+  &__lists {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  &__left-list,
+  &__center-list,
+  &__right-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    list-style: none;
+
+    &__link {
+      color: rgba(255, 255, 255, 0.75);
+
+      &:hover {
+        color: white;
+        text-decoration: none;
+      }
+    }
+  }
+
+  &__left-list {
+    align-items: flex-start;
+  }
+  &__center-list {
+    align-items: center;
+  }
+  &__right-list {
+    align-items: flex-end;
+  }
+
   &__text {
     text-align: center;
+    font-weight: 300;
+  }
+
+  &__disclaimer {
+    text-align: center;
+    font-weight: 300;
   }
 }

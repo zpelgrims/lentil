@@ -421,15 +421,40 @@ hr {
   border-bottom: 1px solid rgba(255, 255, 255, 0.5); }
 
 .footer {
-  height: 15rem;
+  min-height: 15rem;
   background: #1abc9c;
   color: white;
   font-size: 1.6rem;
-  padding: 2rem;
+  padding: 2rem 4rem;
   width: 100%;
   position: absolute; }
+  .footer__lists {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between; }
+  .footer__left-list, .footer__center-list, .footer__right-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    list-style: none; }
+    .footer__left-list__link, .footer__center-list__link, .footer__right-list__link {
+      color: rgba(255, 255, 255, 0.75); }
+      .footer__left-list__link:hover, .footer__center-list__link:hover, .footer__right-list__link:hover {
+        color: white;
+        text-decoration: none; }
+  .footer__left-list {
+    align-items: flex-start; }
+  .footer__center-list {
+    align-items: center; }
+  .footer__right-list {
+    align-items: flex-end; }
   .footer__text {
-    text-align: center; }
+    text-align: center;
+    font-weight: 300; }
+  .footer__disclaimer {
+    text-align: center;
+    font-weight: 300; }
 
 .login {
   min-height: calc(100vh - 15rem);
