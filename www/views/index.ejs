@@ -51,7 +51,11 @@
           id="expcard-<%= [i] %>"
         >
           <div class="col-md-4">
-            <div class="exp-lense__card__info">
+          <% let scroll %>
+          <% if (lens.notes.length > 256) { %>
+            <% scroll = 'exp-lense__card__info--scroll' %>
+          <% } %>
+            <div class="exp-lense__card__info <%= scroll %>">
               <% if(lens.polynomial_optics) { %>
               <div class="exp-lense__card__info__prop">
                 <span class="exp-lense__card__info__prop--key"

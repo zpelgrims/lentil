@@ -207,7 +207,7 @@
   - Optimize navbar for mobile
   - Remove filter script
 
-- 06/30/19 12:00-
+- 06/30/19 12:00-1:00
 
   - Optimize navbar for mobile
   - Optimize hero for mobile
@@ -241,6 +241,8 @@
 
   - Re-design footer
 
-- 08/04/19 1:00-
+- 08/04/19 1:00-1:30
+  2:00-
 
-  - 
+  - Re-style footer
+  - Remove ugly scroll bar from lens info
