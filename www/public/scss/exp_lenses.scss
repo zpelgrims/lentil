@@ -40,6 +40,10 @@
         display: flex;
         width: 100%;
 
+        @include media($breakpoint-sm) {
+          font-size: 1.4rem;
+        }
+
         &--key {
           min-width: 30%;
           text-align: right;

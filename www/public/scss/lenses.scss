@@ -14,7 +14,6 @@
   &__card {
     width: 100%;
     margin-top: 2rem;
-    animation: 1s fadein forwards;
 
     &__bubbles {
       display: flex;
@@ -33,6 +32,10 @@
       margin: 0.5rem 0.2rem;
       padding: 0.5rem 1rem;
       border-radius: 50px;
+
+      @include media($breakpoint-sm) {
+        font-size: 1.2rem;
+      }
 
       &:hover {
         cursor: pointer;
