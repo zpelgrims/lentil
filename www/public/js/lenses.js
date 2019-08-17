@@ -18,12 +18,14 @@ lensCard.forEach((card) => {
         expcard.style.display = "none";
         expcard.parentElement.style.height = "0";
         expcard.parentElement.style.margin = "0";
+        expcard.style.transform = "translate(-50%) scale(1)";
       });
       card.classList.add('activelens');
       expCard.style.display = "block";
       expCard.style.animation = ".5s fadein forwards";
       expCard.parentElement.style.height = "30.8rem";
       expCard.parentElement.style.margin = "0 0 5rem 0";
+
     }
   };
 });

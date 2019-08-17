@@ -10,7 +10,7 @@
     margin-top: 3rem;
     position: absolute;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) scale(0);
 
     @include media-min(768px) {
       $width: 750px;
