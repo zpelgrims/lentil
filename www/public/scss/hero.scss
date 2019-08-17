@@ -27,6 +27,7 @@
     text-align: center;
     width: 75%;
     font-weight: 300;
+    animation: 1s fadedown forwards;
 
     @include media($breakpoint-lg) {
       width: 90%
@@ -53,6 +54,7 @@
     width: 75%;
     margin: 2rem;
     font-weight: 300;
+    animation: 1s fadedown forwards;
 
     @include media($breakpoint-lg) {
       width: 90%
@@ -75,11 +77,13 @@
     height: 100%;
     width: 100%;
     z-index: 2;
+    animation: 1s fadein25 forwards;
   }
 
   &__arrow-link {
     color: white;
     z-index: 3;
+    animation: 1s fadedown forwards;
   }
 
   &__arrow {

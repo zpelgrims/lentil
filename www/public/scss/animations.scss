@@ -7,6 +7,15 @@
   }
 }
 
+@keyframes fadein25 {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.25;
+  }
+}
+
 @keyframes fadein {
   0% {
     opacity: 0;
@@ -19,11 +28,11 @@
 @keyframes fadedown {
   0% {
     opacity: 0;
-    margin-top: 0;
+    transform: translateY(-3rem);
   }
   100% {
     opacity: 1;
-    margin-top: 3rem;
+    transform: translateY(0);
   }
 }
 

@@ -36,6 +36,7 @@
     display: flex;
     align-items: center;
     height: 100%;
+    animation: 1s fadein forwards;
 
     @include media($breakpoint-sm) {
       font-size: 3rem;
@@ -52,6 +53,7 @@
 
   &__right {
     color: white;
+    animation: 1s fadein forwards;
 
     @include media($breakpoint-lg) {
       display: none;
@@ -127,8 +129,8 @@
     right: 0;
     // Viewport height minus nav height
     height: 100vh - 7vh;
-    width: 600px;
-    max-width: 90vw;
+    width: 400px;
+    max-width: 70vw;
     background: inherit;
     padding: 80px;
     display: flex;
@@ -162,7 +164,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: space-between;
+    justify-content: space-evenly;
     opacity: 0;
     transition: 0.3s opacity 0.1s;
   }

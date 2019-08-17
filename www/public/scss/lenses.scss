@@ -14,6 +14,7 @@
   &__card {
     width: 100%;
     margin-top: 2rem;
+    animation: 1s fadein forwards;
 
     &__bubbles {
       display: flex;
