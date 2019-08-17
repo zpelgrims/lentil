@@ -1,25 +1,29 @@
-document.querySelectorAll('.lense__card').forEach((card) => {
+const lensCard = document.querySelectorAll('.lense__card');
+const expLensCard = document.querySelectorAll('.exp-lense__card');
+
+lensCard.forEach((card) => {
   var id = card.id.substring(card.id.indexOf('-') + 1);
+  const expCard = document.querySelector('#expcard-' + id)
   card.onclick = () => {
     if(card.classList.contains('activelens')) {
       card.classList.remove('activelens');
-      document.querySelector('#expcard-' + id).style.display = "none";
-      document.querySelector('#expcard-' + id).parentElement.style.height = "0";
-      document.querySelector('#expcard-' + id).parentElement.style.margin = "0";
+      expCard.style.display = "none";
+      expCard.parentElement.style.height = "0";
+      expCard.parentElement.style.margin = "0";
     } else {
       document.querySelectorAll('div').forEach((div) => {
         div.classList.remove('activelens');
       });
-      document.querySelectorAll('.exp-lense__card').forEach((expcard) => {
+      expLensCard.forEach((expcard) => {
         expcard.style.display = "none";
         expcard.parentElement.style.height = "0";
         expcard.parentElement.style.margin = "0";
       });
       card.classList.add('activelens');
-      document.querySelector('#expcard-' + id).style.display = "block";
-      document.querySelector('#expcard-' + id).style.animation = ".5s fadein forwards";
-      document.querySelector('#expcard-' + id).parentElement.style.height = "30.8rem";
-      document.querySelector('#expcard-' + id).parentElement.style.margin = "0 0 5rem 0";
+      expCard.style.display = "block";
+      expCard.style.animation = ".5s fadein forwards";
+      expCard.parentElement.style.height = "30.8rem";
+      expCard.parentElement.style.margin = "0 0 5rem 0";
     }
   };
 });
