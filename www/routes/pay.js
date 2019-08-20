@@ -3,6 +3,7 @@ const router = express.Router();
 const keys = require('../config/keys');
 const Lens = require('../models/Lens');
 const middleware = require('../middleware');
+const build = require('../functions/build');
 
 // Setup stripe 
 const stripe = require('stripe')(keys.stripe.privkey);
@@ -21,7 +22,9 @@ router.get('/cart', middleware.isLoggedIn, (req, res) => {
           }
         });
       });
-      let amount = 500 * req.user.cart.length;
+      let amount;
+      req.user.license == 'individual' ? amount = 1000 * req.user.cart.length 
+        : amount = 4000 * req.user.cart.length;
       res.render('cart', {lenses: lensArray, pubkey: keys.stripe.pubkey, amount: amount, page: 'cart', user: req.user});
     }
   });
@@ -48,8 +51,6 @@ router.get('/cart/:id/delete', (req, res) => {
 
 // Payment processing logic
 router.post('/charge', middleware.isLoggedIn, (req, res) => {
-  let amount = 500 * req.user.cart.length;
-
   stripe.customers.create({
     email: req.body.stripeEmail,
     source: req.body.stripeToken

@@ -12,14 +12,15 @@
 
   &__well {
     width: 400px;
-    height: 400px;
+    max-height: 600px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     background: white;
     border-radius: 1rem;
-    max-width: 90vw
+    max-width: 90vw;
+    padding: 8px;
   }
 
   &__textbox {
@@ -40,6 +41,10 @@
       border-bottom: 1px solid $highlight-color;
       color: $font-color;
     }
+  }
+
+  &__radio {
+    margin: 8px
   }
 }
 
