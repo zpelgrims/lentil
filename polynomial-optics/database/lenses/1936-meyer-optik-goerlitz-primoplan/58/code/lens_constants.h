@@ -1,4 +1,4 @@
-case meyer-optik-goerlitz_primoplan_1936_58mm:
+case meyer_optik_goerlitz__primoplan__1936__58mm:
 {
 camera->lens_name = "meyer-optik-goerlitz-primoplan-1936-58mm"; // descriptive name of the lens
 camera->lens_outer_pupil_radius = 19.776245; // scene facing radius in mm

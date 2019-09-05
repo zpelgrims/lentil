@@ -1,4 +1,4 @@
-case meyer-optik-goerlitz_primoplan_1936_58mm:
+case meyer_optik_goerlitz__primoplan__1936__58mm:
 {
 //input: scene_[x,y,z] - point in scene, ap_[x,y] - point on aperture
 //output: [x,y,dx,dy] point and direction on sensor

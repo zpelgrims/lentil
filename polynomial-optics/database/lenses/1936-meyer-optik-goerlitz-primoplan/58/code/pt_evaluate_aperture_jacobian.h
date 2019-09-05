@@ -1,4 +1,4 @@
-case meyer-optik-goerlitz_primoplan_1936_58mm:
+case meyer_optik_goerlitz__primoplan__1936__58mm:
 {
 const double dx00 =  + 0.576039  + 0.00205605 *lens_ipow(x, 2) + 2.40303 *lens_ipow(dx, 2) + 0.739001 *lens_ipow(dy, 2) + 0.148964 *x*dx + 0.0484408 *y*dy + 0.0011795 *lens_ipow(y, 2)*lambda + -0.000244024 *lens_ipow(x, 2)*y*dy + -0.000484237 *lens_ipow(x, 3)*dx + -1.12592e-05 *lens_ipow(x, 2)*lens_ipow(y, 2) + -0.000261117 *x*lens_ipow(y, 2)*dx + 0.182117 *x*lens_ipow(dx, 3) + -7.98964e-05 *lens_ipow(y, 3)*dy + 0.119697 *y*lens_ipow(dx, 2)*dy + -1.0245e-05 *lens_ipow(x, 4) + -3.43656e-06 *lens_ipow(y, 4)*lambda+0.0f;
 const double dx01 =  + 1.49373 *dx*dy + 0.0484408 *x*dy + 0.002359 *x*y*lambda + 0.0848314 *y*dx*lambda + -8.13414e-05 *lens_ipow(x, 3)*dy + 0.117328 *y*dx*lens_ipow(dy, 2) + -7.50612e-06 *lens_ipow(x, 3)*y + -0.000261117 *lens_ipow(x, 2)*y*dx + -0.000239689 *x*lens_ipow(y, 2)*dy + 0.119697 *x*lens_ipow(dx, 2)*dy + -1.37463e-05 *x*lens_ipow(y, 3)*lambda + -0.000578233 *lens_ipow(y, 3)*dx*lens_ipow(lambda, 3)+0.0f;

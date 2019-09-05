@@ -47,10 +47,10 @@ int main(int argc, char **argv)
   std::ifstream in_json(json_database_location);
   json lens_database = json::parse(in_json);
 
-  std::string case_lens_name = fmt::format("{}__{}__{}__{}mm", lens_database[id]["company"].get<std::string>(),
-                                                            dash_to_underscore(lens_database[id]["product-name"].get<std::string>()),
-                                                            lens_database[id]["year"].get<int>(),
-                                                            lens_focal_length
+  std::string case_lens_name = fmt::format("{}__{}__{}__{}mm", dash_to_underscore(lens_database[id]["company"].get<std::string>()),
+                                                               dash_to_underscore(lens_database[id]["product-name"].get<std::string>()),
+                                                               lens_database[id]["year"].get<int>(),
+                                                               lens_focal_length
   );
 
   poly_system_t poly, poly_ap;
