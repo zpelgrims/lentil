@@ -184,5 +184,51 @@
     "production-ready": true,
     "www-svg-location": "/imgs/lenses/0014/1954-unsure-fisheye.svg",
     "year": 1954
+  },
+  "0015": {
+    "commercial": true,
+    "company": "minolta",
+    "fstop": {
+      "16": 2.6639734474027064,
+      "unscaled": 2.6625077289586168
+    },
+    "max-fstop-aperture-radius": {
+      "16": 7.160060113489407,
+      "unscaled": 0.44781303613208717
+    },
+    "notes": "High speed fisheye lens capable of compensating for lateral chromatic aberration, field curvature and astigmatism while providing an aperture ratio of f/2.8. 180 degree field of view.",
+    "notes-to-self": "quite likely a 16mm version of this was manufactured, not sure if 1unit is 1cm or 1inch.. probably 1cm.",
+    "patent-number": "US4256373",
+    "polynomial-optics": [
+      16
+    ],
+    "prime": true,
+    "product-name": "fisheye",
+    "production-ready": true,
+    "www-svg-location": "/imgs/lenses/0015/1978-minolta-fisheye.svg",
+    "year": 1978
+  },
+  "0016": {
+    "commercial": true,
+    "company": "canon",
+    "fstop": {
+      "35": 1.8401262884010188,
+      "unscaled": 1.8408177000275223
+    },
+    "max-fstop-aperture-radius": {
+      "35": 6.486170518560687,
+      "unscaled": 0.18517463561652123
+    },
+    "notes": "At the time of introduction, this was the highest aperture 35mm lens.",
+    "notes-to-self": "fov = 60, f1.8, listed here: http://www.klassik-cameras.de/Canon_Wideangles_Speed.html",
+    "patent-number": "US2854890",
+    "polynomial-optics": [
+      35
+    ],
+    "prime": true,
+    "product-name": "unknown",
+    "production-ready": true,
+    "www-svg-location": "/imgs/lenses/0016/1956-canon-unknown.svg",
+    "year": 1956
   }
 }

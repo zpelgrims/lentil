@@ -2698,7 +2698,9 @@
     ],
     "patent-location": null,
     "patent-number": "US4256373",
-    "polynomial-optics": [],
+    "polynomial-optics": [
+      16
+    ],
     "prime": true,
     "product-name": "fisheye",
     "production-ready": true,
@@ -2708,9 +2710,15 @@
     "commercial": true,
     "company": "canon",
     "focal-length-mm-patent": 1,
-    "focal-length-mm-raytraced": null,
-    "fstop": null,
-    "max-fstop-aperture-radius": null,
+    "focal-length-mm-raytraced": 0.9965370734739969,
+    "fstop": {
+      "35": 1.8401262884010188,
+      "unscaled": 1.8408177000275223
+    },
+    "max-fstop-aperture-radius": {
+      "35": 6.486170518560687,
+      "unscaled": 0.18517463561652123
+    },
     "notes": "At the time of introduction, this was the highest aperture 35mm lens.",
     "notes-to-self": "fov = 60, f1.8, listed here: http://www.klassik-cameras.de/Canon_Wideangles_Speed.html",
     "optical-elements-patent": [
@@ -2788,7 +2796,7 @@
         "abbe": 41.3,
         "aspherical-equation": null,
         "housing-radius": 0.19,
-        "ior": 1.5750,
+        "ior": 1.575,
         "lens-geometry": "spherical",
         "material": "abbe",
         "radius": -0.215,
@@ -2821,7 +2829,7 @@
         "ior": 1.6935,
         "lens-geometry": "spherical",
         "material": "abbe",
-        "radius": 4.250,
+        "radius": 4.25,
         "thickness": 0.083
       },
       {
@@ -2832,12 +2840,14 @@
         "lens-geometry": "spherical",
         "material": "air",
         "radius": -1.057,
-        "thickness": 0.2
+        "thickness": 0.675
       }
     ],
     "patent-location": null,
     "patent-number": "US2854890",
-    "polynomial-optics": [],
+    "polynomial-optics": [
+      35
+    ],
     "prime": true,
     "product-name": "unknown",
     "production-ready": true,
