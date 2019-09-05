@@ -340,13 +340,15 @@
     "focal-length-mm-raytraced": 99.71559532428776,
     "fstop": {
       "58": 1.4719464647327434,
+      "75": 1.4700863424991495,
       "unscaled": 1.470050511260092
     },
     "max-fstop-aperture-radius": {
       "58": 13.588470527173888,
+      "75": 17.580967687347904,
       "unscaled": 23.368825585717612
     },
-    "notes": "The Primoplan 58 was developed by the brilliant Meyer-Optik designer Paul Schäfter 80 years ago. Its light intensity of 1:1.9, which was considered extremely high back then, made the Primoplan 58 f1.9 one of the most exciting lenses of its time. It features lots of optical vignetting, making for very swirly bokeh.",
+    "notes": "The Primoplan 58 was developed by the brilliant Meyer-Optik designer Paul Schäfter 80 years ago. Its light intensity of 1:1.9, which was considered extremely high back then, made the Primoplan 58 f1.9 one of the most exciting lenses of its time. It features lots of optical vignetting, making for very swirly bokeh. A recent re-release also included the 75mm.",
     "notes-to-self": "Primoplan 58mm f1.5",
     "optical-elements-patent": [
       {
@@ -453,7 +455,8 @@
     "patent-location": "database/lenses/1936-meyer-optik-goerlitz-primoplan/patent/DE1387593.pdf",
     "patent-number": "DE1387593",
     "polynomial-optics": [
-      58
+      58,
+      75
     ],
     "prime": true,
     "product-name": "primoplan",
