@@ -467,7 +467,15 @@
     "commercial": true,
     "company": "unknown",
     "focal-length-mm-patent": 100,
-    "focal-length-mm-raytraced": 85.5024185180664,
+    "focal-length-mm-raytraced": 85.88736041733628,
+    "fstop": {
+      "85": 3.3993613678259567,
+      "unscaled": 3.399412518920994
+    },
+    "max-fstop-aperture-radius": {
+      "85": 9.940468998629244,
+      "unscaled": 9.999136863225912
+    },
     "notes": "The Petzval lens is the first photographic portrait objective lens in the history of photography. It was developed by the mathematics professor Josef Maximilian Petzval in 1840. It was the first mathematically calculated objective in the history of photography. The lens was able to let 22 times more light in than any other design at the time. This enabled photographers to for the first time take portraits with exposure times of less than a minute.",
     "notes-to-self": "classical 19th century petzval lens, should be scaled to 100mm",
     "optical-elements-patent": [
@@ -554,7 +562,9 @@
     ],
     "patent-location": "https://wp.optics.arizona.edu/jsasian/wp-content/uploads/sites/33/2016/03/L16_OPTI517_Petzval_Portrait_Lens.pdf",
     "patent-number": null,
-    "polynomial-optics": [],
+    "polynomial-optics": [
+      85
+    ],
     "prime": true,
     "product-name": "petzval",
     "production-ready": true,
