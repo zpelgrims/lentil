@@ -79,9 +79,19 @@
   "0004": {
     "commercial": true,
     "company": "nikon",
+    "fstop": {
+      "28": 2.742358669339889,
+      "unscaled": 2.745987591648182
+    },
+    "max-fstop-aperture-radius": {
+      "28": 6.893447043153309,
+      "unscaled": 24.401717276166455
+    },
     "notes": "A 7 element retrofocus-type wide angle lens with a relative aperture of F/2.8, an angle of field of 75° and a back focus of more than 1.3 times the focallength.",
     "patent-number": "US3583791",
-    "polynomial-optics": [],
+    "polynomial-optics": [
+      28
+    ],
     "prime": true,
     "product-name": "retrofocus-wideangle",
     "production-ready": true,
