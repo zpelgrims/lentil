@@ -753,10 +753,12 @@
     "focal-length-mm-raytraced": 15.1441830001054,
     "fstop": {
       "14": 2.6481688563291734,
+      "22": 2.649266981698492,
       "unscaled": 2.648334078095823
     },
     "max-fstop-aperture-radius": {
       "14": 6.0147647549080725,
+      "22": 9.447408236392171,
       "unscaled": 6.505885874142981
     },
     "notes": "A compact retrofocus-type wide angle lens which is well compensated for various aberrations considering its remarkably large field of view (114 degrees).",
@@ -1026,7 +1028,8 @@
     "patent-location": "database/lenses/1982-canon-retrofocus-wideangle/patent/US4310222.pdf",
     "patent-number": "US4310222",
     "polynomial-optics": [
-      14
+      14,
+      22
     ],
     "prime": true,
     "product-name": "retrofocus-wideangle",

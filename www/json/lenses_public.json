@@ -103,17 +103,20 @@
     "company": "canon",
     "fstop": {
       "14": 2.6481688563291734,
+      "22": 2.649266981698492,
       "unscaled": 2.648334078095823
     },
     "max-fstop-aperture-radius": {
       "14": 6.0147647549080725,
+      "22": 9.447408236392171,
       "unscaled": 6.505885874142981
     },
     "notes": "A compact retrofocus-type wide angle lens which is well compensated for various aberrations considering its remarkably large field of view (114 degrees).",
     "notes-to-self": "3rd lens element in patent seems to have incorrect radius of curvature when compared to provided image (58.28->40.28). This has been corrected in the optical-elements-patent dict. f = 14.2, f2.8, Angle of field = 114",
     "patent-number": "US4310222",
     "polynomial-optics": [
-      14
+      14,
+      22
     ],
     "prime": true,
     "product-name": "retrofocus-wideangle",
