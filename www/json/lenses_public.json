@@ -127,10 +127,20 @@
   "0006": {
     "commercial": true,
     "company": "kodak",
+    "fstop": {
+      "150": 2.196584965663228,
+      "unscaled": 2.1966513855916068
+    },
+    "max-fstop-aperture-radius": {
+      "150": 26.972799811510008,
+      "unscaled": 17.99122733480059
+    },
     "notes": "Kodak's take on the classical Petzval design. Features a heavy amount of optical vignetting, resulting in swirly bokeh which helps emphasise the subject in focus.",
     "notes-to-self": "Petzval type lens, f=100mm",
     "patent-number": "US2500046A",
-    "polynomial-optics": [],
+    "polynomial-optics": [
+      150
+    ],
     "prime": true,
     "product-name": "petzval",
     "production-ready": true,
