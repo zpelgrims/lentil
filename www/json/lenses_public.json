@@ -130,11 +130,13 @@
     "fstop": {
       "105": 2.1966308391633214,
       "150": 2.196584965663228,
+      "85": 2.1966517950618933,
       "unscaled": 2.1966513855916068
     },
     "max-fstop-aperture-radius": {
       "105": 18.900336089708556,
       "150": 26.972799811510008,
+      "85": 15.303057035733387,
       "unscaled": 17.99122733480059
     },
     "notes": "Kodak's take on the classical Petzval design. Features a heavy amount of optical vignetting, resulting in swirly bokeh which helps emphasise the subject in focus.",
@@ -142,7 +144,8 @@
     "patent-number": "US2500046A",
     "polynomial-optics": [
       150,
-      105
+      105,
+      85
     ],
     "prime": true,
     "product-name": "petzval",
