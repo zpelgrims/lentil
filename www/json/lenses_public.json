@@ -156,10 +156,23 @@
   "0007": {
     "commercial": true,
     "company": "cooke",
+    "fstop": {
+      "18": 1.9964980925111984,
+      "28": 1.996477187998176,
+      "unscaled": 1.9965551926090315
+    },
+    "max-fstop-aperture-radius": {
+      "18": 3.2214910406393362,
+      "28": 5.005594400983142,
+      "unscaled": 4.6402196592486495
+    },
     "notes": "Cooke Series O f/2.0 OPIC lens, Horace W. Lee designed. This original f/2.0 OPIC design became the now-legendary uncoated Cooke Speed Panchros. Studios jumped up the new Cooke f/2.0 (T2.3) lenses, due to which they appear in almost every film in the early hollywood era.",
     "notes-to-self": "",
     "patent-number": "GB157040A",
-    "polynomial-optics": [],
+    "polynomial-optics": [
+      18,
+      28
+    ],
     "prime": true,
     "product-name": "speed-panchro",
     "production-ready": true,
