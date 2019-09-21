@@ -272,4 +272,5 @@
 
 - 09/21/19 10:15-
 
-  -
+  - Go over changes to be made
+  - Add conditional login link to nav
