@@ -242,7 +242,34 @@
   - Re-design footer
 
 - 08/04/19 1:00-1:30
-  2:00-
+  2:00-2:30
+  3:00-3:30
 
   - Re-style footer
   - Remove ugly scroll bar from lens info
+
+- 08/17/19 12:00-1:30
+  2:00-2:30
+  3:00-3:30
+
+  - Clean up lenses.js
+  - Fix floating footer bug
+  - Add loading animations
+  - Fix 20/20
+  - Fix mobile font sizes
+
+- 08/19/19 5:30-7:00
+
+  - Setup pricing model
+
+- 08/31/19 1:00-1:30
+
+  - Lazy load images
+
+- 09/1/19 3:00-4:00
+
+  - Lazy load images
+
+- 09/21/19 10:15-
+
+  -

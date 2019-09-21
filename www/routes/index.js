@@ -65,7 +65,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/features', (req, res) => {
-  res.render('features', { page: 'features' });
+  res.render('features', { page: 'features', user: req.user });
 });
 
 router.get(

@@ -3,7 +3,6 @@ const router = express.Router();
 const keys = require('../config/keys');
 const Lens = require('../models/Lens');
 const middleware = require('../middleware');
-const build = require('../functions/build');
 
 // Setup stripe 
 const stripe = require('stripe')(keys.stripe.privkey);
