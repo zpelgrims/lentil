@@ -1,7 +1,3 @@
-#TODO: make fstop match more or less
-#TODO: add denoise step for chart image
-#TODO: add oiio png conversion
-
 import os
 import sys
 import json
@@ -53,9 +49,11 @@ def unit_render_lens(lensdict, mode, lentil):
         
         sensor_width = 36.0
         fov = 2.0 * math.atan(sensor_width / (2.0 * lensdict["focallength"]))
+        aperture_radius = (lensdict["focallength"] / (2.0 * lensdict["max_fstop"])) / 10.0
         
         if node_thinlens is not None and AiNodeIs(node_thinlens, 'persp_camera') == True:
             AiNodeSetFlt(node_thinlens, 'fov', math.degrees(fov))
+            AiNodeSetFlt(node_thinlens, 'aperture_size', aperture_radius)
 
             
     
@@ -99,6 +97,7 @@ def collect_all_prod_ready_lenses(lens_json):
                 focallength_dict["lens_name"] = lens_name
                 focallength_dict["outfile"] = outfile
                 focallength_dict["focallength"] = focallength
+                focallength_dict["max_fstop"] = lens_database[lensid]["fstop"][str(focallength)]
 
                 lens_name_for_enum_find = "{company}__{name}__{year}__{focallength}mm".format(
                     company = lens_database[lensid]["company"].lower(),
