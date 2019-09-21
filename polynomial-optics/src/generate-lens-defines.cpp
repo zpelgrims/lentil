@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
   for (auto it : commercial_lens_ids) {
     std::map<std::string, std::vector<int>> &internal_map = it.second;
     for (auto iterator_map: internal_map) {
-      fprintf(pota_h_lenses_h, "#ifdef LENS_ID_%s\n", iterator_map.first.c_str());
+      fprintf(pota_h_lenses_h, "#ifdef LENS_ID_COMMERCIAL\n");
       std::vector<int> &internal_vector = iterator_map.second;
       for (auto iterator_vector : internal_vector){
         fprintf(pota_h_lenses_h, "\t%s__%dmm,\n", it.first.c_str(), iterator_vector);
@@ -158,7 +158,7 @@ int main(int argc, char *argv[])
   for (auto it : commercial_lens_ids) {
     std::map<std::string, std::vector<int>> &internal_map = it.second;
     for (auto iterator_map: internal_map) {
-      fprintf(pota_cpp_lenses_h, "#ifdef LENS_ID_%s\n", iterator_map.first.c_str());
+      fprintf(pota_cpp_lenses_h, "#ifdef LENS_ID_COMMERCIAL\n");
       std::vector<int> &internal_vector = iterator_map.second;
       for (auto iterator_vector : internal_vector){
         fprintf(pota_cpp_lenses_h, "\t\"%s__%dmm\",\n", it.first.c_str(), iterator_vector);
@@ -219,7 +219,7 @@ int main(int argc, char *argv[])
     for (auto it : commercial_lens_ids) {
       std::map<std::string, std::vector<int>> &internal_map = it.second;
       for (auto iterator_map: internal_map) {
-        fprintf(gencode_output_file, "#ifdef LENS_ID_%s\n", iterator_map.first.c_str());
+        fprintf(gencode_output_file, "#ifdef LENS_ID_COMMERCIAL\n");
         std::vector<int> &internal_vector = iterator_map.second;
         for (auto iterator_vector : internal_vector){
 

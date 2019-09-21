@@ -340,13 +340,15 @@
     "focal-length-mm-raytraced": 99.71559532428776,
     "fstop": {
       "58": 1.4719464647327434,
+      "75": 1.4700863424991495,
       "unscaled": 1.470050511260092
     },
     "max-fstop-aperture-radius": {
       "58": 13.588470527173888,
+      "75": 17.580967687347904,
       "unscaled": 23.368825585717612
     },
-    "notes": "The Primoplan 58 was developed by the brilliant Meyer-Optik designer Paul Schäfter 80 years ago. Its light intensity of 1:1.9, which was considered extremely high back then, made the Primoplan 58 f1.9 one of the most exciting lenses of its time. It features lots of optical vignetting, making for very swirly bokeh.",
+    "notes": "The Primoplan 58 was developed by the brilliant Meyer-Optik designer Paul Schäfter 80 years ago. Its light intensity of 1:1.9, which was considered extremely high back then, made the Primoplan 58 f1.9 one of the most exciting lenses of its time. It features lots of optical vignetting, making for very swirly bokeh. A recent re-release also included the 75mm.",
     "notes-to-self": "Primoplan 58mm f1.5",
     "optical-elements-patent": [
       {
@@ -453,7 +455,8 @@
     "patent-location": "database/lenses/1936-meyer-optik-goerlitz-primoplan/patent/DE1387593.pdf",
     "patent-number": "DE1387593",
     "polynomial-optics": [
-      58
+      58,
+      75
     ],
     "prime": true,
     "product-name": "primoplan",
@@ -464,7 +467,15 @@
     "commercial": true,
     "company": "unknown",
     "focal-length-mm-patent": 100,
-    "focal-length-mm-raytraced": 85.5024185180664,
+    "focal-length-mm-raytraced": 85.88736041733628,
+    "fstop": {
+      "85": 3.3993613678259567,
+      "unscaled": 3.399412518920994
+    },
+    "max-fstop-aperture-radius": {
+      "85": 9.940468998629244,
+      "unscaled": 9.999136863225912
+    },
     "notes": "The Petzval lens is the first photographic portrait objective lens in the history of photography. It was developed by the mathematics professor Josef Maximilian Petzval in 1840. It was the first mathematically calculated objective in the history of photography. The lens was able to let 22 times more light in than any other design at the time. This enabled photographers to for the first time take portraits with exposure times of less than a minute.",
     "notes-to-self": "classical 19th century petzval lens, should be scaled to 100mm",
     "optical-elements-patent": [
@@ -551,7 +562,9 @@
     ],
     "patent-location": "https://wp.optics.arizona.edu/jsasian/wp-content/uploads/sites/33/2016/03/L16_OPTI517_Petzval_Portrait_Lens.pdf",
     "patent-number": null,
-    "polynomial-optics": [],
+    "polynomial-optics": [
+      85
+    ],
     "prime": true,
     "product-name": "petzval",
     "production-ready": true,
@@ -561,7 +574,15 @@
     "commercial": true,
     "company": "nikon",
     "focal-length-mm-patent": 100,
-    "focal-length-mm-raytraced": 99.26875305175781,
+    "focal-length-mm-raytraced": 99.49558907359318,
+    "fstop": {
+      "28": 2.742358669339889,
+      "unscaled": 2.745987591648182
+    },
+    "max-fstop-aperture-radius": {
+      "28": 6.893447043153309,
+      "unscaled": 24.401717276166455
+    },
     "notes": "A 7 element retrofocus-type wide angle lens with a relative aperture of F/2.8, an angle of field of 75° and a back focus of more than 1.3 times the focallength.",
     "optical-elements-patent": [
       {
@@ -717,7 +738,9 @@
     ],
     "patent-location": "database/lenses/1971-nikon-retrofocus-wideangle/patent/US3583791.pdf",
     "patent-number": "US3583791",
-    "polynomial-optics": [],
+    "polynomial-optics": [
+      28
+    ],
     "prime": true,
     "product-name": "retrofocus-wideangle",
     "production-ready": true,
@@ -727,7 +750,17 @@
     "commercial": true,
     "company": "canon",
     "focal-length-mm-patent": 14.2,
-    "focal-length-mm-raytraced": 15.135459899902344,
+    "focal-length-mm-raytraced": 15.1441830001054,
+    "fstop": {
+      "14": 2.6481688563291734,
+      "22": 2.649266981698492,
+      "unscaled": 2.648334078095823
+    },
+    "max-fstop-aperture-radius": {
+      "14": 6.0147647549080725,
+      "22": 9.447408236392171,
+      "unscaled": 6.505885874142981
+    },
     "notes": "A compact retrofocus-type wide angle lens which is well compensated for various aberrations considering its remarkably large field of view (114 degrees).",
     "notes-to-self": "3rd lens element in patent seems to have incorrect radius of curvature when compared to provided image (58.28->40.28). This has been corrected in the optical-elements-patent dict. f = 14.2, f2.8, Angle of field = 114",
     "optical-elements-patent": [
@@ -994,7 +1027,10 @@
     ],
     "patent-location": "database/lenses/1982-canon-retrofocus-wideangle/patent/US4310222.pdf",
     "patent-number": "US4310222",
-    "polynomial-optics": [],
+    "polynomial-optics": [
+      14,
+      22
+    ],
     "prime": true,
     "product-name": "retrofocus-wideangle",
     "production-ready": true,
@@ -1004,7 +1040,19 @@
     "commercial": true,
     "company": "kodak",
     "focal-length-mm-patent": 100,
-    "focal-length-mm-raytraced": 100.00676727294922,
+    "focal-length-mm-raytraced": 99.94508921640228,
+    "fstop": {
+      "105": 2.1966308391633214,
+      "150": 2.196584965663228,
+      "85": 2.1966517950618933,
+      "unscaled": 2.1966513855916068
+    },
+    "max-fstop-aperture-radius": {
+      "105": 18.900336089708556,
+      "150": 26.972799811510008,
+      "85": 15.303057035733387,
+      "unscaled": 17.99122733480059
+    },
     "notes": "Kodak's take on the classical Petzval design. Features a heavy amount of optical vignetting, resulting in swirly bokeh which helps emphasise the subject in focus.",
     "notes-to-self": "Petzval type lens, f=100mm",
     "optical-elements-patent": [
@@ -1091,7 +1139,11 @@
     ],
     "patent-location": "database/lenses/1948-kodak-petzval/patent/US2500046.pdf",
     "patent-number": "US2500046A",
-    "polynomial-optics": [],
+    "polynomial-optics": [
+      150,
+      105,
+      85
+    ],
     "prime": true,
     "product-name": "petzval",
     "production-ready": true,
@@ -1101,7 +1153,25 @@
     "commercial": true,
     "company": "cooke",
     "focal-length-mm-patent": 25.4,
-    "focal-length-mm-raytraced": 25.92892837524414,
+    "focal-length-mm-raytraced": 25.95606162393929,
+    "fstop": {
+      "100": 1.9950231829067575,
+      "18": 1.9964980925111984,
+      "28": 1.996477187998176,
+      "40": 1.9966884122789,
+      "50": 1.9967583593320346,
+      "75": 1.99707542775755,
+      "unscaled": 1.9965551926090315
+    },
+    "max-fstop-aperture-radius": {
+      "100": 17.88377100986975,
+      "18": 3.2214910406393362,
+      "28": 5.005594400983142,
+      "40": 7.14996447820424,
+      "50": 8.936668664454713,
+      "75": 13.401782357445754,
+      "unscaled": 4.6402196592486495
+    },
     "notes": "Cooke Series O f/2.0 OPIC lens, Horace W. Lee designed. This original f/2.0 OPIC design became the now-legendary uncoated Cooke Speed Panchros. Studios jumped up the new Cooke f/2.0 (T2.3) lenses, due to which they appear in almost every film in the early hollywood era.",
     "notes-to-self": "",
     "optical-elements-patent": [
@@ -1218,7 +1288,14 @@
     ],
     "patent-location": "database/lenses/1920-cooke-speed-panchro/patent/GB157040A.pdf",
     "patent-number": "GB157040A",
-    "polynomial-optics": [],
+    "polynomial-optics": [
+      18,
+      28,
+      40,
+      75,
+      100,
+      50
+    ],
     "prime": true,
     "product-name": "speed-panchro",
     "production-ready": true,
@@ -2698,7 +2775,9 @@
     ],
     "patent-location": null,
     "patent-number": "US4256373",
-    "polynomial-optics": [],
+    "polynomial-optics": [
+      16
+    ],
     "prime": true,
     "product-name": "fisheye",
     "production-ready": true,
@@ -2708,9 +2787,15 @@
     "commercial": true,
     "company": "canon",
     "focal-length-mm-patent": 1,
-    "focal-length-mm-raytraced": null,
-    "fstop": null,
-    "max-fstop-aperture-radius": null,
+    "focal-length-mm-raytraced": 0.9965370734739969,
+    "fstop": {
+      "35": 1.8401262884010188,
+      "unscaled": 1.8408177000275223
+    },
+    "max-fstop-aperture-radius": {
+      "35": 6.486170518560687,
+      "unscaled": 0.18517463561652123
+    },
     "notes": "At the time of introduction, this was the highest aperture 35mm lens.",
     "notes-to-self": "fov = 60, f1.8, listed here: http://www.klassik-cameras.de/Canon_Wideangles_Speed.html",
     "optical-elements-patent": [
@@ -2788,7 +2873,7 @@
         "abbe": 41.3,
         "aspherical-equation": null,
         "housing-radius": 0.19,
-        "ior": 1.5750,
+        "ior": 1.575,
         "lens-geometry": "spherical",
         "material": "abbe",
         "radius": -0.215,
@@ -2821,7 +2906,7 @@
         "ior": 1.6935,
         "lens-geometry": "spherical",
         "material": "abbe",
-        "radius": 4.250,
+        "radius": 4.25,
         "thickness": 0.083
       },
       {
@@ -2832,12 +2917,14 @@
         "lens-geometry": "spherical",
         "material": "air",
         "radius": -1.057,
-        "thickness": 0.2
+        "thickness": 0.675
       }
     ],
     "patent-location": null,
     "patent-number": "US2854890",
-    "polynomial-optics": [],
+    "polynomial-optics": [
+      35
+    ],
     "prime": true,
     "product-name": "unknown",
     "production-ready": true,

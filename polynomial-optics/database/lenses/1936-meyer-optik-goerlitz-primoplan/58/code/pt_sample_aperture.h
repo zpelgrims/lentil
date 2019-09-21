@@ -1,4 +1,4 @@
-case meyer-optik-goerlitz_primoplan_1936_58mm:
+case meyer_optik_goerlitz__primoplan__1936__58mm:
 {
 double pred_x;
 double pred_y;
