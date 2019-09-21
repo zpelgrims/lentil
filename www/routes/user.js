@@ -34,7 +34,7 @@ router.post('/register', (req, res) => {
 
 // Login page
 router.get('/login', (req, res) => {
-  res.render('login');
+  res.render('login', {user: req.user});
 });
 
 // Login logic

@@ -13,13 +13,21 @@
         href="/"
         class="nav__right__item <% if(page && page == 'lenses') { %> active <% } %>"
         >lenses</a>
-      / <a href="/features" class="nav__right__item">features</a>
+      / 
+      <a href="/features" class="nav__right__item">features</a>
       / 
       <a
-        href="/cart"
-        class="nav__right__item <% if(page && page == 'cart') { %> active <% } %>"
-        >my cart</a
+        href="/buy"
+        class="nav__right__item <% if(page && page == 'buy') { %> active <% } %>"
+        >buy</a
       >
+      <% if(user) { %>
+        /
+        <a href="/logout" class="nav__right__item">logout</a>
+      <% } else { %>
+        /
+        <a href="/login" class="nav__right__item">login</a>
+      <% } %>
     </div>
     <div class="nav__menu">
       <div class="nav__bar nav__bar--1"></div>

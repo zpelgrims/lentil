@@ -129,9 +129,12 @@ payment popup.
 
 Final deadline: Sept. 1st
 
-- Mobile Responsiveness: August 9th
-- Build on purchase: August 16th
-- Setup stripe account and manage keys: August 25th
-- Everything else: August 31st
+- Mobile Responsiveness
+- Remaining touchups
+	- Pricing model
+	- Image lazy loading
+- Final setup
+	- Build on purchase
+	- Setup stripe account and manage keys
 	- Push up to heroku
 	- Point hosting to heroku domain

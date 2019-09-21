@@ -11,9 +11,7 @@ lensCard.forEach((card) => {
       expCard.parentElement.style.height = "0";
       expCard.parentElement.style.margin = "0";
     } else {
-      document.querySelectorAll('div').forEach((div) => {
-        div.classList.remove('activelens');
-      });
+      card.classList.remove('activelens');
       expLensCard.forEach((expcard) => {
         expcard.style.display = "none";
         expcard.parentElement.style.height = "0";
@@ -25,7 +23,6 @@ lensCard.forEach((card) => {
       expCard.style.animation = ".5s fadein forwards";
       expCard.parentElement.style.height = "30.8rem";
       expCard.parentElement.style.margin = "0 0 5rem 0";
-
     }
   };
 });

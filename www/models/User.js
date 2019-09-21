@@ -18,10 +18,6 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Lens'
   }],
-  cart: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Lens'
-  }],
   license: {
     type: String
   }

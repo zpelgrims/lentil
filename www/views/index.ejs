@@ -1,4 +1,4 @@
-<% include partials/header %> <%# HERO %>
+<% include partials/header %>
 
 <div class="hero__background">
   <div class="container">
@@ -26,11 +26,6 @@
     <div class="lense">
       <div class="lense__card lense__card--<%= [i] %>" id="card-<%= [i] %>">
         <div class="lense__card__image">
-          <% if(user) { %> <% if(user.lenses.indexOf(lens._id) > -1) { %>
-          <button class="button button--icon button--green">purchased</button>
-          <% } %> <% if(user.cart.indexOf(lens._id) > -1) { %>
-          <button class="button button--icon button--green">in cart</button>
-          <% } %> <% } %>
           <img src="<%= lens.image %>" alt="<%= lens.image %>" />
         </div>
         <ul class="lense__card__bubbles">
@@ -82,22 +77,8 @@
                 <span class="exp-lense__card__info__prop--key">notes</span>
                 <span class="exp-lenses__card__info__prop--val">
                   <%= lens.notes %>
-                </span
-                >
+                </span>
               </div>
-              <% if(user) { %> <% if(user.cart.indexOf(lens._id) > -1) { %>
-              <button class="button button--green button--inactive">
-                in cart
-              </button>
-              <% } else if(user.lenses.indexOf(lens._id) > -1) { %>
-              <button class="button button--green button--inactive">
-                purchased
-              </button>
-              <% } else { %>
-              <a href="/<%= lens._id %>/add" class="button">add to cart</a>
-              <% } %> <% } else { %>
-              <a href="/<%= lens._id %>/add" class="button">add to cart</a>
-              <% } %>
             </div>
           </div>
           <div class="col-md-8">
