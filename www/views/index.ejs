@@ -26,11 +26,6 @@
     <div class="lense">
       <div class="lense__card lense__card--<%= [i] %>" id="card-<%= [i] %>">
         <div class="lense__card__image">
-          <% if(user) { %> <% if(user.lenses.indexOf(lens._id) > -1) { %>
-          <button class="button button--icon button--green">purchased</button>
-          <% } %> <% if(user.cart.indexOf(lens._id) > -1) { %>
-          <button class="button button--icon button--green">in cart</button>
-          <% } %> <% } %>
           <img src="<%= lens.image %>" alt="<%= lens.image %>" />
         </div>
         <ul class="lense__card__bubbles">

@@ -7,45 +7,13 @@ const middleware = require('../middleware');
 // Setup stripe 
 const stripe = require('stripe')(keys.stripe.privkey);
 
-// User cart page
-router.get('/cart', middleware.isLoggedIn, (req, res) => {
-  Lens.find({}, (err, lenses) => {
-    if(err) {
-      console.log(err);
-    } else {
-      let lensArray = [];
-      req.user.cart.forEach((item) => {
-        lenses.forEach((lens) => {
-          if(item.toString() == lens._id.toString()) {
-            lensArray.push(lens);
-          }
-        });
-      });
-      let amount;
-      req.user.license == 'individual' ? amount = 1000 * req.user.cart.length 
-        : amount = 4000 * req.user.cart.length;
-      res.render('cart', {lenses: lensArray, pubkey: keys.stripe.pubkey, amount: amount, page: 'cart', user: req.user});
-    }
-  });
-});
-
-// Remove cart item logic
-router.get('/cart/:id/delete', (req, res) => {
-  Lens.findById(req.params.id, (err, lens) => {
-    if(err) {
-      console.log(err);
-      req.flash('error', "Oops. Something went wrong.");
-    } else {
-      let i = req.user.cart.indexOf(lens._id);
-      console.log(i);
-      if(i > -1) {
-        req.user.cart.splice(i, 1);
-        req.user.save();
-      }
-      req.flash('success', "Lens successfully removed from your cart.");
-      res.redirect('back');
-    }
-  });
+// User buy page
+router.get('/buy', middleware.isLoggedIn, (req, res) => {
+    let amount;
+    // Modify the pricing here
+    req.user.license == 'individual' ? amount = 1000
+      : amount = 4000
+    res.render('buy', {pubkey: keys.stripe.pubkey, amount: amount, page: 'buy', user: req.user});
 });
 
 // Payment processing logic
