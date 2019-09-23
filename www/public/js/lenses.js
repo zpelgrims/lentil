@@ -11,7 +11,9 @@ lensCard.forEach((card) => {
       expCard.parentElement.style.height = "0";
       expCard.parentElement.style.margin = "0";
     } else {
-      card.classList.remove('activelens');
+      lensCard.forEach(card => {
+        card.classList.remove('activelens');
+      });
       expLensCard.forEach((expcard) => {
         expcard.style.display = "none";
         expcard.parentElement.style.height = "0";
@@ -26,5 +28,3 @@ lensCard.forEach((card) => {
     }
   };
 });
-
-// Instead of applying styles on click, lets toggle a class

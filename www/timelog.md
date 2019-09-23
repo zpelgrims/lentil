@@ -271,7 +271,13 @@
   - Lazy load images
 
 - 09/21/19 10:15-12:00
+  1:00-1:30
 
   - Go over changes to be made
   - Add conditional login link to nav
   - Remove add to cart button
+  - Convert cart page to buy page
+
+- 09/23/19 11:00-
+
+  - 
