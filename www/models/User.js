@@ -18,6 +18,9 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Lens'
   }],
+  owner: [{
+    type: Boolean
+  }],
   license: {
     type: String
   }

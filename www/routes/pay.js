@@ -30,13 +30,7 @@ router.post('/charge', middleware.isLoggedIn, (req, res) => {
       customer: customer.id
     }))
   .then(() => {
-    // Move items from cart to lenses array
-    req.user.cart.forEach((item) => {
-      req.user.lenses.push(item);
-    });
-    // Empty cart
-    req.user.cart = [];
-    // Save user model
+    req.user.owner = true;
     req.user.save();
     req.flash('success', "Lens successfully purchased.");
     res.redirect('/');

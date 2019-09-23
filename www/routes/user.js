@@ -6,7 +6,7 @@ const LocalStrategy = require('passport-local');
 
 // Register page
 router.get('/register', (req, res) => {
-  res.render('register');
+  res.render('register', {user: req.user});
 });
 
 // Register logic
@@ -20,7 +20,7 @@ router.post('/register', (req, res) => {
     if(err) {
       console.log(err);
       req.flash('error', 'A user with the given username or email already exists.');
-      return res.render('register');
+      return res.render('register', {user: req.user});
     }
     passport.authenticate('local', {
       failureRedirect: '/register',

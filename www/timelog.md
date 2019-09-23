@@ -278,6 +278,10 @@
   - Remove add to cart button
   - Convert cart page to buy page
 
-- 09/23/19 11:00-
+- 09/23/19 11:00-12:30
+  1:00-
 
-  - 
+  - Fix lens card bug
+  - Heroku build
+  - Buy page design
+  - Fix broken footer link
