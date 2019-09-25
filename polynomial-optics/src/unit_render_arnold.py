@@ -17,7 +17,7 @@ from arnold import *
 
 texture_search_path = "/Users/zeno/lentil/pota/unit_render/tex/"
 bokeh_ass = "/Users/zeno/lentil/pota/unit_render/citylights_template01_driver.ass"
-chart_ass = "/Users/zeno/lentil/pota/unit_render/testchart_template01.ass"
+chart_ass = "/Users/zeno/lentil/pota/unit_render/testchart_template01_driver.ass"
 os.environ["UNITRENDER"] = "/Users/zeno/lentil/pota/unit_render/"
 mtoa_plugins = "/Applications/solidangle/mtoa/2018/plugins"
 
@@ -45,11 +45,8 @@ def unit_render_lens(lensdict, mode, lentil):
             AiNodeSetInt(node_camera, 'lens_model', enum_index)
 
     else:
-        # need to turn off the bidirectional component here ..
-
         node_thinlens = AiNodeLookUpByName('rendercamShape')
         AiNodeSetPtr(options, "camera", node_thinlens);
-        
         
         sensor_width = 36.0
         fov = 2.0 * math.atan(sensor_width / (2.0 * lensdict["focallength"]))
@@ -71,11 +68,12 @@ def unit_render_lens(lensdict, mode, lentil):
     while not AiNodeIteratorFinished(iterator_lights):
         node_light = AiNodeIteratorGetNext(iterator_lights)
         AiNodeSetFlt(node_light, 'exposure', AiNodeGetFlt(node_light, 'exposure') + 2)
-        
     AiNodeIteratorDestroy(iterator_lights)
 
     AiRender()
+    AiRenderEnd ()
     AiEnd()
+    
 
 
 
