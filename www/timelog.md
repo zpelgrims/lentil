@@ -279,9 +279,13 @@
   - Convert cart page to buy page
 
 - 09/23/19 11:00-12:30
-  1:00-
+  1:00-3:00
 
   - Fix lens card bug
   - Heroku build
   - Buy page design
   - Fix broken footer link
+
+- 09/25/19 10:30-
+
+  - Hide stripe buttons

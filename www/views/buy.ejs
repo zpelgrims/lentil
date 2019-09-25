@@ -15,9 +15,18 @@
         single purchase, access to future updates forever for all lenses
       </p>
       <div class="box__group">
-        <button class="box__button">
-          buy now
-        </button>
+        <form action="/charge" method="POST">
+          <script
+            src="https://checkout.stripe.com/checkout.js" 
+            class="stripe-button"
+            data-key="<%= pubkey %>"
+            data-amount="5000"
+            data-locale="auto">
+          </script>
+          <button class="box__button">
+            buy now
+          </button>
+        </form>
         <p class="box__disclaimer box__disclaimer--line">
           available only for single user
         </p>
@@ -35,9 +44,18 @@
         single purchase, access to future updates forever for all lenses
       </p>
       <div class="box__group">
-        <button class="box__button">
-          buy now
-        </button>
+        <form action="/charge" method="POST">
+          <script
+            src="https://checkout.stripe.com/checkout.js" 
+            class="stripe-button"
+            data-key="<%= pubkey %>"
+            data-amount="30000"
+            data-locale="auto">
+          </script>
+          <button class="box__button">
+            buy now
+          </button>
+        </form>
         <p class="box__disclaimer">
           available only for studios with less than $2,000,000 in annual revenue
         </p>
@@ -64,16 +82,13 @@
       </div>
     </div>
   </div>
-
-  <!-- <form action="/charge" method="POST">
-    <script
-      src="https://checkout.stripe.com/checkout.js" 
-      class="stripe-button"
-      data-key="<%= pubkey %>"
-      data-amount="<%= amount %>"
-      data-locale="auto">
-    </script>
-  </form> -->
 </div>
+
+<script>
+  const stripeButtons = document.querySelectorAll('.stripe-button-el')
+  stripeButtons.forEach(button => {
+    button.style.display = 'none';
+  });
+</script>
 
 <% include partials/footer %>
