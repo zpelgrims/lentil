@@ -32,6 +32,11 @@
   opacity: 0;
 }
 
+.box__email {
+  font-size: 24px;
+  text-align: center;
+}
+
 .box__info {
   font-size: 22px;
   text-align: center;
@@ -50,9 +55,19 @@
   background: $complimentary-color;
   color: white;
   font-size: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.box__button:hover {
+  text-decoration: none;
+  color: white;
 }
 
 .box__disclaimer {
+  margin-top: 4px;
   font-size: 12px;
   color: rgba($font-color, 0.75);
   text-align: center;
