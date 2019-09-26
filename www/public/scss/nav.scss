@@ -21,6 +21,7 @@
 
   @include media($breakpoint-sm) {
     padding: 1rem 2rem;
+    height: 9vh;
   }
 
   &__background {
@@ -31,6 +32,10 @@
     left: 0;
     right: 0;
     height: 7vh;
+
+    @include media($breakpoint-sm) {
+      height: 9vh;
+    }
   }
 
   &__brand {
@@ -164,11 +169,11 @@
 
   &__links {
     width: 100%;
-    height: 75%;
+    height: 50%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: space-evenly;
+    justify-content: space-between;
     opacity: 0;
     transition: 0.3s opacity 0.1s;
   }

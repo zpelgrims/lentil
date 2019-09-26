@@ -286,6 +286,12 @@
   - Buy page design
   - Fix broken footer link
 
-- 09/25/19 10:30-
+- 09/25/19 10:30-1:00
 
   - Hide stripe buttons
+  - Payment handling
+  - Contact for enterprise users
+
+09/26/19 2:00-
+
+  - Add contact email for enterprise package

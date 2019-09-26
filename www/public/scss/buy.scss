@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 48px auto;
+  margin: 0 auto;
   flex-wrap: wrap;
 }
 
@@ -15,6 +15,7 @@
   justify-content: space-between;
   padding: 32px;
   height: 600px;
+  max-width: 90vw;
   width: 360px;
   border-radius: 8px;
   margin: 32px;
@@ -33,7 +34,7 @@
 }
 
 .box__email {
-  font-size: 24px;
+  font-size: 22px;
   text-align: center;
 }
 
@@ -50,6 +51,8 @@
 
 .box__button {
   width: 300px;
+  max-width: 90%;
+  margin: 0 auto;
   height: 65px;
   border-radius: 8px;
   background: $complimentary-color;
@@ -72,6 +75,7 @@
   color: rgba($font-color, 0.75);
   text-align: center;
   line-height: 15px;
+  max-width: 90%;
 }
 
 .box__disclaimer--line {
