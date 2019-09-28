@@ -300,3 +300,4 @@
 09/27/19 5:00-
 
   - Fix broken payment
+  - Remove license related data
