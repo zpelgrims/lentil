@@ -297,7 +297,8 @@
   - Add contact email for enterprise package
   - Mobile optimizations
 
-09/27/19 5:00-
+09/27/19 5:00-5:30
+  9:00-
 
   - Fix broken payment
   - Remove license related data
