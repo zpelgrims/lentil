@@ -292,6 +292,11 @@
   - Payment handling
   - Contact for enterprise users
 
-09/26/19 2:00-
+09/26/19 2:00-3:00
 
   - Add contact email for enterprise package
+  - Mobile optimizations
+
+09/27/19 5:00-
+
+  - Fix broken payment

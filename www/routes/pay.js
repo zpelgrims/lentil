@@ -12,7 +12,29 @@ router.get('/buy', middleware.isLoggedIn, (req, res) => {
 });
 
 // Payment processing logic
-router.post('/charge', middleware.isLoggedIn, (req, res) => {
+router.post('/charge/individual', middleware.isLoggedIn, (req, res) => {
+  const amount = 5000;
+  stripe.customers.create({
+    email: req.body.stripeEmail,
+    source: req.body.stripeToken
+  })
+  .then(customer =>
+    stripe.charges.create({
+      amount,
+      description: "Sample Charge",
+      currency: "usd",
+      customer: customer.id
+    }))
+  .then(() => {
+    req.user.owner = true;
+    req.user.save();
+    req.flash('success', "Package successfully purchased.");
+    res.redirect('/');
+  });
+});
+
+router.post('/charge/studio', middleware.isLoggedIn, (req, res) => {
+  const amount = 30000;
   stripe.customers.create({
     email: req.body.stripeEmail,
     source: req.body.stripeToken
