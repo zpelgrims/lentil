@@ -16,11 +16,19 @@
       / 
       <a href="/features" class="nav__right__item">features</a>
       / 
-      <a
-        href="/buy"
-        class="nav__right__item <% if(page && page == 'buy') { %> active <% } %>"
-        >buy</a
-      >
+      <% if(user && user.owner) { %>
+        <a
+          href="/#"
+          class="nav__right__item <% if(page && page == 'buy') { %> active <% } %>"
+          >download</a
+        >
+      <% } else { %>
+        <a
+          href="/buy"
+          class="nav__right__item <% if(page && page == 'buy') { %> active <% } %>"
+          >buy</a
+        >
+      <% } %>
       <% if(user) { %>
         /
         <a href="/logout" class="nav__right__item">logout</a>
