@@ -12,29 +12,50 @@
       <a
         href="/"
         class="nav__right__item <% if(page && page == 'lenses') { %> active <% } %>"
-        >lenses</a>
+      >
+        lenses
+      </a>
       / 
-      <a href="/features" class="nav__right__item">features</a>
+      <a 
+        href="/features" 
+        class="nav__right__item <% if(page && page == 'features') { %> active <% } %>"
+      >
+        features
+      </a>
       / 
+      <a 
+        href="/tutorials" 
+        class="nav__right__item <% if(page && page == 'tutorials') { %> active <% } %>"
+      >
+        tutorials
+      </a>
+      /
       <% if(user && user.owner) { %>
         <a
           href="/#"
-          class="nav__right__item <% if(page && page == 'buy') { %> active <% } %>"
-          >download</a
+          class="nav__right__item"
         >
+          download
+        </a>
       <% } else { %>
         <a
           href="/buy"
           class="nav__right__item <% if(page && page == 'buy') { %> active <% } %>"
-          >buy</a
         >
+          buy
+        </a>
       <% } %>
       <% if(user) { %>
         /
         <a href="/logout" class="nav__right__item">logout</a>
       <% } else { %>
         /
-        <a href="/login" class="nav__right__item">login</a>
+        <a 
+          href="/login" 
+          class="nav__right__item <% if(page && page == 'login') { %> active <% } %>"
+        >
+          login
+        </a>
       <% } %>
     </div>
     <div class="nav__menu">

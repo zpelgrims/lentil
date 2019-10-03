@@ -298,7 +298,9 @@
   - Mobile optimizations
 
 09/27/19 5:00-5:30
-  9:00-
+  9:00-9:30
 
   - Fix broken payment
   - Remove license related data
+
+10/03/19 10:00-
