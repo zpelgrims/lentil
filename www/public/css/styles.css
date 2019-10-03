@@ -289,6 +289,9 @@ hr {
   justify-content: space-between;
   animation: 1s fadein forwards;
   height: 7vh; }
+  @media (max-width: 1920px) {
+    .nav {
+      padding: 1rem 16rem; } }
   @media (max-width: 1440px) {
     .nav {
       padding: 1rem 8rem; } }

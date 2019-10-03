@@ -11,6 +11,10 @@
   animation: 1s fadein forwards;
   height: 7vh;
 
+  @include media($breakpoint-xxl) {
+    padding: 1rem 16rem;
+  }
+
   @include media($breakpoint-xl) {
     padding: 1rem 8rem;
   }

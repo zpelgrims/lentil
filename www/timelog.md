@@ -304,3 +304,6 @@
   - Remove license related data
 
 10/03/19 10:00-
+
+  - Add new pages
+  - Fix navbar sizing
