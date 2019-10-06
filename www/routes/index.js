@@ -64,26 +64,19 @@ router.get('/', (req, res) => {
   });
 });
 
+// Features Page
 router.get('/features', (req, res) => {
   res.render('features', { page: 'features', user: req.user });
 });
 
-router.get(
-  '/:id/add',
-  middleware.isLoggedIn,
-  middleware.isCartable,
-  (req, res) => {
-    Lens.findById(req.params.id, (err, lens) => {
-      if (err) {
-        console.log(err);
-      } else {
-        req.user.cart.push(lens._id);
-        req.user.save();
-      }
-      req.flash('success', 'Lens successfully added to cart.');
-      res.redirect('back');
-    });
-  }
-);
+// Gallery Page
+router.get('/gallery', (req, res) => {
+  res.render('gallery', { page: 'gallery', user: req.user });
+});
+
+// Tutorials Page
+router.get('/tutorials', (req, res) => {
+  res.render('tutorials', { page: 'tutorials', user: req.user });
+});
 
 module.exports = router;

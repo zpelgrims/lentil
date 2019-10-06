@@ -14,8 +14,7 @@ router.post('/register', (req, res) => {
   User.register(
     new User({
       email: req.body.email,
-      username: req.body.username,
-      license: req.body.license
+      username: req.body.username
     }), req.body.password, (err, user) => {
     if(err) {
       console.log(err);
@@ -34,7 +33,7 @@ router.post('/register', (req, res) => {
 
 // Login page
 router.get('/login', (req, res) => {
-  res.render('login', {user: req.user});
+  res.render('login', {page: 'login', user: req.user});
 });
 
 // Login logic

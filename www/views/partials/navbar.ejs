@@ -12,21 +12,50 @@
       <a
         href="/"
         class="nav__right__item <% if(page && page == 'lenses') { %> active <% } %>"
-        >lenses</a>
-      / 
-      <a href="/features" class="nav__right__item">features</a>
-      / 
-      <a
-        href="/buy"
-        class="nav__right__item <% if(page && page == 'buy') { %> active <% } %>"
-        >buy</a
       >
+        lenses
+      </a>
+      / 
+      <a 
+        href="/features" 
+        class="nav__right__item <% if(page && page == 'features') { %> active <% } %>"
+      >
+        features
+      </a>
+      / 
+      <a 
+        href="/tutorials" 
+        class="nav__right__item <% if(page && page == 'tutorials') { %> active <% } %>"
+      >
+        tutorials
+      </a>
+      /
+      <% if(user && user.owner) { %>
+        <a
+          href="/#"
+          class="nav__right__item"
+        >
+          download
+        </a>
+      <% } else { %>
+        <a
+          href="/buy"
+          class="nav__right__item <% if(page && page == 'buy') { %> active <% } %>"
+        >
+          buy
+        </a>
+      <% } %>
       <% if(user) { %>
         /
         <a href="/logout" class="nav__right__item">logout</a>
       <% } else { %>
         /
-        <a href="/login" class="nav__right__item">login</a>
+        <a 
+          href="/login" 
+          class="nav__right__item <% if(page && page == 'login') { %> active <% } %>"
+        >
+          login
+        </a>
       <% } %>
     </div>
     <div class="nav__menu">
@@ -43,8 +72,8 @@
         <a href="/features" class="nav__link">
           <li class="nav__link">features</li>
         </a>
-        <a href="/cart" class="nav__link">
-          <li class="nav__link">my cart</li>
+        <a href="/buy" class="nav__link">
+          <li class="nav__link">buy</li>
         </a>
       </ul>
     </div>

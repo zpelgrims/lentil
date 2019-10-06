@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const keys = require('../config/keys');
-const Lens = require('../models/Lens');
 const middleware = require('../middleware');
 
 // Setup stripe 
@@ -9,15 +8,12 @@ const stripe = require('stripe')(keys.stripe.privkey);
 
 // User buy page
 router.get('/buy', middleware.isLoggedIn, (req, res) => {
-    let amount;
-    // Modify the pricing here
-    req.user.license == 'individual' ? amount = 1000
-      : amount = 4000
-    res.render('buy', {pubkey: keys.stripe.pubkey, amount: amount, page: 'buy', user: req.user});
+    res.render('buy', {pubkey: keys.stripe.pubkey, page: 'buy', user: req.user});
 });
 
 // Payment processing logic
-router.post('/charge', middleware.isLoggedIn, (req, res) => {
+router.post('/charge/individual', middleware.isLoggedIn, (req, res) => {
+  const amount = 5000;
   stripe.customers.create({
     email: req.body.stripeEmail,
     source: req.body.stripeToken
@@ -32,7 +28,28 @@ router.post('/charge', middleware.isLoggedIn, (req, res) => {
   .then(() => {
     req.user.owner = true;
     req.user.save();
-    req.flash('success', "Lens successfully purchased.");
+    req.flash('success', "Package successfully purchased.");
+    res.redirect('/');
+  });
+});
+
+router.post('/charge/studio', middleware.isLoggedIn, (req, res) => {
+  const amount = 30000;
+  stripe.customers.create({
+    email: req.body.stripeEmail,
+    source: req.body.stripeToken
+  })
+  .then(customer =>
+    stripe.charges.create({
+      amount,
+      description: "Sample Charge",
+      currency: "usd",
+      customer: customer.id
+    }))
+  .then(() => {
+    req.user.owner = true;
+    req.user.save();
+    req.flash('success', "Package successfully purchased.");
     res.redirect('/');
   });
 });

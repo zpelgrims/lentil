@@ -20,10 +20,7 @@ const userSchema = new mongoose.Schema({
   }],
   owner: [{
     type: Boolean
-  }],
-  license: {
-    type: String
-  }
+  }]
 });
 
 userSchema.plugin(passportLocalMongoose);

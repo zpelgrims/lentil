@@ -12,7 +12,8 @@
   justify-content: center;
 
   @include media($breakpoint-sm) {
-    justify-content: flex-end;
+    justify-content: space-evenly;
+    margin-top: 9vh;
   }
 
   &__background {
@@ -84,6 +85,10 @@
     color: white;
     z-index: 3;
     animation: 1s fadedown forwards;
+    
+    @include media($breakpoint-sm) {
+      display: none;
+    }
   }
 
   &__arrow {
@@ -92,6 +97,10 @@
     font-size: 4rem;
     margin-top: 6rem;
     margin-bottom: 2rem;
+
+    @include media($breakpoint-sm) {
+      display: none;
+    }
   }
 }
 

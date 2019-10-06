@@ -1,3 +1,5 @@
+@import './breakpoints';
+
 .footer {
   min-height: 15rem;
   background: $hero-background-color;
@@ -45,10 +47,16 @@
   &__text {
     text-align: center;
     font-weight: 300;
+    @include media($breakpoint-md) {
+      font-size: 12px;
+    }
   }
 
   &__disclaimer {
     text-align: center;
     font-weight: 300;
+    @include media($breakpoint-md) {
+      font-size: 12px;
+    }
   }
 }
