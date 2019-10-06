@@ -23,7 +23,7 @@ mtoa_plugins = "/Applications/solidangle/mtoa/2018/plugins"
 
 
 
-def unit_render_lens(lensdict, mode, lentil):
+def unit_render_lens(lensdict, mode, camerashader):
 
     AiBegin()
     AiLoadPlugins(mtoa_plugins)
@@ -33,7 +33,7 @@ def unit_render_lens(lensdict, mode, lentil):
     options = AiUniverseGetOptions()
     AiNodeSetStr(options, "texture_searchpath", texture_search_path)
 
-    if lentil:
+    if camerashader == 'lentil':
         node_camera = AiNodeLookUpByName('rendercamLentilShape')
         AiNodeSetPtr(options, "camera", node_camera);
         AiNodeSetStr(node_camera, 'bokeh_exr_path', "{}-{}-{}-bidirectional.exr".format(lensdict["outfile"], 'lentil' if lentil else 'thinlens', mode))
@@ -45,7 +45,10 @@ def unit_render_lens(lensdict, mode, lentil):
             AiNodeSetInt(node_camera, 'lens_model', enum_index)
 
     else:
-        node_thinlens = AiNodeLookUpByName('rendercamShape')
+        if camerashader == 'persp_camera':
+            node_thinlens = AiNodeLookUpByName('rendercamShape')
+        else camerashader == 'lentil_thin_lens':
+            node_thinlens = AiNodeLookUpByName('rendercamLentilThinLensShape')
         AiNodeSetPtr(options, "camera", node_thinlens);
         
         sensor_width = 36.0
@@ -129,19 +132,22 @@ def execute_all():
     lenses = collect_all_prod_ready_lenses("/Users/zeno/lentil/polynomial-optics/database/lenses.json")
     for lensid, focallength in lenses.items():
         for focallength, info in focallength.items():
-            unit_render_lens(info, "bokeh", True)
-            unit_render_lens(info, "bokeh", False)
-            unit_render_lens(info, "chart", True)
-            unit_render_lens(info, "chart", False)
-            return
+            unit_render_lens(info, "bokeh", 'lentil')
+            unit_render_lens(info, "bokeh", 'lentil_thin_lens')
+            unit_render_lens(info, "bokeh", 'persp_camera')
+            unit_render_lens(info, "chart", 'lentil')
+            unit_render_lens(info, "chart", 'lentil_thin_lens')
+            unit_render_lens(info, "chart", 'persp_camera')
 
 def execute_single(lensid, focallength):
     lenses = collect_all_prod_ready_lenses("/Users/zeno/lentil/polynomial-optics/database/lenses.json")
     info = lenses[lensid][focallength]
-    unit_render_lens(info, "bokeh", True)
-    unit_render_lens(info, "bokeh", False)
-    unit_render_lens(info, "chart", True)
-    unit_render_lens(info, "chart", False)
+    unit_render_lens(info, "bokeh", 'lentil')
+    #unit_render_lens(info, "bokeh", 'lentil_thin_lens')
+    #unit_render_lens(info, "bokeh", 'persp_camera')
+    #unit_render_lens(info, "chart", 'lentil')
+    #unit_render_lens(info, "chart", 'lentil_thin_lens')
+    #unit_render_lens(info, "chart", 'persp_camera')
 
 
 
