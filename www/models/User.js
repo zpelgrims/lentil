@@ -18,9 +18,9 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Lens'
   }],
-  owner: [{
+  owner: {
     type: Boolean
-  }]
+  }
 });
 
 userSchema.plugin(passportLocalMongoose);

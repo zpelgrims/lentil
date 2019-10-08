@@ -303,7 +303,11 @@
   - Fix broken payment
   - Remove license related data
 
-10/03/19 10:00-
+10/03/19 10:00-11:30
 
   - Add new pages
   - Fix navbar sizing
+
+10/08/19 10:00
+
+  - 

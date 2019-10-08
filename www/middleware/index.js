@@ -10,34 +10,20 @@ middlewareObj.isLoggedIn = (req, res, next) => {
   res.redirect('/login')
 }
 
-middlewareObj.isValidId = (req, res, next) => {
-  Lens.findById(req.params.id, (err, lens) => {
-    if(err) {
-      req.flash('error', "This lens doesn't seem to exist.")
-      res.redirect('back');
-    } else {
-      return next();
-    }
-  });
+middlewareObj.isOwner = (req, res, next) => {
+  if(req.isAuthenticated() && req.user.owner) {
+    return next();
+  }
+  req.flash('error', 'You must be an owner to do that.');
+  req.session.returnTo = req.path;
 }
 
-middlewareObj.isCartable = (req, res, next) => {
-  if(req.isAuthenticated) {
-    Lens.findById(req.params.id, (err, lens) => {
-      if(err) {
-        console.log(err);
-      } else {
-        if(req.user.cart.indexOf(lens._id) > -1 || req.user.lenses.indexOf(lens._id) > -1) {
-          req.flash('error', "It looks like you either own this lens already or it's already in your cart.");
-          res.redirect('/');
-        } else {
-          return next();
-        }
-      }
-    });
-  } else {
-    console.log('User not logged in');
+middlewareObj.isNotOwner = (req, res, next) => {
+  if(!req.isAuthenticated() || !req.user.owner) {
+    return next();
   }
+  req.flash('error', "It seems you've already purchased...");
+  req.session.returnTo = req.path;
 }
 
 module.exports = middlewareObj;

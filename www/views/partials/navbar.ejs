@@ -30,19 +30,20 @@
         tutorials
       </a>
       /
-      <% if(user && user.owner) { %>
-        <a
-          href="/#"
-          class="nav__right__item"
-        >
-          download
-        </a>
-      <% } else { %>
+      <% if(!user || user.owner != true) { %>
         <a
           href="/buy"
           class="nav__right__item <% if(page && page == 'buy') { %> active <% } %>"
         >
           buy
+        </a>
+      <% } %> 
+      <% if(user && user.owner == true) { %>
+        <a
+          href="/download"
+          class="nav__right__item"
+        >
+          download
         </a>
       <% } %>
       <% if(user) { %>

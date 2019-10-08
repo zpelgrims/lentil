@@ -79,4 +79,9 @@ router.get('/tutorials', (req, res) => {
   res.render('tutorials', { page: 'tutorials', user: req.user });
 });
 
+// Download Page
+router.get('/download', middleware.isOwner, (req, res) => {
+  res.render('download', { page: 'download', user: req.user });
+});
+
 module.exports = router;

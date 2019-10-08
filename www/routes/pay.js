@@ -7,12 +7,12 @@ const middleware = require('../middleware');
 const stripe = require('stripe')(keys.stripe.privkey);
 
 // User buy page
-router.get('/buy', middleware.isLoggedIn, (req, res) => {
+router.get('/buy', middleware.isLoggedIn, middleware.isNotOwner, (req, res) => {
     res.render('buy', {pubkey: keys.stripe.pubkey, page: 'buy', user: req.user});
 });
 
 // Payment processing logic
-router.post('/charge/individual', middleware.isLoggedIn, (req, res) => {
+router.post('/charge/individual', middleware.isLoggedIn, middleware.isNotOwner, (req, res) => {
   const amount = 5000;
   stripe.customers.create({
     email: req.body.stripeEmail,
@@ -33,7 +33,7 @@ router.post('/charge/individual', middleware.isLoggedIn, (req, res) => {
   });
 });
 
-router.post('/charge/studio', middleware.isLoggedIn, (req, res) => {
+router.post('/charge/studio', middleware.isLoggedIn, middleware.isNotOwner, (req, res) => {
   const amount = 30000;
   stripe.customers.create({
     email: req.body.stripeEmail,
