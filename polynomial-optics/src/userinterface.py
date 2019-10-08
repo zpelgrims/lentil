@@ -340,7 +340,7 @@ class ArnoldMayaTranslator(LentilDialog):
         self.sensorwidthS.slider.setValue(cmds.getAttr("{}.aiSensorWidth".format(self.currentCamera)))
         self.fstopS.slider.setValue(cmds.getAttr("{}.aiFstop".format(self.currentCamera)))
         self.wavelengthS.slider.setValue(cmds.getAttr("{}.aiWavelength".format(self.currentCamera)))
-        self.focusDistanceS.slider.setValue(cmds.getAttr("{}.aiFocalDistance".format(self.currentCamera)))
+        self.focusDistanceS.slider.setValue(cmds.getAttr("{}.aiFocusDistance".format(self.currentCamera)))
         self.extraSensorShiftS.slider.setValue(cmds.getAttr("{}.aiExtraSensorShift".format(self.currentCamera)))
         self.vignettingRetriesS.slider.setValue(cmds.getAttr("{}.aiVignettingRetries".format(self.currentCamera)))
         self.unitCB.setCurrentIndex(cmds.getAttr("{}.aiUnitModel".format(self.currentCamera))) # why doesn't this work?

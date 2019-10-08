@@ -23,7 +23,7 @@ mtoa_plugins = "/Applications/solidangle/mtoa/2018/plugins"
 
 
 
-def unit_render_lens(lensdict, mode, lentil):
+def unit_render_lens(lensdict, mode, camerashader, focallength):
 
     AiBegin()
     AiLoadPlugins(mtoa_plugins)
@@ -33,10 +33,10 @@ def unit_render_lens(lensdict, mode, lentil):
     options = AiUniverseGetOptions()
     AiNodeSetStr(options, "texture_searchpath", texture_search_path)
 
-    if lentil:
+    if camerashader == 'lentil':
         node_camera = AiNodeLookUpByName('rendercamLentilShape')
         AiNodeSetPtr(options, "camera", node_camera);
-        AiNodeSetStr(node_camera, 'bokeh_exr_path', "{}-{}-{}-bidirectional.exr".format(lensdict["outfile"], 'lentil' if lentil else 'thinlens', mode))
+        AiNodeSetStr(node_camera, 'bokeh_exr_path', "{}-{}-{}-bidirectional.exr".format(lensdict["outfile"], camerashader, mode))
 
         if node_camera is not None and AiNodeIs(node_camera, 'lentil') == True:
             param_entry = AiNodeEntryLookUpParameter(AiNodeEntryLookUp("lentil"), "lens_model")
@@ -45,22 +45,30 @@ def unit_render_lens(lensdict, mode, lentil):
             AiNodeSetInt(node_camera, 'lens_model', enum_index)
 
     else:
-        node_thinlens = AiNodeLookUpByName('rendercamShape')
+        if camerashader == 'persp_camera':
+            node_thinlens = AiNodeLookUpByName('rendercamShape')
+        else:
+            node_thinlens = AiNodeLookUpByName('rendercamLentilThinLensShape')
         AiNodeSetPtr(options, "camera", node_thinlens);
+        AiNodeSetStr(node_thinlens, 'bokeh_exr_path', "{}-{}-{}-bidirectional.exr".format(lensdict["outfile"], camerashader, mode))
+
         
         sensor_width = 36.0
         fov = 2.0 * math.atan(sensor_width / (2.0 * lensdict["focallength"]))
         aperture_radius = (lensdict["focallength"] / (2.0 * lensdict["max_fstop"])) / 10.0
-        
+
         if node_thinlens is not None and AiNodeIs(node_thinlens, 'persp_camera') == True:
             AiNodeSetFlt(node_thinlens, 'fov', math.degrees(fov))
             AiNodeSetFlt(node_thinlens, 'aperture_size', aperture_radius)
 
-            
+        if node_thinlens is not None and AiNodeIs(node_thinlens, 'lentil_thinlens') == True:
+            AiNodeSetFlt(node_thinlens, 'fstop', lensdict["max_fstop"])
+            AiNodeSetFlt(node_thinlens, 'focal_length', focallength/10.0)
+
     
     driver_png = AiNodeLookUpByName('aiAOVDriver2@driver_png.RGBA')
     if driver_png is not None and AiNodeIs(driver_png, 'driver_png') == True:
-        AiNodeSetStr(driver_png, 'filename', "{}-{}-{}.png".format(lensdict["outfile"], 'lentil' if lentil else 'thinlens', mode))
+        AiNodeSetStr(driver_png, 'filename', "{}-{}-{}.png".format(lensdict["outfile"], camerashader, mode))
 
 
     # increase exposure of the lights
@@ -129,19 +137,22 @@ def execute_all():
     lenses = collect_all_prod_ready_lenses("/Users/zeno/lentil/polynomial-optics/database/lenses.json")
     for lensid, focallength in lenses.items():
         for focallength, info in focallength.items():
-            unit_render_lens(info, "bokeh", True)
-            unit_render_lens(info, "bokeh", False)
-            unit_render_lens(info, "chart", True)
-            unit_render_lens(info, "chart", False)
-            return
+            unit_render_lens(info, "bokeh", 'lentil', focallength)
+            unit_render_lens(info, "bokeh", 'lentil_thinlens', focallength)
+            unit_render_lens(info, "bokeh", 'persp_camera', focallength)
+            unit_render_lens(info, "chart", 'lentil', focallength)
+            unit_render_lens(info, "chart", 'lentil_thinlens', focallength)
+            unit_render_lens(info, "chart", 'persp_camera', focallength)
 
 def execute_single(lensid, focallength):
     lenses = collect_all_prod_ready_lenses("/Users/zeno/lentil/polynomial-optics/database/lenses.json")
     info = lenses[lensid][focallength]
-    unit_render_lens(info, "bokeh", True)
-    unit_render_lens(info, "bokeh", False)
-    unit_render_lens(info, "chart", True)
-    unit_render_lens(info, "chart", False)
+    #unit_render_lens(info, "bokeh", 'lentil', focallength)
+    unit_render_lens(info, "bokeh", 'lentil_thinlens', focallength)
+    #unit_render_lens(info, "bokeh", 'persp_camera', focallength)
+    #unit_render_lens(info, "chart", 'lentil', focallength)
+    #unit_render_lens(info, "chart", 'lentil_thinlens', focallength)
+    #unit_render_lens(info, "chart", 'persp_camera', focallength)
 
 
 
