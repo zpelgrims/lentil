@@ -4,29 +4,37 @@ import json
 import math
 import re
 import argparse
+import platform
+
+if platform.system() == 'Linux':
+    arnold_path = "/home/cactus/Arnold-5.4.0.2-linux"
+    lentil_path = "/home/cactus/lentil"
+    mtoa_plugins = "" # this still needs to be installed
+elif platform.system() == 'Darwin':
+    arnold_path = "/Users/zeno/Arnold-5.4.0.1-darwin"
+    lentil_path = "/Users/zeno/lentil"
+    mtoa_plugins = "/Applications/solidangle/mtoa/2018/plugins"
 
 # append path if not found
 try:
-    sys.path.index('/Users/zeno/Arnold-5.4.0.1-darwin/python')
+    sys.path.index('{}/python'.format(arnold_path))
 except ValueError:
-    sys.path.append('/Users/zeno/Arnold-5.4.0.1-darwin/python')
+    sys.path.append('{}/python'.format(arnold_path))
 
 
 from arnold import *
 
 
-texture_search_path = "/Users/zeno/lentil/pota/unit_render/tex/"
-bokeh_ass = "/Users/zeno/lentil/pota/unit_render/citylights_template01_driver.ass"
-chart_ass = "/Users/zeno/lentil/pota/unit_render/testchart_template01_driver.ass"
-os.environ["UNITRENDER"] = "/Users/zeno/lentil/pota/unit_render/"
-mtoa_plugins = "/Applications/solidangle/mtoa/2018/plugins"
-
+texture_search_path = "{}/pota/unit_render/tex/".format(lentil_path)
+bokeh_ass = "{}/pota/unit_render/citylights_template01_driver.ass".format(lentil_path)
+chart_ass = "{}/pota/unit_render/testchart_template01_driver.ass".format(lentil_path)
+os.environ["UNITRENDER"] = "{}/pota/unit_render/".format(lentil_path)
 
 
 def unit_render_lens(lensdict, mode, camerashader, focallength):
 
     AiBegin()
-    AiLoadPlugins(mtoa_plugins)
+    #AiLoadPlugins(mtoa_plugins)
     AiMsgSetConsoleFlags(AI_LOG_ALL);
     AiASSLoad(bokeh_ass if mode == "bokeh" else chart_ass)
 
@@ -134,7 +142,7 @@ def collect_all_prod_ready_lenses(lens_json):
 
 
 def execute_all():
-    lenses = collect_all_prod_ready_lenses("/Users/zeno/lentil/polynomial-optics/database/lenses.json")
+    lenses = collect_all_prod_ready_lenses("{}/polynomial-optics/database/lenses.json".format(lentil_path))
     for lensid, focallength in lenses.items():
         for focallength, info in focallength.items():
             unit_render_lens(info, "bokeh", 'lentil', focallength)
@@ -145,7 +153,7 @@ def execute_all():
             unit_render_lens(info, "chart", 'persp_camera', focallength)
 
 def execute_single(lensid, focallength):
-    lenses = collect_all_prod_ready_lenses("/Users/zeno/lentil/polynomial-optics/database/lenses.json")
+    lenses = collect_all_prod_ready_lenses("{}/polynomial-optics/database/lenses.json".format(lentil_path))
     info = lenses[lensid][focallength]
     #unit_render_lens(info, "bokeh", 'lentil', focallength)
     unit_render_lens(info, "bokeh", 'lentil_thinlens', focallength)
