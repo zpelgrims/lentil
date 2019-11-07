@@ -59,7 +59,6 @@ def unit_render_lens(lensdict, mode, camerashader, focallength):
             node_thinlens = AiNodeLookUpByName('rendercamLentilThinLensShape')
         AiNodeSetPtr(options, "camera", node_thinlens);
         AiNodeSetStr(node_thinlens, 'bokeh_exr_pathTL', "{}-{}-{}-bidirectional.exr".format(lensdict["outfile"], camerashader, mode))
-
         
         sensor_width = 36.0
         fov = 2.0 * math.atan(sensor_width / (2.0 * lensdict["focallength"]))
