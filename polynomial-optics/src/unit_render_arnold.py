@@ -58,8 +58,7 @@ def unit_render_lens(lensdict, mode, camerashader, focallength):
         else:
             node_thinlens = AiNodeLookUpByName('rendercamLentilThinLensShape')
         AiNodeSetPtr(options, "camera", node_thinlens);
-        AiNodeSetStr(node_thinlens, 'bokeh_exr_path', "{}-{}-{}-bidirectional.exr".format(lensdict["outfile"], camerashader, mode))
-
+        AiNodeSetStr(node_thinlens, 'bokeh_exr_pathTL', "{}-{}-{}-bidirectional.exr".format(lensdict["outfile"], camerashader, mode))
         
         sensor_width = 36.0
         fov = 2.0 * math.atan(sensor_width / (2.0 * lensdict["focallength"]))
@@ -70,8 +69,8 @@ def unit_render_lens(lensdict, mode, camerashader, focallength):
             AiNodeSetFlt(node_thinlens, 'aperture_size', aperture_radius)
 
         if node_thinlens is not None and AiNodeIs(node_thinlens, 'lentil_thinlens') == True:
-            AiNodeSetFlt(node_thinlens, 'fstop', lensdict["max_fstop"])
-            AiNodeSetFlt(node_thinlens, 'focal_length', focallength/10.0)
+            AiNodeSetFlt(node_thinlens, 'fstopTL', lensdict["max_fstop"])
+            AiNodeSetFlt(node_thinlens, 'focal_lengthTL', focallength/10.0)
 
     
     driver_png = AiNodeLookUpByName('aiAOVDriver2@driver_png.RGBA')
