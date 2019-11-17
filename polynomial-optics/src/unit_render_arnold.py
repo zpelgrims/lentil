@@ -44,7 +44,7 @@ def unit_render_lens(lensdict, mode, camerashader, focallength):
     if camerashader == 'lentil':
         node_camera = AiNodeLookUpByName('rendercamLentilShape')
         AiNodeSetPtr(options, "camera", node_camera);
-        AiNodeSetStr(node_camera, 'bokeh_exr_path', "{}-{}-{}-bidirectional.exr".format(lensdict["outfile"], camerashader, mode))
+        AiNodeSetStr(node_camera, 'bokeh_exr_path', "{}-{}-{}-bidirectional.$AOV.$FRAME.exr".format(lensdict["outfile"], camerashader, mode))
 
         if node_camera is not None and AiNodeIs(node_camera, 'lentil') == True:
             param_entry = AiNodeEntryLookUpParameter(AiNodeEntryLookUp("lentil"), "lens_model")
@@ -58,7 +58,7 @@ def unit_render_lens(lensdict, mode, camerashader, focallength):
         else:
             node_thinlens = AiNodeLookUpByName('rendercamLentilThinLensShape')
         AiNodeSetPtr(options, "camera", node_thinlens);
-        AiNodeSetStr(node_thinlens, 'bokeh_exr_pathTL', "{}-{}-{}-bidirectional.exr".format(lensdict["outfile"], camerashader, mode))
+        AiNodeSetStr(node_thinlens, 'bokeh_exr_pathTL', "{}-{}-{}-bidirectional.$AOV.$FRAME.exr".format(lensdict["outfile"], camerashader, mode))
         
         sensor_width = 36.0
         fov = 2.0 * math.atan(sensor_width / (2.0 * lensdict["focallength"]))
