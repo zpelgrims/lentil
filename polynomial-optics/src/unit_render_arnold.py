@@ -44,13 +44,13 @@ def unit_render_lens(lensdict, mode, camerashader, focallength):
     if camerashader == 'lentil':
         node_camera = AiNodeLookUpByName('rendercamLentilShape')
         AiNodeSetPtr(options, "camera", node_camera);
-        AiNodeSetStr(node_camera, 'bokeh_exr_path', "{}-{}-{}-bidirectional.$AOV.$FRAME.exr".format(lensdict["outfile"], camerashader, mode))
+        AiNodeSetStr(node_camera, 'bokeh_exr_pathPO', "{}-{}-{}-bidirectional.$AOV.$FRAME.exr".format(lensdict["outfile"], camerashader, mode))
 
         if node_camera is not None and AiNodeIs(node_camera, 'lentil') == True:
-            param_entry = AiNodeEntryLookUpParameter(AiNodeEntryLookUp("lentil"), "lens_model")
+            param_entry = AiNodeEntryLookUpParameter(AiNodeEntryLookUp("lentil"), "lens_modelPO")
             enum = AiParamGetEnum(param_entry)
             enum_index = AiEnumGetValue(enum, lensdict["lens_name_for_enum_find"])
-            AiNodeSetInt(node_camera, 'lens_model', enum_index)
+            AiNodeSetInt(node_camera, 'lens_modelPO', enum_index)
 
     else:
         if camerashader == 'persp_camera':
