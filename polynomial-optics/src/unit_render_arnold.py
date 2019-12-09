@@ -44,13 +44,14 @@ def unit_render_lens(lensdict, mode, camerashader, focallength):
     options = AiUniverseGetOptions()
     AiNodeSetStr(options, "texture_searchpath", texture_search_path)
 
-    output_path_exr = ""
+    output_path_bidir_exr = ""
+    output_path_fw_exr = ""
 
     if camerashader == 'lentil':
         node_camera = AiNodeLookUpByName('rendercamLentilShape')
         AiNodeSetPtr(options, "camera", node_camera);
-        output_path_exr = "{}-{}-{}-bidirectional.$AOV.$FRAME.exr".format(lensdict["outfile"], camerashader, mode)
-        AiNodeSetStr(node_camera, 'bidir_output_pathPO', output_path_exr)
+        output_path_bidir_exr = "{}-{}-{}-bidirectional.<aov>.<frame>.exr".format(lensdict["outfile"], camerashader, mode)
+        AiNodeSetStr(node_camera, 'bidir_output_pathPO', output_path_bidir_exr)
 
         if node_camera is not None and AiNodeIs(node_camera, 'lentil') == True:
             param_entry = AiNodeEntryLookUpParameter(AiNodeEntryLookUp("lentil"), "lens_modelPO")
@@ -64,8 +65,8 @@ def unit_render_lens(lensdict, mode, camerashader, focallength):
         else:
             node_thinlens = AiNodeLookUpByName('rendercamLentilThinLensShape')
         AiNodeSetPtr(options, "camera", node_thinlens);
-        output_path_exr = "{}-{}-{}-bidirectional.$AOV.$FRAME.exr".format(lensdict["outfile"], camerashader, mode)
-        AiNodeSetStr(node_thinlens, 'bidir_output_pathTL', output_path_exr)
+        output_path_bidir_exr = "{}-{}-{}-bidirectional.<aov>.<frame>.exr".format(lensdict["outfile"], camerashader, mode)
+        AiNodeSetStr(node_thinlens, 'bidir_output_pathTL', output_path_bidir_exr)
         
         sensor_width = 36.0
         fov = 2.0 * math.atan(sensor_width / (2.0 * lensdict["focallength"]))
@@ -80,9 +81,10 @@ def unit_render_lens(lensdict, mode, camerashader, focallength):
             AiNodeSetFlt(node_thinlens, 'focal_lengthTL', focallength/10.0)
 
     
-    driver_png = AiNodeLookUpByName('aiAOVDriver2@driver_png.RGBA')
-    if driver_png is not None and AiNodeIs(driver_png, 'driver_png') == True:
-        AiNodeSetStr(driver_png, 'filename', "{}-{}-{}.png".format(lensdict["outfile"], camerashader, mode))
+    driver_exr = AiNodeLookUpByName('defaultArnoldDriver@driver_exr.RGBA')
+    if driver_exr is not None and AiNodeIs(driver_exr, 'driver_exr') == True:
+        output_path_fw_exr = "{}-{}-{}.exr".format(lensdict["outfile"], camerashader, mode)
+        AiNodeSetStr(driver_exr, 'filename', output_path_fw_exr)
 
 
     # increase exposure of the lights
@@ -97,8 +99,23 @@ def unit_render_lens(lensdict, mode, camerashader, focallength):
     AiEnd()
 
     # convert exr to png
+    output_path_bidir_exr = output_path_bidir_exr.replace("<aov>", "RGBA")
+    output_path_bidir_exr = output_path_bidir_exr.replace("<frame>", "0001")
+    output_path_bidir_png = output_path_bidir_exr[:-3] + "png"
+    
+    output_path_fw_png = output_path_fw_exr[:-3] + "png"
+
+    oiio_bidir = "oiiotool -i '{}' --tocolorspace srgb -v -o '{}'".format(output_path_bidir_exr, output_path_bidir_png)
+    oiio_default = "oiiotool -i '{}' --tocolorspace srgb -v -o '{}'".format(output_path_fw_exr, output_path_fw_png)
+    print oiio_bidir
+    print oiio_default
+
     subprocess.call([
-        "oiiotool -i {} --tocolorspace srgb -o {}".format(output_path_exr, output_path_exr[:-3] + ".png")
+        oiio_bidir    
+    ], shell=True)
+
+    subprocess.call([
+        oiio_default
     ], shell=True)
     
 
@@ -168,10 +185,10 @@ def execute_single(lensid, focallength):
     info = lenses[lensid][focallength]
     unit_render_lens(info, "bokeh", 'lentil', focallength)
     unit_render_lens(info, "bokeh", 'lentil_thinlens', focallength)
-    unit_render_lens(info, "bokeh", 'persp_camera', focallength)
-    unit_render_lens(info, "chart", 'lentil', focallength)
-    unit_render_lens(info, "chart", 'lentil_thinlens', focallength)
-    unit_render_lens(info, "chart", 'persp_camera', focallength)
+    #unit_render_lens(info, "bokeh", 'persp_camera', focallength)
+    #unit_render_lens(info, "chart", 'lentil', focallength)
+    #unit_render_lens(info, "chart", 'lentil_thinlens', focallength)
+    #unit_render_lens(info, "chart", 'persp_camera', focallength)
 
 
 
