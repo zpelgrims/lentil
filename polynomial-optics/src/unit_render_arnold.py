@@ -5,6 +5,8 @@ import math
 import re
 import argparse
 import platform
+import subprocess
+
 
 if platform.system() == 'Linux':
     arnold_path = "/home/cactus/Arnold-5.4.0.2-linux"
@@ -42,10 +44,13 @@ def unit_render_lens(lensdict, mode, camerashader, focallength):
     options = AiUniverseGetOptions()
     AiNodeSetStr(options, "texture_searchpath", texture_search_path)
 
+    output_path_exr = ""
+
     if camerashader == 'lentil':
         node_camera = AiNodeLookUpByName('rendercamLentilShape')
         AiNodeSetPtr(options, "camera", node_camera);
-        AiNodeSetStr(node_camera, 'bidir_output_pathPO', "{}-{}-{}-bidirectional.$AOV.$FRAME.exr".format(lensdict["outfile"], camerashader, mode))
+        output_path_exr = "{}-{}-{}-bidirectional.$AOV.$FRAME.exr".format(lensdict["outfile"], camerashader, mode)
+        AiNodeSetStr(node_camera, 'bidir_output_pathPO', output_path_exr)
 
         if node_camera is not None and AiNodeIs(node_camera, 'lentil') == True:
             param_entry = AiNodeEntryLookUpParameter(AiNodeEntryLookUp("lentil"), "lens_modelPO")
@@ -59,7 +64,8 @@ def unit_render_lens(lensdict, mode, camerashader, focallength):
         else:
             node_thinlens = AiNodeLookUpByName('rendercamLentilThinLensShape')
         AiNodeSetPtr(options, "camera", node_thinlens);
-        AiNodeSetStr(node_thinlens, 'bidir_output_pathTL', "{}-{}-{}-bidirectional.$AOV.$FRAME.exr".format(lensdict["outfile"], camerashader, mode))
+        output_path_exr = "{}-{}-{}-bidirectional.$AOV.$FRAME.exr".format(lensdict["outfile"], camerashader, mode)
+        AiNodeSetStr(node_thinlens, 'bidir_output_pathTL', output_path_exr)
         
         sensor_width = 36.0
         fov = 2.0 * math.atan(sensor_width / (2.0 * lensdict["focallength"]))
@@ -89,6 +95,11 @@ def unit_render_lens(lensdict, mode, camerashader, focallength):
     AiRender()
     AiRenderEnd ()
     AiEnd()
+
+    # convert exr to png
+    subprocess.call([
+        "oiiotool -i {} --tocolorspace srgb -o {}".format(output_path_exr, output_path_exr[:-3] + ".png")
+    ], shell=True)
     
 
 
@@ -155,12 +166,12 @@ def execute_all():
 def execute_single(lensid, focallength):
     lenses = collect_all_prod_ready_lenses("{}/polynomial-optics/database/lenses.json".format(lentil_path))
     info = lenses[lensid][focallength]
-    #unit_render_lens(info, "bokeh", 'lentil', focallength)
+    unit_render_lens(info, "bokeh", 'lentil', focallength)
     unit_render_lens(info, "bokeh", 'lentil_thinlens', focallength)
-    #unit_render_lens(info, "bokeh", 'persp_camera', focallength)
-    #unit_render_lens(info, "chart", 'lentil', focallength)
-    #unit_render_lens(info, "chart", 'lentil_thinlens', focallength)
-    #unit_render_lens(info, "chart", 'persp_camera', focallength)
+    unit_render_lens(info, "bokeh", 'persp_camera', focallength)
+    unit_render_lens(info, "chart", 'lentil', focallength)
+    unit_render_lens(info, "chart", 'lentil_thinlens', focallength)
+    unit_render_lens(info, "chart", 'persp_camera', focallength)
 
 
 
