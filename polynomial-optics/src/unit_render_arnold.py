@@ -98,22 +98,20 @@ def unit_render_lens(lensdict, mode, camerashader, focallength):
     AiRenderEnd ()
     AiEnd()
 
+
     # convert exr to png
-    output_path_bidir_exr = output_path_bidir_exr.replace("<aov>", "RGBA")
-    output_path_bidir_exr = output_path_bidir_exr.replace("<frame>", "0001")
-    output_path_bidir_png = output_path_bidir_exr[:-3] + "png"
-    
+    if (camerashader != 'persp_camera'):
+
+        output_path_bidir_exr = output_path_bidir_exr.replace("<aov>", "RGBA")
+        output_path_bidir_exr = output_path_bidir_exr.replace("<frame>", "0001")
+        output_path_bidir_png = output_path_bidir_exr[:-3] + "png"
+        oiio_bidir = "oiiotool -i '{}' --tocolorspace srgb -v -o '{}'".format(output_path_bidir_exr, output_path_bidir_png)
+        subprocess.call([
+            oiio_bidir    
+        ], shell=True)
+
     output_path_fw_png = output_path_fw_exr[:-3] + "png"
-
-    oiio_bidir = "oiiotool -i '{}' --tocolorspace srgb -v -o '{}'".format(output_path_bidir_exr, output_path_bidir_png)
     oiio_default = "oiiotool -i '{}' --tocolorspace srgb -v -o '{}'".format(output_path_fw_exr, output_path_fw_png)
-    print oiio_bidir
-    print oiio_default
-
-    subprocess.call([
-        oiio_bidir    
-    ], shell=True)
-
     subprocess.call([
         oiio_default
     ], shell=True)
@@ -185,7 +183,7 @@ def execute_single(lensid, focallength):
     info = lenses[lensid][focallength]
     unit_render_lens(info, "bokeh", 'lentil', focallength)
     unit_render_lens(info, "bokeh", 'lentil_thinlens', focallength)
-    #unit_render_lens(info, "bokeh", 'persp_camera', focallength)
+    unit_render_lens(info, "bokeh", 'persp_camera', focallength)
     #unit_render_lens(info, "chart", 'lentil', focallength)
     #unit_render_lens(info, "chart", 'lentil_thinlens', focallength)
     #unit_render_lens(info, "chart", 'persp_camera', focallength)
