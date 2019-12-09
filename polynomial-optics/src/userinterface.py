@@ -294,11 +294,11 @@ class ArnoldMayaTranslator(LentilDialog):
     def discover_available_camera_models(self):
         for n in range(len(self.lens_database)):
             try:
-                cmds.setAttr("{}.aiLensModel".format(self.currentCamera), n)
+                cmds.setAttr("{}.aiLensModelPO".format(self.currentCamera), n)
             except: #add proper exception
                 continue
             
-            enum_value_str = cmds.getAttr("{}.aiLensModel".format(self.currentCamera), asString=True)
+            enum_value_str = cmds.getAttr("{}.aiLensModelPO".format(self.currentCamera), asString=True)
             company, product_name = self.get_company_lens_model_from_string(enum_value_str)
             for lensid in self.lens_database:
                 if company.replace("_", "-") == self.lens_database[lensid]["company"] and product_name.replace("_", "-") == self.lens_database[lensid]["product-name"]:
@@ -337,15 +337,15 @@ class ArnoldMayaTranslator(LentilDialog):
             return
 
     def read_values(self):
-        self.sensorwidthS.slider.setValue(cmds.getAttr("{}.aiSensorWidth".format(self.currentCamera)))
-        self.fstopS.slider.setValue(cmds.getAttr("{}.aiFstop".format(self.currentCamera)))
-        self.wavelengthS.slider.setValue(cmds.getAttr("{}.aiWavelength".format(self.currentCamera)))
-        self.focusDistanceS.slider.setValue(cmds.getAttr("{}.aiFocusDistance".format(self.currentCamera)))
-        self.extraSensorShiftS.slider.setValue(cmds.getAttr("{}.aiExtraSensorShift".format(self.currentCamera)))
-        self.vignettingRetriesS.slider.setValue(cmds.getAttr("{}.aiVignettingRetries".format(self.currentCamera)))
-        self.unitCB.setCurrentIndex(cmds.getAttr("{}.aiUnitModel".format(self.currentCamera))) # why doesn't this work?
+        self.sensorwidthS.slider.setValue(cmds.getAttr("{}.aiSensorWidthPO".format(self.currentCamera)))
+        self.fstopS.slider.setValue(cmds.getAttr("{}.aiFstopPO".format(self.currentCamera)))
+        self.wavelengthS.slider.setValue(cmds.getAttr("{}.aiWavelengthPO".format(self.currentCamera)))
+        self.focusDistanceS.slider.setValue(cmds.getAttr("{}.aiFocusDistancePO".format(self.currentCamera)))
+        self.extraSensorShiftS.slider.setValue(cmds.getAttr("{}.aiExtraSensorShiftPO".format(self.currentCamera)))
+        self.vignettingRetriesS.slider.setValue(cmds.getAttr("{}.aiVignettingRetriesPO".format(self.currentCamera)))
+        self.unitCB.setCurrentIndex(cmds.getAttr("{}.aiUnitModelPO".format(self.currentCamera))) # why doesn't this work?
         
-        lens_full_name = cmds.getAttr("{}.aiLensModel".format(self.currentCamera), asString=True)
+        lens_full_name = cmds.getAttr("{}.aiLensModelPO".format(self.currentCamera), asString=True)
         focallength = int(self.extract_focal_length_from_full_name(lens_full_name)[:-2])
         lens_name = self.extract_lens_name_from_full_name(lens_full_name)[:-1]
         # year = self.extract_year_from_full_name(lens_full_name)
@@ -353,25 +353,25 @@ class ArnoldMayaTranslator(LentilDialog):
         self.focalLengthCB.setCurrentText(str(focallength))
         # self.yearCB.setCurrentText(str(year))
 
-        self.dofCB.setCurrentText('enabled' if cmds.getAttr("{}.aiDof".format(self.currentCamera)) is True else 'disabled')
-        self.bokehImageCB.setCurrentText('enabled' if cmds.getAttr("{}.aiUseImage".format(self.currentCamera)) is True else 'disabled')
-        self.bokehImagePathLE.setText(str(cmds.getAttr("{}.aiBokehInputPath".format(self.currentCamera))))
+        self.dofCB.setCurrentText('enabled' if cmds.getAttr("{}.aiDofPO".format(self.currentCamera)) is True else 'disabled')
+        self.bokehImageCB.setCurrentText('enabled' if cmds.getAttr("{}.aiBokehEnableImagePO".format(self.currentCamera)) is True else 'disabled')
+        self.bokehImagePathLE.setText(str(cmds.getAttr("{}.aiBokehImagePathPO".format(self.currentCamera))))
         
-        self.empirical_caS.slider.setValue(cmds.getAttr("{}.aiEmpiricalCaDist".format(self.currentCamera)))
+        # self.empirical_caS.slider.setValue(cmds.getAttr("{}.aiEmpiricalCaDist".format(self.currentCamera)))
 
     def listen_for_attributes(self):
-        self.sensorwidth_sj = cmds.scriptJob(attributeChange=["{}.aiSensorWidth".format(self.currentCamera), self.read_values])
-        self.fstop_sj = cmds.scriptJob(attributeChange=["{}.aiFstop".format(self.currentCamera), self.read_values])
-        self.wavelength_sj = cmds.scriptJob(attributeChange=["{}.aiWavelength".format(self.currentCamera), self.read_values])
-        self.focaldistance_sj = cmds.scriptJob(attributeChange=["{}.aiFocalDistance".format(self.currentCamera), self.read_values])
-        self.extrasensorshift_sj = cmds.scriptJob(attributeChange=["{}.aiExtraSensorShift".format(self.currentCamera), self.read_values])
-        self.vignettingretries_sj = cmds.scriptJob(attributeChange=["{}.aiVignettingRetries".format(self.currentCamera), self.read_values])
-        self.lensmodel_sj = cmds.scriptJob(attributeChange=["{}.aiLensModel".format(self.currentCamera), self.read_values])
-        self.dof_sj = cmds.scriptJob(attributeChange=["{}.aiDof".format(self.currentCamera), self.read_values])
-        self.unitmodel_sj = cmds.scriptJob(attributeChange=["{}.aiUnitModel".format(self.currentCamera), self.read_values])
-        self.bokeh_enable_sj = cmds.scriptJob(attributeChange=["{}.aiUseImage".format(self.currentCamera), self.read_values])
-        self.bokeh_path_sj = cmds.scriptJob(attributeChange=["{}.aiBokehInputPath".format(self.currentCamera), self.read_values])
-        self.empirical_ca_dist_sj = cmds.scriptJob(attributeChange=["{}.aiEmpiricalCaDist".format(self.currentCamera), self.read_values])
+        self.sensorwidth_sj = cmds.scriptJob(attributeChange=["{}.aiSensorWidthPO".format(self.currentCamera), self.read_values])
+        self.fstop_sj = cmds.scriptJob(attributeChange=["{}.aiFstopPO".format(self.currentCamera), self.read_values])
+        self.wavelength_sj = cmds.scriptJob(attributeChange=["{}.aiWavelengthPO".format(self.currentCamera), self.read_values])
+        self.focaldistance_sj = cmds.scriptJob(attributeChange=["{}.aiFocalDistancePO".format(self.currentCamera), self.read_values])
+        self.extrasensorshift_sj = cmds.scriptJob(attributeChange=["{}.aiExtraSensorShiftPO".format(self.currentCamera), self.read_values])
+        self.vignettingretries_sj = cmds.scriptJob(attributeChange=["{}.aiVignettingRetriesPO".format(self.currentCamera), self.read_values])
+        self.lensmodel_sj = cmds.scriptJob(attributeChange=["{}.aiLensModelPO".format(self.currentCamera), self.read_values])
+        self.dof_sj = cmds.scriptJob(attributeChange=["{}.aiDofPO".format(self.currentCamera), self.read_values])
+        self.unitmodel_sj = cmds.scriptJob(attributeChange=["{}.aiUnitModelPO".format(self.currentCamera), self.read_values])
+        self.bokeh_enable_sj = cmds.scriptJob(attributeChange=["{}.aiBokehEnableImagePO".format(self.currentCamera), self.read_values])
+        self.bokeh_path_sj = cmds.scriptJob(attributeChange=["{}.aiBokehImagePathPO".format(self.currentCamera), self.read_values])
+        # self.empirical_ca_dist_sj = cmds.scriptJob(attributeChange=["{}.aiEmpiricalCaDist".format(self.currentCamera), self.read_values])
 
     def __del__(self):
         # kill the scriptjobs that listen for attribute changes
@@ -389,35 +389,35 @@ class ArnoldMayaTranslator(LentilDialog):
         cmds.scriptJob(kill=self.empirical_ca_dist_sj, force=True)
 
     def value_changed(self):
-        cmds.setAttr("{}.aiSensorWidth".format(self.currentCamera), self.sensorwidthS.labelValue.value())
-        cmds.setAttr("{}.aiFstop".format(self.currentCamera), self.fstopS.labelValue.value())
-        cmds.setAttr("{}.aiWavelength".format(self.currentCamera), self.wavelengthS.labelValue.value())
-        cmds.setAttr("{}.aiFocalDistance".format(self.currentCamera), self.focusDistanceS.labelValue.value())
-        cmds.setAttr("{}.aiExtraSensorShift".format(self.currentCamera), self.extraSensorShiftS.labelValue.value())
-        cmds.setAttr("{}.aiVignettingRetries".format(self.currentCamera), self.vignettingRetriesS.labelValue.value())
-        cmds.setAttr("{}.aiDof".format(self.currentCamera), False if self.dofCB.currentText() == 'disabled' else True)
-        cmds.setAttr("{}.aiUnitModel".format(self.currentCamera), self.unitCB.currentIndex())
+        cmds.setAttr("{}.aiSensorWidthPO".format(self.currentCamera), self.sensorwidthS.labelValue.value())
+        cmds.setAttr("{}.aiFstopPO".format(self.currentCamera), self.fstopS.labelValue.value())
+        cmds.setAttr("{}.aiWavelengthPO".format(self.currentCamera), self.wavelengthS.labelValue.value())
+        cmds.setAttr("{}.aiFocalDistancePO".format(self.currentCamera), self.focusDistanceS.labelValue.value())
+        cmds.setAttr("{}.aiExtraSensorShiftPO".format(self.currentCamera), self.extraSensorShiftS.labelValue.value())
+        cmds.setAttr("{}.aiVignettingRetriesPO".format(self.currentCamera), self.vignettingRetriesS.labelValue.value())
+        cmds.setAttr("{}.aiDofPO".format(self.currentCamera), False if self.dofCB.currentText() == 'disabled' else True)
+        cmds.setAttr("{}.aiUnitModelPO".format(self.currentCamera), self.unitCB.currentIndex())
 
         current_lens_name = "{}__{}__{}__{}mm".format(self.lens_database[self.currentLensId]["company"].replace("-", "_"),
                                             self.lens_database[self.currentLensId]["product-name"].replace("-", "_"),
                                             self.lens_database[self.currentLensId]["year"],
                                             self.focalLengthCB.currentText())
-        cmds.setAttr("{}.aiLensModel".format(self.currentCamera), self.enum_lens_map[current_lens_name])
+        cmds.setAttr("{}.aiLensModelPO".format(self.currentCamera), self.enum_lens_map[current_lens_name])
 
-        cmds.setAttr("{}.aiUseImage".format(self.currentCamera), False if self.bokehImageCB.currentText() == 'disabled' else True)
-        cmds.setAttr("{}.aiBokehInputPath".format(self.currentCamera), self.bokehImagePathLE.text(), type="string")
+        cmds.setAttr("{}.aiBokehEnableImagePO".format(self.currentCamera), False if self.bokehImageCB.currentText() == 'disabled' else True)
+        cmds.setAttr("{}.aiBokehImagePathPO".format(self.currentCamera), self.bokehImagePathLE.text(), type="string")
 
-        cmds.setAttr("{}.aiEmpiricalCaDist".format(self.currentCamera), self.empirical_caS.labelValue.value())
+        # cmds.setAttr("{}.aiEmpiricalCaDist".format(self.currentCamera), self.empirical_caS.labelValue.value())
 
     def build_camera_enum_map(self):
         for n in range(len(self.lens_database)):
             try:
-                cmds.setAttr("{}.aiLensModel".format(self.currentCamera), n)
+                cmds.setAttr("{}.aiLensModelPO".format(self.currentCamera), n)
             except:
                 continue
             
-            enum_value_str = cmds.getAttr("{}.aiLensModel".format(self.currentCamera), asString=True)
-            self.enum_lens_map[enum_value_str] = cmds.getAttr("{}.aiLensModel".format(self.currentCamera))
+            enum_value_str = cmds.getAttr("{}.aiLensModelPO".format(self.currentCamera), asString=True)
+            self.enum_lens_map[enum_value_str] = cmds.getAttr("{}.aiLensModelPO".format(self.currentCamera))
 
         # print(self.enum_lens_map)
         
