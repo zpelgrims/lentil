@@ -13,6 +13,7 @@ Fstop minimum should be set -> untested
 class LentilDialog(QtWidgets.QDialog):
     def __init__(self, parent=None):
         super(LentilDialog, self).__init__(parent)
+        self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
         self.setWindowTitle("Lentil")
         self.setMinimumWidth(350)
         self.lens_database = None
@@ -105,7 +106,7 @@ class LentilDialog(QtWidgets.QDialog):
         self.bokehImagePathHbox.addWidget(self.browseBokehImagePath)
 
 
-        self.empirical_caS = SliderLayout('Empirical Chromatic Aberration', 0, 100)
+        # self.empirical_caS = SliderLayout('Empirical Chromatic Aberration', 0, 100)
 
 
         self.vboxLayout.addWidget(self.image)
@@ -131,7 +132,7 @@ class LentilDialog(QtWidgets.QDialog):
         self.vboxLayout.addLayout(self.bokehImagePathHbox)
 
         self.vboxLayout.addWidget(self.separator4)
-        self.vboxLayout.addWidget(self.empirical_caS)
+        # self.vboxLayout.addWidget(self.empirical_caS)
 
         self.setLayout(self.vboxLayout)
 
@@ -216,8 +217,8 @@ class LentilDialog(QtWidgets.QDialog):
         self.lensCB.activated.connect(self.value_changed)
         self.bokehImageCB.activated.connect(self.value_changed)
         self.bokehImagePathLE.textChanged.connect(self.value_changed)
-        self.empirical_caS.slider.valueChanged.connect(self.value_changed)
-        self.empirical_caS.labelValue.valueChanged.connect(self.value_changed)
+        # self.empirical_caS.slider.valueChanged.connect(self.value_changed)
+        # self.empirical_caS.labelValue.valueChanged.connect(self.value_changed)
 
     def value_changed(self):
         pass # implement in child classes
@@ -228,7 +229,7 @@ class LentilDialog(QtWidgets.QDialog):
     def get_company_lens_model_from_string(self, string):
         split = string.split("__")
         return (split[0], split[1])
-
+    
 
 
 class QHLine(QtWidgets.QFrame):
@@ -343,7 +344,7 @@ class ArnoldMayaTranslator(LentilDialog):
         self.focusDistanceS.slider.setValue(cmds.getAttr("{}.aiFocusDistancePO".format(self.currentCamera)))
         self.extraSensorShiftS.slider.setValue(cmds.getAttr("{}.aiExtraSensorShiftPO".format(self.currentCamera)))
         self.vignettingRetriesS.slider.setValue(cmds.getAttr("{}.aiVignettingRetriesPO".format(self.currentCamera)))
-        self.unitCB.setCurrentIndex(cmds.getAttr("{}.aiUnitModelPO".format(self.currentCamera))) # why doesn't this work?
+        self.unitCB.setCurrentIndex(cmds.getAttr("{}.aiUnitsPO".format(self.currentCamera))) # why doesn't this work?
         
         lens_full_name = cmds.getAttr("{}.aiLensModelPO".format(self.currentCamera), asString=True)
         focallength = int(self.extract_focal_length_from_full_name(lens_full_name)[:-2])
@@ -363,12 +364,12 @@ class ArnoldMayaTranslator(LentilDialog):
         self.sensorwidth_sj = cmds.scriptJob(attributeChange=["{}.aiSensorWidthPO".format(self.currentCamera), self.read_values])
         self.fstop_sj = cmds.scriptJob(attributeChange=["{}.aiFstopPO".format(self.currentCamera), self.read_values])
         self.wavelength_sj = cmds.scriptJob(attributeChange=["{}.aiWavelengthPO".format(self.currentCamera), self.read_values])
-        self.focaldistance_sj = cmds.scriptJob(attributeChange=["{}.aiFocalDistancePO".format(self.currentCamera), self.read_values])
+        self.focaldistance_sj = cmds.scriptJob(attributeChange=["{}.aiFocusDistancePO".format(self.currentCamera), self.read_values])
         self.extrasensorshift_sj = cmds.scriptJob(attributeChange=["{}.aiExtraSensorShiftPO".format(self.currentCamera), self.read_values])
         self.vignettingretries_sj = cmds.scriptJob(attributeChange=["{}.aiVignettingRetriesPO".format(self.currentCamera), self.read_values])
         self.lensmodel_sj = cmds.scriptJob(attributeChange=["{}.aiLensModelPO".format(self.currentCamera), self.read_values])
         self.dof_sj = cmds.scriptJob(attributeChange=["{}.aiDofPO".format(self.currentCamera), self.read_values])
-        self.unitmodel_sj = cmds.scriptJob(attributeChange=["{}.aiUnitModelPO".format(self.currentCamera), self.read_values])
+        self.unitmodel_sj = cmds.scriptJob(attributeChange=["{}.aiUnitsPO".format(self.currentCamera), self.read_values])
         self.bokeh_enable_sj = cmds.scriptJob(attributeChange=["{}.aiBokehEnableImagePO".format(self.currentCamera), self.read_values])
         self.bokeh_path_sj = cmds.scriptJob(attributeChange=["{}.aiBokehImagePathPO".format(self.currentCamera), self.read_values])
         # self.empirical_ca_dist_sj = cmds.scriptJob(attributeChange=["{}.aiEmpiricalCaDist".format(self.currentCamera), self.read_values])
@@ -386,17 +387,17 @@ class ArnoldMayaTranslator(LentilDialog):
         cmds.scriptJob(kill=self.unitmodel_sj, force=True)
         cmds.scriptJob(kill=self.bokeh_enable_sj, force=True)
         cmds.scriptJob(kill=self.bokeh_path_sj, force=True)
-        cmds.scriptJob(kill=self.empirical_ca_dist_sj, force=True)
+        # cmds.scriptJob(kill=self.empirical_ca_dist_sj, force=True)
 
     def value_changed(self):
         cmds.setAttr("{}.aiSensorWidthPO".format(self.currentCamera), self.sensorwidthS.labelValue.value())
         cmds.setAttr("{}.aiFstopPO".format(self.currentCamera), self.fstopS.labelValue.value())
         cmds.setAttr("{}.aiWavelengthPO".format(self.currentCamera), self.wavelengthS.labelValue.value())
-        cmds.setAttr("{}.aiFocalDistancePO".format(self.currentCamera), self.focusDistanceS.labelValue.value())
+        cmds.setAttr("{}.aiFocusDistancePO".format(self.currentCamera), self.focusDistanceS.labelValue.value())
         cmds.setAttr("{}.aiExtraSensorShiftPO".format(self.currentCamera), self.extraSensorShiftS.labelValue.value())
         cmds.setAttr("{}.aiVignettingRetriesPO".format(self.currentCamera), self.vignettingRetriesS.labelValue.value())
         cmds.setAttr("{}.aiDofPO".format(self.currentCamera), False if self.dofCB.currentText() == 'disabled' else True)
-        cmds.setAttr("{}.aiUnitModelPO".format(self.currentCamera), self.unitCB.currentIndex())
+        cmds.setAttr("{}.aiUnitsPO".format(self.currentCamera), self.unitCB.currentIndex())
 
         current_lens_name = "{}__{}__{}__{}mm".format(self.lens_database[self.currentLensId]["company"].replace("-", "_"),
                                             self.lens_database[self.currentLensId]["product-name"].replace("-", "_"),
