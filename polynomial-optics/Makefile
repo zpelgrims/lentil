@@ -1,5 +1,13 @@
-CXX=clang++
-CXXFLAGS=-Wall -D_GNU_SOURCE -fopenmp -std=c++17 -DFMT_HEADER_ONLY
+OS := $(shell uname)
+ifeq ($(OS), Darwin)
+	CXX=clang++
+endif
+ifeq ($(OS), Linux)
+	CXX=g++
+endif
+
+
+CXXFLAGS = -Wall -D_GNU_SOURCE -fopenmp -std=c++17 -DFMT_HEADER_ONLY
 CXXFLAGS += -I/usr/local/include/cairo/ -L/usr/local/lib
 OPTFLAGS = -DNDEBUG -ffast-math -mfpmath=sse -march=native -fno-finite-math-only -fexpensive-optimizations -I. -Isrc/
 #OPTFLAGS += -g #debug symbols

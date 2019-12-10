@@ -22,4 +22,4 @@ echo ""
 # reset text formatting
 tput sgr0
 
-make -j 32
+make -j 16
