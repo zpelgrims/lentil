@@ -7,6 +7,9 @@ import re
 TODO:
 
 Fstop minimum should be set -> untested
+
+Add aperture blades
+add proper ray derivatives
 """
 
 
@@ -105,6 +108,8 @@ class LentilDialog(QtWidgets.QDialog):
         self.bokehImagePathHbox.addWidget(self.bokehImagePathLE)
         self.bokehImagePathHbox.addWidget(self.browseBokehImagePath)
 
+        self.notes = QtWidgets.QTextEdit(self.lens_database[self.currentLensId]["notes"])
+
 
         # self.empirical_caS = SliderLayout('Empirical Chromatic Aberration', 0, 100)
 
@@ -114,6 +119,7 @@ class LentilDialog(QtWidgets.QDialog):
         self.vboxLayout.addWidget(self.separator1)
 
         self.vboxLayout.addLayout(self.lensHB)
+        self.vboxLayout.addWidget(self.notes)
         self.vboxLayout.addLayout(self.dofHbox)
         self.vboxLayout.addLayout(self.unitHB)
         self.vboxLayout.addLayout(self.yearHB)
@@ -177,11 +183,11 @@ class LentilDialog(QtWidgets.QDialog):
         with open("/Users/zeno/lentil/www/json/lenses_public.json") as data_file:    
             self.lens_database = json.load(data_file)
 
-    def construct_lens_name(self, id, focal_length_user):
+    def construct_lens_name(self, lensid, focal_length_user):
         return "{company}_{name}_{year}_{focallength}mm".format(
-            company = self.lens_database[id]["company"].lower(),
-            name = self.lens_database[id]["product-name"].lower(),
-            year = self.lens_database[id]["year"],
+            company = self.lens_database[lensid]["company"].lower(),
+            name = self.lens_database[lensid]["product-name"].lower(),
+            year = self.lens_database[lensid]["year"],
             focallength = focal_length_user
         )
     
@@ -190,6 +196,8 @@ class LentilDialog(QtWidgets.QDialog):
 
     def extract_lens_name_from_full_name(self, fullname):
         return re.search('^\D+', fullname).group(0)
+    
+
     
     # def extract_year_from_full_name(self, fullname):
     #     lens_name = self.extract_lens_name_from_full_name(fullname)
@@ -337,6 +345,7 @@ class ArnoldMayaTranslator(LentilDialog):
             print("Error: Lentil doesn't seem to be installed.")
             return
 
+
     def read_values(self):
         self.sensorwidthS.slider.setValue(cmds.getAttr("{}.aiSensorWidthPO".format(self.currentCamera)))
         self.fstopS.slider.setValue(cmds.getAttr("{}.aiFstopPO".format(self.currentCamera)))
@@ -348,17 +357,20 @@ class ArnoldMayaTranslator(LentilDialog):
         
         lens_full_name = cmds.getAttr("{}.aiLensModelPO".format(self.currentCamera), asString=True)
         focallength = int(self.extract_focal_length_from_full_name(lens_full_name)[:-2])
-        lens_name = self.extract_lens_name_from_full_name(lens_full_name)[:-1]
-        # year = self.extract_year_from_full_name(lens_full_name)
+        lens_name = str(self.extract_lens_name_from_full_name(lens_full_name))[:-2]
+        lens_name = lens_name.replace("__", "-")
+        lens_name = lens_name.replace("_", "-")
+
         self.lensCB.setCurrentText(lens_name)
         self.focalLengthCB.setCurrentText(str(focallength))
-        # self.yearCB.setCurrentText(str(year))
 
         self.dofCB.setCurrentText('enabled' if cmds.getAttr("{}.aiDofPO".format(self.currentCamera)) is True else 'disabled')
         self.bokehImageCB.setCurrentText('enabled' if cmds.getAttr("{}.aiBokehEnableImagePO".format(self.currentCamera)) is True else 'disabled')
         self.bokehImagePathLE.setText(str(cmds.getAttr("{}.aiBokehImagePathPO".format(self.currentCamera))))
         
         # self.empirical_caS.slider.setValue(cmds.getAttr("{}.aiEmpiricalCaDist".format(self.currentCamera)))
+
+        self.notes.setText(self.lens_database[self.currentLensId]["notes"])
 
     def listen_for_attributes(self):
         self.sensorwidth_sj = cmds.scriptJob(attributeChange=["{}.aiSensorWidthPO".format(self.currentCamera), self.read_values])
@@ -407,7 +419,7 @@ class ArnoldMayaTranslator(LentilDialog):
 
         cmds.setAttr("{}.aiBokehEnableImagePO".format(self.currentCamera), False if self.bokehImageCB.currentText() == 'disabled' else True)
         cmds.setAttr("{}.aiBokehImagePathPO".format(self.currentCamera), self.bokehImagePathLE.text(), type="string")
-
+        
         # cmds.setAttr("{}.aiEmpiricalCaDist".format(self.currentCamera), self.empirical_caS.labelValue.value())
 
     def build_camera_enum_map(self):
