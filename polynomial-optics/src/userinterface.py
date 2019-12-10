@@ -8,14 +8,17 @@ TODO:
 
 Fstop minimum should be set -> untested
 
-Add aperture blades
-add proper ray derivatives
+add bidirectional jazz
 """
 
 
-class LentilDialog(QtWidgets.QDialog):
+
+class LentilDialog(QtWidgets.QScrollArea):
     def __init__(self, parent=None):
         super(LentilDialog, self).__init__(parent)
+        self.scrollwidget = QtWidgets.QWidget()
+        self.scrollayout = QtWidgets.QVBoxLayout(self.scrollwidget)
+
         self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
         self.setWindowTitle("Lentil")
         self.setMinimumWidth(350)
@@ -28,12 +31,23 @@ class LentilDialog(QtWidgets.QDialog):
         self.build_attributes()
         self.signals()
 
+        self.resize(395, 800)
+        self.setMaximumWidth(395)
+        self.setMinimumWidth(395)
+        self.setWidget(self.scrollwidget)
+        self.setWidgetResizable(True)
+
+
     def build_attributes(self):
         self.vboxLayout = QtWidgets.QVBoxLayout()
 
         self.image = QtSvg.QSvgWidget()
         self.imageScaleFactor = 2.5
         self.image.setFixedSize(900/self.imageScaleFactor, 550/self.imageScaleFactor)
+
+        self.notes = QtWidgets.QTextEdit(self.lens_database[self.currentLensId]["notes"])
+        self.notes.setReadOnly(True)
+
 
         self.cameraHB = QtWidgets.QHBoxLayout()
         self.cameraL = QtWidgets.QLabel('Camera node: ')
@@ -107,18 +121,23 @@ class LentilDialog(QtWidgets.QDialog):
         self.browseBokehImagePath.clicked.connect(self.get_bokeh_path)
         self.bokehImagePathHbox.addWidget(self.bokehImagePathLE)
         self.bokehImagePathHbox.addWidget(self.browseBokehImagePath)
+        
+        self.bokehApertureBlades = SliderLayout('Aperture blades', 0, 12)
 
-        self.notes = QtWidgets.QTextEdit(self.lens_database[self.currentLensId]["notes"])
+        self.properRayDerivativesHbox = QtWidgets.QHBoxLayout()
+        self.properRayDerivativesL = QtWidgets.QLabel("Proper ray derivatives: ")
+        self.properRayDerivativesCB = QtWidgets.QComboBox()
+        self.properRayDerivativesCB.addItem('enabled')
+        self.properRayDerivativesCB.addItem('disabled')
+        self.properRayDerivativesHbox.addWidget(self.properRayDerivativesL)
+        self.properRayDerivativesHbox.addWidget(self.properRayDerivativesCB)
 
 
-        # self.empirical_caS = SliderLayout('Empirical Chromatic Aberration', 0, 100)
-
-
-        self.vboxLayout.addWidget(self.image)
         self.vboxLayout.addLayout(self.cameraHB)
         self.vboxLayout.addWidget(self.separator1)
 
         self.vboxLayout.addLayout(self.lensHB)
+        self.vboxLayout.addWidget(self.image)
         self.vboxLayout.addWidget(self.notes)
         self.vboxLayout.addLayout(self.dofHbox)
         self.vboxLayout.addLayout(self.unitHB)
@@ -131,16 +150,17 @@ class LentilDialog(QtWidgets.QDialog):
         self.vboxLayout.addWidget(self.separator2)
         self.vboxLayout.addWidget(self.wavelengthS)
         self.vboxLayout.addWidget(self.extraSensorShiftS)
-        self.vboxLayout.addWidget(self.vignettingRetriesS)
 
         self.vboxLayout.addWidget(self.separator3)
         self.vboxLayout.addLayout(self.bokehImageHbox)
         self.vboxLayout.addLayout(self.bokehImagePathHbox)
+        self.vboxLayout.addWidget(self.bokehApertureBlades)
 
         self.vboxLayout.addWidget(self.separator4)
-        # self.vboxLayout.addWidget(self.empirical_caS)
 
-        self.setLayout(self.vboxLayout)
+        self.vboxLayout.addWidget(self.vignettingRetriesS)
+        self.vboxLayout.addLayout(self.properRayDerivativesHbox)
+        self.scrollayout.addLayout(self.vboxLayout)
 
     def get_bokeh_path(self):
         filename = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', 'c:\\',"Image files (*.jpg *.png *.exr *.tif)")
@@ -225,6 +245,8 @@ class LentilDialog(QtWidgets.QDialog):
         self.lensCB.activated.connect(self.value_changed)
         self.bokehImageCB.activated.connect(self.value_changed)
         self.bokehImagePathLE.textChanged.connect(self.value_changed)
+        self.bokehApertureBlades.slider.valueChanged.connect(self.value_changed)
+        self.properRayDerivativesCB.activated.connect(self.value_changed)
         # self.empirical_caS.slider.valueChanged.connect(self.value_changed)
         # self.empirical_caS.labelValue.valueChanged.connect(self.value_changed)
 
@@ -352,7 +374,6 @@ class ArnoldMayaTranslator(LentilDialog):
         self.wavelengthS.slider.setValue(cmds.getAttr("{}.aiWavelengthPO".format(self.currentCamera)))
         self.focusDistanceS.slider.setValue(cmds.getAttr("{}.aiFocusDistancePO".format(self.currentCamera)))
         self.extraSensorShiftS.slider.setValue(cmds.getAttr("{}.aiExtraSensorShiftPO".format(self.currentCamera)))
-        self.vignettingRetriesS.slider.setValue(cmds.getAttr("{}.aiVignettingRetriesPO".format(self.currentCamera)))
         self.unitCB.setCurrentIndex(cmds.getAttr("{}.aiUnitsPO".format(self.currentCamera))) # why doesn't this work?
         
         lens_full_name = cmds.getAttr("{}.aiLensModelPO".format(self.currentCamera), asString=True)
@@ -371,6 +392,10 @@ class ArnoldMayaTranslator(LentilDialog):
         # self.empirical_caS.slider.setValue(cmds.getAttr("{}.aiEmpiricalCaDist".format(self.currentCamera)))
 
         self.notes.setText(self.lens_database[self.currentLensId]["notes"])
+        self.bokehApertureBlades.slider.setValue(cmds.getAttr("{}.aiBokehApertureBladesPO".format(self.currentCamera)))
+        
+        self.vignettingRetriesS.slider.setValue(cmds.getAttr("{}.aiVignettingRetriesPO".format(self.currentCamera)))
+        self.properRayDerivativesCB.setCurrentText('enabled' if cmds.getAttr("{}.aiProperRayDerivativesPO".format(self.currentCamera)) is True else 'disabled')
 
     def listen_for_attributes(self):
         self.sensorwidth_sj = cmds.scriptJob(attributeChange=["{}.aiSensorWidthPO".format(self.currentCamera), self.read_values])
@@ -378,12 +403,14 @@ class ArnoldMayaTranslator(LentilDialog):
         self.wavelength_sj = cmds.scriptJob(attributeChange=["{}.aiWavelengthPO".format(self.currentCamera), self.read_values])
         self.focaldistance_sj = cmds.scriptJob(attributeChange=["{}.aiFocusDistancePO".format(self.currentCamera), self.read_values])
         self.extrasensorshift_sj = cmds.scriptJob(attributeChange=["{}.aiExtraSensorShiftPO".format(self.currentCamera), self.read_values])
-        self.vignettingretries_sj = cmds.scriptJob(attributeChange=["{}.aiVignettingRetriesPO".format(self.currentCamera), self.read_values])
         self.lensmodel_sj = cmds.scriptJob(attributeChange=["{}.aiLensModelPO".format(self.currentCamera), self.read_values])
         self.dof_sj = cmds.scriptJob(attributeChange=["{}.aiDofPO".format(self.currentCamera), self.read_values])
         self.unitmodel_sj = cmds.scriptJob(attributeChange=["{}.aiUnitsPO".format(self.currentCamera), self.read_values])
         self.bokeh_enable_sj = cmds.scriptJob(attributeChange=["{}.aiBokehEnableImagePO".format(self.currentCamera), self.read_values])
         self.bokeh_path_sj = cmds.scriptJob(attributeChange=["{}.aiBokehImagePathPO".format(self.currentCamera), self.read_values])
+        self.bokeh_aperture_blades_sj = cmds.scriptJob(attributeChange=["{}.aiBokehApertureBladesPO".format(self.currentCamera), self.read_values])
+        self.proper_ray_derivatives_sj = cmds.scriptJob(attributeChange=["{}.aiProperRayDerivativesPO".format(self.currentCamera), self.read_values])
+        
         # self.empirical_ca_dist_sj = cmds.scriptJob(attributeChange=["{}.aiEmpiricalCaDist".format(self.currentCamera), self.read_values])
 
     def __del__(self):
@@ -399,6 +426,8 @@ class ArnoldMayaTranslator(LentilDialog):
         cmds.scriptJob(kill=self.unitmodel_sj, force=True)
         cmds.scriptJob(kill=self.bokeh_enable_sj, force=True)
         cmds.scriptJob(kill=self.bokeh_path_sj, force=True)
+        cmds.scriptJob(kill=self.bokeh_aperture_blades_sj, force=True)
+        cmds.scriptJob(kill=self.proper_ray_derivatives_sj, force=True)
         # cmds.scriptJob(kill=self.empirical_ca_dist_sj, force=True)
 
     def value_changed(self):
@@ -419,7 +448,9 @@ class ArnoldMayaTranslator(LentilDialog):
 
         cmds.setAttr("{}.aiBokehEnableImagePO".format(self.currentCamera), False if self.bokehImageCB.currentText() == 'disabled' else True)
         cmds.setAttr("{}.aiBokehImagePathPO".format(self.currentCamera), self.bokehImagePathLE.text(), type="string")
-        
+        cmds.setAttr("{}.aiBokehApertureBladesPO".format(self.currentCamera), self.bokehApertureBlades.labelValue.value())
+        cmds.setAttr("{}.aiProperRayDerivativesPO".format(self.currentCamera), False if self.properRayDerivativesCB.currentText() == 'disabled' else True)
+
         # cmds.setAttr("{}.aiEmpiricalCaDist".format(self.currentCamera), self.empirical_caS.labelValue.value())
 
     def build_camera_enum_map(self):
