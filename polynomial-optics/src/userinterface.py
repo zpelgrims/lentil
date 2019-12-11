@@ -8,7 +8,9 @@ TODO:
 
 Fstop minimum should be set -> untested
 
-add bidirectional jazz
+image text doesnt work custom_ui --> maya
+remove scrolling of sliders
+
 """
 
 
@@ -102,6 +104,7 @@ class LentilDialog(QtWidgets.QScrollArea):
         self.separator2 = QHLine()
         self.separator3 = QHLine()
         self.separator4 = QHLine()
+        self.separator5 = QHLine()
         
         self.wavelengthS = SliderLayout('Wavelength (nm)', 350, 850)
         self.extraSensorShiftS = SliderLayout('Additional Sensor Shift (mm)', -40.0, 40.0)
@@ -123,6 +126,22 @@ class LentilDialog(QtWidgets.QScrollArea):
         self.bokehImagePathHbox.addWidget(self.browseBokehImagePath)
         
         self.bokehApertureBlades = SliderLayout('Aperture blades', 0, 12)
+
+        self.bidirOutputPathHbox = QtWidgets.QHBoxLayout()
+        self.bidirOutputPathLabel = QtWidgets.QLabel("Bidir output:")
+        self.bidirOutputPathLE = QtWidgets.QLineEdit()
+        self.bidirOutputPathLE.setPlaceholderText("/some/path/img_<aov>_<frame>.exr") 
+        self.browsebidirOutputPath = QtWidgets.QPushButton("Browse")
+        self.browsebidirOutputPath.clicked.connect(self.get_bidir_output_path)
+        self.bidirOutputPathHbox.addWidget(self.bidirOutputPathLabel)
+        self.bidirOutputPathHbox.addWidget(self.bidirOutputPathLE)
+        self.bidirOutputPathHbox.addWidget(self.browsebidirOutputPath)
+
+        self.bidirSamplingMultiplierS = SliderLayout('Bidir sampling multiplier', 1, 200)
+        self.bidirMinimumLuminanceS = SliderLayout('Bidir minimum luminance', 0.0, 4.0)
+        self.bidirAddLuminanceS = SliderLayout('Bidir additional luminance', 0.0, 10.0)
+        self.bidirAddLuminanceTransWidthS = SliderLayout('Bidir additional luminance transition width', 0.0, 50.0)
+        
 
         self.properRayDerivativesHbox = QtWidgets.QHBoxLayout()
         self.properRayDerivativesL = QtWidgets.QLabel("Proper ray derivatives: ")
@@ -158,6 +177,14 @@ class LentilDialog(QtWidgets.QScrollArea):
 
         self.vboxLayout.addWidget(self.separator4)
 
+        self.vboxLayout.addLayout(self.bidirOutputPathHbox)
+        self.vboxLayout.addWidget(self.bidirSamplingMultiplierS)
+        self.vboxLayout.addWidget(self.bidirMinimumLuminanceS)
+        self.vboxLayout.addWidget(self.bidirAddLuminanceS)
+        self.vboxLayout.addWidget(self.bidirAddLuminanceTransWidthS)
+        
+        self.vboxLayout.addWidget(self.separator5)
+
         self.vboxLayout.addWidget(self.vignettingRetriesS)
         self.vboxLayout.addLayout(self.properRayDerivativesHbox)
         self.scrollayout.addLayout(self.vboxLayout)
@@ -165,6 +192,10 @@ class LentilDialog(QtWidgets.QScrollArea):
     def get_bokeh_path(self):
         filename = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', 'c:\\',"Image files (*.jpg *.png *.exr *.tif)")
         self.bokehImagePathLE.setText(filename[0])
+
+    def get_bidir_output_path(self):
+        filename = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', 'c:\\',"Image files (*.jpg *.png *.exr *.tif)")
+        self.bidirOutputPathLE.setText(filename[0])
 
     def signals(self):
         self.lensCB.currentTextChanged.connect(self.lensid_changed)
@@ -245,10 +276,13 @@ class LentilDialog(QtWidgets.QScrollArea):
         self.lensCB.activated.connect(self.value_changed)
         self.bokehImageCB.activated.connect(self.value_changed)
         self.bokehImagePathLE.textChanged.connect(self.value_changed)
+        self.bidirOutputPathLE.textChanged.connect(self.value_changed)        
+        self.bidirSamplingMultiplierS.slider.valueChanged.connect(self.value_changed)
+        self.bidirMinimumLuminanceS.slider.valueChanged.connect(self.value_changed)
+        self.bidirAddLuminanceS.slider.valueChanged.connect(self.value_changed)
+        self.bidirAddLuminanceTransWidthS.slider.valueChanged.connect(self.value_changed)
         self.bokehApertureBlades.slider.valueChanged.connect(self.value_changed)
         self.properRayDerivativesCB.activated.connect(self.value_changed)
-        # self.empirical_caS.slider.valueChanged.connect(self.value_changed)
-        # self.empirical_caS.labelValue.valueChanged.connect(self.value_changed)
 
     def value_changed(self):
         pass # implement in child classes
@@ -394,6 +428,12 @@ class ArnoldMayaTranslator(LentilDialog):
         self.notes.setText(self.lens_database[self.currentLensId]["notes"])
         self.bokehApertureBlades.slider.setValue(cmds.getAttr("{}.aiBokehApertureBladesPO".format(self.currentCamera)))
         
+        self.bidirOutputPathLE.setText(str(cmds.getAttr("{}.aiBidirOutputPathPO".format(self.currentCamera)))) 
+        self.bidirSamplingMultiplierS.slider.setValue(cmds.getAttr("{}.aiBidirSampleMultPO".format(self.currentCamera)))
+        self.bidirMinimumLuminanceS.slider.setValue(cmds.getAttr("{}.aiBidirMinLuminancePO".format(self.currentCamera)))
+        self.bidirAddLuminanceS.slider.setValue(cmds.getAttr("{}.aiBidirAddLuminancePO".format(self.currentCamera)))
+        self.bidirAddLuminanceTransWidthS.slider.setValue(cmds.getAttr("{}.aiBidirAddLuminanceTransitionPO".format(self.currentCamera)))
+
         self.vignettingRetriesS.slider.setValue(cmds.getAttr("{}.aiVignettingRetriesPO".format(self.currentCamera)))
         self.properRayDerivativesCB.setCurrentText('enabled' if cmds.getAttr("{}.aiProperRayDerivativesPO".format(self.currentCamera)) is True else 'disabled')
 
@@ -408,10 +448,14 @@ class ArnoldMayaTranslator(LentilDialog):
         self.unitmodel_sj = cmds.scriptJob(attributeChange=["{}.aiUnitsPO".format(self.currentCamera), self.read_values])
         self.bokeh_enable_sj = cmds.scriptJob(attributeChange=["{}.aiBokehEnableImagePO".format(self.currentCamera), self.read_values])
         self.bokeh_path_sj = cmds.scriptJob(attributeChange=["{}.aiBokehImagePathPO".format(self.currentCamera), self.read_values])
+        self.bidir_output_path_sj = cmds.scriptJob(attributeChange=["{}.aiBidirOutputPathPO".format(self.currentCamera), self.read_values])
+        self.bidir_sample_mult_sj = cmds.scriptJob(attributeChange=["{}.aiBidirSampleMultPO".format(self.currentCamera), self.read_values])
+        self.bidir_min_luminance_sj = cmds.scriptJob(attributeChange=["{}.aiBidirMinLuminancePO".format(self.currentCamera), self.read_values])
+        self.bidir_add_luminance_sj = cmds.scriptJob(attributeChange=["{}.aiBidirAddLuminancePO".format(self.currentCamera), self.read_values])
+        self.bidir_add_luminance_trans_width_sj = cmds.scriptJob(attributeChange=["{}.aiBidirAddLuminanceTransitionPO".format(self.currentCamera), self.read_values])
         self.bokeh_aperture_blades_sj = cmds.scriptJob(attributeChange=["{}.aiBokehApertureBladesPO".format(self.currentCamera), self.read_values])
         self.proper_ray_derivatives_sj = cmds.scriptJob(attributeChange=["{}.aiProperRayDerivativesPO".format(self.currentCamera), self.read_values])
         
-        # self.empirical_ca_dist_sj = cmds.scriptJob(attributeChange=["{}.aiEmpiricalCaDist".format(self.currentCamera), self.read_values])
 
     def __del__(self):
         # kill the scriptjobs that listen for attribute changes
@@ -426,9 +470,13 @@ class ArnoldMayaTranslator(LentilDialog):
         cmds.scriptJob(kill=self.unitmodel_sj, force=True)
         cmds.scriptJob(kill=self.bokeh_enable_sj, force=True)
         cmds.scriptJob(kill=self.bokeh_path_sj, force=True)
+        cmds.scriptJob(kill=self.bidir_output_path_sj, force=True)
+        cmds.scriptJob(kill=self.bidir_sample_mult_sj, force=True)
+        cmds.scriptJob(kill=self.bidir_min_luminance_sj, force=True)
+        cmds.scriptJob(kill=self.bidir_add_luminance_sj, force=True)
+        cmds.scriptJob(kill=self.bidir_add_luminance_trans_width_sj, force=True)
         cmds.scriptJob(kill=self.bokeh_aperture_blades_sj, force=True)
         cmds.scriptJob(kill=self.proper_ray_derivatives_sj, force=True)
-        # cmds.scriptJob(kill=self.empirical_ca_dist_sj, force=True)
 
     def value_changed(self):
         cmds.setAttr("{}.aiSensorWidthPO".format(self.currentCamera), self.sensorwidthS.labelValue.value())
@@ -448,6 +496,13 @@ class ArnoldMayaTranslator(LentilDialog):
 
         cmds.setAttr("{}.aiBokehEnableImagePO".format(self.currentCamera), False if self.bokehImageCB.currentText() == 'disabled' else True)
         cmds.setAttr("{}.aiBokehImagePathPO".format(self.currentCamera), self.bokehImagePathLE.text(), type="string")
+        
+        cmds.setAttr("{}.aiBidirOutputPathPO".format(self.currentCamera), self.bidirOutputPathLE.text(), type="string")
+        cmds.setAttr("{}.aiBidirSampleMultPO".format(self.currentCamera), self.bidirSamplingMultiplierS.labelValue.value())
+        cmds.setAttr("{}.aiBidirMinLuminancePO".format(self.currentCamera), self.bidirMinimumLuminanceS.labelValue.value())
+        cmds.setAttr("{}.aiBidirAddLuminancePO".format(self.currentCamera), self.bidirAddLuminanceS.labelValue.value())
+        cmds.setAttr("{}.aiBidirAddLuminanceTransitionPO".format(self.currentCamera), self.bidirAddLuminanceTransWidthS.labelValue.value())
+
         cmds.setAttr("{}.aiBokehApertureBladesPO".format(self.currentCamera), self.bokehApertureBlades.labelValue.value())
         cmds.setAttr("{}.aiProperRayDerivativesPO".format(self.currentCamera), False if self.properRayDerivativesCB.currentText() == 'disabled' else True)
 
