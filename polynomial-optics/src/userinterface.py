@@ -6,7 +6,8 @@ import re
 """
 TODO:
 
-Fstop minimum should be set -> untested
+Fstop minimum can't be set due to integer input, make a good float slider
+
 """
 
 
@@ -145,7 +146,9 @@ class LentilDialog(QtWidgets.QScrollArea):
         self.properRayDerivativesHbox.addWidget(self.properRayDerivativesL)
         self.properRayDerivativesHbox.addWidget(self.properRayDerivativesCB)
 
+        self.slidertest = DoubleSlider(tickPosition=QtWidgets.QSlider.TicksLeft, orientation=QtCore.Qt.Horizontal)
 
+        self.vboxLayout.addWidget(self.slidertest)
         self.vboxLayout.addLayout(self.cameraHB)
         self.vboxLayout.addWidget(self.separator1)
 
@@ -219,8 +222,11 @@ class LentilDialog(QtWidgets.QScrollArea):
 
         # remove exception when public lens json has fstop data for all lenses, currently just errors out if lens is not found
         try:
-            self.fstopS.slider.setMinimum(self.lens_database[self.currentLensId]["fstop"][str(self.focalLengthCB.currentText())])
-            print("set fstop to minimum of: {}".format(self.lens_database[self.currentLensId]["fstop"][str(self.focalLengthCB.currentText())]))
+            fstop_min = self.lens_database[self.currentLensId]["fstop"][str(self.focalLengthCB.currentText())]
+            self.fstopS.slider.setMinimum(fstop_min)
+            if self.fstopS.labelValue.value() < fstop_min:
+                self.fstopS.slider.setValue(fstop_min)
+            print("set fstop to minimum of: {}".format(fstop_min))
         except:
             pass
 
@@ -297,6 +303,39 @@ class QHLine(QtWidgets.QFrame):
         super(QHLine, self).__init__()
         self.setFrameShape(QtWidgets.QFrame.HLine)
         self.setFrameShadow(QtWidgets.QFrame.Sunken)
+
+class DoubleSlider(QtWidgets.QSlider):
+
+    # create our our signal that we can connect to if necessary
+    doubleValueChanged = QtCore.Signal(float)
+
+    def __init__(self, decimals=3, *args, **kargs):
+        super(DoubleSlider, self).__init__( *args, **kargs)
+        self._multi = 10 ** decimals
+
+        self.valueChanged.connect(self.emitDoubleValueChanged)
+
+    def emitDoubleValueChanged(self):
+        value = float(super(DoubleSlider, self).value())/self._multi
+        self.doubleValueChanged.emit(value)
+
+    def value(self):
+        return float(super(DoubleSlider, self).value()) / self._multi
+
+    def setMinimum(self, value):
+        return super(DoubleSlider, self).setMinimum(value * self._multi)
+
+    def setMaximum(self, value):
+        return super(DoubleSlider, self).setMaximum(value * self._multi)
+
+    def setSingleStep(self, value):
+        return super(DoubleSlider, self).setSingleStep(value * self._multi)
+
+    def singleStep(self):
+        return float(super(DoubleSlider, self).singleStep()) / self._multi
+
+    def setValue(self, value):
+        super(DoubleSlider, self).setValue(int(value * self._multi))
 
 class Slider(QtWidgets.QSlider):
     minimumChanged = QtCore.Signal(float)
