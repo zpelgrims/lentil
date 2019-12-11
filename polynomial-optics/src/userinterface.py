@@ -9,7 +9,6 @@ TODO:
 Fstop minimum should be set -> untested
 
 image text doesnt work custom_ui --> maya
-remove scrolling of sliders
 
 """
 
@@ -313,6 +312,9 @@ class Slider(QtWidgets.QSlider):
     def setMaximum(self, maximum):
         self.maximumChanged.emit(maximum)
         super(Slider, self).setMaximum(maximum)
+
+    def wheelEvent(self, event):
+        return # disabling (overriding) the mouse scroll behaviour
 
 class SliderLayout(QtWidgets.QWidget):
     def __init__(self, name, minval, maxval, parent=None):
