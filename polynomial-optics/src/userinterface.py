@@ -7,9 +7,6 @@ import re
 TODO:
 
 Fstop minimum should be set -> untested
-
-image text doesnt work custom_ui --> maya
-
 """
 
 
@@ -120,7 +117,6 @@ class LentilDialog(QtWidgets.QScrollArea):
         self.bokehImagePathHbox = QtWidgets.QHBoxLayout()
         self.bokehImagePathLE = QtWidgets.QLineEdit()
         self.browseBokehImagePath = QtWidgets.QPushButton("Browse")
-        self.browseBokehImagePath.clicked.connect(self.get_bokeh_path)
         self.bokehImagePathHbox.addWidget(self.bokehImagePathLE)
         self.bokehImagePathHbox.addWidget(self.browseBokehImagePath)
         
@@ -131,7 +127,6 @@ class LentilDialog(QtWidgets.QScrollArea):
         self.bidirOutputPathLE = QtWidgets.QLineEdit()
         self.bidirOutputPathLE.setPlaceholderText("/some/path/img_<aov>_<frame>.exr") 
         self.browsebidirOutputPath = QtWidgets.QPushButton("Browse")
-        self.browsebidirOutputPath.clicked.connect(self.get_bidir_output_path)
         self.bidirOutputPathHbox.addWidget(self.bidirOutputPathLabel)
         self.bidirOutputPathHbox.addWidget(self.bidirOutputPathLE)
         self.bidirOutputPathHbox.addWidget(self.browsebidirOutputPath)
@@ -275,7 +270,9 @@ class LentilDialog(QtWidgets.QScrollArea):
         self.lensCB.activated.connect(self.value_changed)
         self.bokehImageCB.activated.connect(self.value_changed)
         self.bokehImagePathLE.textChanged.connect(self.value_changed)
-        self.bidirOutputPathLE.textChanged.connect(self.value_changed)        
+        self.browseBokehImagePath.clicked.connect(self.get_bokeh_path)
+        self.bidirOutputPathLE.textChanged.connect(self.value_changed)  
+        self.browsebidirOutputPath.clicked.connect(self.get_bidir_output_path)
         self.bidirSamplingMultiplierS.slider.valueChanged.connect(self.value_changed)
         self.bidirMinimumLuminanceS.slider.valueChanged.connect(self.value_changed)
         self.bidirAddLuminanceS.slider.valueChanged.connect(self.value_changed)
@@ -404,6 +401,7 @@ class ArnoldMayaTranslator(LentilDialog):
             return
 
 
+
     def read_values(self):
         self.sensorwidthS.slider.setValue(cmds.getAttr("{}.aiSensorWidthPO".format(self.currentCamera)))
         self.fstopS.slider.setValue(cmds.getAttr("{}.aiFstopPO".format(self.currentCamera)))
@@ -419,15 +417,13 @@ class ArnoldMayaTranslator(LentilDialog):
         lens_name = lens_name.replace("_", "-")
 
         self.lensCB.setCurrentText(lens_name)
+        self.notes.setText(self.lens_database[self.currentLensId]["notes"])
         self.focalLengthCB.setCurrentText(str(focallength))
 
         self.dofCB.setCurrentText('enabled' if cmds.getAttr("{}.aiDofPO".format(self.currentCamera)) is True else 'disabled')
         self.bokehImageCB.setCurrentText('enabled' if cmds.getAttr("{}.aiBokehEnableImagePO".format(self.currentCamera)) is True else 'disabled')
         self.bokehImagePathLE.setText(str(cmds.getAttr("{}.aiBokehImagePathPO".format(self.currentCamera))))
         
-        # self.empirical_caS.slider.setValue(cmds.getAttr("{}.aiEmpiricalCaDist".format(self.currentCamera)))
-
-        self.notes.setText(self.lens_database[self.currentLensId]["notes"])
         self.bokehApertureBlades.slider.setValue(cmds.getAttr("{}.aiBokehApertureBladesPO".format(self.currentCamera)))
         
         self.bidirOutputPathLE.setText(str(cmds.getAttr("{}.aiBidirOutputPathPO".format(self.currentCamera)))) 
@@ -497,9 +493,12 @@ class ArnoldMayaTranslator(LentilDialog):
         cmds.setAttr("{}.aiLensModelPO".format(self.currentCamera), self.enum_lens_map[current_lens_name])
 
         cmds.setAttr("{}.aiBokehEnableImagePO".format(self.currentCamera), False if self.bokehImageCB.currentText() == 'disabled' else True)
+        cmds.textFieldButtonGrp("filenameBokehGrpInput", edit=True, text=self.bokehImagePathLE.text())
         cmds.setAttr("{}.aiBokehImagePathPO".format(self.currentCamera), self.bokehImagePathLE.text(), type="string")
-        
+
+        cmds.textFieldButtonGrp("filenameBokehGrpOutput", edit=True, text=self.bidirOutputPathLE.text())
         cmds.setAttr("{}.aiBidirOutputPathPO".format(self.currentCamera), self.bidirOutputPathLE.text(), type="string")
+
         cmds.setAttr("{}.aiBidirSampleMultPO".format(self.currentCamera), self.bidirSamplingMultiplierS.labelValue.value())
         cmds.setAttr("{}.aiBidirMinLuminancePO".format(self.currentCamera), self.bidirMinimumLuminanceS.labelValue.value())
         cmds.setAttr("{}.aiBidirAddLuminancePO".format(self.currentCamera), self.bidirAddLuminanceS.labelValue.value())
