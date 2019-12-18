@@ -184,9 +184,9 @@ def execute_single(lensid, focallength):
     unit_render_lens(info, "bokeh", 'lentil', focallength)
     unit_render_lens(info, "bokeh", 'lentil_thinlens', focallength)
     unit_render_lens(info, "bokeh", 'persp_camera', focallength)
-    unit_render_lens(info, "chart", 'lentil', focallength)
-    unit_render_lens(info, "chart", 'lentil_thinlens', focallength)
-    unit_render_lens(info, "chart", 'persp_camera', focallength)
+    #unit_render_lens(info, "chart", 'lentil', focallength)
+    #unit_render_lens(info, "chart", 'lentil_thinlens', focallength)
+    #unit_render_lens(info, "chart", 'persp_camera', focallength)
 
 
 

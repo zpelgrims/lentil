@@ -57,10 +57,14 @@
     "commercial": true,
     "company": "unknown",
     "fstop": {
+      "100": 3.399382789614151,
+      "75": 3.4038230296540033,
       "85": 3.3993613678259567,
-      "unscaled": 3.399412518920994
+      "unscaled": 3.3994125189209967
     },
     "max-fstop-aperture-radius": {
+      "100": 11.64082243490075,
+      "75": 8.72064718724445,
       "85": 9.940468998629244,
       "unscaled": 9.999136863225912
     },
@@ -68,7 +72,9 @@
     "notes-to-self": "classical 19th century petzval lens, should be scaled to 100mm",
     "patent-number": null,
     "polynomial-optics": [
-      85
+      85,
+      100,
+      75
     ],
     "prime": true,
     "product-name": "petzval",
@@ -80,17 +86,23 @@
     "commercial": true,
     "company": "nikon",
     "fstop": {
+      "18": 2.741837907707091,
       "28": 2.742358669339889,
-      "unscaled": 2.745987591648182
+      "35": 2.7426897801141075,
+      "unscaled": 2.745987591648176
     },
     "max-fstop-aperture-radius": {
+      "18": 4.422372340909918,
       "28": 6.893447043153309,
-      "unscaled": 24.401717276166455
+      "35": 8.595925697597808,
+      "unscaled": 24.401717276166472
     },
     "notes": "A 7 element retrofocus-type wide angle lens with a relative aperture of F/2.8, an angle of field of 75° and a back focus of more than 1.3 times the focallength.",
     "patent-number": "US3583791",
     "polynomial-optics": [
-      28
+      28,
+      18,
+      35
     ],
     "prime": true,
     "product-name": "retrofocus-wideangle",
