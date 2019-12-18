@@ -5,9 +5,7 @@ import re
 
 """
 TODO:
-
-Fstop minimum can't be set due to integer input, make a good float slider
-
+    clear the scriptjobs properly.. __del__ is not the way.
 """
 
 
@@ -146,9 +144,7 @@ class LentilDialog(QtWidgets.QScrollArea):
         self.properRayDerivativesHbox.addWidget(self.properRayDerivativesL)
         self.properRayDerivativesHbox.addWidget(self.properRayDerivativesCB)
 
-        self.slidertest = DoubleSlider(tickPosition=QtWidgets.QSlider.TicksLeft, orientation=QtCore.Qt.Horizontal)
 
-        self.vboxLayout.addWidget(self.slidertest)
         self.vboxLayout.addLayout(self.cameraHB)
         self.vboxLayout.addWidget(self.separator1)
 
@@ -347,7 +343,7 @@ class SliderLayout(QtWidgets.QWidget):
         self.hbox = QtWidgets.QHBoxLayout(self)
         self.hbox.setContentsMargins(0, 0, 0, 0)
         self.label = QtWidgets.QLabel('{name}: '.format(name=name))
-        self.slider = Slider(tickPosition=QtWidgets.QSlider.TicksLeft, orientation=QtCore.Qt.Horizontal)
+        self.slider = DoubleSlider(tickPosition=QtWidgets.QSlider.TicksLeft, orientation=QtCore.Qt.Horizontal)
         self.slider.setMinimum(minval)
         self.slider.setMaximum(maxval)
         self.labelValue = QtWidgets.QDoubleSpinBox()
@@ -379,6 +375,7 @@ class ArnoldMayaTranslator(LentilDialog):
         self.listen_for_attributes()
         self.read_values()
         self.callback()
+        
     
     def discover_available_camera_models(self):
         for n in range(len(self.lens_database)):
@@ -494,6 +491,7 @@ class ArnoldMayaTranslator(LentilDialog):
         self.proper_ray_derivatives_sj = cmds.scriptJob(attributeChange=["{}.aiProperRayDerivativesPO".format(self.currentCamera), self.read_values])
         
 
+    # this doesn't work atm.. del not called?
     def __del__(self):
         # kill the scriptjobs that listen for attribute changes
         cmds.scriptJob(kill=self.sensorwidth_sj, force=True)
@@ -532,7 +530,12 @@ class ArnoldMayaTranslator(LentilDialog):
         cmds.setAttr("{}.aiLensModelPO".format(self.currentCamera), self.enum_lens_map[current_lens_name])
 
         cmds.setAttr("{}.aiBokehEnableImagePO".format(self.currentCamera), False if self.bokehImageCB.currentText() == 'disabled' else True)
-        cmds.textFieldButtonGrp("filenameBokehGrpInput", edit=True, text=self.bokehImagePathLE.text())
+        
+        try: # if ae template has not been build yet (eg before ae lentil section expansion on startup)
+            cmds.textFieldButtonGrp("filenameBokehGrpInput", edit=True, text=self.bokehImagePathLE.text())
+        except:
+            pass
+
         cmds.setAttr("{}.aiBokehImagePathPO".format(self.currentCamera), self.bokehImagePathLE.text(), type="string")
 
         cmds.textFieldButtonGrp("filenameBokehGrpOutput", edit=True, text=self.bidirOutputPathLE.text())
