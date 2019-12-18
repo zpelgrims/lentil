@@ -337,18 +337,6 @@ class DoubleSlider(QtWidgets.QSlider):
     def setValue(self, value):
         super(DoubleSlider, self).setValue(int(value * self._multi))
 
-class Slider(QtWidgets.QSlider):
-    minimumChanged = QtCore.Signal(float)
-    maximumChanged = QtCore.Signal(float)
-
-    def setMinimum(self, minimum):
-        self.minimumChanged.emit(minimum)
-        super(Slider, self).setMinimum(minimum)
-
-    def setMaximum(self, maximum):
-        self.maximumChanged.emit(maximum)
-        super(Slider, self).setMaximum(maximum)
-
     def wheelEvent(self, event):
         return # disabling (overriding) the mouse scroll behaviour
 
@@ -369,9 +357,7 @@ class SliderLayout(QtWidgets.QWidget):
         self.hbox.addWidget(self.slider)
         self.hbox.addWidget(self.labelValue)
 
-        #self.slider.minimumChanged.connect(self._LMin.setNum)
-        #self.slider.maximumChanged.connect(self._LMax.setNum)
-        self.slider.valueChanged.connect(self.labelValue.setValue)
+        self.slider.doubleValueChanged.connect(self.labelValue.setValue)
         self.labelValue.valueChanged.connect(self.slider.setValue)
 
 
