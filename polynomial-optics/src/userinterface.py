@@ -412,6 +412,7 @@ class ArnoldMayaTranslator(LentilDialog):
                 self.cameraCB.addItem(str(cam))
                 rendercams.add(cam)
 
+        # is this wrong? maybe i should keep perspshape in there
         if len(rendercams) > 1 and 'perspShape' in rendercams:
             rendercams.remove('perspShape')
             
@@ -425,6 +426,19 @@ class ArnoldMayaTranslator(LentilDialog):
             print("Error: Lentil doesn't seem to be installed.")
             return
 
+    
+    def build_camera_enum_map(self):
+        for n in range(len(self.lens_database)):
+            try:
+                cmds.setAttr("{}.aiLensModelPO".format(self.currentCamera), n)
+            except:
+                continue
+            
+            enum_value_str = cmds.getAttr("{}.aiLensModelPO".format(self.currentCamera), asString=True)
+            self.enum_lens_map[enum_value_str] = cmds.getAttr("{}.aiLensModelPO".format(self.currentCamera))
+
+        # print(self.enum_lens_map)
+        
 
 
     def read_values(self):
@@ -534,18 +548,6 @@ class ArnoldMayaTranslator(LentilDialog):
 
         # cmds.setAttr("{}.aiEmpiricalCaDist".format(self.currentCamera), self.empirical_caS.labelValue.value())
 
-    def build_camera_enum_map(self):
-        for n in range(len(self.lens_database)):
-            try:
-                cmds.setAttr("{}.aiLensModelPO".format(self.currentCamera), n)
-            except:
-                continue
-            
-            enum_value_str = cmds.getAttr("{}.aiLensModelPO".format(self.currentCamera), asString=True)
-            self.enum_lens_map[enum_value_str] = cmds.getAttr("{}.aiLensModelPO".format(self.currentCamera))
-
-        # print(self.enum_lens_map)
-        
 
 ld = ArnoldMayaTranslator()
 ld.show()
