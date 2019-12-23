@@ -48,14 +48,14 @@ python $LENTIL_PATH/src/copy-images-to-www.py &&
 
 # cleanup
 rm -rf -v $LENTIL_PATH/data/tmp/$LENS_ID/$LENS_FOCAL_LENGTH &&
-#rm -d -v $LENTIL_PATH/data/tmp/$LENS_ID
+# rm -d -v $LENTIL_PATH/data/tmp/$LENS_ID
 
 # build pota with new lens
 cd $LENTIL_PATH/../pota/build/local/ &&
 . ./build_local.sh &&
 
 # render unit tests
-python $LENTIL_PATH/src/unit_render_arnold.py $LENS_ID $LENS_FOCAL_LENGTH &&
+python $LENTIL_PATH/src/unit_render_arnold.py $LENS_ID $LENS_FOCAL_LENGTH
 
 
 # needs to be flagged production-ready after tests

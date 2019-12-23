@@ -1317,7 +1317,19 @@
     "commercial": true,
     "company": "nikon",
     "focal-length-mm-patent": 51.6,
-    "focal-length-mm-raytraced": 52.808231353759766,
+    "focal-length-mm-raytraced": 52.84868434842637,
+    "fstop": {
+      "40": 1.2265235375820085,
+      "50": 1.2265624835660305,
+      "65": 1.2266270938675776,
+      "unscaled": 1.2265775207300436
+    },
+    "max-fstop-aperture-radius": {
+      "40": 11.15268937580932,
+      "50": 13.928678993983567,
+      "65": 18.10429469513352,
+      "unscaled": 14.721774773607386
+    },
     "notes": "Modern f/1.25 design by Nikon.",
     "optical-elements-patent": [
       {
@@ -1493,7 +1505,11 @@
     ],
     "patent-location": "https://patentimages.storage.googleapis.com/1e/73/5f/75daed5fac34e2/US8721094.pdf",
     "patent-number": "US8721094",
-    "polynomial-optics": [],
+    "polynomial-optics": [
+      65,
+      40,
+      50
+    ],
     "prime": true,
     "product-name": "unknown",
     "production-ready": true,
@@ -1503,7 +1519,19 @@
     "commercial": true,
     "company": "zeiss",
     "focal-length-mm-patent": 100,
-    "focal-length-mm-raytraced": 99.09127044677734,
+    "focal-length-mm-raytraced": 99.21605806939807,
+    "fstop": {
+      "58": 1.3973527262679735,
+      "65": 1.397397356452129,
+      "85": 1.3974731399281841,
+      "unscaled": 1.3975242311133813
+    },
+    "max-fstop-aperture-radius": {
+      "58": 13.149586389824249,
+      "65": 14.717016616900068,
+      "85": 19.241532232596974,
+      "unscaled": 22.456495322159977
+    },
     "notes": "The Biotar was developed by the famous lens designer Dr. Willy Walter Merté for Carl Zeiss, it is a six element lens with asymmetrical outer elements, a variant of the Double Gauss design for higher performance and increased field correction and speed. Virtually all of today’s fast lenses with a medium field angle (50-100mm focal length on 35mm cameras) are Double Gauss designs, like the Biotar. These Double Gauss lenses attempted to improve on the Planar design from 1896 by abandoning the strict symmetry approach for the radii of curvature of the surfaces and the refractive indices of the glass materials and therefore achieved additional correction parameters. The famed Helios 44-2 lenses are very close clones of the Biotar.",
     "notes-to-self": "https://www.casualphotophile.com/2019/02/13/carl-zeiss-jena-biotar-58mm-f-2-lens-review/, 58mm?",
     "optical-elements-patent": [
@@ -1620,7 +1648,11 @@
     ],
     "patent-location": "database/lenses/1927-biotar-zeiss/patent/DE485798C.pdf",
     "patent-number": "DE485798C",
-    "polynomial-optics": [],
+    "polynomial-optics": [
+      65,
+      58,
+      85
+    ],
     "prime": true,
     "product-name": "biotar",
     "production-ready": true,
@@ -1630,7 +1662,17 @@
     "commercial": true,
     "company": "asahi",
     "focal-length-mm-patent": 100,
-    "focal-length-mm-raytraced": 99.61552429199219,
+    "focal-length-mm-raytraced": 99.53924524010013,
+    "fstop": {
+      "45": 1.2463846107219057,
+      "50": 1.246379071007829,
+      "unscaled": 1.2449556988219488
+    },
+    "max-fstop-aperture-radius": {
+      "45": 11.478293684025735,
+      "50": 12.762836197030609,
+      "unscaled": 25.42251224386086
+    },
     "notes": "The Asahi Takumar (Pentax) is based on the Zeiss Biotar.",
     "notes-to-self": "50mm",
     "optical-elements-patent": [
@@ -1777,7 +1819,10 @@
     ],
     "patent-location": "database/lenses/1969-asahi-takumar/patent/US3451745.pdf",
     "patent-number": "US3451745",
-    "polynomial-optics": [],
+    "polynomial-optics": [
+      45,
+      50
+    ],
     "prime": true,
     "product-name": "takumar",
     "production-ready": true,
@@ -1787,7 +1832,15 @@
     "commercial": true,
     "company": "asahi",
     "focal-length-mm-patent": 100,
-    "focal-length-mm-raytraced": 99.20272827148438,
+    "focal-length-mm-raytraced": 99.36774934028566,
+    "fstop": {
+      "22": 1.9615815674385697,
+      "unscaled": 1.963765018763166
+    },
+    "max-fstop-aperture-radius": {
+      "22": 6.157760026234393,
+      "unscaled": 27.724794114629262
+    },
     "notes": "SMC Takumar 35mm f2.0",
     "optical-elements-patent": [
       {
@@ -1953,7 +2006,9 @@
     ],
     "patent-location": "database/lenses/1970-asahi-takumar/patent/US3506336.pdf",
     "patent-number": "US3506336",
-    "polynomial-optics": [],
+    "polynomial-optics": [
+      22
+    ],
     "prime": true,
     "product-name": "takumar",
     "production-ready": true,
