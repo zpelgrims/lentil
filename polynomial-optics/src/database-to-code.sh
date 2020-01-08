@@ -55,6 +55,7 @@ cd $LENTIL_PATH/../pota/build/local/ &&
 . ./build_local.sh &&
 
 # render unit tests
+cd $LENTIL_PATH/data/tmp/
 python $LENTIL_PATH/src/unit_render_arnold.py $LENS_ID $LENS_FOCAL_LENGTH
 
 

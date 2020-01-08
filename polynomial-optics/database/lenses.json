@@ -1666,11 +1666,17 @@
     "fstop": {
       "45": 1.2463846107219057,
       "50": 1.246379071007829,
+      "58": 1.2463710412812408,
+      "65": 1.2463702626267315,
+      "75": 1.244985812798523,
       "unscaled": 1.2449556988219488
     },
     "max-fstop-aperture-radius": {
       "45": 11.478293684025735,
       "50": 12.762836197030609,
+      "58": 14.803786789797966,
+      "65": 16.589346983192474,
+      "75": 19.159501050180356,
       "unscaled": 25.42251224386086
     },
     "notes": "The Asahi Takumar (Pentax) is based on the Zeiss Biotar.",
@@ -1821,7 +1827,10 @@
     "patent-number": "US3451745",
     "polynomial-optics": [
       45,
-      50
+      50,
+      65,
+      75,
+      58
     ],
     "prime": true,
     "product-name": "takumar",
@@ -1835,10 +1844,12 @@
     "focal-length-mm-raytraced": 99.36774934028566,
     "fstop": {
       "22": 1.9615815674385697,
+      "28": 1.96175148182077,
       "unscaled": 1.963765018763166
     },
     "max-fstop-aperture-radius": {
       "22": 6.157760026234393,
+      "28": 7.8232195328334395,
       "unscaled": 27.724794114629262
     },
     "notes": "SMC Takumar 35mm f2.0",
@@ -2007,7 +2018,8 @@
     "patent-location": "database/lenses/1970-asahi-takumar/patent/US3506336.pdf",
     "patent-number": "US3506336",
     "polynomial-optics": [
-      22
+      22,
+      28
     ],
     "prime": true,
     "product-name": "takumar",
