@@ -70,7 +70,7 @@ def unit_render_lens(lensdict, mode, camerashader, focallength):
         
         sensor_width = 36.0
         fov = 2.0 * math.atan(sensor_width / (2.0 * lensdict["focallength"]))
-        aperture_radius = (lensdict["focallength"] / (2.0 * lensdict["max_fstop"])) / 10.0
+        aperture_radius = (lensdict["focallength"] / (2.0 * lensdict["max_fstop"]))
 
         if node_thinlens is not None and AiNodeIs(node_thinlens, 'persp_camera') == True:
             AiNodeSetFlt(node_thinlens, 'fov', math.degrees(fov))
@@ -78,7 +78,7 @@ def unit_render_lens(lensdict, mode, camerashader, focallength):
 
         if node_thinlens is not None and AiNodeIs(node_thinlens, 'lentil_thinlens') == True:
             AiNodeSetFlt(node_thinlens, 'fstopTL', lensdict["max_fstop"])
-            AiNodeSetFlt(node_thinlens, 'focal_lengthTL', focallength/10.0)
+            AiNodeSetFlt(node_thinlens, 'focal_lengthTL', focallength)
 
     
     driver_exr = AiNodeLookUpByName('defaultArnoldDriver@driver_exr.RGBA')
