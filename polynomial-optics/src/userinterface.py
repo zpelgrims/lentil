@@ -60,16 +60,6 @@ class LentilDialog(QtWidgets.QScrollArea):
         self.dofHbox.addWidget(self.dofL)
         self.dofHbox.addWidget(self.dofCB)
 
-        self.unitHB = QtWidgets.QHBoxLayout()
-        self.unitL = QtWidgets.QLabel('DCC Units: ')
-        self.unitCB = QtWidgets.QComboBox()
-        self.unitCB.addItem("mm")
-        self.unitCB.addItem("cm")
-        self.unitCB.addItem("dm")
-        self.unitCB.addItem("m")
-        self.unitHB.addWidget(self.unitL)
-        self.unitHB.addWidget(self.unitCB)
-
         self.lensIndex = []
         self.lensHB = QtWidgets.QHBoxLayout()
         self.lensL = QtWidgets.QLabel('Lens: ')
@@ -93,7 +83,7 @@ class LentilDialog(QtWidgets.QScrollArea):
 
         self.sensorwidthS = SliderLayout('Sensor Width', 0, 36)
         self.fstopS = SliderLayout('Fstop', 1.4, 32)
-        self.focusDistanceS = SliderLayout('Focus Distance (units)', 50, 10000)
+        self.focusDistanceS = SliderLayout('Focus Distance (cm)', 50, 10000)
         
         self.separator1 = QHLine()
         self.separator2 = QHLine()
@@ -152,7 +142,6 @@ class LentilDialog(QtWidgets.QScrollArea):
         self.vboxLayout.addWidget(self.image)
         self.vboxLayout.addWidget(self.notes)
         self.vboxLayout.addLayout(self.dofHbox)
-        self.vboxLayout.addLayout(self.unitHB)
         self.vboxLayout.addLayout(self.yearHB)
         self.vboxLayout.addLayout(self.focalLengthHB)
         self.vboxLayout.addWidget(self.sensorwidthS)
@@ -267,7 +256,6 @@ class LentilDialog(QtWidgets.QScrollArea):
         self.vignettingRetriesS.slider.valueChanged.connect(self.value_changed)
         self.vignettingRetriesS.labelValue.valueChanged.connect(self.value_changed)
         self.dofCB.activated.connect(self.value_changed)
-        self.unitCB.activated.connect(self.value_changed)
         self.focalLengthCB.activated.connect(self.value_changed)
         self.lensCB.activated.connect(self.value_changed)
         self.bokehImageCB.activated.connect(self.value_changed)
@@ -444,7 +432,6 @@ class ArnoldMayaTranslator(LentilDialog):
         self.wavelengthS.slider.setValue(cmds.getAttr("{}.aiWavelengthPO".format(self.currentCamera)))
         self.focusDistanceS.slider.setValue(cmds.getAttr("{}.aiFocusDistancePO".format(self.currentCamera)))
         self.extraSensorShiftS.slider.setValue(cmds.getAttr("{}.aiExtraSensorShiftPO".format(self.currentCamera)))
-        self.unitCB.setCurrentIndex(cmds.getAttr("{}.aiUnitsPO".format(self.currentCamera))) # why doesn't this work?
         
         lens_full_name = cmds.getAttr("{}.aiLensModelPO".format(self.currentCamera), asString=True)
         focallength = int(self.extract_focal_length_from_full_name(lens_full_name)[:-2])
@@ -479,7 +466,6 @@ class ArnoldMayaTranslator(LentilDialog):
         self.extrasensorshift_sj = cmds.scriptJob(attributeChange=["{}.aiExtraSensorShiftPO".format(self.currentCamera), self.read_values])
         self.lensmodel_sj = cmds.scriptJob(attributeChange=["{}.aiLensModelPO".format(self.currentCamera), self.read_values])
         self.dof_sj = cmds.scriptJob(attributeChange=["{}.aiDofPO".format(self.currentCamera), self.read_values])
-        self.unitmodel_sj = cmds.scriptJob(attributeChange=["{}.aiUnitsPO".format(self.currentCamera), self.read_values])
         self.bokeh_enable_sj = cmds.scriptJob(attributeChange=["{}.aiBokehEnableImagePO".format(self.currentCamera), self.read_values])
         self.bokeh_path_sj = cmds.scriptJob(attributeChange=["{}.aiBokehImagePathPO".format(self.currentCamera), self.read_values])
         self.bidir_output_path_sj = cmds.scriptJob(attributeChange=["{}.aiBidirOutputPathPO".format(self.currentCamera), self.read_values])
@@ -502,7 +488,6 @@ class ArnoldMayaTranslator(LentilDialog):
         cmds.scriptJob(kill=self.vignettingretries_sj, force=True)
         cmds.scriptJob(kill=self.lensmodel_sj, force=True)
         cmds.scriptJob(kill=self.dof_sj, force=True)
-        cmds.scriptJob(kill=self.unitmodel_sj, force=True)
         cmds.scriptJob(kill=self.bokeh_enable_sj, force=True)
         cmds.scriptJob(kill=self.bokeh_path_sj, force=True)
         cmds.scriptJob(kill=self.bidir_output_path_sj, force=True)
@@ -521,7 +506,6 @@ class ArnoldMayaTranslator(LentilDialog):
         cmds.setAttr("{}.aiExtraSensorShiftPO".format(self.currentCamera), self.extraSensorShiftS.labelValue.value())
         cmds.setAttr("{}.aiVignettingRetriesPO".format(self.currentCamera), self.vignettingRetriesS.labelValue.value())
         cmds.setAttr("{}.aiDofPO".format(self.currentCamera), False if self.dofCB.currentText() == 'disabled' else True)
-        cmds.setAttr("{}.aiUnitsPO".format(self.currentCamera), self.unitCB.currentIndex())
 
         current_lens_name = "{}__{}__{}__{}mm".format(self.lens_database[self.currentLensId]["company"].replace("-", "_"),
                                             self.lens_database[self.currentLensId]["product-name"].replace("-", "_"),
