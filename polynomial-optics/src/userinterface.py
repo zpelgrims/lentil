@@ -196,7 +196,7 @@ class LentilDialog(QtWidgets.QScrollArea):
             if lens_name == lens_name_cb:
                 self.currentLensId = lens
 
-        svg_location = "/Users/zeno/lentil/www/public/{}".format(self.lens_database[self.currentLensId]["www-svg-location"])
+        svg_location = "/home/cactus/lentil/www/public/{}".format(self.lens_database[self.currentLensId]["www-svg-location"])
         self.image.load(svg_location)
 
         self.yearL2.setText(str(self.lens_database[self.currentLensId]["year"]))
@@ -204,6 +204,8 @@ class LentilDialog(QtWidgets.QScrollArea):
         self.focalLengthCB.clear()
         for focallength in self.lens_database[self.currentLensId]["polynomial-optics"]:
             self.focalLengthCB.addItem("{}".format(focallength))
+
+        self.notes.setText(self.lens_database[self.currentLensId]["notes"])
 
         # remove exception when public lens json has fstop data for all lenses, currently just errors out if lens is not found
         try:
@@ -216,7 +218,7 @@ class LentilDialog(QtWidgets.QScrollArea):
             pass
 
     def _read_public_lens_database(self):
-        with open("/Users/zeno/lentil/www/json/lenses_public.json") as data_file:    
+        with open("/home/cactus/lentil/www/json/lenses_public.json") as data_file:    
             self.lens_database = json.load(data_file)
 
     def construct_lens_name(self, lensid, focal_length_user):
@@ -344,6 +346,50 @@ class SliderLayout(QtWidgets.QWidget):
         self.slider.doubleValueChanged.connect(self.labelValue.setValue)
         self.labelValue.valueChanged.connect(self.slider.setValue)
 
+
+class ArnoldHoudiniTranslator(LentilDialog):
+    def __init__(self, parent=None):
+        LentilDialog.__init__(self, parent=parent)
+        
+        global hou
+        import hou
+        self.setParent(hou.ui.mainQtWindow(), QtCore.Qt.Window)
+
+        self.enum_lens_map = {}
+        
+        self.discover_cameras()
+        self.discover_available_camera_models()
+
+
+    def discover_cameras(self):
+        cameras = hou.nodeType(hou.objNodeTypeCategory(),"cam").instances()
+
+
+        for i in cameras:            
+            camera_shader = hou.evalParm("{}/ar_camera_shader".format(i.path()))
+
+            if camera_shader:
+                children = hou.node(camera_shader).allSubChildren()
+
+                for j in children:
+                    if j.type().name() == "arnold::lentil":
+                        self.cameraCB.addItem(str(j))
+
+        # this will need some visual feedback if nothing is found
+
+
+    def discover_available_camera_models(self):
+
+         for lensid in self.lens_database:
+            if self.lens_database[lensid]["production-ready"]:
+
+                self.lensCB.addItem("{}-{}".format(
+                    self.lens_database[lensid]["company"], 
+                    self.lens_database[lensid]["product-name"]
+                ))
+                self.lensIndex.append(lensid)
+
+    
 
 class ArnoldMayaTranslator(LentilDialog):
     def __init__(self, parent=None):
@@ -536,5 +582,9 @@ class ArnoldMayaTranslator(LentilDialog):
         # cmds.setAttr("{}.aiEmpiricalCaDist".format(self.currentCamera), self.empirical_caS.labelValue.value())
 
 
-ld = ArnoldMayaTranslator()
-ld.show()
+# ld = ArnoldMayaTranslator()
+# ld.show()
+
+    
+foo = ArnoldHoudiniTranslator()
+foo.show()
