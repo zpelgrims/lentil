@@ -347,47 +347,58 @@ class SliderLayout(QtWidgets.QWidget):
         self.labelValue.valueChanged.connect(self.slider.setValue)
 
 
-class ArnoldHoudiniTranslator(LentilDialog):
-    def __init__(self, parent=None):
-        LentilDialog.__init__(self, parent=parent)
+# class ArnoldHoudiniTranslator(LentilDialog):
+#     def __init__(self, parent=None):
+#         LentilDialog.__init__(self, parent=parent)
         
-        global hou
-        import hou
-        self.setParent(hou.ui.mainQtWindow(), QtCore.Qt.Window)
+#         global hou
+#         import hou
+#         self.setParent(hou.ui.mainQtWindow(), QtCore.Qt.Window)
 
-        self.enum_lens_map = {}
+#         self.enum_lens_map = {}
         
-        self.discover_cameras()
-        self.discover_available_camera_models()
+#         self.discover_cameras()
+#         self.discover_available_camera_models()
+#         self.lensid_changed()
+
+#         self.listen_for_attributes()
+#         self.read_values()
+#         self.callback()
 
 
-    def discover_cameras(self):
-        cameras = hou.nodeType(hou.objNodeTypeCategory(),"cam").instances()
+
+#     def discover_cameras(self):
+#         cameras = hou.nodeType(hou.objNodeTypeCategory(),"cam").instances()
+
+#         for cam in cameras:            
+#             camera_shader = hou.evalParm("{}/ar_camera_shader".format(cam.path()))
+
+#             if camera_shader:
+#                 children = hou.node(camera_shader).allSubChildren()
+
+#                 for node in children:
+#                     if node.type().name() == "arnold::lentil":
+#                         self.cameraCB.addItem(str(node))
+                        
+
+#         # this will need some visual feedback if nothing is found
 
 
-        for i in cameras:            
-            camera_shader = hou.evalParm("{}/ar_camera_shader".format(i.path()))
+#     def discover_available_camera_models(self):
 
-            if camera_shader:
-                children = hou.node(camera_shader).allSubChildren()
+#          for lensid in self.lens_database:
+#             if self.lens_database[lensid]["production-ready"]:
 
-                for j in children:
-                    if j.type().name() == "arnold::lentil":
-                        self.cameraCB.addItem(str(j))
-
-        # this will need some visual feedback if nothing is found
-
-
-    def discover_available_camera_models(self):
-
-         for lensid in self.lens_database:
-            if self.lens_database[lensid]["production-ready"]:
-
-                self.lensCB.addItem("{}-{}".format(
-                    self.lens_database[lensid]["company"], 
-                    self.lens_database[lensid]["product-name"]
-                ))
-                self.lensIndex.append(lensid)
+#                 self.lensCB.addItem("{}-{}".format(
+#                     self.lens_database[lensid]["company"], 
+#                     self.lens_database[lensid]["product-name"]
+#                 ))
+#                 self.lensIndex.append(lensid)
+    
+    
+#     def value_changed(self):
+#         setPointFloatAttribValues(“attr”, computedstuff)
+#         
 
     
 
@@ -582,9 +593,9 @@ class ArnoldMayaTranslator(LentilDialog):
         # cmds.setAttr("{}.aiEmpiricalCaDist".format(self.currentCamera), self.empirical_caS.labelValue.value())
 
 
-# ld = ArnoldMayaTranslator()
-# ld.show()
+ld = ArnoldMayaTranslator()
+ld.show()
 
     
-foo = ArnoldHoudiniTranslator()
-foo.show()
+# foo = ArnoldHoudiniTranslator()
+# foo.show()
