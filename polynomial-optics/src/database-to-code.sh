@@ -60,3 +60,5 @@ python $LENTIL_PATH/src/unit_render_arnold.py $LENS_ID $LENS_FOCAL_LENGTH
 
 
 # needs to be flagged production-ready after tests
+
+# database-to-web.py needs to be run (can only be done after production-ready is flagged)

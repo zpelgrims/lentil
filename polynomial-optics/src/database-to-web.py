@@ -1,9 +1,8 @@
-# python json -> html
-
-# make a single element neatly, then automate the internals
+# this generates the html for the lensmodels.html & lensmodels_nav.html webpages
 
 import json
 import os
+import string
 
 def write_lensmodels_html():
 
@@ -36,7 +35,7 @@ def write_lensmodels_html():
 
             htmlstring_lensmodels += "{} {}".format(
                 lens_database[lens]["company"].capitalize(),
-                lens_database[lens]["product-name"].capitalize().replace('-', ' ')
+                string.capwords(lens_database[lens]["product-name"].replace('-', ' '))
             )
 
             htmlstring_lensmodels += "</h3>"
@@ -51,7 +50,7 @@ def write_lensmodels_html():
 
             htmlstring_lensmodels += "<p class='text-gray-700'>Available focal lengths:"
             for fl in lens_database[lens]["polynomial-optics"]:
-                htmlstring_lensmodels += "<span class='badge badge-pill badge-primary-soft ml-auto align-self-center'>{}</span>".format(fl)
+                htmlstring_lensmodels += " <span class='badge badge-pill badge-primary-soft ml-auto align-self-center'>{}</span>".format(fl)
             htmlstring_lensmodels += "</p>"
 
             htmlstring_lensmodels += "<p class='text-gray-700'>Lens patent number: <strong>{}</strong></p>".format(
@@ -59,17 +58,16 @@ def write_lensmodels_html():
             )
 
             htmlstring_lensmodels += "<p class='text-gray-700'>Minimum f-stop: <strong>{}</strong></p>".format(
-                lens_database[lens]["fstop"]["unscaled"]
+                round(lens_database[lens]["fstop"]["unscaled"], 2)
             )
 
-            # htmlstring_lensmodels += "</div><div class='col'><img class='rounded' src='http://lentil.xyz/assets/img/lenses/{}-.png'></div></div><hr class='border-gray-300 my-6'>".format(
-            #     lens_database[lens]["year"],
-            #     lens_database[lens]["company"].lower(),
-            #     lens_database[lens]["product-name"].lower()
-            # )
+            htmlstring_lensmodels += "</div><div class='col'><img class='rounded img-fluid' alt='...' src='../assets/img/lenses/{}/{}-{}-{}.svg'></div></div><hr class='border-gray-300 my-6'>".format(
+                lens,
+                lens_database[lens]["year"],
+                lens_database[lens]["company"].lower(),
+                lens_database[lens]["product-name"].lower()
+            )
 
-            htmlstring_lensmodels += "</div><div class='col'><img class='rounded' src='https://picsum.photos/seed/picsum/1000/500'></div></div><hr class='border-gray-300 my-6'>"
-            
 
 
 

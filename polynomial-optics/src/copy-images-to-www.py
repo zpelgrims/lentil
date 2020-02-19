@@ -13,13 +13,13 @@ class copy_to_www_folder():
     def _construct_database_lens_folder(self, lens):
         return "{}-{}-{}".format(lens["year"], lens["company"], lens["product-name"])
 
-    def _construct_imgs_www_folder(self):
-        return "{}/../www/public/imgs/lenses/".format(self.lentil_path)
+    def _imgs_www_folder(self):
+        return "{}/../../lentil-www/src/assets/img/lenses/".format(self.lentil_path)
 
     def remove_image_folder(self):
         try:
-            print("Removing image folder: {}".format(self._construct_imgs_www_folder()))
-            shutil.rmtree(self._construct_imgs_www_folder())
+            print("Removing image folder: {}".format(self._imgs_www_folder()))
+            shutil.rmtree(self._imgs_www_folder())
         except OSError as e:
             print("Error: {}".format(e))
 
@@ -40,9 +40,9 @@ class copy_to_www_folder():
 
             lens_folder = self._construct_database_lens_folder(lens_database[lens])
             lens_database_image_path = "{0}/database/lenses/{1}/{1}.svg".format(self.lentil_path, lens_folder)
-            lens_www_image_path = "{}/{}/{}.svg".format(self._construct_imgs_www_folder(), lens, lens_folder)
+            lens_www_image_path = "{}/{}/{}.svg".format(self._imgs_www_folder(), lens, lens_folder)
             
-            self._mkdir("{}/{}".format(self._construct_imgs_www_folder(), lens))
+            self._mkdir("{}/{}".format(self._imgs_www_folder(), lens))
 
             try:
                 shutil.copyfile(lens_database_image_path, lens_www_image_path)
@@ -51,5 +51,4 @@ class copy_to_www_folder():
                 continue
 
 to_www = copy_to_www_folder()
-to_www.remove_image_folder()
 to_www.execute()
