@@ -414,8 +414,12 @@ class ArnoldMayaTranslator(LentilDialog):
         self.listen_for_attributes()
         self.read_values()
         self.callback()
+
+        self.setWindowFlags(QtCore.Qt.Window) 
+        self.show()
+ 
+
         
-    
     def discover_available_camera_models(self):
         for n in range(len(self.lens_database)):
             try:
@@ -584,12 +588,17 @@ class ArnoldMayaTranslator(LentilDialog):
         cmds.setAttr("{}.aiBokehApertureBladesPO".format(self.currentCamera), self.bokehApertureBlades.labelValue.value())
         cmds.setAttr("{}.aiProperRayDerivativesPO".format(self.currentCamera), False if self.properRayDerivativesCB.currentText() == 'disabled' else True)
 
-        # cmds.setAttr("{}.aiEmpiricalCaDist".format(self.currentCamera), self.empirical_caS.labelValue.value())
 
+def getMainWindowPtrMaya(): 
+    import maya.app.general.mayaMixin as MayaMixin 
+    import maya.OpenMaya as om 
+    import maya.OpenMayaUI
+    from shiboken2 import wrapInstance 
 
-ld = ArnoldMayaTranslator()
-ld.show()
+    mayaMainWindowPtr = maya.OpenMayaUI.MQtUtil.mainWindow() 
+    return wrapInstance(long(mayaMainWindowPtr), QtWidgets.QWidget) 
 
+ld = ArnoldMayaTranslator(parent=getMainWindowPtrMaya())
     
 # foo = ArnoldHoudiniTranslator()
 # foo.show()
