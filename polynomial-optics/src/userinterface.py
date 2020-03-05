@@ -1,7 +1,7 @@
 from PySide2 import QtCore, QtWidgets, QtGui, QtSvg
 import json
 import re
-
+import os
 
 
 class LentilDialog(QtWidgets.QScrollArea):
@@ -189,8 +189,10 @@ class LentilDialog(QtWidgets.QScrollArea):
             )
             if lens_name == lens_name_cb:
                 self.currentLensId = lens
-
-        svg_location = "/Users/zeno/lentil/www/public/{}".format(self.lens_database[self.currentLensId]["www-svg-location"])
+        
+        dir = os.path.dirname(__file__)
+        svg_location = os.path.join(dir, '../../www/public/{}'.format(self.lens_database[self.currentLensId]["www-svg-location"]))
+        # svg_location = "/Users/zeno/lentil/www/public/{}".format(self.lens_database[self.currentLensId]["www-svg-location"])
         self.image.load(svg_location)
 
         self.yearL2.setText(str(self.lens_database[self.currentLensId]["year"]))
@@ -212,7 +214,9 @@ class LentilDialog(QtWidgets.QScrollArea):
             pass
 
     def _read_public_lens_database(self):
-        with open("/Users/zeno/lentil/www/json/lenses_public.json") as data_file:    
+        dir = os.path.dirname(__file__)
+        public_json_path = os.path.join(dir, '../../www/json/lenses_public.json')
+        with open(public_json_path) as data_file:    
             self.lens_database = json.load(data_file)
 
     def construct_lens_name(self, lensid, focal_length_user):
@@ -391,7 +395,7 @@ class SliderLayout(QtWidgets.QWidget):
     
     
 #     def value_changed(self):
-#         setPointFloatAttribValues(“attr”, computedstuff)
+#         setPointFloatAttribValues("attr", computedstuff)
 #         
 
     
@@ -400,7 +404,9 @@ class ArnoldMayaTranslator(LentilDialog):
     def __init__(self, parent=None):
         LentilDialog.__init__(self, parent=parent)
         
+        global cmds
         import maya.cmds as cmds
+        
 
         self.enum_lens_map = {}
         
@@ -597,8 +603,6 @@ def getMainWindowPtrMaya():
 
     mayaMainWindowPtr = maya.OpenMayaUI.MQtUtil.mainWindow() 
     return wrapInstance(long(mayaMainWindowPtr), QtWidgets.QWidget) 
-
-ld = ArnoldMayaTranslator(parent=getMainWindowPtrMaya())
     
 # foo = ArnoldHoudiniTranslator()
 # foo.show()
