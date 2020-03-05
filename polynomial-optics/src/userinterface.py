@@ -3,12 +3,6 @@ import json
 import re
 
 
-"""
-TODO:
-    clear the scriptjobs properly.. __del__ is not the way.
-"""
-
-
 
 class LentilDialog(QtWidgets.QScrollArea):
     def __init__(self, parent=None):
@@ -196,7 +190,7 @@ class LentilDialog(QtWidgets.QScrollArea):
             if lens_name == lens_name_cb:
                 self.currentLensId = lens
 
-        svg_location = "/home/cactus/lentil/www/public/{}".format(self.lens_database[self.currentLensId]["www-svg-location"])
+        svg_location = "/Users/zeno/lentil/www/public/{}".format(self.lens_database[self.currentLensId]["www-svg-location"])
         self.image.load(svg_location)
 
         self.yearL2.setText(str(self.lens_database[self.currentLensId]["year"]))
@@ -218,7 +212,7 @@ class LentilDialog(QtWidgets.QScrollArea):
             pass
 
     def _read_public_lens_database(self):
-        with open("/home/cactus/lentil/www/json/lenses_public.json") as data_file:    
+        with open("/Users/zeno/lentil/www/json/lenses_public.json") as data_file:    
             self.lens_database = json.load(data_file)
 
     def construct_lens_name(self, lensid, focal_length_user):
@@ -532,10 +526,9 @@ class ArnoldMayaTranslator(LentilDialog):
         self.bidir_add_luminance_trans_width_sj = cmds.scriptJob(attributeChange=["{}.aiBidirAddLuminanceTransitionPO".format(self.currentCamera), self.read_values])
         self.bokeh_aperture_blades_sj = cmds.scriptJob(attributeChange=["{}.aiBokehApertureBladesPO".format(self.currentCamera), self.read_values])
         self.proper_ray_derivatives_sj = cmds.scriptJob(attributeChange=["{}.aiProperRayDerivativesPO".format(self.currentCamera), self.read_values])
-        
-
-    # this doesn't work atm.. del not called?
-    def __del__(self):
+        self.vignettingretries_sj = cmds.scriptJob(attributeChange=["{}.aiVignettingRetriesPO".format(self.currentCamera), self.read_values])
+    
+    def closeEvent(self, event):
         # kill the scriptjobs that listen for attribute changes
         cmds.scriptJob(kill=self.sensorwidth_sj, force=True)
         cmds.scriptJob(kill=self.fstop_sj, force=True)
@@ -554,6 +547,7 @@ class ArnoldMayaTranslator(LentilDialog):
         cmds.scriptJob(kill=self.bidir_add_luminance_trans_width_sj, force=True)
         cmds.scriptJob(kill=self.bokeh_aperture_blades_sj, force=True)
         cmds.scriptJob(kill=self.proper_ray_derivatives_sj, force=True)
+       
 
     def value_changed(self):
         cmds.setAttr("{}.aiSensorWidthPO".format(self.currentCamera), self.sensorwidthS.labelValue.value())
