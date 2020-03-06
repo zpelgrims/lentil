@@ -421,8 +421,7 @@ class ArnoldMayaTranslator(LentilDialog):
         self.read_values()
         self.callback()
 
-        self.setWindowFlags(QtCore.Qt.Window) 
-        self.show()
+        self.setWindowFlags(QtCore.Qt.Window)
  
 
         
@@ -603,6 +602,16 @@ def getMainWindowPtrMaya():
 
     mayaMainWindowPtr = maya.OpenMayaUI.MQtUtil.mainWindow() 
     return wrapInstance(long(mayaMainWindowPtr), QtWidgets.QWidget) 
+
+def launch_maya():
+    global ld
+    try:
+        ld.close()
+    except:
+        pass
+
+    ld = ArnoldMayaTranslator(parent=getMainWindowPtrMaya())
+    ld.show()
     
 # foo = ArnoldHoudiniTranslator()
 # foo.show()
