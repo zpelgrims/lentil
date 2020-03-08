@@ -95,12 +95,12 @@ gboolean on_keypress (GtkWidget *widget, GdkEventKey *event, gpointer data) {
     return TRUE;
   }
   else if(event->keyval == GDK_KEY_m) {
-    num_rays += 10;
+    num_rays += 1;
     gtk_widget_queue_draw(widget);
     return TRUE;
   }
   else if(event->keyval == GDK_KEY_l) {
-    num_rays -= 10;
+    num_rays -= 1;
     gtk_widget_queue_draw(widget);
     return TRUE;
   }
