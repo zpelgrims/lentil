@@ -70,7 +70,7 @@ def unit_render_lens(lensdict, mode, camerashader, focallength):
         
         sensor_width = 36.0
         fov = 2.0 * math.atan(sensor_width / (2.0 * lensdict["focallength"]))
-        aperture_radius = (lensdict["focallength"] / (2.0 * lensdict["max_fstop"]))
+        aperture_radius = (lensdict["focallength"] / (2.0 * lensdict["max_fstop"])) / 10.0
 
         if node_thinlens is not None and AiNodeIs(node_thinlens, 'persp_camera') == True:
             AiNodeSetFlt(node_thinlens, 'fov', math.degrees(fov))

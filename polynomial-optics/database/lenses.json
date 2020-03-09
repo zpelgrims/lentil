@@ -2023,7 +2023,9 @@
     "patent-number": "US3506336",
     "polynomial-optics": [
       22,
-      28
+      28,
+      50,
+      35
     ],
     "prime": true,
     "product-name": "takumar",
