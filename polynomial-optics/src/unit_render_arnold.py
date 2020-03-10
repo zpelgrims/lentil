@@ -70,7 +70,7 @@ def unit_render_lens(lensdict, mode, camerashader, focallength):
         
         sensor_width = 36.0
         fov = 2.0 * math.atan(sensor_width / (2.0 * lensdict["focallength"]))
-        aperture_radius = (lensdict["focallength"] / (2.0 * lensdict["max_fstop"])) / 10.0
+        aperture_radius = (lensdict["focallength"] / (2.0 * lensdict["max_fstop"]))
 
         if node_thinlens is not None and AiNodeIs(node_thinlens, 'persp_camera') == True:
             AiNodeSetFlt(node_thinlens, 'fov', math.degrees(fov))
@@ -182,8 +182,8 @@ def execute_single(lensid, focallength):
     lenses = collect_all_prod_ready_lenses("{}/polynomial-optics/database/lenses.json".format(lentil_path))
     info = lenses[lensid][focallength]
     unit_render_lens(info, "bokeh", 'lentil', focallength)
-    unit_render_lens(info, "bokeh", 'lentil_thinlens', focallength)
-    unit_render_lens(info, "bokeh", 'persp_camera', focallength)
+    # unit_render_lens(info, "bokeh", 'lentil_thinlens', focallength)
+    # unit_render_lens(info, "bokeh", 'persp_camera', focallength)
     #unit_render_lens(info, "chart", 'lentil', focallength)
     #unit_render_lens(info, "chart", 'lentil_thinlens', focallength)
     #unit_render_lens(info, "chart", 'persp_camera', focallength)
