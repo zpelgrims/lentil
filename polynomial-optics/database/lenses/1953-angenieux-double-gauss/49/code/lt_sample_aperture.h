@@ -16,7 +16,14 @@ if(1 || view(2) >= camera->lens_field_of_view)
   const double eps = 1e-8;
   double sqr_err = 1e30, sqr_ap_err = 1e30;
   double prev_sqr_err = 1e32, prev_sqr_ap_err = 1e32;
-  for(int k=0;k<100&&(sqr_err>eps||sqr_ap_err>eps)&&error==0;k++)
+  
+  int cnt_err_up = 0;
+  int cnt_ap_err_up = 0;
+
+  int k = 0;
+  AiMsgInfo("---------------");
+
+  while(k<100&&(sqr_err>eps||sqr_ap_err>eps)&&error==0)
   {
     AiMsgInfo("count (k): %d", k);
     prev_sqr_err = sqr_err, prev_sqr_ap_err = sqr_ap_err;
@@ -119,14 +126,26 @@ if(1 || view(2) >= camera->lens_field_of_view)
     }
     AiMsgInfo("x: %f", x);
     AiMsgInfo("y: %f", y);
-    if(sqr_err>prev_sqr_err){
+    if (sqr_err < prev_sqr_err) cnt_err_up = 0;
+    if (sqr_ap_err < prev_sqr_ap_err) cnt_ap_err_up = 0;
+
+    if (sqr_err>prev_sqr_err){
+      ++cnt_err_up;
+      
+    }
+    if (cnt_err_up > 6){
       error |= 1;
       AiMsgInfo("error |= 1");
     }
     if(sqr_ap_err>prev_sqr_ap_err){
-      error |= 2;
-      AiMsgInfo("error |= 2");
+      ++cnt_ap_err_up;
+     
     }
+    if(cnt_ap_err_up > 6){
+      error |= 2;
+       AiMsgInfo("error |= 2");
+    }
+
     if(out[0]!=out[0]){
       error |= 4;
       AiMsgInfo("error |= 4");
@@ -140,23 +159,31 @@ if(1 || view(2) >= camera->lens_field_of_view)
       error = 0;
       AiMsgInfo("error reset (k<10)");
     }
+
+    k++;
   }
+
+// AiMsgInfo("k: %d", k);
 }
-else {
-  error = 128;
-  AiMsgInfo("error = 128");
-  }
+
+// else {
+//   error = 128;
+  // AiMsgInfo("error = 128");
+//   }
 if(out[0]*out[0]+out[1]*out[1] > camera->lens_outer_pupil_radius*camera->lens_outer_pupil_radius){
   error |= 16;
   AiMsgInfo("error |= 16");
 }
-const double begin_x = x;
-const double begin_y = y;
-const double begin_dx = dx;
-const double begin_dy = dy;
-const double begin_lambda = lambda;
-if(error==0)
-  out[4] =  + 0.328411  + 0.347751 *begin_lambda + -0.000952343 *begin_y*begin_dy + -0.000969273 *begin_x*begin_dx + -0.236589 *lens_ipow(begin_lambda, 2) + -0.208874 *lens_ipow(begin_dy, 4) + -0.000239654 *lens_ipow(begin_y, 2)*lens_ipow(begin_dy, 2) + -0.000244213 *lens_ipow(begin_x, 2)*lens_ipow(begin_dx, 2) + -0.209815 *lens_ipow(begin_dx, 4) + -0.000110959 *lens_ipow(begin_x, 2)*lens_ipow(begin_dy, 2) + -0.420373 *lens_ipow(begin_dx, 2)*lens_ipow(begin_dy, 2) + -0.00027197 *begin_x*begin_y*begin_dx*begin_dy + -0.000108937 *lens_ipow(begin_y, 2)*lens_ipow(begin_dx, 2) + -1.71491e-07 *lens_ipow(begin_x, 2)*lens_ipow(begin_y, 2) + -2.1839e-10 *lens_ipow(begin_y, 6) + -2.16236e-10 *lens_ipow(begin_x, 6);
-else
-  out[4] = 0.0f;
+
+// AiMsgInfo("error: %d", error);
+
+// const double begin_x = x;
+// const double begin_y = y;
+// const double begin_dx = dx;
+// const double begin_dy = dy;
+// const double begin_lambda = lambda;
+// if(error==0)
+//   out[4] =  + 0.328411  + 0.347751 *begin_lambda + -0.000952343 *begin_y*begin_dy + -0.000969273 *begin_x*begin_dx + -0.236589 *lens_ipow(begin_lambda, 2) + -0.208874 *lens_ipow(begin_dy, 4) + -0.000239654 *lens_ipow(begin_y, 2)*lens_ipow(begin_dy, 2) + -0.000244213 *lens_ipow(begin_x, 2)*lens_ipow(begin_dx, 2) + -0.209815 *lens_ipow(begin_dx, 4) + -0.000110959 *lens_ipow(begin_x, 2)*lens_ipow(begin_dy, 2) + -0.420373 *lens_ipow(begin_dx, 2)*lens_ipow(begin_dy, 2) + -0.00027197 *begin_x*begin_y*begin_dx*begin_dy + -0.000108937 *lens_ipow(begin_y, 2)*lens_ipow(begin_dx, 2) + -1.71491e-07 *lens_ipow(begin_x, 2)*lens_ipow(begin_y, 2) + -2.1839e-10 *lens_ipow(begin_y, 6) + -2.16236e-10 *lens_ipow(begin_x, 6);
+// else
+//   out[4] = 0.0f;
 } break;
