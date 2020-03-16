@@ -203,6 +203,6 @@ parser.add_argument('lensid', type=str)
 parser.add_argument('focallength', type=int)
 args = parser.parse_args()
 
-# execute_single(args.lensid, args.focallength)
-execute_all_lentil_only()
+execute_single(args.lensid, args.focallength)
+# execute_all_lentil_only()
 #execute_all()
