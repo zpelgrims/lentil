@@ -205,23 +205,28 @@ void print_lt_sample_aperture(FILE *f, const poly_system_t *system, const poly_s
     fprintf(f, "+0.0f;\n");
   }
 
-  // 3.2) invert jacobian
-  fprintf(f, "    Eigen::Matrix2d invApJ;\n");
-  fprintf(f, "    const double invdetap = 1.0f/(dx1_domega0(0, 0)*dx1_domega0(1, 1) - dx1_domega0(0, 1)*dx1_domega0(1, 0));\n");
-  fprintf(f, "    invApJ(0, 0) =  dx1_domega0(1, 1)*invdetap;\n");
-  fprintf(f, "    invApJ(1, 1) =  dx1_domega0(0, 0)*invdetap;\n");
-  fprintf(f, "    invApJ(0, 1) = -dx1_domega0(0, 1)*invdetap;\n");
-  fprintf(f, "    invApJ(1, 0) = -dx1_domega0(1, 0)*invdetap;\n");
+  // 3.2) invert jacobian, leaving manual way here just for future reference on how to find the determinant
+  // fprintf(f, "    Eigen::Matrix2d invApJ;\n");
+  // fprintf(f, "    const double invdetap = 1.0f/(dx1_domega0(0, 0)*dx1_domega0(1, 1) - dx1_domega0(0, 1)*dx1_domega0(1, 0));\n");
+  // fprintf(f, "    invApJ(0, 0) =  dx1_domega0(1, 1)*invdetap;\n");
+  // fprintf(f, "    invApJ(1, 1) =  dx1_domega0(0, 0)*invdetap;\n");
+  // fprintf(f, "    invApJ(0, 1) = -dx1_domega0(0, 1)*invdetap;\n");
+  // fprintf(f, "    invApJ(1, 0) = -dx1_domega0(1, 0)*invdetap;\n");
+  fprintf(f, "    Eigen::Matrix2d invApJ = dx1_domega0.inverse().eval();\n");
 
   // 3.3) propagate back error
   // We do not need to check if the error is small here, as we would have exited
   // the loop if the error had been small
-  fprintf(f, "    for(int i=0;i<2;i++)\n    {\n");
-  for(int k=0;k<2;k++)
-  {
-    fprintf(f, "      %s += invApJ(%d, i)*delta_ap[i];\n", vnamei[k+2], k);
-  }
-  fprintf(f, "    }\n");
+  // fprintf(f, "    for(int i=0;i<2;i++)\n    {\n");
+  // for(int k=0;k<2;k++)
+  // {
+  //   fprintf(f, "      %s += invApJ(%d, i)*delta_ap[i];\n", vnamei[k+2], k);
+  // }
+  // fprintf(f, "    }\n");
+  fprintf(f, "    Eigen::Vector2d solution_dir = invApJ * delta_ap;\n");
+  fprintf(f, "    dx += solution_dir(0);\n");
+  fprintf(f, "    dy += solution_dir(1);\n");
+
 
   // 4) evaluate scene direction and calculate error vector
   // - get out position and out direction in worldspace
@@ -281,18 +286,23 @@ void print_lt_sample_aperture(FILE *f, const poly_system_t *system, const poly_s
   }
 
   // 5.2) invert jacobian
-  fprintf(f, "    Eigen::Matrix2d invJ;\n");
-  fprintf(f, "    const double invdet = 1.0f/(domega2_dx0(0, 0)*domega2_dx0(1, 1) - domega2_dx0(0, 1)*domega2_dx0(1, 0));\n");
-  fprintf(f, "    invJ(0, 0) =  domega2_dx0(1, 1)*invdet;\n");
-  fprintf(f, "    invJ(1, 1) =  domega2_dx0(0, 0)*invdet;\n");
-  fprintf(f, "    invJ(0, 1) = -domega2_dx0(0, 1)*invdet;\n");
-  fprintf(f, "    invJ(1, 0) = -domega2_dx0(1, 0)*invdet;\n");
+  // fprintf(f, "    Eigen::Matrix2d invJ;\n");
+  // fprintf(f, "    const double invdet = 1.0f/(domega2_dx0(0, 0)*domega2_dx0(1, 1) - domega2_dx0(0, 1)*domega2_dx0(1, 0));\n");
+  // fprintf(f, "    invJ(0, 0) =  domega2_dx0(1, 1)*invdet;\n");
+  // fprintf(f, "    invJ(1, 1) =  domega2_dx0(0, 0)*invdet;\n");
+  // fprintf(f, "    invJ(0, 1) = -domega2_dx0(0, 1)*invdet;\n");
+  // fprintf(f, "    invJ(1, 0) = -domega2_dx0(1, 0)*invdet;\n");
+  fprintf(f, "    Eigen::Matrix2d invJ = domega2_dx0.inverse().eval();\n");
 
   // 5.3) propagate error back to sensor
-  fprintf(f, "    for(int i=0;i<2;i++)\n    {\n");
-  for(int k=0;k<2;k++)
-    fprintf(f, "      %s += 0.72 * invJ(%d, i) * delta_out[i];\n", vnamei[k], k); //note the magic .72 number, dampening the newton iterations
-  fprintf(f, "    }\n");
+  // fprintf(f, "    for(int i=0;i<2;i++)\n    {\n");
+  // for(int k=0;k<2;k++)
+  //   fprintf(f, "      %s += 0.72 * invJ(%d, i) * delta_out[i];\n", vnamei[k], k); //note the magic .72 number, dampening the newton iterations
+  // fprintf(f, "    }\n");
+  fprintf(f, "    Eigen::Vector2d solution_pos = 0.72 * invJ * delta_out; // default newton-raphson\n");
+  fprintf(f, "    x += solution_pos(0);\n");
+  fprintf(f, "    y += solution_pos(1);\n");
+  
   fprintf(f, "    if(sqr_err>prev_sqr_err) error |= 1;\n");
   fprintf(f, "    if(sqr_ap_err>prev_sqr_ap_err) error |= 2;\n");
   fprintf(f, "    if(out[0]!=out[0]) error |= 4;\n");

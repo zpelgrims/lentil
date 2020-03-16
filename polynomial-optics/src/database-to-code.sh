@@ -52,11 +52,11 @@ rm -rf -v $LENTIL_PATH/data/tmp/$LENS_ID/$LENS_FOCAL_LENGTH &&
 
 # build pota with new lens
 cd $LENTIL_PATH/../pota/build/local/ &&
-. ./build_local.sh &&
+. ./build_local.sh
 
 # render unit tests
-cd $LENTIL_PATH/data/tmp/
-python $LENTIL_PATH/src/unit_render_arnold.py $LENS_ID $LENS_FOCAL_LENGTH
+# cd $LENTIL_PATH/data/tmp/
+# python $LENTIL_PATH/src/unit_render_arnold.py $LENS_ID $LENS_FOCAL_LENGTH
 
 
 # needs to be flagged production-ready after tests
