@@ -65,14 +65,14 @@ class copy_to_www_folder():
                 try:
                     shutil.copyfile(lens_database_image_path_bidirectional, lens_www_bidirectional_image_path)
                 except IOError as e:
-                    print("No image to copy for lens: {}".format(lens))
+                    print("No .png image to copy for lens {} with focallength: {}".format(lens, ffl))
                     continue
 
 
             try:
                 shutil.copyfile(lens_database_image_path, lens_www_svg_image_path)
             except IOError as e:
-                print("No image to copy for lens: {}".format(lens))
+                print("No .svg image to copy for lens: {}".format(lens))
                 continue
 
 to_www = copy_to_www_folder()
