@@ -1,6 +1,6 @@
 {
   "0001": {
-    "commercial": false,
+    "commercial": true,
     "company": "angenieux",
     "focal-length-mm-patent": 100.0,
     "focal-length-mm-raytraced": 99.44564546640231,

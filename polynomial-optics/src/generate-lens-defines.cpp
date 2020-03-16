@@ -29,8 +29,7 @@ int main(int argc, char *argv[])
 // =================================================================
 
   // get lens data, store in map of map
-  std::map<std::string, std::map<std::string, std::vector<int>>> commercial_lens_ids;
-  std::map<std::string, std::map<std::string, std::vector<int>>> free_lens_ids;
+  std::map<std::string, std::map<std::string, std::vector<int>>> fitted_lens_ids;
 
   for (auto lens = lens_database.begin(); lens != lens_database.end(); ++lens)
   {
@@ -49,11 +48,7 @@ int main(int argc, char *argv[])
       );
       
       if (lens.value()["production-ready"] == true){
-        if (lens.value()["commercial"] == true){
-          commercial_lens_ids[case_lens_name].insert(std::make_pair(lens.key(), focal_length_vector)); 
-        } else {
-          free_lens_ids[case_lens_name].insert(std::make_pair(lens.key(), focal_length_vector));
-        }
+        fitted_lens_ids[case_lens_name].insert(std::make_pair(lens.key(), focal_length_vector)); 
       }
   }
 
@@ -61,9 +56,9 @@ int main(int argc, char *argv[])
 // =================================================================
 
 
-  // print lenses
-  fmt::print("\nList of implemented free lenses: \n");
-  for (auto it : free_lens_ids) {
+
+  fmt::print("\nList of implemented lenses: \n");
+  for (auto it : fitted_lens_ids) {
     std::cout << "\t" << it.first << " : #";
     std::map<std::string, std::vector<int>> &internal_map = it.second;
     for (auto iterator_map: internal_map) {
@@ -94,30 +89,14 @@ int main(int argc, char *argv[])
   fprintf(pota_h_lenses_h, "// automatically generated file\n\n\n");
 
 
-  // pota.h free lenses
-  fprintf(pota_h_lenses_h, "#ifdef LENS_ID_FREE\n");
-  for (auto it : free_lens_ids) {
-    std::map<std::string, std::vector<int>> &internal_map = it.second;
-    for (auto iterator_map: internal_map) {
-      std::vector<int> &internal_vector = iterator_map.second;
-      for (auto iterator_vector : internal_vector){
-        fprintf(pota_h_lenses_h,"\t%s__%dmm,\n", it.first.c_str(), iterator_vector);
-      }
-    }
-  }
-  fprintf(pota_h_lenses_h, "#endif\n");
-
-
   // pota.h commercial lenses
-  for (auto it : commercial_lens_ids) {
+  for (auto it : fitted_lens_ids) {
     std::map<std::string, std::vector<int>> &internal_map = it.second;
     for (auto iterator_map: internal_map) {
-      fprintf(pota_h_lenses_h, "#ifdef LENS_ID_COMMERCIAL\n");
       std::vector<int> &internal_vector = iterator_map.second;
       for (auto iterator_vector : internal_vector){
         fprintf(pota_h_lenses_h, "\t%s__%dmm,\n", it.first.c_str(), iterator_vector);
       }
-      fprintf(pota_h_lenses_h, "#endif\n");
     }
   }
 
@@ -140,30 +119,14 @@ int main(int argc, char *argv[])
   fprintf(pota_cpp_lenses_h, "// automatically generated file\n\n\n");
 
 
-  // pota.cpp free lenses
-  fprintf(pota_cpp_lenses_h, "#ifdef LENS_ID_FREE\n");
-  for (auto it : free_lens_ids) {
-    std::map<std::string, std::vector<int>> &internal_map = it.second;
-    for (auto iterator_map: internal_map) {
-      std::vector<int> &internal_vector = iterator_map.second;
-      for (auto iterator_vector : internal_vector){
-        fprintf(pota_cpp_lenses_h,"\t\"%s__%dmm\",\n", it.first.c_str(), iterator_vector);
-      }
-    }
-  }
-  fprintf(pota_cpp_lenses_h, "#endif\n");
-
-
   // pota.cpp commercial lenses
-  for (auto it : commercial_lens_ids) {
+  for (auto it : fitted_lens_ids) {
     std::map<std::string, std::vector<int>> &internal_map = it.second;
     for (auto iterator_map: internal_map) {
-      fprintf(pota_cpp_lenses_h, "#ifdef LENS_ID_COMMERCIAL\n");
       std::vector<int> &internal_vector = iterator_map.second;
       for (auto iterator_vector : internal_vector){
         fprintf(pota_cpp_lenses_h, "\t\"%s__%dmm\",\n", it.first.c_str(), iterator_vector);
       }
-      fprintf(pota_cpp_lenses_h, "#endif\n");
     }
   }
 
@@ -194,32 +157,10 @@ int main(int argc, char *argv[])
     fprintf(gencode_output_file, "// automatically generated file\n\n\n");
 
 
-    // gencode outputs - free lenses
-    fprintf(gencode_output_file, "#ifdef LENS_ID_FREE\n");
-    for (auto it : free_lens_ids) {
-      std::map<std::string, std::vector<int>> &internal_map = it.second;
-      for (auto iterator_map: internal_map) {
-        std::vector<int> &internal_vector = iterator_map.second;
-        for (auto iterator_vector : internal_vector){
-
-          std::string lens_path = std::to_string(lens_database[iterator_map.first]["year"].get<int>());
-          lens_path += "-";
-          lens_path += lens_database[iterator_map.first]["company"].get<std::string>();
-          lens_path += "-";
-          lens_path += lens_database[iterator_map.first]["product-name"].get<std::string>();
-
-          fprintf(gencode_output_file,"\t#include \"../../../polynomial-optics/database/lenses/%s/%d/code/%s\"\n", lens_path.c_str(), iterator_vector, gencode_filename.c_str());
-        }
-      }
-    }
-    fprintf(gencode_output_file, "#endif\n");
-
-
     // gencode outputs - commercial lenses
-    for (auto it : commercial_lens_ids) {
+    for (auto it : fitted_lens_ids) {
       std::map<std::string, std::vector<int>> &internal_map = it.second;
       for (auto iterator_map: internal_map) {
-        fprintf(gencode_output_file, "#ifdef LENS_ID_COMMERCIAL\n");
         std::vector<int> &internal_vector = iterator_map.second;
         for (auto iterator_vector : internal_vector){
 
@@ -230,7 +171,6 @@ int main(int argc, char *argv[])
 
           fprintf(gencode_output_file,"\t#include \"../../../polynomial-optics/database/lenses/%s/%d/code/%s\"\n", lens_path.c_str(), iterator_vector, gencode_filename.c_str());
         }
-        fprintf(gencode_output_file, "#endif\n");
       }
     }
 
