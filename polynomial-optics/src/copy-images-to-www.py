@@ -40,12 +40,37 @@ class copy_to_www_folder():
 
             lens_folder = self._construct_database_lens_folder(lens_database[lens])
             lens_database_image_path = "{0}/database/lenses/{1}/{1}.svg".format(self.lentil_path, lens_folder)
-            lens_www_image_path = "{}/{}/{}.svg".format(self._imgs_www_folder(), lens, lens_folder)
-            
+            lens_www_svg_image_path = "{}/{}/{}.svg".format(self._imgs_www_folder(), lens, lens_folder)
+
             self._mkdir("{}/{}".format(self._imgs_www_folder(), lens))
 
+            for ffl in lens_database[lens]["polynomial-optics"]:
+                lens_database_image_path_bidirectional = "{}/database/lenses/{}/{}/unit-render-{}_{}_{}_{}mm-lentil-bokeh-bidirectional.RGBA.0001.png".format(
+                    self.lentil_path, 
+                    lens_folder, 
+                    ffl,
+                    lens_database[lens]["company"],
+                    lens_database[lens]["product-name"],
+                    lens_database[lens]["year"],
+                    ffl
+                )
+                lens_www_bidirectional_image_path = "{}/{}/unit-render-{}_{}_{}_{}mm-lentil-bokeh-bidirectional.RGBA.0001.png".format(
+                    self._imgs_www_folder(), 
+                    lens, lens_database[lens]["company"],
+                    lens_database[lens]["product-name"],
+                    lens_database[lens]["year"],
+                    ffl
+                )
+
+                try:
+                    shutil.copyfile(lens_database_image_path_bidirectional, lens_www_bidirectional_image_path)
+                except IOError as e:
+                    print("No image to copy for lens: {}".format(lens))
+                    continue
+
+
             try:
-                shutil.copyfile(lens_database_image_path, lens_www_image_path)
+                shutil.copyfile(lens_database_image_path, lens_www_svg_image_path)
             except IOError as e:
                 print("No image to copy for lens: {}".format(lens))
                 continue

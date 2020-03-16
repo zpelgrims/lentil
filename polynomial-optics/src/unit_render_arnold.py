@@ -113,8 +113,7 @@ def unit_render_lens(lensdict, mode, camerashader, focallength):
     oiio_default = "oiiotool -i '{}' --tocolorspace srgb -v -o '{}'".format(output_path_fw_exr, output_path_fw_png)
     subprocess.call([
         oiio_default
-    ], shell=True)
-    
+    ], shell=True)    
 
 
 
@@ -188,7 +187,7 @@ def execute_single(lensid, focallength):
     #unit_render_lens(info, "chart", 'persp_camera', focallength)
 
 
-def execute_all():
+def execute_all_lentil_only():
     lenses = collect_all_prod_ready_lenses("{}/polynomial-optics/database/lenses.json".format(lentil_path))
     for lensid, focallength in lenses.items():
         for focallength, info in focallength.items():
@@ -204,5 +203,6 @@ parser.add_argument('lensid', type=str)
 parser.add_argument('focallength', type=int)
 args = parser.parse_args()
 
-execute_single(args.lensid, args.focallength)
+# execute_single(args.lensid, args.focallength)
+execute_all_lentil_only()
 #execute_all()

@@ -61,12 +61,22 @@ def write_lensmodels_html():
                 round(lens_database[lens]["fstop"]["unscaled"], 2)
             )
 
-            htmlstring_lensmodels += "</div><div class='col'><img class='rounded img-fluid' alt='...' src='../assets/img/lenses/{}/{}-{}-{}.svg'></div></div><hr class='border-gray-300 my-6'>".format(
+            htmlstring_lensmodels += "</div><div class='col'><img class='rounded img-fluid' alt='...' src='../assets/img/lenses/{}/{}-{}-{}.svg'></div></div>".format(
                 lens,
                 lens_database[lens]["year"],
                 lens_database[lens]["company"].lower(),
                 lens_database[lens]["product-name"].lower()
             )
+
+            htmlstring_lensmodels += "<img class='img-fluid rounded' src='../assets/img/lenses/{}/unit-render-{}_{}_{}_{}mm-lentil-bokeh-bidirectional.RGBA.0001.png'>".format(
+                lens,
+                lens_database[lens]["company"],
+                lens_database[lens]["product-name"],
+                lens_database[lens]["year"],
+                min(lens_database[lens]["polynomial-optics"], key=lambda x:abs(x-50)) # available fitted, closest to 50 
+            )
+            
+            htmlstring_lensmodels += "<hr class='border-gray-300 my-6'>"
 
 
 
