@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
 {
   
   std::string lentil_path = std::getenv("LENTIL_PATH");
-  std::string lens_public_database_path = fmt::format("{}/../www/json/lenses_public.json", lentil_path);
+  std::string lens_public_database_path = fmt::format("{}/../pota/maya/ui/lenses_public.json", lentil_path);
   std::string lens_database_path = fmt::format("{}/database/lenses.json", lentil_path);
   std::ifstream in_json(lens_database_path);
   json lens_database = json::parse(in_json);

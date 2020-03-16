@@ -41,6 +41,7 @@ class copy_to_www_folder():
             lens_folder = self._construct_database_lens_folder(lens_database[lens])
             lens_database_image_path = "{0}/database/lenses/{1}/{1}.svg".format(self.lentil_path, lens_folder)
             lens_www_svg_image_path = "{}/{}/{}.svg".format(self._imgs_www_folder(), lens, lens_folder)
+            lens_release_svg_image_path = "{}/../pota/maya/ui/svg/{}.svg".format(self.lentil_path, lens_folder)
 
             self._mkdir("{}/{}".format(self._imgs_www_folder(), lens))
 
@@ -71,6 +72,7 @@ class copy_to_www_folder():
 
             try:
                 shutil.copyfile(lens_database_image_path, lens_www_svg_image_path)
+                shutil.copyfile(lens_database_image_path, lens_release_svg_image_path)
             except IOError as e:
                 print("No .svg image to copy for lens: {}".format(lens))
                 continue
