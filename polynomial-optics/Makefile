@@ -36,7 +36,8 @@ all: \
 	genpoly \
 	printpoly \
 	print-lens-path \
-	add-fitted-focal-length
+	add-fitted-focal-length\
+	# w4-test
 
 view: Makefile src/view.cpp ${HEADERS}
 	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/view.cpp $(shell pkg-config --cflags --libs gtk+-3.0) ${LDFLAGS} -o bin/view ${LDFLAGS}
@@ -77,6 +78,8 @@ printpoly: Makefile src/printpoly.c ${HEADERS}
 gencode: Makefile src/gencode.c ${HEADERS}
 	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/gencode.c -o bin/gencode ${LDFLAGS}
 
+# w4-test: Makefile src/w4-test.cpp ${HEADERS}
+# 	${CXX} ${OPTFLAGS} ${CXXFLAGS} src/w4-test.cpp -o bin/w4-test ${LDFLAGS}
 
 #lt-aperture-sampling: Makefile src/sample_ap_lt.c init.h lt_sample_aperture.h ${HEADERS}
 #	${CXX} ${OPTFLAGS} ${CXXFLAGS} -Irender/${lensname} src/sample_ap_lt.c -o bin/lt-aperture-sampling ${LDFLAGS}

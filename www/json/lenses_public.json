@@ -4,22 +4,31 @@
     "company": "angenieux",
     "fstop": {
       "105": 1.1077938034775305,
-      "49": 1.108072268445372,
+      "49": 1.1080725880229183,
+      "55": 1.1080459864941312,
       "85": 1.1078930841467716,
-      "unscaled": 1.1078236781618793
+      "unscaled": 1.1078236781618804
+    },
+    "lt-jacobian-fix-required": {
+      "105": false,
+      "49": true,
+      "55": true,
+      "85": false
     },
     "max-fstop-aperture-radius": {
       "105": 26.903570103839055,
-      "49": 12.561180783257896,
+      "49": 12.561177706611538,
+      "55": 14.098527714750887,
       "85": 21.78290976713877,
-      "unscaled": 25.481638992599265
+      "unscaled": 25.48163899259926
     },
     "notes": "A six element objective with a huge aperture. Due to optical vignetting in the lens, it creates very swirly bokeh.",
     "patent-number": "US2701982",
     "polynomial-optics": [
       49,
       85,
-      105
+      105,
+      55
     ],
     "prime": true,
     "product-name": "double-gauss",
@@ -32,12 +41,16 @@
     "company": "meyer-optik-goerlitz",
     "fstop": {
       "58": 1.4719464647327434,
-      "75": 1.4700863424991495,
-      "unscaled": 1.470050511260092
+      "75": 1.4700863424991728,
+      "unscaled": 1.4700505112600928
+    },
+    "lt-jacobian-fix-required": {
+      "58": false,
+      "75": false
     },
     "max-fstop-aperture-radius": {
       "58": 13.588470527173888,
-      "75": 17.580967687347904,
+      "75": 17.58096768734785,
       "unscaled": 23.368825585717612
     },
     "notes": "The Primoplan 58 was developed by the brilliant Meyer-Optik designer Paul Schäfter 80 years ago. Its light intensity of 1:1.9, which was considered extremely high back then, made the Primoplan 58 f1.9 one of the most exciting lenses of its time. It features lots of optical vignetting, making for very swirly bokeh. A recent re-release also included the 75mm.",
@@ -58,12 +71,20 @@
     "company": "unknown",
     "fstop": {
       "100": 3.399382789614151,
+      "65": 3.4038589506871797,
       "75": 3.4038230296540033,
       "85": 3.3993613678259567,
       "unscaled": 3.3994125189209967
     },
+    "lt-jacobian-fix-required": {
+      "100": false,
+      "65": false,
+      "75": false,
+      "85": false
+    },
     "max-fstop-aperture-radius": {
       "100": 11.64082243490075,
+      "65": 7.5584953496428104,
       "75": 8.72064718724445,
       "85": 9.940468998629244,
       "unscaled": 9.999136863225912
@@ -74,7 +95,8 @@
     "polynomial-optics": [
       85,
       100,
-      75
+      75,
+      65
     ],
     "prime": true,
     "product-name": "petzval",
@@ -86,13 +108,15 @@
     "commercial": true,
     "company": "nikon",
     "fstop": {
-      "18": 2.741837907707091,
       "28": 2.742358669339889,
       "35": 2.7426897801141075,
       "unscaled": 2.745987591648176
     },
+    "lt-jacobian-fix-required": {
+      "28": false,
+      "35": false
+    },
     "max-fstop-aperture-radius": {
-      "18": 4.422372340909918,
       "28": 6.893447043153309,
       "35": 8.595925697597808,
       "unscaled": 24.401717276166472
@@ -101,7 +125,6 @@
     "patent-number": "US3583791",
     "polynomial-optics": [
       28,
-      18,
       35
     ],
     "prime": true,
@@ -114,12 +137,13 @@
     "commercial": true,
     "company": "canon",
     "fstop": {
-      "14": 2.6481688563291734,
       "22": 2.649266981698492,
       "unscaled": 2.648334078095823
     },
+    "lt-jacobian-fix-required": {
+      "22": true
+    },
     "max-fstop-aperture-radius": {
-      "14": 6.0147647549080725,
       "22": 9.447408236392171,
       "unscaled": 6.505885874142981
     },
@@ -127,7 +151,6 @@
     "notes-to-self": "3rd lens element in patent seems to have incorrect radius of curvature when compared to provided image (58.28->40.28). This has been corrected in the optical-elements-patent dict. f = 14.2, f2.8, Angle of field = 114",
     "patent-number": "US4310222",
     "polynomial-optics": [
-      14,
       22
     ],
     "prime": true,
@@ -142,12 +165,26 @@
     "fstop": {
       "105": 2.1966308391633214,
       "150": 2.196584965663228,
+      "58": 2.1966455539800447,
+      "65": 2.196698635461185,
+      "75": 2.1966406885027143,
       "85": 2.1966517950618933,
-      "unscaled": 2.1966513855916068
+      "unscaled": 2.196651385591609
+    },
+    "lt-jacobian-fix-required": {
+      "105": false,
+      "150": false,
+      "58": false,
+      "65": false,
+      "75": false,
+      "85": false
     },
     "max-fstop-aperture-radius": {
       "105": 18.900336089708556,
       "150": 26.972799811510008,
+      "58": 10.444700412002199,
+      "65": 11.704426692365283,
+      "75": 13.503966114826035,
       "85": 15.303057035733387,
       "unscaled": 17.99122733480059
     },
@@ -157,7 +194,10 @@
     "polynomial-optics": [
       150,
       105,
-      85
+      85,
+      65,
+      75,
+      58
     ],
     "prime": true,
     "product-name": "petzval",
@@ -170,12 +210,16 @@
     "company": "cooke",
     "fstop": {
       "100": 1.9950231829067575,
-      "18": 1.9964980925111984,
-      "28": 1.996477187998176,
       "40": 1.9966884122789,
       "50": 1.9967583593320346,
       "75": 1.99707542775755,
       "unscaled": 1.9965551926090315
+    },
+    "lt-jacobian-fix-required": {
+      "100": false,
+      "40": false,
+      "50": false,
+      "75": false
     },
     "max-fstop-aperture-radius": {
       "100": 17.88377100986975,
@@ -190,8 +234,6 @@
     "notes-to-self": "",
     "patent-number": "GB157040A",
     "polynomial-optics": [
-      18,
-      28,
       40,
       75,
       100,
@@ -211,6 +253,11 @@
       "50": 1.2265624835660305,
       "65": 1.2266270938675776,
       "unscaled": 1.2265775207300436
+    },
+    "lt-jacobian-fix-required": {
+      "40": true,
+      "50": false,
+      "65": false
     },
     "max-fstop-aperture-radius": {
       "40": 11.15268937580932,
@@ -235,12 +282,22 @@
     "commercial": true,
     "company": "zeiss",
     "fstop": {
+      "35": 1.3972250549925789,
+      "45": 1.3972788554584812,
       "58": 1.3973527262679735,
       "65": 1.397397356452129,
       "85": 1.3974731399281841,
       "unscaled": 1.3975242311133813
     },
+    "lt-jacobian-fix-required": {
+      "45": false,
+      "58": false,
+      "65": false,
+      "85": false
+    },
     "max-fstop-aperture-radius": {
+      "35": 7.926974667002437,
+      "45": 10.19079126577738,
       "58": 13.149586389824249,
       "65": 14.717016616900068,
       "85": 19.241532232596974,
@@ -252,7 +309,9 @@
     "polynomial-optics": [
       65,
       58,
-      85
+      85,
+      45,
+      35
     ],
     "prime": true,
     "product-name": "biotar",
@@ -269,7 +328,16 @@
       "58": 1.2463710412812408,
       "65": 1.2463702626267315,
       "75": 1.244985812798523,
+      "85": 1.2449669713835494,
       "unscaled": 1.2449556988219488
+    },
+    "lt-jacobian-fix-required": {
+      "45": false,
+      "50": false,
+      "58": false,
+      "65": false,
+      "75": false,
+      "85": false
     },
     "max-fstop-aperture-radius": {
       "45": 11.478293684025735,
@@ -277,6 +345,7 @@
       "58": 14.803786789797966,
       "65": 16.589346983192474,
       "75": 19.159501050180356,
+      "85": 21.712116823772917,
       "unscaled": 25.42251224386086
     },
     "notes": "The Asahi Takumar (Pentax) is based on the Zeiss Biotar.",
@@ -287,7 +356,8 @@
       50,
       65,
       75,
-      58
+      58,
+      85
     ],
     "prime": true,
     "product-name": "takumar",
@@ -299,14 +369,17 @@
     "commercial": true,
     "company": "asahi",
     "fstop": {
-      "22": 1.9615815674385697,
       "28": 1.96175148182077,
       "35": 1.9619488174695514,
       "50": 1.9623704309005061,
       "unscaled": 1.963765018763166
     },
+    "lt-jacobian-fix-required": {
+      "28": false,
+      "35": false,
+      "50": false
+    },
     "max-fstop-aperture-radius": {
-      "22": 6.157760026234393,
       "28": 7.8232195328334395,
       "35": 9.777689961127745,
       "50": 13.964049272818329,
@@ -315,7 +388,6 @@
     "notes": "SMC Takumar 35mm f2.0",
     "patent-number": "US3506336",
     "polynomial-optics": [
-      22,
       28,
       50,
       35
@@ -333,6 +405,7 @@
       "6": 63.82734383065059,
       "unscaled": 16.58635679454206
     },
+    "lt-jacobian-fix-required": {},
     "max-fstop-aperture-radius": {
       "6": 6.506989220679896,
       "unscaled": 5.975442772374432
@@ -352,17 +425,28 @@
     "company": "minolta",
     "fstop": {
       "16": 2.6639734474027064,
-      "unscaled": 2.6625077289586168
+      "22": 2.6646671369497414,
+      "28": 2.665293062505556,
+      "unscaled": 2.662507728958614
+    },
+    "lt-jacobian-fix-required": {
+      "16": false,
+      "22": false,
+      "28": false
     },
     "max-fstop-aperture-radius": {
       "16": 7.160060113489407,
-      "unscaled": 0.44781303613208717
+      "22": 10.225750237347825,
+      "28": 13.010776522101072,
+      "unscaled": 0.44781303613208756
     },
     "notes": "High speed fisheye lens capable of compensating for lateral chromatic aberration, field curvature and astigmatism while providing an aperture ratio of f/2.8. 180 degree field of view.",
     "notes-to-self": "quite likely a 16mm version of this was manufactured, not sure if 1unit is 1cm or 1inch.. probably 1cm.",
     "patent-number": "US4256373",
     "polynomial-optics": [
-      16
+      16,
+      22,
+      28
     ],
     "prime": true,
     "product-name": "fisheye",
@@ -375,17 +459,24 @@
     "company": "canon",
     "fstop": {
       "35": 1.8401262884010188,
-      "unscaled": 1.8408177000275223
+      "52": 1.8402380205252966,
+      "unscaled": 1.8408177000275234
+    },
+    "lt-jacobian-fix-required": {
+      "35": false,
+      "52": false
     },
     "max-fstop-aperture-radius": {
       "35": 6.486170518560687,
-      "unscaled": 0.18517463561652123
+      "52": 9.668539372334527,
+      "unscaled": 0.1851746356165212
     },
     "notes": "At the time of introduction, this was the highest aperture 35mm lens.",
     "notes-to-self": "fov = 60, f1.8, listed here: http://www.klassik-cameras.de/Canon_Wideangles_Speed.html",
     "patent-number": "US2854890",
     "polynomial-optics": [
-      35
+      35,
+      52
     ],
     "prime": true,
     "product-name": "unknown",

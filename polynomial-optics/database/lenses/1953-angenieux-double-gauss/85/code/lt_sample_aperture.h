@@ -33,17 +33,10 @@ if(1 || view(2) >= camera->lens_field_of_view)
     dx1_domega0(0, 1) =  + -0.0284183 *begin_y*begin_dx + -0.31144 *begin_x*begin_dy + -52.3531 *begin_dx*begin_dy + 0.0208658 *lens_ipow(begin_y, 2)*begin_dx*begin_dy + 0.86119 *begin_x*lens_ipow(begin_dy, 3) + 0.0115168 *begin_x*begin_y*lens_ipow(begin_dx, 2) + -0.0450094 *lens_ipow(begin_x, 2)*begin_dx*begin_dy*begin_lambda + -0.000414222 *lens_ipow(begin_x, 2)*begin_y*begin_dx*begin_lambda + 428.525 *lens_ipow(begin_dx, 3)*lens_ipow(begin_dy, 3)+0.0f;
     dx1_domega0(1, 0) =  + -0.323614 *begin_y*begin_dx + -0.0419784 *begin_x*begin_dy + -51.2139 *begin_dx*begin_dy + -0.014975 *lens_ipow(begin_y, 2)*begin_dx*begin_dy + 0.016367 *begin_x*begin_y*lens_ipow(begin_dy, 2) + 0.832187 *begin_y*lens_ipow(begin_dx, 3) + 12.2362 *begin_y*lens_ipow(begin_dx, 3)*lens_ipow(begin_dy, 2) + 523.553 *lens_ipow(begin_dx, 3)*lens_ipow(begin_dy, 3)+0.0f;
     dx1_domega0(1, 1) =  + 45.3785  + 11.7108 *begin_lambda + -82.5792 *lens_ipow(begin_dy, 2) + -0.401306 *begin_y*begin_dy + -8.01158 *lens_ipow(begin_lambda, 2) + -0.0419784 *begin_x*begin_dx + 0.00148334 *lens_ipow(begin_y, 2) + -25.607 *lens_ipow(begin_dx, 2) + 0.00121585 *lens_ipow(begin_x, 2) + 56.9146 *lens_ipow(begin_dy, 4) + -0.00748748 *lens_ipow(begin_y, 2)*lens_ipow(begin_dx, 2) + 1.04069 *begin_y*lens_ipow(begin_dy, 3) + -0.0168979 *lens_ipow(begin_x, 2)*lens_ipow(begin_dy, 2) + 0.0327341 *begin_x*begin_y*begin_dx*begin_dy + 6.11812 *begin_y*lens_ipow(begin_dx, 4)*begin_dy + 392.665 *lens_ipow(begin_dx, 4)*lens_ipow(begin_dy, 2)+0.0f;
-    Eigen::Matrix2d invApJ;
-    const double invdetap = 1.0f/(dx1_domega0(0, 0)*dx1_domega0(1, 1) - dx1_domega0(0, 1)*dx1_domega0(1, 0));
-    invApJ(0, 0) =  dx1_domega0(1, 1)*invdetap;
-    invApJ(1, 1) =  dx1_domega0(0, 0)*invdetap;
-    invApJ(0, 1) = -dx1_domega0(0, 1)*invdetap;
-    invApJ(1, 0) = -dx1_domega0(1, 0)*invdetap;
-    for(int i=0;i<2;i++)
-    {
-      dx += invApJ(0, i)*delta_ap[i];
-      dy += invApJ(1, i)*delta_ap[i];
-    }
+    Eigen::Matrix2d invApJ = dx1_domega0.inverse().eval();
+    Eigen::Vector2d solution_dir = invApJ * delta_ap;
+    dx += solution_dir(0);
+    dy += solution_dir(1);
     out(0) =  + 84.7496 *begin_dx + -0.630653 *begin_x + 0.648774 *begin_x*begin_lambda + -0.000322825 *lens_ipow(begin_x, 3) + 0.552026 *begin_x*lens_ipow(begin_dx, 2) + -32.6321 *lens_ipow(begin_dx, 3) + -0.458111 *begin_x*lens_ipow(begin_lambda, 2) + -33.6475 *begin_dx*lens_ipow(begin_dy, 2) + -0.00045453 *begin_x*lens_ipow(begin_y, 2) + 0.000203875 *begin_x*lens_ipow(begin_y, 2)*begin_lambda + 0.0212221 *lens_ipow(begin_x, 2)*begin_dx*begin_lambda + 0.0104645 *begin_x*begin_y*begin_dy*begin_lambda + 0.00616556 *lens_ipow(begin_y, 2)*begin_dx*begin_lambda + 0.399235 *begin_y*begin_dx*begin_dy*begin_lambda + 5.79425 *begin_x*lens_ipow(begin_dy, 2)*lens_ipow(begin_lambda, 2) + 0.0270538 *begin_x*begin_y*lens_ipow(begin_dx, 2)*begin_dy + -0.000876197 *lens_ipow(begin_x, 3)*lens_ipow(begin_dx, 2) + -14.1942 *begin_x*lens_ipow(begin_dy, 2)*lens_ipow(begin_lambda, 3) + 0.0316393 *lens_ipow(begin_y, 2)*begin_dx*lens_ipow(begin_dy, 2)*begin_lambda + -0.000996136 *lens_ipow(begin_x, 2)*begin_y*begin_dx*begin_dy*begin_lambda + 9.6531 *begin_x*lens_ipow(begin_dy, 2)*lens_ipow(begin_lambda, 4) + -3.29683e-05 *lens_ipow(begin_x, 3)*begin_y*begin_dy*lens_ipow(begin_lambda, 3) + -7.43209e-05 *lens_ipow(begin_x, 4)*begin_dx*lens_ipow(begin_lambda, 3) + -2.80786e-12 *lens_ipow(begin_x, 5)*lens_ipow(begin_y, 4);
     out(1) =  + -0.629141 *begin_y + 84.9913 *begin_dy + 0.643184 *begin_y*begin_lambda + -0.445984 *begin_y*lens_ipow(begin_lambda, 2) + 0.277323 *begin_y*lens_ipow(begin_dx, 2) + -43.1988 *lens_ipow(begin_dy, 3) + 0.384825 *begin_y*lens_ipow(begin_dy, 2) + -0.000328228 *lens_ipow(begin_y, 3) + 0.21319 *begin_x*begin_dx*begin_dy + 0.00480778 *begin_x*begin_y*begin_dx + -32.9647 *lens_ipow(begin_dx, 2)*begin_dy + 0.00354965 *lens_ipow(begin_x, 2)*begin_dy + -0.000346602 *lens_ipow(begin_x, 2)*begin_y + 0.0170589 *lens_ipow(begin_y, 2)*begin_dy*begin_lambda + 8.91253 *lens_ipow(begin_dy, 3)*begin_lambda + 22.5966 *lens_ipow(begin_dy, 5) + 0.0262924 *lens_ipow(begin_y, 2)*lens_ipow(begin_dy, 3) + -0.000467849 *lens_ipow(begin_y, 3)*lens_ipow(begin_dy, 2) + -0.000465245 *begin_x*lens_ipow(begin_y, 2)*begin_dx*begin_dy + 0.0281633 *begin_x*begin_y*begin_dx*lens_ipow(begin_dy, 2) + 1.9332 *begin_y*lens_ipow(begin_dy, 4)*begin_lambda + 6.09632e-05 *lens_ipow(begin_x, 4)*lens_ipow(begin_dx, 2)*begin_dy + -4.80916e-05 *lens_ipow(begin_y, 4)*begin_dy*lens_ipow(begin_lambda, 3) + -2.3161e-12 *lens_ipow(begin_x, 4)*lens_ipow(begin_y, 5);
     out(2) =  + -0.610791 *begin_dx + -0.00735722 *begin_x + -0.00427697 *begin_x*begin_lambda + 0.00801533 *begin_dx*begin_lambda + 2.81839e-06 *lens_ipow(begin_x, 3) + -0.00118079 *begin_x*lens_ipow(begin_dy, 2) + 0.276686 *lens_ipow(begin_dx, 3) + 0.00295211 *begin_x*lens_ipow(begin_lambda, 2) + -5.37241e-05 *lens_ipow(begin_x, 2)*begin_dx + 2.67351e-06 *begin_x*lens_ipow(begin_y, 2) + -3.4422e-05 *begin_x*begin_y*begin_dy + 0.548419 *begin_dx*lens_ipow(begin_dy, 2)*begin_lambda + 8.20225e-06 *lens_ipow(begin_x, 2)*begin_y*begin_dx*begin_dy + 0.000125285 *begin_x*begin_y*lens_ipow(begin_dy, 3) + 9.58194e-05 *lens_ipow(begin_y, 2)*lens_ipow(begin_dx, 3) + -0.189083 *lens_ipow(begin_dx, 5) + 0.000257719 *lens_ipow(begin_x, 2)*begin_dx*lens_ipow(begin_dy, 2) + 3.23467e-06 *begin_x*lens_ipow(begin_y, 2)*lens_ipow(begin_dy, 2) + -0.49563 *begin_dx*lens_ipow(begin_dy, 2)*lens_ipow(begin_lambda, 2) + 0.00045307 *lens_ipow(begin_x, 2)*lens_ipow(begin_dx, 3)*begin_lambda + -0.0193136 *begin_x*lens_ipow(begin_dx, 6) + 0.0141629 *begin_x*begin_y*lens_ipow(begin_dx, 4)*lens_ipow(begin_dy, 3) + 5.49694e-05 *lens_ipow(begin_x, 3)*lens_ipow(begin_dx, 4)*lens_ipow(begin_lambda, 2) + 2.04398e-14 *lens_ipow(begin_x, 5)*lens_ipow(begin_y, 4);
@@ -78,17 +71,10 @@ if(1 || view(2) >= camera->lens_field_of_view)
     domega2_dx0(0, 1) =  + 5.34701e-06 *begin_x*begin_y + -3.4422e-05 *begin_x*begin_dy + 8.20225e-06 *lens_ipow(begin_x, 2)*begin_dx*begin_dy + 0.000125285 *begin_x*lens_ipow(begin_dy, 3) + 0.000191639 *begin_y*lens_ipow(begin_dx, 3) + 6.46935e-06 *begin_x*begin_y*lens_ipow(begin_dy, 2) + 0.0141629 *begin_x*lens_ipow(begin_dx, 4)*lens_ipow(begin_dy, 3) + 8.17591e-14 *lens_ipow(begin_x, 5)*lens_ipow(begin_y, 3)+0.0f;
     domega2_dx0(1, 0) =  + 0.00222699 *begin_dx*begin_dy + -3.48559e-05 *begin_y*begin_dx + 5.421e-06 *begin_x*begin_y + -2.37196e-07 *begin_x*lens_ipow(begin_y, 2)*begin_dy + 3.50586e-06 *lens_ipow(begin_y, 2)*begin_dx*begin_dy + 2.64602e-11 *lens_ipow(begin_x, 3)*lens_ipow(begin_y, 3) + -0.0666803 *lens_ipow(begin_dx, 3)*lens_ipow(begin_dy, 3) + 2.29467e-06 *begin_x*lens_ipow(begin_y, 2)*lens_ipow(begin_dy, 3)*begin_lambda+0.0f;
     domega2_dx0(1, 1) =  + -0.0072681  + -0.00454731 *begin_lambda + 0.0032206 *lens_ipow(begin_lambda, 2) + -0.00226146 *lens_ipow(begin_dx, 2) + 8.20232e-06 *lens_ipow(begin_y, 2) + -3.48559e-05 *begin_x*begin_dx + 2.7105e-06 *lens_ipow(begin_x, 2) + -4.75636e-07 *lens_ipow(begin_y, 3)*begin_dy + -2.37196e-07 *lens_ipow(begin_x, 2)*begin_y*begin_dy + 7.01173e-06 *begin_x*begin_y*begin_dx*begin_dy + 1.98452e-11 *lens_ipow(begin_x, 4)*lens_ipow(begin_y, 2) + -0.0156555 *lens_ipow(begin_dy, 6) + -0.0491567 *lens_ipow(begin_dx, 2)*lens_ipow(begin_dy, 4) + 2.29467e-06 *lens_ipow(begin_x, 2)*begin_y*lens_ipow(begin_dy, 3)*begin_lambda + 1.33934e-08 *lens_ipow(begin_y, 5)*lens_ipow(begin_dx, 2)*begin_dy+0.0f;
-    Eigen::Matrix2d invJ;
-    const double invdet = 1.0f/(domega2_dx0(0, 0)*domega2_dx0(1, 1) - domega2_dx0(0, 1)*domega2_dx0(1, 0));
-    invJ(0, 0) =  domega2_dx0(1, 1)*invdet;
-    invJ(1, 1) =  domega2_dx0(0, 0)*invdet;
-    invJ(0, 1) = -domega2_dx0(0, 1)*invdet;
-    invJ(1, 0) = -domega2_dx0(1, 0)*invdet;
-    for(int i=0;i<2;i++)
-    {
-      x += 0.72 * invJ(0, i) * delta_out[i];
-      y += 0.72 * invJ(1, i) * delta_out[i];
-    }
+    Eigen::Matrix2d invJ = domega2_dx0.inverse().eval();
+    Eigen::Vector2d solution_pos = 0.72 * invJ * delta_out; // default newton-raphson
+    x += solution_pos(0);
+    y += solution_pos(1);
     if(sqr_err>prev_sqr_err) error |= 1;
     if(sqr_ap_err>prev_sqr_ap_err) error |= 2;
     if(out[0]!=out[0]) error |= 4;
