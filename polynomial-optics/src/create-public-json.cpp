@@ -10,7 +10,7 @@ using json = nlohmann::json;
 
 
 std::string construct_lens_image_www_location(std::string key, json element) {
-  std::string lens_image_www_location = fmt::format("/{}/{}-{}-{}.svg", key, element["year"].get<int>(), element["company"].get<std::string>(), element["product-name"].get<std::string>());
+  std::string lens_image_www_location = fmt::format("/{}-{}-{}.svg", key, element["year"].get<int>(), element["company"].get<std::string>(), element["product-name"].get<std::string>());
   return lens_image_www_location;
 }
 
