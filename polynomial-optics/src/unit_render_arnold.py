@@ -9,12 +9,12 @@ import subprocess
 
 
 if platform.system() == 'Linux':
-    arnold_path = "/home/cactus/Arnold-5.4.0.2-linux"
+    arnold_path = "/home/cactus/Arnold-5.3.0.2-linux"
     lentil_path = "/home/cactus/lentil"
     mtoa_plugins = "/opt/solidangle/mtoa/2019/plugins"
 
 elif platform.system() == 'Darwin':
-    arnold_path = "/Users/zeno/Arnold-5.4.0.1-darwin"
+    arnold_path = "/Users/zeno/Arnold-5.3.0.2-darwin"
     lentil_path = "/Users/zeno/lentil"
     mtoa_plugins = "/Applications/solidangle/mtoa/2018/plugins"
 

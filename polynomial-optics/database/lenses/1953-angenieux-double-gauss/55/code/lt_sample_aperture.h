@@ -19,7 +19,7 @@ if(1 || view(2) >= camera->lens_field_of_view)
   const double eps = 1e-8;
   double sqr_err = 1e30, sqr_ap_err = 1e30;
   double prev_sqr_err = 1e32, prev_sqr_ap_err = 1e32;
-  for(int k=0;(sqr_err>eps||sqr_ap_err>eps)&&error==0;k++)
+  for(int k=0;k<300&&(sqr_err>eps||sqr_ap_err>eps)&&error==0;k++)
   {
     prev_sqr_err = sqr_err, prev_sqr_ap_err = sqr_ap_err;
     const double begin_x = x;
