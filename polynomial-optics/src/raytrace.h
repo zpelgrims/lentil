@@ -623,7 +623,7 @@ static inline int evaluate_aperture_reverse(const std::vector<lens_element_t> le
 
 
 // line line intersection for finding the principle plane
-double lineLineIntersection_x(const Eigen::Vector3d line1_origin, const Eigen::Vector3d line1_direction, const Eigen::Vector3d line2_origin, const Eigen::Vector3d line2_direction, const int dim_up){
+inline double lineLineIntersection_x(const Eigen::Vector3d line1_origin, const Eigen::Vector3d line1_direction, const Eigen::Vector3d line2_origin, const Eigen::Vector3d line2_direction, const int dim_up){
     double A1 = line1_direction(dim_up) - line1_origin(dim_up);
     double B1 = line1_origin(2) - line1_direction(2);
     double C1 = A1 * line1_origin(2) + B1 * line1_origin(dim_up);
@@ -638,7 +638,7 @@ double lineLineIntersection_x(const Eigen::Vector3d line1_origin, const Eigen::V
 
 
 // evalute sensor to outer pupil:
-double calculate_focal_length(
+inline double calculate_focal_length(
       const std::vector<lens_element_t> lenses, const int lenses_cnt, 
       const double zoom, 
       const Eigen::VectorXd in, Eigen::VectorXd &out, 

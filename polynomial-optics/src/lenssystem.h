@@ -49,7 +49,7 @@ static inline double lens_get_thickness(const lens_element_t l, const double zoo
 }
 
 
-double lens_get_aperture_radius(const std::vector<lens_element_t> l, const int num) {
+inline double lens_get_aperture_radius(const std::vector<lens_element_t> l, const int num) {
   for(int k=0;k<num;k++) {
     if (stringcmp(l[k].material, "iris")) return l[k].housing_radius;
   }
@@ -57,7 +57,7 @@ double lens_get_aperture_radius(const std::vector<lens_element_t> l, const int n
 }
 
 
-double lens_get_aperture_pos(const std::vector<lens_element_t> l, const int num, const double zoom) {
+inline double lens_get_aperture_pos(const std::vector<lens_element_t> l, const int num, const double zoom) {
   double pos = 0;
   int k = 0;
   while(!stringcmp(l[k].material, "iris") && k < num) {
@@ -68,7 +68,7 @@ double lens_get_aperture_pos(const std::vector<lens_element_t> l, const int num,
 }
 
 
-double lens_get_aperture_pos_reverse(const std::vector<lens_element_t> l, const int num, const double zoom) {
+inline double lens_get_aperture_pos_reverse(const std::vector<lens_element_t> l, const int num, const double zoom) {
   double pos = 0.0;
   for(int i = num; i>0; i--) {
     pos += lens_get_thickness(l[i], zoom);
@@ -80,7 +80,7 @@ double lens_get_aperture_pos_reverse(const std::vector<lens_element_t> l, const 
 }
 
 
-int lens_get_aperture_element(const std::vector<lens_element_t> l, const int lenses_cnt) {
+inline int lens_get_aperture_element(const std::vector<lens_element_t> l, const int lenses_cnt) {
   for (int k = 0; k < lenses_cnt - 1; k++) {
     if (stringcmp(l[k].material, "iris")) return k;
   }
@@ -91,7 +91,7 @@ int lens_get_aperture_element(const std::vector<lens_element_t> l, const int len
 
 
 // read json database
-int lens_configuration(std::vector<lens_element_t> &l, const char *id, const int target_focal_length)
+inline int lens_configuration(std::vector<lens_element_t> &l, const char *id, const int target_focal_length)
 {
   l.clear();
 
@@ -186,7 +186,7 @@ int lens_configuration(std::vector<lens_element_t> &l, const char *id, const int
 
 
 // return path to e.g: $LENTIL_PATH/database/lenses/1927-zeiss-biotar/58/
-std::string find_lens_id_location(const char *id, const int lens_focal_length){
+inline std::string find_lens_id_location(const char *id, const int lens_focal_length){
   std::string json_database_location = fmt::format("{}/database/lenses.json", std::getenv("LENTIL_PATH"));
   std::ifstream in_json(json_database_location);
   json lens_database = json::parse(in_json);
