@@ -163,10 +163,10 @@ void print_lt_sample_aperture(FILE *f, const poly_system_t *system, const poly_s
   fprintf(f, "Eigen::Vector3d view(\n");
   fprintf(f, "  scene_x,\n");
   fprintf(f, "  scene_y,\n");
-  fprintf(f, "  scene_z + camera->lens_outer_pupil_curvature_radius\n);\n");
+  fprintf(f, "  scene_z + lens_outer_pupil_curvature_radius\n);\n");
   fprintf(f, "raytrace_normalise(view);\n");
   fprintf(f, "int error = 0;\n");
-  fprintf(f, "if(1 || view(2) >= camera->lens_field_of_view)\n{\n");
+  fprintf(f, "if(1 || view(2) >= lens_field_of_view)\n{\n");
   fprintf(f, "  const double eps = 1e-8;\n");
   fprintf(f, "  double sqr_err = 1e30, sqr_ap_err = 1e30;\n");
   fprintf(f, "  double prev_sqr_err = 1e32, prev_sqr_ap_err = 1e32;\n");
@@ -246,9 +246,9 @@ void print_lt_sample_aperture(FILE *f, const poly_system_t *system, const poly_s
   fprintf(f, "    Eigen::Vector2d outpos(out(0), out(1));\n");
   fprintf(f, "    Eigen::Vector2d outdir(out(2), out(3));\n");
 
-  fprintf(f, "    if (camera->lens_outer_pupil_geometry == \"cyl-y\") cylinderToCs(outpos, outdir, pred_out_cs_pos, pred_out_cs_dir, - camera->lens_outer_pupil_curvature_radius, camera->lens_outer_pupil_curvature_radius, true);\n");
-	fprintf(f, "    else if (camera->lens_outer_pupil_geometry == \"cyl-x\") cylinderToCs(outpos, outdir, pred_out_cs_pos, pred_out_cs_dir, - camera->lens_outer_pupil_curvature_radius, camera->lens_outer_pupil_curvature_radius, false);\n");
-  fprintf(f, "    else sphereToCs(outpos, outdir, pred_out_cs_pos, pred_out_cs_dir, - camera->lens_outer_pupil_curvature_radius, camera->lens_outer_pupil_curvature_radius);\n");
+  fprintf(f, "    if (lens_outer_pupil_geometry == \"cyl-y\") cylinderToCs(outpos, outdir, pred_out_cs_pos, pred_out_cs_dir, - lens_outer_pupil_curvature_radius, lens_outer_pupil_curvature_radius, true);\n");
+	fprintf(f, "    else if (lens_outer_pupil_geometry == \"cyl-x\") cylinderToCs(outpos, outdir, pred_out_cs_pos, pred_out_cs_dir, - lens_outer_pupil_curvature_radius, lens_outer_pupil_curvature_radius, false);\n");
+  fprintf(f, "    else sphereToCs(outpos, outdir, pred_out_cs_pos, pred_out_cs_dir, - lens_outer_pupil_curvature_radius, lens_outer_pupil_curvature_radius);\n");
 
   fprintf(f, "    Eigen::Vector3d view(\n");
   fprintf(f, "      scene_x - pred_out_cs_pos(0),\n");
@@ -261,9 +261,9 @@ void print_lt_sample_aperture(FILE *f, const poly_system_t *system, const poly_s
   fprintf(f, "    Eigen::Vector2d out_new_dir(0,0);\n");
 
   //Position is just converted back, direction gets replaced with new one
-  fprintf(f, "    if (camera->lens_outer_pupil_geometry == \"cyl-y\") csToCylinder(pred_out_cs_pos, view, out_new_pos, out_new_dir, - camera->lens_outer_pupil_curvature_radius, camera->lens_outer_pupil_curvature_radius, true);\n");
-	fprintf(f, "    else if (camera->lens_outer_pupil_geometry == \"cyl-x\") csToCylinder(pred_out_cs_pos, view, out_new_pos, out_new_dir, - camera->lens_outer_pupil_curvature_radius, camera->lens_outer_pupil_curvature_radius, false);\n");
-  fprintf(f, "    else csToSphere(pred_out_cs_pos, view, out_new_pos, out_new_dir, - camera->lens_outer_pupil_curvature_radius, camera->lens_outer_pupil_curvature_radius);\n");
+  fprintf(f, "    if (lens_outer_pupil_geometry == \"cyl-y\") csToCylinder(pred_out_cs_pos, view, out_new_pos, out_new_dir, - lens_outer_pupil_curvature_radius, lens_outer_pupil_curvature_radius, true);\n");
+	fprintf(f, "    else if (lens_outer_pupil_geometry == \"cyl-x\") csToCylinder(pred_out_cs_pos, view, out_new_pos, out_new_dir, - lens_outer_pupil_curvature_radius, lens_outer_pupil_curvature_radius, false);\n");
+  fprintf(f, "    else csToSphere(pred_out_cs_pos, view, out_new_pos, out_new_dir, - lens_outer_pupil_curvature_radius, lens_outer_pupil_curvature_radius);\n");
   fprintf(f, "    out_new(0) = out_new_pos(0);\n");
   fprintf(f, "    out_new(1) = out_new_pos(1);\n");
   fprintf(f, "    out_new(2) = out_new_dir(0);\n");
@@ -313,7 +313,7 @@ void print_lt_sample_aperture(FILE *f, const poly_system_t *system, const poly_s
   fprintf(f, "    if(k<10) error = 0;\n");
   fprintf(f, "  }\n");
   fprintf(f, "}\nelse\n  error = 128;\n");
-  fprintf(f, "if(out[0]*out[0]+out[1]*out[1] > camera->lens_outer_pupil_radius*camera->lens_outer_pupil_radius) error |= 16;\n");
+  fprintf(f, "if(out[0]*out[0]+out[1]*out[1] > lens_outer_pupil_radius*lens_outer_pupil_radius) error |= 16;\n");
   
   //now calculate transmittance or set it to zero if we stoped due to divergence
   fprintf(f, "const double %s = %s;\n", begin_var[0], vnamei[0]);

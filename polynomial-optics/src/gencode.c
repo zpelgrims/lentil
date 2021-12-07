@@ -109,20 +109,20 @@ int main(int argc, char **argv)
 
   f = fopen(lens_constants_path.c_str(), "wb");
   fprintf(f, "case %s:\n{\n", case_lens_name.c_str());
-  fprintf(f, "camera->lens_name = \"%smm\"; // descriptive name of the lens\n", lens_name.c_str());
-  fprintf(f, "camera->lens_outer_pupil_radius = %f; // scene facing radius in mm\n", lenses[0].housing_radius);
-  fprintf(f, "camera->lens_inner_pupil_radius = %f; // sensor facing radius in mm\n", lenses[lenses_cnt-1].housing_radius);
-  fprintf(f, "camera->lens_inner_pupil_curvature_radius = %f; // radius of curvature of the inner pupil\n", lenses[lenses_cnt-1].lens_radius);
-  fprintf(f, "camera->lens_outer_pupil_curvature_radius = %f; // radius of curvature of the outer pupil\n", lenses[0].lens_radius);
-  fprintf(f, "camera->lens_length = %f; // overall lens length in mm\n", lens_length);
-  fprintf(f, "camera->lens_back_focal_length = %f; // approximate lens back focal length in mm\n", bfl);
-  fprintf(f, "camera->lens_effective_focal_length = %f; // effective focal length in mm\n", static_cast<float>(lens_focal_length));
-  fprintf(f, "camera->lens_aperture_pos = %f; // distance aperture -> outer pupil in mm\n", aperture_pos);
-  fprintf(f, "camera->lens_aperture_housing_radius = %f; // lens housing radius at the aperture\n", aperture_housing_radius);
-  fprintf(f, "camera->lens_outer_pupil_geometry = \"%s\"; // geometry of outer pupil\n", lenses[0].geometry.c_str());
-  fprintf(f, "camera->lens_inner_pupil_geometry = \"%s\"; // geometry of inner pupil\n", lenses[lenses_cnt-1].geometry.c_str());
-  fprintf(f, "camera->lens_fstop = %f; // effective_focal_length/(2*aperture_housing_radius)\n", lens_database[id]["fstop"][std::to_string(lens_focal_length)].get<float>());
-  fprintf(f, "camera->lens_aperture_radius_at_fstop = %f; // aperture radius at smallest fstop\n", lens_database[id]["max-fstop-aperture-radius"][std::to_string(lens_focal_length)].get<float>());
+  fprintf(f, "lens_name = \"%smm\"; // descriptive name of the lens\n", lens_name.c_str());
+  fprintf(f, "lens_outer_pupil_radius = %f; // scene facing radius in mm\n", lenses[0].housing_radius);
+  fprintf(f, "lens_inner_pupil_radius = %f; // sensor facing radius in mm\n", lenses[lenses_cnt-1].housing_radius);
+  fprintf(f, "lens_inner_pupil_curvature_radius = %f; // radius of curvature of the inner pupil\n", lenses[lenses_cnt-1].lens_radius);
+  fprintf(f, "lens_outer_pupil_curvature_radius = %f; // radius of curvature of the outer pupil\n", lenses[0].lens_radius);
+  fprintf(f, "lens_length = %f; // overall lens length in mm\n", lens_length);
+  fprintf(f, "lens_back_focal_length = %f; // approximate lens back focal length in mm\n", bfl);
+  fprintf(f, "lens_effective_focal_length = %f; // effective focal length in mm\n", static_cast<float>(lens_focal_length));
+  fprintf(f, "lens_aperture_pos = %f; // distance aperture -> outer pupil in mm\n", aperture_pos);
+  fprintf(f, "lens_aperture_housing_radius = %f; // lens housing radius at the aperture\n", aperture_housing_radius);
+  fprintf(f, "lens_outer_pupil_geometry = \"%s\"; // geometry of outer pupil\n", lenses[0].geometry.c_str());
+  fprintf(f, "lens_inner_pupil_geometry = \"%s\"; // geometry of inner pupil\n", lenses[lenses_cnt-1].geometry.c_str());
+  fprintf(f, "lens_fstop = %f; // effective_focal_length/(2*aperture_housing_radius)\n", lens_database[id]["fstop"][std::to_string(lens_focal_length)].get<float>());
+  fprintf(f, "lens_aperture_radius_at_fstop = %f; // aperture radius at smallest fstop\n", lens_database[id]["max-fstop-aperture-radius"][std::to_string(lens_focal_length)].get<float>());
 
   // calculate approximate fov for 35mm sensor
   float sensor[] = {22.f, 0, (float)((lenses[lenses_cnt-1].housing_radius-22.f)/bfl), 0, .55f};
@@ -141,7 +141,7 @@ int main(int argc, char **argv)
   raytrace_normalise(dir_cs);
   dir_cs(2) = dir_cs(2) < -1 ? -1 : dir_cs(2) > 1 ? 1 : dir_cs(2);
   const double fov = dir_cs(2);
-  fprintf(f, "camera->lens_field_of_view = %f; // cosine of the approximate field of view assuming a 35mm image\n", fov);
+  fprintf(f, "lens_field_of_view = %f; // cosine of the approximate field of view assuming a 35mm image\n", fov);
   fprintf(f, "} break;\n");
   fclose(f);
 

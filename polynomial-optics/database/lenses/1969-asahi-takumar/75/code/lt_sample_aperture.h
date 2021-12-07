@@ -5,11 +5,11 @@ case asahi__takumar__1969__75mm:
 Eigen::Vector3d view(
   scene_x,
   scene_y,
-  scene_z + camera->lens_outer_pupil_curvature_radius
+  scene_z + lens_outer_pupil_curvature_radius
 );
 raytrace_normalise(view);
 int error = 0;
-if(1 || view(2) >= camera->lens_field_of_view)
+if(1 || view(2) >= lens_field_of_view)
 {
   const double eps = 1e-8;
   double sqr_err = 1e30, sqr_ap_err = 1e30;
@@ -52,9 +52,9 @@ if(1 || view(2) >= camera->lens_field_of_view)
     Eigen::Vector3d pred_out_cs_dir(0,0,0);
     Eigen::Vector2d outpos(out(0), out(1));
     Eigen::Vector2d outdir(out(2), out(3));
-    if (camera->lens_outer_pupil_geometry == "cyl-y") cylinderToCs(outpos, outdir, pred_out_cs_pos, pred_out_cs_dir, - camera->lens_outer_pupil_curvature_radius, camera->lens_outer_pupil_curvature_radius, true);
-    else if (camera->lens_outer_pupil_geometry == "cyl-x") cylinderToCs(outpos, outdir, pred_out_cs_pos, pred_out_cs_dir, - camera->lens_outer_pupil_curvature_radius, camera->lens_outer_pupil_curvature_radius, false);
-    else sphereToCs(outpos, outdir, pred_out_cs_pos, pred_out_cs_dir, - camera->lens_outer_pupil_curvature_radius, camera->lens_outer_pupil_curvature_radius);
+    if (lens_outer_pupil_geometry == "cyl-y") cylinderToCs(outpos, outdir, pred_out_cs_pos, pred_out_cs_dir, - lens_outer_pupil_curvature_radius, lens_outer_pupil_curvature_radius, true);
+    else if (lens_outer_pupil_geometry == "cyl-x") cylinderToCs(outpos, outdir, pred_out_cs_pos, pred_out_cs_dir, - lens_outer_pupil_curvature_radius, lens_outer_pupil_curvature_radius, false);
+    else sphereToCs(outpos, outdir, pred_out_cs_pos, pred_out_cs_dir, - lens_outer_pupil_curvature_radius, lens_outer_pupil_curvature_radius);
     Eigen::Vector3d view(
       scene_x - pred_out_cs_pos(0),
       scene_y - pred_out_cs_pos(1),
@@ -64,9 +64,9 @@ if(1 || view(2) >= camera->lens_field_of_view)
     Eigen::VectorXd out_new(5); out_new.setZero();
     Eigen::Vector2d out_new_pos(0,0);
     Eigen::Vector2d out_new_dir(0,0);
-    if (camera->lens_outer_pupil_geometry == "cyl-y") csToCylinder(pred_out_cs_pos, view, out_new_pos, out_new_dir, - camera->lens_outer_pupil_curvature_radius, camera->lens_outer_pupil_curvature_radius, true);
-    else if (camera->lens_outer_pupil_geometry == "cyl-x") csToCylinder(pred_out_cs_pos, view, out_new_pos, out_new_dir, - camera->lens_outer_pupil_curvature_radius, camera->lens_outer_pupil_curvature_radius, false);
-    else csToSphere(pred_out_cs_pos, view, out_new_pos, out_new_dir, - camera->lens_outer_pupil_curvature_radius, camera->lens_outer_pupil_curvature_radius);
+    if (lens_outer_pupil_geometry == "cyl-y") csToCylinder(pred_out_cs_pos, view, out_new_pos, out_new_dir, - lens_outer_pupil_curvature_radius, lens_outer_pupil_curvature_radius, true);
+    else if (lens_outer_pupil_geometry == "cyl-x") csToCylinder(pred_out_cs_pos, view, out_new_pos, out_new_dir, - lens_outer_pupil_curvature_radius, lens_outer_pupil_curvature_radius, false);
+    else csToSphere(pred_out_cs_pos, view, out_new_pos, out_new_dir, - lens_outer_pupil_curvature_radius, lens_outer_pupil_curvature_radius);
     out_new(0) = out_new_pos(0);
     out_new(1) = out_new_pos(1);
     out_new(2) = out_new_dir(0);
@@ -99,7 +99,7 @@ if(1 || view(2) >= camera->lens_field_of_view)
 }
 else
   error = 128;
-if(out[0]*out[0]+out[1]*out[1] > camera->lens_outer_pupil_radius*camera->lens_outer_pupil_radius) error |= 16;
+if(out[0]*out[0]+out[1]*out[1] > lens_outer_pupil_radius*lens_outer_pupil_radius) error |= 16;
 const double begin_x = x;
 const double begin_y = y;
 const double begin_dx = dx;
