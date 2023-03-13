@@ -4,6 +4,11 @@
   
 
 To get started compiling the Arnold plugin - which I will assume most of the people here are interested in, you don't need to touch the "polynomial-optics" folder. The files have been pre-generated for compilation. However, if new lenses need to be added, this can be done with the code inside of "polynomial-optics".
+
+
+In the case cryptomatte will be used, it is important that a custom cryptomatte version is compiled. This can be done with the forked CryptomatteArnold repository.
+
+-----
   
 
 ### Arnold plug-in compile instructions:
