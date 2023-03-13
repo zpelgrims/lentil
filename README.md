@@ -11,6 +11,10 @@ To get started compiling the Arnold plugin - which I will assume most of the peo
   
 Download the Arnold SDK from: https://arnoldrenderer.com/download/archive/ (under Arnold SDK). On my own machine, the environment variables look like this. Please modify for your needs/arnold version. Changing the Arnold Root version will change which Arnold version the plugin is compiled against.
 
+#### Build (Linux/OSX)
+
+The project uses cmake for compilation. The build setup is a forked version from the Cryptomatte project.
+
 ```bash
     export LENTIL_ARNOLD_SDKS="/home/cactus/"
     export LENTIL_PATH="/home/cactus/lentil/polynomial-optics"
@@ -20,7 +24,7 @@ Download the Arnold SDK from: https://arnoldrenderer.com/download/archive/ (unde
     export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$ARNOLD_ROOT/bin"
 ```
 
-The project uses cmake for compilation. The build setup is a forked version from the Cryptomatte project.
+
 ```bash
     cd lentil
     cd pota
@@ -31,7 +35,23 @@ The project uses cmake for compilation. The build setup is a forked version from
 
 This will build the project to the `/dist` folder.
 
-  
+----- 
+
+#### Build (Windows)
+
+On Windows use CMakeGUI.
+
+1. Set the source directory to where you unpacked the source files
+2. Set the build directory to be the same but with "\build" on the end.
+3. Use "Add Entry" to add ARNOLD_ROOT, set to point to the root directory of the Arnold API.
+4. Use "Add Entry" to add ARNOLD_VERSION, e.g `7.1.1.0`.
+5. Click "Configure", Select "Yes" when it asks if you want to create the build directory, and choose a Win64 compiller option, e.g. Visual Studio 14 2015 Win64.
+6. Click "Generate". This will create a Visual Studio project files in the build directory
+7. Open a "Developer Command Prompt for VS2015"
+8. cd to the top-level CryptomatteArnold directory
+9. `> msbuild build\INSTALL.vcxproj /p:Configuration=Release`
+
+
 
 -------
 
