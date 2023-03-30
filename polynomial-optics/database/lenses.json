@@ -3105,6 +3105,312 @@
     "production-ready": true,
     "year": 1956
   },
+  "0017": {
+    "commercial": true,
+    "company": "opton",
+    "focal-length-mm-patent": 8,
+    "focal-length-mm-raytraced": 7.927255854587571,
+    "fstop": {
+      "8": 1.263147499728471,
+      "unscaled": 1.263139202449302
+    },
+    "max-fstop-aperture-radius": {
+      "8": 8.249176775959059,
+      "unscaled": 8.174238303475873
+    },
+    "notes": "8mm prime intended for Super16. Make sure to sent Lentil sensor size accordingly.",
+    "notes-to-self": "Second element doesn't match radius of drawing, but assuming the patent data is correct...",
+    "optical-elements-patent": [
+      {
+        "abbe": 50.81,
+        "aspherical-equation": null,
+        "housing-radius": 27.0,
+        "ior": 1.66,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 64.12,
+        "thickness": 2.5
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 24.0,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 31.92,
+        "thickness": 12.5
+      },
+      {
+        "abbe": 29.29,
+        "aspherical-equation": null,
+        "housing-radius": 20.0,
+        "ior": 1.7232,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 769.1,
+        "thickness": 5.0
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 20.0,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": -116.41,
+        "thickness": 0.1
+      },
+      {
+        "abbe": 50.81,
+        "aspherical-equation": null,
+        "housing-radius": 18.0,
+        "ior": 1.66,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 55.08,
+        "thickness": 2.0
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 16.0,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 22.34,
+        "thickness": 8.0
+      },
+      {
+        "abbe": 29.29,
+        "aspherical-equation": null,
+        "housing-radius": 14.0,
+        "ior": 1.7232,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 540.8,
+        "thickness": 4.05
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 14.0,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": -219.8,
+        "thickness": 0.1
+      },
+      {
+        "abbe": 50.88,
+        "aspherical-equation": null,
+        "housing-radius": 13.0,
+        "ior": 1.52,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 39.54,
+        "thickness": 3.55
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 13.0,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 972.7,
+        "thickness": 0.1
+      },
+      {
+        "abbe": 62.68,
+        "aspherical-equation": null,
+        "housing-radius": 9.0,
+        "ior": 1.571,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 26.85,
+        "thickness": 1.3
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 9.0,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 10.544,
+        "thickness": 4.5
+      },
+      {
+        "abbe": 63.83,
+        "aspherical-equation": null,
+        "housing-radius": 9.0,
+        "ior": 1.5183,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 34.36,
+        "thickness": 1.1
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 9.0,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 11.508,
+        "thickness": 6.7
+      },
+      {
+        "abbe": 28.21,
+        "aspherical-equation": null,
+        "housing-radius": 9.0,
+        "ior": 1.7343,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 28.71,
+        "thickness": 8.15
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 9.0,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": -98.4,
+        "thickness": 2.1
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 9.0,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "iris",
+        "radius": 9999.0,
+        "thickness": 2.0
+      },
+      {
+        "abbe": 50.21,
+        "aspherical-equation": null,
+        "housing-radius": 9.0,
+        "ior": 1.7476,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 225.9,
+        "thickness": 7.05
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 9.0,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": -29.72,
+        "thickness": 0.1
+      },
+      {
+        "abbe": 25.17,
+        "aspherical-equation": null,
+        "housing-radius": 9.0,
+        "ior": 1.8138,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": -73.11,
+        "thickness": 1.5
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 9.0,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": 26.55,
+        "thickness": 1.8
+      },
+      {
+        "abbe": 25.17,
+        "aspherical-equation": null,
+        "housing-radius": 9.0,
+        "ior": 1.8138,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": -161.06,
+        "thickness": 1.0
+      },
+      {
+        "abbe": 50.21,
+        "aspherical-equation": null,
+        "housing-radius": 9.0,
+        "ior": 1.7476,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 23.66,
+        "thickness": 4.65
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 9.0,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": -27.99,
+        "thickness": 0.1
+      },
+      {
+        "abbe": 50.21,
+        "aspherical-equation": null,
+        "housing-radius": 9.0,
+        "ior": 1.7476,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 50.23,
+        "thickness": 3.05
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 9.0,
+        "ior": null,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": -156.31,
+        "thickness": 0.1
+      },
+      {
+        "abbe": 63.83,
+        "aspherical-equation": null,
+        "housing-radius": 9.0,
+        "ior": 1.5183,
+        "lens-geometry": "spherical",
+        "material": "abbe",
+        "radius": 23.88,
+        "thickness": 3.35
+      },
+      {
+        "abbe": null,
+        "aspherical-equation": null,
+        "housing-radius": 9.0,
+        "lens-geometry": "spherical",
+        "material": "air",
+        "radius": -94.19,
+        "thickness": 18.660000767850967
+      }
+    ],
+    "patent-location": "https://patentimages.storage.googleapis.com/97/27/53/5d879958eba336/RU2123713C1.pdf",
+    "patent-number": "RU2123713C1",
+    "polynomial-optics": [
+      8
+    ],
+    "prime": true,
+    "product-name": "katanor",
+    "production-ready": true,
+    "year": 1997
+  },
   "2001": {
     "commercial": true,
     "company": "cooke",
