@@ -3118,7 +3118,7 @@
       "8": 8.249176775959059,
       "unscaled": 8.174238303475873
     },
-    "notes": "8mm prime intended for Super16. Make sure to sent Lentil sensor size accordingly.",
+    "notes": "8mm prime intended for Super16. Make sure to set Lentil sensor size accordingly.",
     "notes-to-self": "Second element doesn't match radius of drawing, but assuming the patent data is correct...",
     "optical-elements-patent": [
       {
